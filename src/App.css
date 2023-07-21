@@ -41,19 +41,26 @@ body{
     display: flex;
   }
   header .head_text{
-    width: 25%;
-    font-size: 2em;
+    width: 50%;
+    font-size: 1em;
     font-family: 'Nanum Myeongjo', serif;
     justify-content: center;
+    white-space: nowrap;
   }
 
   header .head_left{
     width: 25%;
     justify-content: start;
+    font-family: 'Yeon Sung', cursive;
+    font-size:30px;
+    font-weight: bold;  
+    color:#395B64;
+    white-space: nowrap;
   }
   header .head_right{
-    width: 50%;
+    width: 25%;
     justify-content: end;
+    white-space: nowrap;
   }
 /* 로고 */
 .logodiv{
@@ -94,7 +101,7 @@ nav{
 }
 .sidebar nav ul li{
   padding: 20px;
-  font-size: 20px;
+  font-size: 1em;
 }
 .headerbar nav ul li{
   padding-left: 20px;
@@ -113,8 +120,8 @@ input{
   position: relative;
   bottom: 10px;
   width: 400px;
-  height: 50px;
-  border-radius: 30px;
+  height: 40px;
+  border-radius: 15px;
   background-color: white;
   border-color: #395B64;
   border-width: 0.1px;
@@ -149,7 +156,23 @@ input{
   }
   @media (max-width :650px){
     .App{
-      width: 90vx;
-      
+      width: 400px;
     }
+
+    /* header .head_text .sidebar{
+      display: none;
+    } */
+    header .head_text{
+      position: relative;
+      top: 30px;
+      left: 83px;
+    }
+  
+  
+    /* header .head_left{
+      font-size: 10px;
+    }
+    header .head_right{
+      font-size: 10px;
+    } */
     }

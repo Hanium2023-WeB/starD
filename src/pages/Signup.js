@@ -3,7 +3,7 @@ import React, { useState, useRef } from "react";
 
 import "../Log.css";
 
-const Signup = () => {
+const Signup = ({sideheader}) => {
   const inputID = useRef();
   const inputPW = useRef();
   const inputNicname = useRef();
@@ -51,7 +51,8 @@ const Signup = () => {
   };
   return (
     <div>
-      <LogoButton />
+      {sideheader}
+     
       <div className="containers">
         <div className="login_info">
           <p>회원가입</p>
@@ -104,11 +105,11 @@ const Signup = () => {
             />
           </div>
         </div>
-        <div className="loginbtn">
+        <div className="signbtn">
           <button onClick={handleSubmit}>가입하기</button>
         </div>
       </div>
-    </div>
+      </div>
   );
 };
 export default Signup;

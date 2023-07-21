@@ -7,25 +7,35 @@
     font-family: 'Yeon Sung', cursive;
     font-family: 'Nanum Myeongjo', serif;  
 }
+/* .Logo{
+    font-family: 'Yeon Sung', cursive;
+    font-size:50px;
+    font-weight: bold;  
+    color:#395B64;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+} */
 .containers{
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
     position: relative;
-    top: 10px;
+    bottom: 30px;
 }
 .login_info{
     display: flex;
     justify-content: center;
     align-items: center;
     position: relative;
-    top: 20px;
+
+    
 }
 .login_info p{
     position: relative;
-    bottom: 5px;
-    font-size: 2em;
+    bottom: 45px;
+    font-size: 2.2em;
     color: #395B64 ;
     font-family: 'Yeon Sung', cursive;
 }
@@ -34,7 +44,7 @@
     flex-direction: column;
     justify-content: center;
     position: relative;
-    top: 10px;
+    bottom: 50px;
 }
 
 .input_info input{
@@ -44,27 +54,36 @@
     border-color: #395B64;
 }
 
-.loginbtn{
+.loginbtn, .signbtn{
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
+    bottom:40px;
+}
+.loginbtn{
+   top:10px;
 }
 
-.loginbtn button{
+
+.loginbtn button, .signbtn button{
     background-color: #395B64;
     color:white;
-    width: 200px;
-    height: 50px;
-    border-radius: 30px;
-    margin-top: 20px;
+    width: 250px;
+    height: 40px;
+    border-radius: 16px;
     font-family:'Yeon Sung', cursive;
     font-size: 20px;
+    position: relative;
+    top: 10px;
+    border-style: none;
 }
 
 .subinfo{
-    display: flex;
+display: flex;
 flex-direction: column;
 position: relative;
-top: 28px;
-right: 100px;
+bottom: 10px;
+margin-bottom: 10px;
+font-size: 14px;
 }

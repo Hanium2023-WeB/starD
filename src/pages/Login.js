@@ -2,9 +2,13 @@ import LogoButton from "../components/LogoButton";
 import React, { useState, useRef } from "react";
 import "../Log.css";
 
-const Login = () => {
+const Login = ({sideheader}) => {
+  
   const inputID = useRef();
   const inputPW = useRef();
+
+
+
 
   const [state, setState] = useState({
     ID: "",
@@ -31,7 +35,10 @@ const Login = () => {
   };
   return (
     <div>
-      <LogoButton />
+ 
+      {/* <LogoButton /> */}
+      {/* <div className ="Logo"> STAR D </div> */}
+      {sideheader}
       <div className="containers">
       <div className="login_info">
           <p>로그인</p>
