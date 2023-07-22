@@ -27,8 +27,8 @@ body{
   .App{
     min-height: 100vh;
     min-width: 90vw;
-    padding-left: 10px;
-    padding-right: 10px;
+    /* padding-left: 10px;
+    padding-right: 10px; */
   }
 
   /* Header */
@@ -159,20 +159,79 @@ input{
       width: 400px;
     }
 
-    /* header .head_text .sidebar{
-      display: none;
-    } */
+  
     header .head_text{
       position: relative;
       top: 30px;
       left: 83px;
     }
+  }
+
   
-  
-    /* header .head_left{
-      font-size: 10px;
-    }
-    header .head_right{
-      font-size: 10px;
-    } */
-    }
+  /* 푸터 */
+  footer{
+    /* margin-left: 10px;
+  margin-right: 10px; */
+    background-color: #223035;
+    color: #E7F6F2;
+    font-size: 11px;
+    font-family: 'Nanum Myeongjo', serif;
+    padding-bottom: 10px;
+  }
+
+.info_ul, .subfooter_info ul, .info_etc{
+  margin-bottom: 35px;
+  display: flex;
+  justify-content: space-between;
+  padding-top: 50px;
+  padding-left: 80px;
+  padding-right: 80px;
+  padding-bottom: 10px;
+}
+.subfooter_info ul{
+  padding-top: 10px;
+  margin-bottom: 0px;
+  justify-content: start;
+}
+.info_etc{
+  padding-top: 10px;
+  margin-bottom: 10px;
+}
+.item{
+  margin-left: 10px;
+  margin-right: 10px;
+}
+.item_first{
+  margin-left: 0px;
+  margin-right: 10px;
+}
+.item_first li{
+  font-size: 20px;
+  position: relative;
+  bottom: 8px;
+}
+
+li span{
+  margin-bottom: 5px;
+}
+.item1{
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+footer li{
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+
+}
+
+footer hr{
+  color: #E7F6F2;
+  margin-left: 80px;
+  margin-right: 80px;
+}
+
+footer p {
+  font-weight: bold;
+}

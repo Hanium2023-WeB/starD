@@ -9,6 +9,7 @@ import Login from "./pages/Login";
 import Logout from "./pages/Logout";
 import Signup from "./pages/Signup";
 import Mypage from "./pages/Mypage";
+import Footer from "./components/Footer";
 
 const side = () => {
   return (
@@ -98,7 +99,9 @@ function App() {
           <Route path="/mypage" element={<Mypage sideheader={rendsidecenter()} />} />
         </Routes>
       </div>
+      <Footer/>
     </BrowserRouter>
+   
   );
         }
 
