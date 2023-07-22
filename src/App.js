@@ -67,42 +67,50 @@ const sidecenter = () => {
   );
 };
 
-const nosidecenter=()=>{
+const nosidecenter = () => {
+  return <Header headText={""} leftChild={sideleft()} rightChild={side()} />;
+};
+const rendsidecenter = () => {
   return (
     <Header
-    headText={""}
-    leftChild={sideleft()}
-    rightChild={side()}
-  />
-  );
-}
-  const rendsidecenter=()=>{
-    return (
-      <Header
       headText={sidecenter()}
       leftChild={sideleft()}
       rightChild={side()}
     />
-    );
-}
+  );
+};
 
 function App() {
-
   return (
     <BrowserRouter>
       <div className="App">
         <Routes>
-          <Route path="/" element={<Home sideheader={rendsidecenter()}/>} />
-          <Route path="/login" element={<Login sideheader={nosidecenter()}/>} />
-          <Route path="/signup" element={<Signup sideheader={nosidecenter()}/>} />
-          <Route path="/logout" element={<Logout sideheader={rendsidecenter()}/>} />
-          <Route path="/mypage" element={<Mypage sideheader={rendsidecenter()} />} />
+          <Route path="/" element={<Home sideheader={rendsidecenter()} />} />
+          <Route
+            path="/login"
+            element={<Login sideheader={nosidecenter()} />}
+          />
+          <Route
+            path="/signup"
+            element={<Signup sideheader={nosidecenter()} />}
+          />
+          <Route
+            path="/logout"
+            element={<Logout sideheader={rendsidecenter()} />}
+          />
+          <Route
+            path="/mypage"
+            element={<Mypage sideheader={rendsidecenter()} />}
+          />
         </Routes>
+        <div>
+          <br />
+          <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br />
+        </div>
+        <Footer />
       </div>
-      <Footer/>
     </BrowserRouter>
-   
   );
-        }
+}
 
 export default App;
