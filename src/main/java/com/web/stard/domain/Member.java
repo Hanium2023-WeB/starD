@@ -14,16 +14,20 @@ public class Member {
     @Id
     private String id;
     @NotNull
+    private String password;
+    @NotNull
     private String nickname;
     @NotNull
     private String name;
     @NotNull
-    private String password;
+    private String phone;
     @NotNull
     private String email;
-    @NotNull
-    private String phone;
 
     // 일단 필수 데이터만 정의
-    
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "authority_id") // Member 테이블에 authority_id 컬럼 추가
+    private Authority roles;
+
 }

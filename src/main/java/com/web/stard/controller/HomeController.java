@@ -1,13 +1,14 @@
 package com.web.stard.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class HomeController {
 
-    /*@RequestMapping("/")
+    @RequestMapping("/")
     public String Home() {
-        return "Spring Boot 실행 확인";
-    }*/
+        return "mainpage";
+    }
 
 }

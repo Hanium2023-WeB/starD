@@ -16,4 +16,10 @@ public class Authority {
     private Long id;
     @NotNull
     private String authorityName;
+
+    public Authority() {}
+
+    public Authority(String authorityName) {
+        this.authorityName = authorityName;
+    }
 }
