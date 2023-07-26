@@ -14,6 +14,7 @@ public class Authority {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
     private Long id;
+
     @NotNull
     private String authorityName;
 }
