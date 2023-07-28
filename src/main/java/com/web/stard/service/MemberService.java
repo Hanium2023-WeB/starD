@@ -1,5 +1,6 @@
 package com.web.stard.service;
 
+import com.web.stard.domain.Authority;
 import com.web.stard.domain.Member;
 import com.web.stard.domain.Role;
 import com.web.stard.repository.MemberRepository;
@@ -15,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,6 +32,11 @@ public class MemberService implements UserDetailsService {
     @Autowired
     private final MemberRepository memberRepository;
 
+    @Autowired
+    private AuthorityRepository authorityRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public Member find(String id) {
         Optional<Member> result = memberRepository.findById(id);
@@ -64,6 +71,25 @@ public class MemberService implements UserDetailsService {
         }
 
         return new User(member.getEmail(), member.getPassword(), authorities);
+    }
+
+    // 회원 정보 저장
+    public void saveMember(Member member) {
+        // 회원가입 시 기본적으로 'USER' 권한을 부여
+        Authority userAuthority = authorityRepository.findByAuthorityName("USER");
+        if (userAuthority == null) {
+            // "USER" 값을 가진 권한 객체가 데이터베이스에 존재하지 않을 경우 새로 생성하여 저장합니다.
+            userAuthority = new Authority("USER");
+            authorityRepository.save(userAuthority);
+        }
+        member.setRoles(userAuthority);
+
+        System.out.println("saveMember(): " + userAuthority.getAuthorityName());
+
+        String encodedPassword = passwordEncoder.encode(member.getPassword());
+        member.setPassword(encodedPassword);
+
+        memberRepository.save(member);
     }
 
     /* 비밀번호 확인 */

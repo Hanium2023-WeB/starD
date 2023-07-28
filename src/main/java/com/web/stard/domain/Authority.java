@@ -17,4 +17,10 @@ public class Authority {
 
     @NotNull
     private String authorityName;
+
+    public Authority() {}
+
+    public Authority(String authorityName) {
+        this.authorityName = authorityName;
+    }
 }
