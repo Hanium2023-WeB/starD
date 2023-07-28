@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,6 +19,9 @@ public class MyPageController {
 
     @Autowired
     private MemberService memberService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
 
     /* 정보 반환 */
@@ -42,7 +46,8 @@ public class MyPageController {
                                          @RequestParam("newPassword") String newPassword,
                                          @RequestParam("city") String city,
                                          @RequestParam("district") String district) {
-        // 비밀번호는 따로 빼는 게 나을지?, RequestParam으로 각각 받지 말고 커맨드 객체를 추가할지? -> 일단 고민,,
+        // 비밀번호는 따로 빼는 게 나을지? -> 일단 고민,,
+        // RequestParam으로 각각 받지 말고 커맨드 객체를 추가할지? -> 일단 고민,,22
 
         Member member = memberService.find(id);
 
@@ -55,7 +60,8 @@ public class MyPageController {
         }
 
         // 패스워드 일치 여부 확인
-        if (!member.getPassword().equals(password)) {
+        String encodedPassword = passwordEncoder.encode(password);
+        if (!member.getPassword().equals(encodedPassword)) {
             // 기존 패스워드 != 입력한 패스워드
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("비밀번호가 일치하지 않습니다.");
         }
@@ -68,7 +74,8 @@ public class MyPageController {
 
     /* 관심분야 수정 */
     @PostMapping("/update/interest")
-    public void updateInterest(@RequestParam("interestList")List<String> interests) {
-        memberService.updateInterest(interests);
+    public void updateInterest(@RequestParam("id") String id,
+                               @RequestParam("interestList") List<String> interests) {
+        memberService.updateInterest(id, interests);
     }
 }

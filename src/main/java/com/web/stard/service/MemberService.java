@@ -1,8 +1,11 @@
 package com.web.stard.service;
 
 import com.web.stard.domain.Authority;
+import com.web.stard.domain.Interest;
 import com.web.stard.domain.Member;
 import com.web.stard.domain.Role;
+import com.web.stard.repository.AuthorityRepository;
+import com.web.stard.repository.InterestRepository;
 import com.web.stard.repository.MemberRepository;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -34,6 +37,9 @@ public class MemberService implements UserDetailsService {
 
     @Autowired
     private AuthorityRepository authorityRepository;
+
+    @Autowired
+    private InterestRepository interestRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -74,6 +80,7 @@ public class MemberService implements UserDetailsService {
     }
 
     // 회원 정보 저장
+    @Transactional
     public void saveMember(Member member) {
         // 회원가입 시 기본적으로 'USER' 권한을 부여
         Authority userAuthority = authorityRepository.findByAuthorityName("USER");
@@ -95,7 +102,8 @@ public class MemberService implements UserDetailsService {
     /* 비밀번호 확인 */
     public boolean checkPw(String id, String password) {
         Member m = memberRepository.findPasswordById(id); // 사용자 pw
-        if (m.getPassword().equals(password)) // 입력한 비밀번호와 사용자 비밀번호 같음
+        String encodedPassword = passwordEncoder.encode(password);
+        if (m.getPassword().equals(encodedPassword)) // 입력한 비밀번호와 사용자 비밀번호 같음
             return true;
         return false;
     }
@@ -117,7 +125,8 @@ public class MemberService implements UserDetailsService {
             member.setDistrict(district);
         }
         if (password != null) {
-            member.setPassword(password);
+            String encodedPassword = passwordEncoder.encode(password);
+            member.setPassword(encodedPassword);
         }
 
         memberRepository.save(member);
@@ -125,8 +134,19 @@ public class MemberService implements UserDetailsService {
 
     /* 관심분야 수정 */
     @Transactional
-    public void updateInterest(List<String> interests) {
-        // 기존 관심분야 delete 후 새로 insert
+    public void updateInterest(String id, List<String> interests) {
+        Member member = find(id);
 
+        // 기존 관심분야 delete 후 새로 insert
+        interestRepository.deleteAllByMember(member);
+
+        List<Interest> interestList = new ArrayList<>();
+        for (String s : interests) {
+            Interest interest = new Interest();
+            interest.setMember(member);
+            interest.setField(s);
+            interestList.add(interest);
+        }
+        interestRepository.saveAll(interestList);
     }
 }
