@@ -79,16 +79,9 @@ public class MemberService implements UserDetailsService {
         return memberRepository.existsByNickname(nickname); // true -> 있음 (사용불가)
     }
 
-    /* 기존 회원 정보 가져오기 */
-    public Member getMember(String id) {
-        Optional<Member> member = memberRepository.findById(id);
-        if (member.isPresent()) return member.get();
-        return null;
-    }
-
     /* 정보 수정 */
     public void updateMember(String id, String nickname, String password, String city, String district) {
-        Member member = getMember(id);
+        Member member = find(id);
 
         if (nickname != null) {
             member.setNickname(nickname);

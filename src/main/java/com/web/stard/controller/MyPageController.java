@@ -23,7 +23,7 @@ public class MyPageController {
     /* 정보 반환 */
     @GetMapping("/update")
     public Member getMember(@RequestParam("id") String id) {
-        Member member = memberService.getMember(id);
+        Member member = memberService.find(id);
         return member;
     }
 
@@ -44,7 +44,7 @@ public class MyPageController {
                                          @RequestParam("district") String district) {
         // 비밀번호는 따로 빼는 게 나을지?, RequestParam으로 각각 받지 말고 커맨드 객체를 추가할지? -> 일단 고민,,
 
-        Member member = memberService.getMember(id);
+        Member member = memberService.find(id);
 
         // 닉네임 중복 확인
         if (!member.getNickname().equals(nickname)) {
