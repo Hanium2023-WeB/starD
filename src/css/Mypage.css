@@ -1,0 +1,173 @@
+html { font-size: 62.5%; } /*10px*/
+
+.container{
+    width: 90%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    position: relative;
+
+}
+.main_container{
+    width: 85%;
+    max-width: 900px;
+}
+.category{
+    background-color: #395B64;
+    display: flex;
+    flex-direction: column;
+    margin-right: 50px;
+    height: fit-content;
+    color: gray;
+    width: 120px;
+    border-radius: 10px;
+    padding: 15px;
+
+}
+.c_01 , .c_02, .c_03 , .c_04{
+font-size: 0.7em;
+color:lightgray;
+}
+.sub_c > nav{
+    padding: 0px;
+}
+.sub_c > nav ul{
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+    padding: 0;
+
+}
+.sub_c > nav ul li{
+    list-style: none;
+    color: white;
+    font-size: 10px;
+
+   white-space:nowrap;
+    padding: 5px;
+}
+
+.sub_container{
+    display: flex;
+    /* background-color:aliceblue; */
+    padding : 10px;
+    padding-left: 30px;
+    padding-right: 0;
+    border-radius: 15px;
+    width: 96%;
+    height: 220px;
+    overflow: hidden;
+}
+.reliability, .schedule, .todo{
+  
+    background-color: white;
+    border: gray solid 1px;
+    width: 229px;
+    height: 200px;
+    padding: 10px;
+    padding-top: 0px;
+    border-radius: 10px;
+    margin-right: 35px;
+}
+
+.todo{
+    margin-right: 0px;
+}
+.tag{
+    display: flex;
+    justify-content: space-between;
+    white-space: nowrap;
+    font-size: 1.3rem;
+    padding-right: 3px;
+}
+
+#more{
+    background-color: white;
+    border-style: none;
+    color: gray;
+    font-size: 1.1rem;
+    margin-left: 90px;
+}
+p{
+    font-size: 1.5rem;
+}
+/* .list_container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+} */
+
+.list{
+    display: flex;
+    flex-direction: row;
+    width: 139%; /*리스트 크기단위를 vw로 했었어야,,했다.*/
+    margin-left: 10px;
+}
+.scrap_button{
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    top: 130px;
+    width: 98%;
+}
+#scrap_study{
+    position: relative;
+    right: 10px;
+}
+
+.list_detail{
+background-color: white;
+border-radius: 10px;
+border: gray solid 1px;
+width: 229px;
+    height: 200px;
+    padding: 10px;
+    padding-top: 0px;
+    border-radius: 10px;
+    margin-right: 35px;
+
+}
+
+.list_story{
+    width: 910px;
+}
+.story_detail{
+    width: 95%;
+    height: 55px;
+    margin-bottom: 25px;
+    background-color: white;
+    border-radius: 10px;
+    border: gray solid 1px;
+}
+@media (max-width:1330px){
+    /* 이부분부터 레이아웃 바꾸기 */
+}
+
+@media (min-width: 650px){
+    .main_container{
+        display: flex;
+        flex-direction: column;
+    }
+    img{
+        display: none;
+    }
+}
+
+@media (max-width: 650px){
+    .container{
+        width: 80vw;
+        margin: 0 auto;
+    }
+    .category{
+        display: none;
+    }
+    
+    .sub_container{
+        /* background-color:aliceblue; */
+        width:55vw;
+        height: 220px;
+    }
+
+}

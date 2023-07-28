@@ -20,7 +20,7 @@ const side = () => {
             <Link
               to={"/login"}
               style={{ textDecoration: "none", color: "inherit" }}
-            >
+>
               로그인
             </Link>
           </li>
@@ -104,9 +104,12 @@ function App() {
           />
         </Routes>
         <div>
-          <br />
-          <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br />
-        </div>
+                 </div>
+       <Link to={"/mypage"}
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              마이페이지
+            </Link>
         <Footer />
       </div>
     </BrowserRouter>
