@@ -144,15 +144,14 @@ const Mypage = ({ sideheader }) => {
           </div>
        
           <p>스크랩한 스터디</p>
-          <div className="scrap_button">
-          <button> {"<"} </button>
-          <button> {">"} </button>
-          </div>
-
 
           <div className="sub_container" id="scrap_study">
             {scrapstudy()}
               </div>
+              <div className="scrap_button">
+          <button> {"<"} </button>
+          <button> {">"} </button>
+          </div>
 
           <p>스크랩한 게시글</p>
           <div className="sub_container">

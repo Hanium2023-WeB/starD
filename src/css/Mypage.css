@@ -77,8 +77,8 @@ color:lightgray;
 .tag{
     display: flex;
     justify-content: space-between;
-    white-space: nowrap;
-    font-size: 1.3rem;
+    /* white-space: nowrap; */
+    font-size: 1.3em;
     padding-right: 3px;
 }
 
@@ -109,7 +109,7 @@ p{
     display: flex;
     justify-content: space-between;
     position: relative;
-    top: 130px;
+    bottom: 130px;
     width: 98%;
 }
 #scrap_study{
@@ -142,9 +142,77 @@ width: 229px;
     border: gray solid 1px;
 }
 @media (max-width:1330px){
-    /* 이부분부터 레이아웃 바꾸기 */
+    /* 레이아웃 크기 바꾸기 배치는 그대로 */
+    .container{
+        width: 80%;
+    }
+    .category{
+        margin-right: 2%;
+    }
+    .main_container{
+        width: 75%;
+        max-width: 800px;
+    }
+    .sub_container{ 
+        width: 100%;
+    }
+    .reliability, .schedule, .todo{
+        width: 25.3%;
+        flex-shrink: 1;
+    }
+    .todo{
+        margin-right: 0px;
+    }
+    .tag{
+        font-size: 0.7em;
+        padding-right: 0.2rem;
+    }
+    
+    #more{
+        background-color: white;
+        border-style: none;
+        color: gray;
+        font-size: 1rem;
+        margin-left: 16px;
+    }
+    p{
+        font-size: 1rem;
+    }
+    .list{  
+        width: 134%;
+        margin-left: 10px;
+    }
+    .scrap_button{
+        width: 110%;
+        position: relative;
+    }
+    #scrap_study{
+        width: 100.3%;
+        position: relative;
+        padding-right: 10px;
+        /* right: 10px; */
+    }
+    
+    .list_detail{
+     width: 230px; 
+     min-width: 130px;
+        padding-top: 0px;
+        border-radius: 10px;
+        margin-right: 35px;
+    
+    }
+    .list_story{
+        width: 900px;
+    }
+    .story_detail{
+        width: 99%;
+  
+    }
+    
 }
-
+@media (min-width: 980px){
+/* 배치 바꾸기 */
+}
 @media (min-width: 650px){
     .main_container{
         display: flex;
