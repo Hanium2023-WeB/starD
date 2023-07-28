@@ -4,6 +4,7 @@ spring:
     driver-class-name: org.mariadb.jdbc.Driver
     username: dev
     password: webstard2023
+
   jpa:
     open-in-view: false
     generate-ddl: true

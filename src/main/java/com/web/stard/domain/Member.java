@@ -1,13 +1,13 @@
 package com.web.stard.domain;
 
 import com.sun.istack.NotNull;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Getter @Setter
 @Entity
+@NoArgsConstructor(force = true)
 @Table(name="Member")
 public class Member {
 
@@ -31,4 +31,15 @@ public class Member {
 
     @OneToOne @JoinColumn(name = "profile_id")
     private Profile profile; // 프로필
+
+    @Builder
+    public Member(String id, String name, String email, String password, String phone, String nickname) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.phone = phone;
+        this.nickname = nickname;
+    }
+
 }
