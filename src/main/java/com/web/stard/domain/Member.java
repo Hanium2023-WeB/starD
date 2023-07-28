@@ -25,5 +25,10 @@ public class Member {
     private String phone;
 
     // 일단 필수 데이터만 정의
-    
+
+    private String city; // 시
+    private String district; // 구
+
+    @OneToOne @JoinColumn(name = "profile_id")
+    private Profile profile; // 프로필
 }
