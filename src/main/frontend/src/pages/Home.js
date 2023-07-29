@@ -27,6 +27,8 @@ const Home = () => {
       </div>
       <SearchBar searchItems={searchItems}/>
     </div>
+
   );
+
 };
 export default Home;
