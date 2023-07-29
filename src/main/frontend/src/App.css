@@ -1,155 +1,327 @@
-@import url('https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@800&family=Nanum+Pen+Script&family=Tektur&family=Yeon+Sung&display=swap');
-body{
-  background-color: #f6f6f6;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-family: 'Nanum Pen Script', cursive;
-  font-family: 'Tektur', cursive; 
-  font-family: 'Yeon Sung', cursive;
-  font-family: 'Nanum Myeongjo', serif;
-  min-height: 100vh;
-  margin:0px;
+@import url("https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@800&family=Nanum+Pen+Script&family=Tektur&family=Yeon+Sung&display=swap");
+body {
+	background-color: #f6f6f6;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-family: "Nanum Pen Script", cursive;
+	font-family: "Tektur", cursive;
+	font-family: "Yeon Sung", cursive;
+	font-family: "Nanum Myeongjo", serif;
+	min-height: 100vh;
+	margin: 0px;
 }
-.subground{
-  background-color: #E7F6F2;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 200px;
-  margin: 0px;
+.subground {
+	background-color: #e7f6f2;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 200px;
+	margin: 0px;
 }
 
-  #root{
-    background-color: white;
-    box-shadow: rgba(100,100,111,0.2)0px 7px 29px 0px;
-  }
-  .App{
-    min-height: 100vh;
-    min-width: 90vw;
-    padding-left: 10px;
-    padding-right: 10px;
-  }
+#root {
+	background-color: white;
+	box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+.App {
+	min-height: 100vh;
+	min-width: 90vw;
+	padding-left: 10px;
+	padding-right: 10px;
+}
 
-  /* Header */
-  header{
-    display: flex;
-    align-items: center;
-  
-  }
-  header > div{
-    display: flex;
-  }
-  header .head_text{
-    width: 25%;
-    font-size: 2em;
-    font-family: 'Nanum Myeongjo', serif;
-    justify-content: center;
-  }
+/* Header */
+header {
+	display: flex;
+	align-items: center;
+}
+header > div {
+	display: flex;
+}
+header .head_text {
+	width: 50%;
+	font-size: 1em;
+	font-family: "Nanum Myeongjo", serif;
+	justify-content: center;
+	white-space: nowrap;
+}
 
-  header .head_left{
-    width: 25%;
-    justify-content: start;
-  }
-  header .head_right{
-    width: 50%;
-    justify-content: end;
-  }
+header .head_left {
+	width: 25%;
+	justify-content: start;
+	font-family: "Yeon Sung", cursive;
+	font-size: 30px;
+	font-weight: bold;
+	color: #395b64;
+	white-space: nowrap;
+}
+header .head_right {
+	width: 25%;
+	justify-content: end;
+	white-space: nowrap;
+}
 /* 로고 */
-.logodiv{
-display: flex;
-justify-content: center;
+.logodiv {
+	display: flex;
+	justify-content: center;
 }
-.logo{
-  position: relative; /*기존위치에서 얼마나 떨어지게 할지 */
-  top: 25px; /*위에서 25px만큼 떨어져라 */
-  
-  width: 200px;
-  height: 60px;    
-  white-space: nowrap;
-  
-  font-size: 20px;    
-  font-family: 'Courier New', Courier, monospace;
-  font-weight: bolder;
+.logo {
+	position: relative; /*기존위치에서 얼마나 떨어지게 할지 */
+	top: 25px; /*위에서 25px만큼 떨어져라 */
 
-  border-radius: 30px;
-  border-style: none;
-  background-color: #395B64;
-  color: #f6f6f6;
+	width: 200px;
+	height: 60px;
+	white-space: nowrap;
+
+	font-size: 20px;
+	font-family: "Courier New", Courier, monospace;
+	font-weight: bolder;
+
+	border-radius: 30px;
+	border-style: none;
+	background-color: #395b64;
+	color: #f6f6f6;
 }
 /* 사이드 바 */
-nav{
-  padding: 20px;
+nav {
+	padding: 20px;
 }
-.sidebar nav ul , .headerbar nav ul{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  list-style: none;
-  padding: 20px;
-  
+.sidebar nav ul,
+.headerbar nav ul {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	list-style: none;
+	padding: 20px;
+
 }
-.headerbar nav ul{
-  padding:0px;
+.headerbar nav ul {
+	padding: 0px;
+
 }
-.sidebar nav ul li{
-  padding: 20px;
-  font-size: 20px;
+.sidebar nav ul li {
+	padding: 20px;
+	font-size:16px;
+	cursor: pointer;
 }
-.headerbar nav ul li{
-  padding-left: 20px;
-  font-size: 1em;
+.headerbar nav ul li {
+	padding-left: 20px;
+	font-size: 16px;
 }
 
 /* 검색바 */
-.searchbar{
+.searchbar {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+input {
+	position: relative;
+	bottom: 10px;
+	width: 500px;
+	height: 50px;
+	border-radius: 50px;
+	border: 1px solid #d9d9d9;
+	background: #fff;
+	box-shadow: 0px 10px 10px 0px rgba(0, 0, 0, 0.15);
+	padding-left: 20px;
+}
+
+.searchbar ul {
+	list-style: none;
+	padding-left: 0px;
+	width: 500px;
+	border: solid 1px #395b64;
+	border-radius: 30px;
+	padding: 5px;
+	margin-top: 0px;
+	margin-bottom: 5px;
+	padding: 10px;
+}
+.searchbar ul li {
+	width: 100px;
+	border-bottom: solid 1px gray;
+
+	padding: 5px;
+	margin-bottom: 5px;
+}
+.searchinput img{
+	position: relative;
+	right: 35px;
+	bottom: 3.5px;
+}
+
+ /* 푸터 */
+ footer{
+    /* margin-left: 10px;
+  margin-right: 10px; */
+    background-color: #395b64;
+    color: #E7F6F2;
+    font-size: 14px;
+    font-family: 'Nanum Myeongjo', serif;
+    padding-bottom: 10px;
+  }
+
+.info_ul, .subfooter_info ul, .info_etc{
+  margin-bottom: 35px;
+  display: flex;
+  justify-content: space-between;
+  padding-top: 50px;
+  padding-left: 80px;
+  padding-right: 80px;
+  padding-bottom: 10px;
+}
+
+.subfooter_info ul{
+  padding-top: 10px;
+  margin-bottom: 0px;
+  justify-content: start;
+ 
+}
+.subfooter_info ul li{
+	color: white;
+}
+.info_etc{
+  padding-top: 10px;
+  margin-bottom: 10px;
+}
+.item{
+  margin-left: 10px;
+  margin-right: 10px;
+}
+.item_first{
+  margin-left: 0px;
+  margin-right: 10px;
+}
+.item_first li{
+  font-size: 20px;
+  position: relative;
+  bottom: 8px;
+}
+
+li span{
+  margin-bottom: 5px;
+}
+.item1{
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+footer li{
+  list-style: none;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  color: lightgray;
+
 }
 
-input{
-  position: relative;
-  bottom: 10px;
-  width: 400px;
-  height: 50px;
-  border-radius: 30px;
-  background-color: white;
-  border-color: #395B64;
-  border-width: 0.1px;
-  padding-left: 10px;
+footer hr{
+  color: #E7F6F2;
+  margin-left: 80px;
+  margin-right: 80px;
 }
 
-.searchbar ul{
-  list-style: none;
-  padding-left: 0px;
-  width: 500px;
-  border: solid 1px #395B64;
-  border-radius: 30px;
-  padding:5px;
-  margin-top: 0px;
-  margin-bottom: 5px;
-  padding: 10px;
+footer p {
+  font-weight: bolder;
+  font-size: medium;
+	margin-bottom: 10px;
 }
-.searchbar ul li{
-  width: 100px;
-  border-bottom: solid 1px gray;
- 
-  padding:5px;
-  margin-bottom: 5px;
+
+@media (min-width: 650px) {
+	.App {
+		width: 640px;
+	}
+	input {
+		width: 500px;
+	}
+	footer .smallwidth_footer_info > *{
+		display: none;
+	}
+	footer .smallwidth_sub > *{
+		display: none;
+	}
+
 }
-@media (min-width :650px){
-  .App{
-    width: 640px;
-  }
-  input{
-    width: 500px;
-  }
-  }
-  @media (max-width :650px){
-    .App{
-      width: 90vx;
-      
-    }
-    }
+@media (max-width: 650px) {
+	.App {
+		width: 400px;
+		min-height:fit-content;
+	}
+	.sidebar nav ul {
+	position: relative;
+	right: 23px;
+	}
+
+	input {
+		width: 400px;
+	}
+
+	header .head_text {
+		position: relative;
+		top: 30px;
+		left: 115px;
+	}
+	
+	footer .footer_info> *{
+		display: none;
+	}
+	footer .smallwidth_footer_info > *{
+		display: flex;
+	}
+	footer .smallwidth_sub > *{
+		display: flex;
+	}
+	footer .smallwidth_footer_info p{
+		display: flex;
+		justify-content: space-between;
+		padding: 10px;
+		margin: 0px;
+		font-size: 14px;
+		font-weight: bolder;
+		cursor: pointer;
+		color: white;
+	}
+	footer .smallwidth_footer_info >hr {
+		margin-left: 10px;
+		margin-right: 10px;
+		margin-top: 3px;
+		margin-bottom: 0px;
+	}
+	.smallwidth_footer_info ul{
+		display: flex;
+		flex-direction: column;
+		margin-top: 5px;
+		padding-left: 10px;
+	}
+	.smallwidth_footer_info ul li{
+		margin-bottom: 5px;
+		font-size: 11px;
+		color:  lightgray;
+	}
+	.smallwidth_sub > p, ul{
+		display: flex;
+		font-size: 14px;
+		justify-content: center;
+		padding-left: 0px;
+
+	}
+	.smallwidth_sub img{
+		margin-left: 20px;
+	}
+
+	.smallwidth_sub ul, span{
+		font-size: 10px;
+		align-items: center;
+		justify-content: center;
+		flex-direction: column;
+		/* color: lightgray; */
+	}
+	
+	.smallwidth_sub span{
+			margin-top: 30px;
+			margin-right: 10px;
+	}
+}
