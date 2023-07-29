@@ -1,10 +1,11 @@
 package com.web.stard.config.security;
 
-import com.web.stard.domain.Member;
 import com.web.stard.handler.LoginSuccessHandler;
-import com.web.stard.repository.MemberRepository;
+import com.web.stard.service.MemberDetailsService;
 import com.web.stard.service.MemberService;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,14 +15,15 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 @Configuration
+@RequiredArgsConstructor
 @EnableWebSecurity
-@AllArgsConstructor
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final MemberService memberService;
+    private final MemberDetailsService memberDetailsService;
 
     // 정적 자원에 대해서는 Security 설정을 적용하지 않음.
     // static 디렉터리의 하위 파일 목록은 인증 무시 ( = 항상통과 ) ex) css, img
@@ -33,9 +35,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        http.authorizeRequests()
+        http
+//                .csrf().disable()
+                .authorizeRequests()
                 // 해당 url 요청에 대해서는 로그인 요구 X
-                .antMatchers("/", "/login", "/join").permitAll()
+                .antMatchers("/", "/login", "/signup").permitAll()
                 // admin 요청에 대해서는 ROLE_ADMIN 역할을 가지고 있어야 함
                 .antMatchers("/admin").hasRole("ADMIN")
                 // 나머지 요청에 대해서는 로그인 요구 O
@@ -44,30 +48,31 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin()
 //                .loginPage("/login")
-                .successHandler(successHandler())
+                .defaultSuccessUrl("/")
                 .failureForwardUrl("/login")
                 .permitAll()
 
                 .and()
                 .logout()
                 .logoutUrl("/logout")
-                .logoutSuccessUrl("/");
+                .logoutSuccessUrl("/")
+                .invalidateHttpSession(true);
 
     }
 
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(memberService).passwordEncoder(bCryptPasswordEncoder());
+        auth.userDetailsService(memberDetailsService).passwordEncoder(passwordEncoder());
     }
 
     @Bean
-    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+    public static PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    public AuthenticationSuccessHandler successHandler() {
-        return new LoginSuccessHandler("/");
-    }
+//    @Bean
+//    public AuthenticationSuccessHandler successHandler() {
+//        return new LoginSuccessHandler("/");
+//    }
 
 }

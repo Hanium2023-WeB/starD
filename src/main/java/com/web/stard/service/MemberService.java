@@ -3,22 +3,12 @@ package com.web.stard.service;
 import com.web.stard.domain.Authority;
 import com.web.stard.domain.Interest;
 import com.web.stard.domain.Member;
-import com.web.stard.domain.Role;
 import com.web.stard.repository.AuthorityRepository;
 import com.web.stard.repository.InterestRepository;
 import com.web.stard.repository.MemberRepository;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,21 +18,25 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 @Service
-@AllArgsConstructor
 @Getter @Setter
-public class MemberService implements UserDetailsService {
+public class MemberService {
+
+    MemberRepository memberRepository;
+
+    AuthorityRepository authorityRepository;
+
+    InterestRepository interestRepository;
+
+    PasswordEncoder passwordEncoder;
 
     @Autowired
-    private final MemberRepository memberRepository;
-
-    @Autowired
-    private AuthorityRepository authorityRepository;
-
-    @Autowired
-    private InterestRepository interestRepository;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    public MemberService(MemberRepository memberRepository, AuthorityRepository authorityRepository,
+                         InterestRepository interestRepository, PasswordEncoder passwordEncoder) {
+        this.memberRepository = memberRepository;
+        this.authorityRepository = authorityRepository;
+        this.interestRepository = interestRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     public Member find(String id) {
         Optional<Member> result = memberRepository.findById(id);
@@ -52,32 +46,22 @@ public class MemberService implements UserDetailsService {
         return null;
     }
 
-    @Transactional
-    public String join(Member member) {
 
-        // 비밀번호 암호화
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        member.setPassword(passwordEncoder.encode(member.getPassword()));
-
-        return memberRepository.save(member).getId();
-    }
-
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<Member> result = memberRepository.findById(username);
-        Member member = result.get();
-
-        List<GrantedAuthority> authorities = new ArrayList<>();
-
-        if (("admin@example.com").equals(username)) {
-            authorities.add(new SimpleGrantedAuthority(Role.ADMIN.getRoleValue()));
-        } else {
-            authorities.add(new SimpleGrantedAuthority(Role.MEMBER.getRoleValue()));
-        }
-
-        return new User(member.getEmail(), member.getPassword(), authorities);
-    }
+//    @Override
+//    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+//        Optional<Member> result = memberRepository.findById(username);
+//        Member member = result.get();
+//
+//        List<GrantedAuthority> authorities = new ArrayList<>();
+//
+//        if (("admin@example.com").equals(username)) {
+//            authorities.add(new SimpleGrantedAuthority(Role.ADMIN.getRoleValue()));
+//        } else {
+//            authorities.add(new SimpleGrantedAuthority(Role.MEMBER.getRoleValue()));
+//        }
+//
+//        return new User(member.getEmail(), member.getPassword(), authorities);
+//    }
 
     // 회원 정보 저장
     @Transactional
@@ -91,10 +75,9 @@ public class MemberService implements UserDetailsService {
         }
         member.setRoles(userAuthority);
 
-        System.out.println("saveMember(): " + userAuthority.getAuthorityName());
-
-        String encodedPassword = passwordEncoder.encode(member.getPassword());
-        member.setPassword(encodedPassword);
+        // TODO 스프링 스큐리티에서 자동으로 암호화 진행함으로 아래 코드는 주석 처리
+//        String encodedPassword = passwordEncoder.encode(member.getPassword());
+//        member.setPassword(encodedPassword);
 
         memberRepository.save(member);
     }
@@ -149,4 +132,5 @@ public class MemberService implements UserDetailsService {
         }
         interestRepository.saveAll(interestList);
     }
+
 }
