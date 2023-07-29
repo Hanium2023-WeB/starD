@@ -8,12 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @Getter @Setter
 @RestController
+//@Controller
 @RequestMapping("/user/mypage")
 public class MyPageController {
 
@@ -22,7 +24,6 @@ public class MyPageController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
-
 
     /* 정보 반환 */
     @GetMapping("/update")
@@ -36,6 +37,13 @@ public class MyPageController {
     public boolean checkNickname(@RequestParam("nickname") String nickname) {
         return memberService.checkNickname(nickname);
         // true -> 이미 존재 (사용 불가), false -> 없음 (사용 가능)
+    }
+
+    /* 비밀번호 확인 (필요한 경우 사용) */
+    @PostMapping("/check/password")
+    public boolean checkPassword(@RequestParam("id") String id,
+                                 @RequestParam("password") String password) {
+        return memberService.checkPw(id, password); // true -> 맞음 / false -> 틀림
     }
 
     /* 정보 수정 처리 (닉네임, 비밀번호, 거주지(시, 구)) */
@@ -60,8 +68,7 @@ public class MyPageController {
         }
 
         // 패스워드 일치 여부 확인
-        String encodedPassword = passwordEncoder.encode(password);
-        if (!member.getPassword().equals(encodedPassword)) {
+        if (!memberService.checkPw(id, password)) {
             // 기존 패스워드 != 입력한 패스워드
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("비밀번호가 일치하지 않습니다.");
         }

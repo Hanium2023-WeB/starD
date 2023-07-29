@@ -101,9 +101,8 @@ public class MemberService implements UserDetailsService {
 
     /* 비밀번호 확인 */
     public boolean checkPw(String id, String password) {
-        Member m = memberRepository.findPasswordById(id); // 사용자 pw
-        String encodedPassword = passwordEncoder.encode(password);
-        if (m.getPassword().equals(encodedPassword)) // 입력한 비밀번호와 사용자 비밀번호 같음
+        String storedPassword = memberRepository.findPasswordById(id).getPassword(); // 사용자 pw
+        if (passwordEncoder.matches(password, storedPassword)) // 입력한 비밀번호와 사용자 비밀번호 같음
             return true;
         return false;
     }

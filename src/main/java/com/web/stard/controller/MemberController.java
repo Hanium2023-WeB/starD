@@ -33,8 +33,8 @@ public class MemberController {
     @PostMapping("/signup")
     public String saveMember(@ModelAttribute Member member) {
         // 패스워드 인코딩
-        String encodedPassword = passwordEncoder.encode(member.getPassword());
-        member.setPassword(encodedPassword);
+//        String encodedPassword = passwordEncoder.encode(member.getPassword());
+//        member.setPassword(encodedPassword);
 
         System.out.println("이름: " + member.getName());
         System.out.println("아이디: " + member.getId());
