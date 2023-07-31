@@ -1,6 +1,6 @@
 import LogoButton from "../components/LogoButton";
 import React, { useState, useRef } from "react";
-import "../Log.css";
+import "../css/Log.css";
 
 const Login = ({sideheader}) => {
   
@@ -39,7 +39,7 @@ const Login = ({sideheader}) => {
       {/* <LogoButton /> */}
       {/* <div className ="Logo"> STAR D </div> */}
       {sideheader}
-      <div className="containers">
+      <div className="containers" id="log">
       <div className="login_info">
           <p>로그인</p>
         </div>

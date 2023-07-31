@@ -98,15 +98,16 @@ nav {
 }
 .headerbar nav ul {
 	padding: 0px;
+
 }
 .sidebar nav ul li {
 	padding: 20px;
-	font-size: 1em;
+	font-size:16px;
 	cursor: pointer;
 }
 .headerbar nav ul li {
 	padding-left: 20px;
-	font-size: 1em;
+	font-size: 16px;
 }
 
 /* 검색바 */
@@ -248,6 +249,10 @@ footer p {
 	.App {
 		width: 400px;
 		min-height:fit-content;
+	}
+	.sidebar nav ul {
+	position: relative;
+	right: 23px;
 	}
 
 	input {

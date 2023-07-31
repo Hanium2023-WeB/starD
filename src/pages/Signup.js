@@ -1,7 +1,7 @@
 import LogoButton from "../components/LogoButton";
 import React, { useState, useRef } from "react";
 
-import "../Log.css";
+import "../css/Log.css";
 
 const Signup = ({sideheader}) => {
   const inputID = useRef();
@@ -53,7 +53,7 @@ const Signup = ({sideheader}) => {
     <div>
       {sideheader}
      
-      <div className="containers">
+      <div className="containers" id="sign">
         <div className="login_info">
           <p>회원가입</p>
         </div>
