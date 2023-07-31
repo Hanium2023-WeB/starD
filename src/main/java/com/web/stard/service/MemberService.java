@@ -9,6 +9,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.Optional;
+
 @Transactional
 @Service
 public class MemberService {
@@ -48,4 +51,12 @@ public class MemberService {
         memberRepository.save(member);
     }
 
+    // 중복 회원 검증
+    private void validateDuplicateMember(Member member) {
+        Optional<Member> findMembers = memberRepository.findById(member.getId());
+
+        if (!findMembers.isEmpty()) {
+            throw new IllegalStateException("이미 존재하는 회원입니다.");
+        }
+    }
 }
