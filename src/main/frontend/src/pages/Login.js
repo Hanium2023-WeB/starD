@@ -48,29 +48,6 @@ const Login = ({sideheader}) => {
                 // 로그인 성공 시 메인 페이지로 리다이렉트
                 navigate('/'); // useNavigate를 사용하여 페이지를 이동
 
-                // console.log(res);
-                // console.log("res.data.userId :: ", res.data.username);
-                // console.log("res.data.msg :: ", res.data.msg);
-                //
-                // if (res.data.username === undefined) {
-                //     // id 일치하지 않는 경우 userId = undefined, msg = '입력하신 id 가 일치하지 않습니다.'
-                //     console.log("======================", res.data.msg);
-                //     alert("입력하신 id 가 일치하지 않습니다.");
-                // } else if (res.data.username === null) {
-                //     // id는 있지만, pw 는 다른 경우 userId = null , msg = undefined
-                //     console.log(
-                //         "======================",
-                //         "입력하신 비밀번호 가 일치하지 않습니다."
-                //     );
-                //     alert("입력하신 비밀번호 가 일치하지 않습니다.");
-                // } else if (res.data.username === inputID) {
-                //     // id, pw 모두 일치 userId = userId1, msg = undefined
-                //     console.log("======================", "로그인 성공");
-                //     sessionStorage.setItem("user_id", inputID); // sessionStorage에 id를 user_id라는 key 값으로 저장
-                //     sessionStorage.setItem("name", res.data.name); // sessionStorage에 id를 user_id라는 key 값으로 저장
-                // }
-                // // 작업 완료 되면 페이지 이동(새로고침)
-                // document.location.href = "/";
             })
             .catch(error => {
                 console.log('전송 실패', error);

@@ -26,24 +26,7 @@ public class SignService {
 
     private final PasswordEncoder passwordEncoder;
 
-    public SignInResultDto signIn(String id, String password) throws RuntimeException {
-
-        Optional<Member> result = memberRepository.findById(id);
-
-        if(!passwordEncoder.matches(password, result.get().getPassword()))
-            throw new RuntimeException();
-
-        Member member = result.get();
-
-        SignInResultDto signInResultDto = SignInResultDto.builder()
-                .token(jwtTokenProvider.createToken(member.getId(), member.getRoles())).build();
-
-        setSuccessResult(signInResultDto);
-
-        return signInResultDto;
-    }
-
-    public Member signIn_2(String id, String password) throws RuntimeException {
+    public Member signIn(String id, String password) throws RuntimeException {
 
         Optional<Member> result = memberRepository.findById(id);
 

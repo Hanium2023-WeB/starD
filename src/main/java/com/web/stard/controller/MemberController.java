@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class MemberController {
 
     private final MemberService memberService;
-
     private final PasswordEncoder passwordEncoder;
 
 

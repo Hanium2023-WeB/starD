@@ -20,21 +20,4 @@ public class HomeController {
 
     private final MemberService memberService;
 
-//    @RequestMapping("/")
-//    public String Home() {
-//        return "mainpage";
-//    }
-//
-//    @RequestMapping("/main")
-//    public String Home2() {
-//        return "index";
-//    }
-//
-//    @GetMapping("/test")
-//    public String test() { return "hello";};
-//
-//    @GetMapping("/ttt")
-//    public String testt() { return "hellot";};
-
-
 }
