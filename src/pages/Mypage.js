@@ -1,59 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
+import App from "../App.js";
+import Slide from "../components/Slide.js";
+import Scrap from "../components/Scrap.js";
+import Category from "../components/Category.js";
 //https://jsonplaceholder.typicode.com/comments
 
 import "../css/Mypage.css";
-
-const menu = () => {
-  return (
-    <div className="category">
-      <div className="c_01">
-        HOME
-        <div class="sub_c">
-          <nav>
-            <ul>
-              <li>개인정보 수정</li>
-              <li>알림</li>
-            </ul>
-          </nav>
-        </div>
-      </div>
-      <div className="c_02">
-        STUDY
-        <div class="sub_c">
-          <nav>
-            <ul>
-              <li>스터디 참여 내역</li>
-              <li>스터디 개설 내역</li>
-              <li>스터디 신청 내역</li>
-            </ul>
-          </nav>
-        </div>
-      </div>
-      <div className="c_03">
-        MY
-        <div class="sub_c">
-          <nav>
-            <ul>
-              <li>내가 작성한 글</li>
-              <li>내가 작성한 댓글</li>
-            </ul>
-          </nav>
-        </div>
-      </div>
-      <div className="c_04">
-        SCRAP
-        <div class="sub_c">
-          <nav>
-            <ul>
-              <li>스크랩한 스터디</li>
-              <li>스크랩한 게시글</li>
-            </ul>
-          </nav>
-        </div>
-      </div>
-    </div>
-  );
-};
 
 const Mypage = ({ sideheader }) => {
   const dataId = useRef(0);
@@ -64,7 +16,7 @@ const Mypage = ({ sideheader }) => {
     const res = await fetch(
       "https://jsonplaceholder.typicode.com/comments"
     ).then((res) => res.json());
-    const initDate = res.slice(0, 4).map((it) => {
+    const initDate = res.slice(0, 10).map((it) => {
       return {
         author: it.email,
         content: it.body,
@@ -74,13 +26,12 @@ const Mypage = ({ sideheader }) => {
       };
     });
     setState(initDate);
-    // console.log(initDate);
+    console.log(initDate);
   };
 
   const scrapstudy = () => {
    
     return (
-  
         <div className="list">
           {state.map((d) => (
             <div className="list_detail">
@@ -105,7 +56,7 @@ const Mypage = ({ sideheader }) => {
   };
   useEffect(() => {
     //페이지가 마운트 되자마자 api호출
-    getData();
+      getData();
   }, []);
   
 
@@ -113,7 +64,7 @@ const Mypage = ({ sideheader }) => {
     <div>
       {sideheader}
       <div className="container">
-        {menu()}
+       <Category/>
         <div className="main_container">
           <div className="sub_container">
 
@@ -144,18 +95,17 @@ const Mypage = ({ sideheader }) => {
           </div>
        
           <p>스크랩한 스터디</p>
-
-          <div className="sub_container" id="scrap_study">
-            {scrapstudy()}
-              </div>
-              <div className="scrap_button">
-          <button> {"<"} </button>
-          <button> {">"} </button>
-          </div>
-
+            <Slide state={state}/>
+      {/* <div className="scrap_button">
+        <button > {"<"} </button>
+        <button> {">"} </button>
+        </div>  */}
+            {/* {scrapstudy()} */}
           <p>스크랩한 게시글</p>
           <div className="sub_container">
             {scrapstory()}
+            {/* <Scrap/> */}
+      
           </div>
 
         </div>

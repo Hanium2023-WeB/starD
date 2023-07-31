@@ -10,6 +10,7 @@ import Logout from "./pages/Logout";
 import Signup from "./pages/Signup";
 import Mypage from "./pages/Mypage";
 import Footer from "./components/Footer";
+import Editinfo from "./pages/Editinfo";
 
 const side = () => {
   return (
@@ -101,6 +102,11 @@ function App() {
           <Route
             path="/mypage"
             element={<Mypage sideheader={rendsidecenter()} />}
+          />
+
+        <Route
+            path="/editinfo"
+            element={<Editinfo sideheader={rendsidecenter()} />}
           />
         </Routes>
         <div>

@@ -53,7 +53,7 @@ const Signup = ({sideheader}) => {
     <div>
       {sideheader}
      
-      <div className="containers">
+      <div className="containers" id="sign">
         <div className="login_info">
           <p>회원가입</p>
         </div>
