@@ -14,14 +14,19 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @RequiredArgsConstructor
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
+
+//    private final JwtTokenProvider jwtTokenProvider;
 
     private final MemberDetailsService memberDetailsService;
 
@@ -36,27 +41,42 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
         http
-//                .csrf().disable()
+//                .httpBasic().disable()
+                .csrf().disable()
+//                .sessionManagement()
+//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+
+//                .and()
                 .authorizeRequests()
                 // 해당 url 요청에 대해서는 로그인 요구 X
-                .antMatchers("/", "/login", "/signup").permitAll()
-                // admin 요청에 대해서는 ROLE_ADMIN 역할을 가지고 있어야 함
-                .antMatchers("/admin").hasRole("ADMIN")
-                // 나머지 요청에 대해서는 로그인 요구 O
-                .anyRequest().authenticated()
+//                .antMatchers("/", "/signup","/login").permitAll()
+//                // admin 요청에 대해서는 ROLE_ADMIN 역할을 가지고 있어야 함
+//                .antMatchers("/admin").hasRole("ADMIN")
+//                // 나머지 요청에 대해서는 로그인 요구 O
+//                .anyRequest().authenticated()
+                .antMatchers("*").permitAll()
 
                 .and()
                 .formLogin()
 //                .loginPage("/login")
-                .defaultSuccessUrl("/")
+                .defaultSuccessUrl("/success", true)
                 .failureForwardUrl("/login")
                 .permitAll()
+
+//                .and()
+//                .exceptionHandling().accessDeniedHandler(new CustomAccessDeniedHandler())
+//
+//                .and()
+//                .exceptionHandling().authenticationEntryPoint(new CustomAuthenticationEntryPoint())
 
                 .and()
                 .logout()
                 .logoutUrl("/logout")
                 .logoutSuccessUrl("/")
                 .invalidateHttpSession(true);
+
+//                .and()
+//                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);;
 
     }
 
