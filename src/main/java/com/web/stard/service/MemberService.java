@@ -112,21 +112,30 @@ public class MemberService implements UserDetailsService {
         return memberRepository.existsByNickname(nickname); // true -> 있음 (사용불가)
     }
 
-    /* 정보 수정 */
-    public void updateMember(String id, String nickname, String password, String city, String district) {
+    /* 정보 수정 (닉네임, 이메일, 전화번호, 비밀번호) */
+    public void updateMember(String info, String id, String information) {
         Member member = find(id);
 
-        if (nickname != null) {
-            member.setNickname(nickname);
-        }
-        if (city != null && district != null) {
-            member.setCity(city);
-            member.setDistrict(district);
-        }
-        if (password != null) {
-            String encodedPassword = passwordEncoder.encode(password);
+        if (info.equals("nickname")) { // 닉네임 변경
+            member.setNickname(information);
+        } else if (info.equals("email")) { // 이메일 변경
+            member.setEmail(information);
+        } else if (info.equals("phone")) { // 전화번호 변경
+            member.setPhone(information);
+        } else if (info.equals("password")) { // 비밀번호 변경
+            String encodedPassword = passwordEncoder.encode(information);
             member.setPassword(encodedPassword);
         }
+
+        memberRepository.save(member);
+    }
+
+    /* 거주지 변경 */
+    public void updateAddress(String id, String city, String district) {
+        Member member = find(id);
+
+        member.setCity(city);
+        member.setDistrict(district);
 
         memberRepository.save(member);
     }
@@ -147,5 +156,10 @@ public class MemberService implements UserDetailsService {
             interestList.add(interest);
         }
         interestRepository.saveAll(interestList);
+    }
+
+    /* 회원 탈퇴 */
+    public void deleteMember(String id) {
+
     }
 }

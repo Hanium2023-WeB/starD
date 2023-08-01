@@ -32,7 +32,7 @@ public class MyPageController {
         return member;
     }
 
-    /* 닉네임 중복 확인 (필요할 경우 사용) */
+    /* 닉네임 중복 확인 */
     @PostMapping("/check/nickname")
     public boolean checkNickname(@RequestParam("nickname") String nickname) {
         return memberService.checkNickname(nickname);
@@ -46,43 +46,64 @@ public class MyPageController {
         return memberService.checkPw(id, password); // true -> 맞음 / false -> 틀림
     }
 
-    /* 정보 수정 처리 (닉네임, 비밀번호, 거주지(시, 구)) */
-    @PostMapping("/update")
-    public ResponseEntity<String> update(@RequestParam("id") String id,
-                                         @RequestParam("nickname") String nickname,
-                                         @RequestParam("password") String password,
-                                         @RequestParam("newPassword") String newPassword,
-                                         @RequestParam("city") String city,
-                                         @RequestParam("district") String district) {
-        // 비밀번호는 따로 빼는 게 나을지? -> 일단 고민,,
-        // RequestParam으로 각각 받지 말고 커맨드 객체를 추가할지? -> 일단 고민,,22
-
-        Member member = memberService.find(id);
-
-        // 닉네임 중복 확인
-        if (!member.getNickname().equals(nickname)) {
-            // 기존 닉네임 != 변경할 닉네임 => 중복 확인
-            if (memberService.checkNickname(nickname)) { // 닉네임 이미 존재함
-                return ResponseEntity.status(HttpStatus.CONFLICT).body("이미 존재하는 닉네임입니다.");
-            }
-        }
-
-        // 패스워드 일치 여부 확인
-        if (!memberService.checkPw(id, password)) {
-            // 기존 패스워드 != 입력한 패스워드
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("비밀번호가 일치하지 않습니다.");
-        }
-
-        // 정보 수정
-        memberService.updateMember(id, nickname, newPassword, city, district);
-
+    /* 닉네임 변경 */
+    @PostMapping("/update/nickname")
+    public ResponseEntity<String> updateNickname(@RequestParam("id") String id,
+                                                 @RequestParam("nickname") String nickname) {
+        memberService.updateMember("nickname", id, nickname);
         return ResponseEntity.ok().build();
     }
 
-    /* 관심분야 수정 */
+    /* 이메일 변경 */
+    @PostMapping("/update/email")
+    public ResponseEntity<String> updateEmail(@RequestParam("id") String id,
+                                              @RequestParam("email") String email) {
+        memberService.updateMember("email", id, email);
+        return ResponseEntity.ok().build();
+    }
+
+    /* 전화번호 변경 */
+    @PostMapping("/update/phone")
+    public ResponseEntity<String> updatePhone(@RequestParam("id") String id,
+                                              @RequestParam("phone") String phone) {
+        memberService.updateMember("phone", id, phone);
+        return ResponseEntity.ok().build();
+    }
+
+    /* 비밀번호 변경 */
+    @PostMapping("/update/password")
+    public ResponseEntity<String> updatePassword(@RequestParam("id") String id,
+                                                 @RequestParam("password") String password,
+                                                 @RequestParam("newPassword") String newPassword) {
+        // 패스워드 일치 여부 확인
+        if (!memberService.checkPw(id, password)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("비밀번호가 일치하지 않습니다.");
+        }
+
+        memberService.updateMember("password", id, newPassword);
+        return ResponseEntity.ok().build();
+    }
+
+    /* 거주지 변경 */
+    @PostMapping("/update/address")
+    public ResponseEntity<String> updateAddress(@RequestParam("id") String id,
+                                                @RequestParam("city") String city,
+                                                @RequestParam("district") String district) {
+        memberService.updateAddress(id, city, district);
+        return ResponseEntity.ok().build();
+    }
+
+    /* 관심분야 변경 */
     @PostMapping("/update/interest")
-    public void updateInterest(@RequestParam("id") String id,
-                               @RequestParam("interestList") List<String> interests) {
+    public ResponseEntity<String> updateInterest(@RequestParam("id") String id,
+                                                 @RequestParam("interestList") List<String> interests) {
         memberService.updateInterest(id, interests);
+        return ResponseEntity.ok().build();
+    }
+
+    /* 회원 탈퇴 (아직 기능 X 그냥 메소드만 만듦) */
+    @PostMapping("/delete")
+    public void delete(@RequestParam("id") String id) {
+        memberService.deleteMember(id);
     }
 }
