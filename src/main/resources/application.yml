@@ -12,3 +12,10 @@ spring:
     hibernate:
       database-platform: org.hibernate.dialect.MariaDB103Dialect
       ddl-auto: update
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+jwt:
+  secret: asdfasdf!334###%%# # TODO 아무거나 작성 ex) asdfasdf!334###%%#
+

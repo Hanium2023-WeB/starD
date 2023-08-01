@@ -2,6 +2,8 @@ package com.web.stard.controller;
 
 import com.web.stard.domain.Member;
 import com.web.stard.service.MemberService;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -9,17 +11,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
+@RequiredArgsConstructor
 public class MemberController {
 
     private final MemberService memberService;
+    private final PasswordEncoder passwordEncoder;
 
-    @Autowired  //스프링 컨테이너에 있는 memberService를 가져다가 연결해줌
-    public MemberController(MemberService memberService) {
-        this.memberService = memberService;
-    }
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
     @GetMapping("/signup")
     public String signupForm(Model model) {
