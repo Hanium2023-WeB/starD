@@ -30,10 +30,10 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor
 @Getter @Setter
-public class MemberService implements UserDetailsService {
+public class MemberService {
 
     @Autowired
-    private final MemberRepository memberRepository;
+    private MemberRepository memberRepository;
 
     @Autowired
     private AuthorityRepository authorityRepository;
@@ -52,35 +52,7 @@ public class MemberService implements UserDetailsService {
         return null;
     }
 
-    @Transactional
-    public String join(Member member) {
-
-        // 비밀번호 암호화
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        member.setPassword(passwordEncoder.encode(member.getPassword()));
-
-        return memberRepository.save(member).getId();
-    }
-
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<Member> result = memberRepository.findById(username);
-        Member member = result.get();
-
-        List<GrantedAuthority> authorities = new ArrayList<>();
-
-        if (("admin@example.com").equals(username)) {
-            authorities.add(new SimpleGrantedAuthority(Role.ADMIN.getRoleValue()));
-        } else {
-            authorities.add(new SimpleGrantedAuthority(Role.MEMBER.getRoleValue()));
-        }
-
-        return new User(member.getEmail(), member.getPassword(), authorities);
-    }
-
     // 회원 정보 저장
-    @Transactional
     public void saveMember(Member member) {
         // 회원가입 시 기본적으로 'USER' 권한을 부여
         Authority userAuthority = authorityRepository.findByAuthorityName("USER");
@@ -97,6 +69,15 @@ public class MemberService implements UserDetailsService {
         member.setPassword(encodedPassword);
 
         memberRepository.save(member);
+    }
+
+    // 중복 회원 검증
+    private void validateDuplicateMember(Member member) {
+        Optional<Member> findMembers = memberRepository.findById(member.getId());
+
+        if (!findMembers.isEmpty()) {
+            throw new IllegalStateException("이미 존재하는 회원입니다.");
+        }
     }
 
     /* 비밀번호 확인 */

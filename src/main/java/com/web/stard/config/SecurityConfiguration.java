@@ -18,10 +18,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     private MemberUserDetailsService memberUserDetailsService;
 
+    @Autowired
+    private CsrfConfig csrfConfig;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .csrf()
+                .csrfTokenRepository(csrfConfig.csrfTokenRepository()) // CSRF 토큰 설정
+                .and()
                 .authorizeRequests()
                 .antMatchers("/**", "/signup").permitAll();   // 모든 사용자에게 허용
 

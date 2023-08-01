@@ -6,9 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class MemberController {
@@ -43,6 +41,7 @@ public class MemberController {
         System.out.println("이메일: " + member.getEmail());
         System.out.println("전화번호: " + member.getPhone());
 
+        //db에 저장됨 (pw 암호화o / id 중복처리는 아직x. 함수 구현은 해둠)
         memberService.saveMember(member);
         return "redirect:/";
     }
