@@ -5,10 +5,14 @@ import com.web.stard.service.MemberService;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -28,8 +32,8 @@ public class MemberController {
     @PostMapping("/signup")
     public String saveMember(@ModelAttribute Member member) {
         // 패스워드 인코딩
-//        String encodedPassword = passwordEncoder.encode(member.getPassword());
-//        member.setPassword(encodedPassword);
+        String encodedPassword = passwordEncoder.encode(member.getPassword());
+        member.setPassword(encodedPassword);
 
         System.out.println("이름: " + member.getName());
         System.out.println("아이디: " + member.getId());
@@ -38,8 +42,20 @@ public class MemberController {
         System.out.println("이메일: " + member.getEmail());
         System.out.println("전화번호: " + member.getPhone());
 
-        //db에 저장됨 (pw 암호화o / id 중복처리는 아직x. 함수 구현은 해둠)
         memberService.saveMember(member);
         return "redirect:/";
     }
+
+    @GetMapping("/checkDuplicateID")
+    public ResponseEntity<Map<String, Boolean>> checkDuplicateID(@RequestParam String id) {
+        Map<String, Boolean> response = new HashMap<>();
+        boolean isDuplicate = memberService.checkDuplicateMember(id);
+
+        System.out.println("검증 아이디: " + id);
+        System.out.println("검증 결과: " + isDuplicate);
+
+        response.put("duplicate", isDuplicate);
+        return ResponseEntity.ok(response);
+    }
+
 }

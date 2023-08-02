@@ -65,12 +65,8 @@ public class MemberService {
     }
 
     // 중복 회원 검증
-    private void validateDuplicateMember(Member member) {
-        Optional<Member> findMembers = memberRepository.findById(member.getId());
-
-        if (!findMembers.isEmpty()) {
-            throw new IllegalStateException("이미 존재하는 회원입니다.");
-        }
+    public boolean checkDuplicateMember(String id) {
+        return memberRepository.existsById(id);
     }
 
     /* 비밀번호 확인 */
