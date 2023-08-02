@@ -1,6 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import "../css/Mypage.css";
 import Study from "./Study.js";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faStar } from "@fortawesome/free-solid-svg-icons";
+import "../css/MyParticipateStudy.css";
+import "../css/Mypage_Scrap.css";
 
 const Slide = ({ state }) => {
   const [slidePx, setSlidePx] = useState(0);
@@ -18,7 +22,7 @@ const Slide = ({ state }) => {
     <div>
       <div className="sub_container" id="scrap_study">
         <div className="sub_wrap">
-        <ul className="list">
+        <ul className="study_list">
           {state.map((d) => (
                 <Study slide={slidePx} key={d.id} study={d}/>
 

@@ -3,6 +3,10 @@ import App from "../App.js";
 import Slide from "../components/Slide.js";
 import Scrap from "../components/Scrap.js";
 import Category from "../components/Category.js";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faStar } from "@fortawesome/free-solid-svg-icons";
+import "../css/MyParticipateStudy.css";
+import "../css/Mypage_Scrap.css";
 //https://jsonplaceholder.typicode.com/comments
 
 import "../css/Mypage.css";
@@ -18,8 +22,10 @@ const Mypage = ({ sideheader }) => {
 		).then((res) => res.json());
 		const initDate = res.slice(0, 10).map((it) => {
 			return {
+				tag: it.email,
 				author: it.email,
-				content: it.body,
+				day: it.postId,
+				title: it.name,
 				last: 5,
 				created_date: new Date().getTime(),
 				id: dataId.current++,
@@ -29,17 +35,17 @@ const Mypage = ({ sideheader }) => {
 		console.log(initDate);
 	};
 
-	const scrapstudy = () => {
-		return (
-			<div className="list">
-				{state.map((d) => (
-					<div className="list_detail">
-						<p>{d.author}</p>
-					</div>
-				))}
-			</div>
-		);
-	};
+	// const scrapstudy = () => {
+	// 	return (
+	// 		<div className="list">
+	// 			{state.map((d) => (
+	// 				<div className="list_detail">
+	// 					<p>{d.author}</p>
+	// 				</div>
+	// 			))}
+	// 		</div>
+	// 	);
+	// };
 	const scrapstory = () => {
 		return (
 			<div className="list_story">
