@@ -1,5 +1,7 @@
 package com.web.stard.config.security;
 
+import com.web.stard.handler.CustomAuthenticationFailureHandler;
+import com.web.stard.handler.CustomAuthenticationSuccessHandler;
 import com.web.stard.handler.LoginSuccessHandler;
 import com.web.stard.service.MemberDetailsService;
 import com.web.stard.service.MemberService;
@@ -30,6 +32,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final MemberDetailsService memberDetailsService;
 
+    private final CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
+    private final CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
+
     // 정적 자원에 대해서는 Security 설정을 적용하지 않음.
     // static 디렉터리의 하위 파일 목록은 인증 무시 ( = 항상통과 ) ex) css, img
     @Override
@@ -42,6 +47,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http
 //                .httpBasic().disable()
+                .cors().and()
                 .csrf().disable()
 //                .sessionManagement()
 //                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -49,31 +55,32 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .and()
                 .authorizeRequests()
                 // 해당 url 요청에 대해서는 로그인 요구 X
-//                .antMatchers("/", "/signup","/login").permitAll()
-//                // admin 요청에 대해서는 ROLE_ADMIN 역할을 가지고 있어야 함
+                .antMatchers("/", "/signup","/login", "/current-member").permitAll()
+                // admin 요청에 대해서는 ROLE_ADMIN 역할을 가지고 있어야 함
 //                .antMatchers("/admin").hasRole("ADMIN")
-//                // 나머지 요청에 대해서는 로그인 요구 O
-//                .anyRequest().authenticated()
-                .antMatchers("*").permitAll()
+                // 나머지 요청에 대해서는 로그인 요구 O
+                .anyRequest().authenticated()
+//                .antMatchers("*").permitAll()
 
                 .and()
                 .formLogin()
 //                .loginPage("/login")
-                .defaultSuccessUrl("/success", true)
-                .failureForwardUrl("/login")
-                .permitAll()
+                .successHandler(customAuthenticationSuccessHandler) // 로그인 성공 시 핸들러 등록
+                .failureHandler(customAuthenticationFailureHandler) // 로그인 실패 시 핸들러 등록
+//                .defaultSuccessUrl("/", true)
+//                .failureForwardUrl("/login")
+//                .permitAll()
 
 //                .and()
 //                .exceptionHandling().accessDeniedHandler(new CustomAccessDeniedHandler())
-//
 //                .and()
 //                .exceptionHandling().authenticationEntryPoint(new CustomAuthenticationEntryPoint())
 
                 .and()
                 .logout()
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/")
-                .invalidateHttpSession(true);
+                .logoutUrl("/logout");
+//                .logoutSuccessUrl("/")
+//                .invalidateHttpSession(true);
 
 //                .and()
 //                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);;

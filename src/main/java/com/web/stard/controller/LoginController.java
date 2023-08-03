@@ -2,33 +2,54 @@ package com.web.stard.controller;
 
 import com.web.stard.domain.Member;
 import com.web.stard.dto.MemberRequestDto;
-import com.web.stard.dto.SignInResultDto;
 import com.web.stard.service.MemberDetailsService;
-import com.web.stard.service.SignService;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import com.web.stard.service.LoginService;
 import lombok.AllArgsConstructor;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
-@CrossOrigin(origins = "*")
 @RestController
 @AllArgsConstructor
-public class SignController {
+public class LoginController {
 
-    private final SignService signService;
+    private final LoginService loginService;
     private final MemberDetailsService memberDetailsService;
+
+    @GetMapping("/current-member")
+    public String getCurrentMember() {
+
+        System.out.println("getCurrentMember()");
+
+        // 현재 로그인한 사용자 정보 가져오기
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication != null && authentication.isAuthenticated()) {
+            String username = authentication.getName(); // 사용자의 아이디 (username) 가져오기
+
+            System.out.println("로그인 O " + username);
+            // 필요에 따라 사용자의 권한 정보도 가져올 수 있습니다.
+            // List<GrantedAuthority> authorities = (List<GrantedAuthority>) authentication.getAuthorities();
+
+//            return "현재 로그인한 사용자: " + username;
+            return username;
+        } else {
+            System.out.println("로그인 X");
+//            return "로그인되지 않은 사용자";
+            return null;
+        }
+    }
+
     @PostMapping("/sign-in")
     public ResponseEntity<String>  signIn_(@RequestBody MemberRequestDto memberRequestDto) throws RuntimeException {
 
-        Member member = signService.signIn(memberRequestDto.getUsername(), memberRequestDto.getPassword());
+        Member member = loginService.login(memberRequestDto.getUsername(), memberRequestDto.getPassword());
 
         System.out.println(memberRequestDto.getUsername());
         if (member != null) {

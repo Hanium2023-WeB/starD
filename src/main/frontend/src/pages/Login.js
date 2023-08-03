@@ -36,10 +36,16 @@ const Login = ({sideheader}) => {
             return;
         }
 
+        console.log(state.ID, state.PW);
+
         axios
-            .post('/sign-in', {
+            .post("http://localhost:8080/login", {
+                username: state.ID,
+                password: state.PW
+            }, {params: {
                     username: state.ID,
-                    password: state.PW
+                    password: state.PW},
+                withCredentials: true
             })
             .then((res) => {
                 console.log('전송 성공');
@@ -51,10 +57,9 @@ const Login = ({sideheader}) => {
             })
             .catch(error => {
                 console.log('전송 실패', error);
-                console.log(state.ID);
-
                 // 로그인 실패 시 현재 페이지 다시 로드
-                window.location.reload();
+                // window.location.reload();
+                alert("입력값을 확인해주세요. \n 로그인 실패");
             });
     };
     return (

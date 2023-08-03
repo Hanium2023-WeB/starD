@@ -28,8 +28,16 @@ public class MemberDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        System.out.println("loadUserByUsername() 호출됨. username: " + username);
+
+//        Member member = memberRepository.findById(username)
+//                .orElseThrow(() -> new UsernameNotFoundException("userId: " + username + " not found"));
+
         Member member = memberRepository.findById(username)
-                .orElseThrow(() -> new UsernameNotFoundException("userId: " + username + " not found"));
+                .orElseThrow(() -> {
+                    System.out.println("UsernameNotFoundException 발생");
+                    return new UsernameNotFoundException("userId: " + username + " not found");
+                });
 
         return new User(member.getId(), member.getPassword(), getAuthorities(member));
     }

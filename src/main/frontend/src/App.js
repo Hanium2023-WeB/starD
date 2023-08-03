@@ -4,6 +4,7 @@ import "./App.css";
 import React, {useState, useRef, useEffect} from "react";
 import {BrowserRouter, Routes, Route} from "react-router-dom";
 import Header from "./components/Header";
+import axios from "axios";
 
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -12,27 +13,62 @@ import Signup from "./pages/Signup";
 import Mypage from "./pages/Mypage";
 import Footer from "./components/Footer";
 
-const side = () => {
+const Side = () => {
+
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    useEffect(() => {
+
+        axios
+            .get("http://localhost:8080/current-member", {
+                withCredentials: true
+            })
+            .then((res) => {
+                console.log(res.data);
+
+                // 서버로부터 받은 데이터가 null이 아니면 로그인한 상태로 설정
+                setIsLoggedIn(res.data !== 'anonymousUser');
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }, []);
+
     return (
         <div className="headerbar">
             <nav>
                 <ul>
-                    <li>
-                        <Link
-                            to={"/login"}
-                            style={{textDecoration: "none", color: "inherit"}}
-                        >
-                            로그인
-                        </Link>
-                    </li>
-                    <li>
-                        <Link
-                            to={"/signup"}
-                            style={{textDecoration: "none", color: "inherit"}}
-                        >
-                            회원가입
-                        </Link>
-                    </li>
+                    {isLoggedIn ? (
+                        <React.Fragment>
+                            <li>
+                                <Link
+                                    to={"/logout"}
+                                    style={{textDecoration: "none", color: "inherit"}}
+                                >
+                                    로그아웃
+                                </Link>
+                            </li>
+                        </React.Fragment>
+                    ) : (
+                        <React.Fragment>
+                            <li>
+                                <Link
+                                    to={"/login"}
+                                    style={{textDecoration: "none", color: "inherit"}}
+                                >
+                                    로그인
+                                </Link>
+                            </li>
+                            <li>
+                                <Link
+                                    to={"/signup"}
+                                    style={{textDecoration: "none", color: "inherit"}}
+                                >
+                                    회원가입
+                                </Link>
+                            </li>
+                        </React.Fragment>
+                    )}
                 </ul>
             </nav>
         </div>
@@ -69,14 +105,14 @@ const sidecenter = () => {
 };
 
 const nosidecenter = () => {
-    return <Header headText={""} leftChild={sideleft()} rightChild={side()}/>;
+    return <Header headText={""} leftChild={sideleft()} rightChild={Side()}/>;
 };
 const rendsidecenter = () => {
     return (
         <Header
             headText={sidecenter()}
             leftChild={sideleft()}
-            rightChild={side()}
+            rightChild={Side()}
         />
     );
 };

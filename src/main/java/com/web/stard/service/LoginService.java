@@ -6,19 +6,14 @@ import com.web.stard.dto.CommonResponse;
 import com.web.stard.dto.SignInResultDto;
 import com.web.stard.repository.MemberRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @Service
 @AllArgsConstructor
-public class SignService {
+public class LoginService {
 
     private final MemberRepository memberRepository;
 
@@ -26,7 +21,7 @@ public class SignService {
 
     private final PasswordEncoder passwordEncoder;
 
-    public Member signIn(String id, String password) throws RuntimeException {
+    public Member login(String id, String password) throws RuntimeException {
 
         Optional<Member> result = memberRepository.findById(id);
 
@@ -36,7 +31,6 @@ public class SignService {
         return result.get();
 
     }
-
 
     private void setSuccessResult(SignInResultDto result) {
         result.setSuccess(true);
@@ -49,4 +43,7 @@ public class SignService {
         result.setCode(CommonResponse.FAIL.getCode());
         result.setMsg(CommonResponse.FAIL.getMsg());
     }
+
+
+
 }
