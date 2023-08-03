@@ -40,15 +40,47 @@ const Signup = () => {
     console.log("handleSubmit 함수 호출");
     console.log("isIdDuplicate 상태:", isIdDuplicate);
 
+    // 입력 값 유효성 검사
     if (
-      state.id.length < 3 ||
-      state.password.length < 5 ||
-      state.nickname.length < 5 ||
-      state.phone.length < 7 ||
-      state.email.length < 5
-    ) {
-      // 입력 값 유효성 검사
-      alert("입력값을 확인해주세요.");
+          state.id.length < 3 &&
+          state.password.length < 5 &&
+          state.name.length < 3 &&
+          state.nickname.length < 2 &&
+          state.phone.length < 7 &&
+          state.email.length < 5
+        ) {
+
+        alert("회원 정보를 입력해 주세요.");
+        return;
+    }
+
+    if (state.id.length < 3) {
+      alert("아이디는 3자 이상이어야 합니다.");
+      return;
+    }
+
+    if (state.password.length < 5) {
+      alert("비밀번호는 5자 이상이어야 합니다.");
+      return;
+    }
+
+    if (state.name.length < 3) {
+      alert("이름은 3자 이상이어야 합니다.");
+      return;
+    }
+
+    if (state.nickname.length < 2) {
+      alert("닉네임은 2자 이상이어야 합니다.");
+      return;
+    }
+
+    if (state.phone.length < 7) {
+      alert("전화번호는 7자 이상이어야 합니다.");
+      return;
+    }
+
+    if (state.email.length < 5) {
+      alert("이메일은 5자 이상이어야 합니다.");
       return;
     }
 
@@ -93,7 +125,7 @@ const Signup = () => {
 
     // 입력 값이 없는 경우 요청을 보내지 않음
     if (!id) {
-      alert("아이디를 입력해주세요.");
+      alert("아이디를 입력해 주세요.");
       return;
     }
 
