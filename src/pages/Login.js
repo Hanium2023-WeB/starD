@@ -51,6 +51,7 @@ const Login = ({sideheader}) => {
               name={"ID"}
               value={state.ID}
               onChange={onChange}
+              placeholder="아이디를 입력해주세요"
             />
           </div>
 
@@ -61,6 +62,7 @@ const Login = ({sideheader}) => {
               name={"PW"}
               value={state.PW}
               onChange={onChange}
+              placeholder="비밀번호를 입력해주세요"
             />
           </div>
         <div className="loginbtn">

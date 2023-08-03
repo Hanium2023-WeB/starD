@@ -1,13 +1,15 @@
 import React, { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import Category from "../components/Category";
 import { ReactComponent as Arrow } from "../images/Arrow.svg";
 import edit from "../css/edit.css";
 import arrowdown from "../images/arrowdown.png";
 import arrowup from "../images/arrowup.png";
 import Signout from "../components/Signout.js";
-
+import RealEstate from "../components/RealEstate.js";
 import {isEmail, isPassword} from "../util/check.js";
-
+import Backarrow from "../components/Backarrow.js";
+import EditInterest from "../components/EditInterest.js";
 const options = [
   { value: "+82", name: "대한민국" },
   { value: "+81", name: "일본" },
@@ -18,56 +20,6 @@ const options = [
   { value: "+241", name: "가봉" },
 ];
 
-const tagoptions = [
-  { value: "IT기획", name: "IT기획" },
-  { value: "프론트", name: "프론트" },
-  { value: "백엔드", name: "백엔드" },
-  { value: "클라우드", name: "클라우드" },
-  { value: "IT기획", name: "IT기획" },
-  { value: "프론트", name: "프론트" },
-  { value: "백엔드", name: "백엔드" },
-  { value: "클라우드", name: "클라우드" },
-  { value: "IT기획", name: "IT기획" },
-  { value: "프론트", name: "프론트" },
-  { value: "백엔드", name: "백엔드" },
-  { value: "클라우드", name: "클라우드" },
-  { value: "IT기획", name: "IT기획" },
-  { value: "프론트", name: "프론트" },
-  { value: "백엔드", name: "백엔드" },
-  { value: "클라우드", name: "클라우드" },
-  { value: "IT기획", name: "IT기획" },
-  { value: "프론트", name: "프론트" },
-  { value: "백엔드", name: "백엔드" },
-  { value: "클라우드", name: "클라우드" },
-];
-
-
-const Tagoption = (props) => {
-  const [Tag, setTag] = useState("");
-
-  const handletagChange = (e) => { ///태그 핸들러
-    // event handler
-    setTag({
-      ...Tag,
-      [e.target.name]: e.target.value,
-    });
-    console.log(e.target.value);
-  };
-  return (
-    <div className="tags">
-      {props.editoptions.map((editoption) => (
-        <button
-          id="tag"
-          name="TAG"
-          onClick={handletagChange}
-          value={editoption.value}
-        >
-          {editoption.value}
-        </button>
-      ))}
-    </div>
-  );
-};
 
 const SelectBox = (props) => { //전화번호 나라 선택 
   const handleChange = (e) => {
@@ -99,6 +51,25 @@ const Editinfo = ({ sideheader }) => {
     PHONE: "",
     isValidEmail: false,
   });
+
+  // //서버에 닉네임 중복확인 요청 함수
+  // const checkDuplicateNicname=()=>{
+  //   let body={
+  //     NICNAME: state.NICNAME
+  //   };
+  //   console.log("바디",body);
+  //   api("","POST",body)
+  //   .then(res => alert(res.message))
+  //   .catch(err.status == 409){
+  //     alert(err.message);
+  //     this.setState({
+  //       NICNAME:"",
+        
+  //     });
+  //   }
+  // }
+
+
   const checkValidEmail = () =>{ //일정 시간이 지난 후 유효성 검사 및 state 변경 
      let timer;
     if (timer){
@@ -137,10 +108,7 @@ const Editinfo = ({ sideheader }) => {
   return (
     <div>
       {sideheader}
-      <div className="backarrow">
-        <Arrow />
-        <p>개인정보 수정</p>
-      </div>
+      <Backarrow/>
       <div className="container">
         <Category />
         <div className="main_container" id="edit_main">
@@ -155,10 +123,19 @@ const Editinfo = ({ sideheader }) => {
                 onChange={handleEditChange}
                 placeholder="닉네임을 입력하세요."
               />
-              <button id="check_double_nicname">증복확인</button>
+              <button id="check_double_nicname" onClick={handleEditChange}>증복확인</button>
               </div>
-
-        
+    
+              <button id="save">저장하기</button>
+            </div>
+          </div>
+          <div className="sub_container">
+            <div className="change_estate">
+              <div id="title">거주지</div>
+              <div id="checkestate"> 
+              <RealEstate/>
+              </div>
+    
               <button id="save">저장하기</button>
             </div>
           </div>
@@ -184,16 +161,7 @@ const Editinfo = ({ sideheader }) => {
               <button id="save">저장하기</button>
             </div>
           </div>
-          <div className="sub_container" id="interested">
-            <div className="change_interest">
-              <div id="title">
-                관심분야<span id="sub_title">(최대 3개까지 선택 가능)</span>
-              </div>
-              <Tagoption editoptions={tagoptions} value="" />
-
-              <button id="save">저장하기</button>
-            </div>
-          </div>
+          <EditInterest/>
           <div className="sub_container" id="password">
             <div className="change_pw">
               <div id="title">

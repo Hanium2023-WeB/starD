@@ -1,8 +1,8 @@
 export function isEmail(asValue) { //이메일 정규식
-    var regExp = /^[a-zA-Z]+[a-zA-Z0-9]*@[a-zA-Z0-9]+\.[a-zA-Z]+$/;
+    var regExp = /^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
     return regExp.test(asValue);  
 }
-export function isPassword(asValue){ //비밀번호 정규식 최소 8 자, 최소 하나의 문자, 하나의 숫자 및 하나의 특수 문자 
-    var regExp =/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@!%*#?&])[A-Za-z\d@!%*#?&]{8,}$/;
+export function isPassword(asValue){ //비밀번호 정규식 8 ~ 12자 영문, 숫자 조합
+    var regExp =/^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,15}$/;
   return regExp.test(asValue);  
 }

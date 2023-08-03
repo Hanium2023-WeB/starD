@@ -56,7 +56,7 @@
 	width: 250px;
 	height: 40px;
 	padding-left: 10px;
-	border-radius: 42px;
+	border-radius: 10px;
 	border: 1.5px solid #a5c9ca;
 }
 
@@ -78,7 +78,7 @@
 	color: white;
 	width: 250px;
 	height: 40px;
-	border-radius: 50px;
+	border-radius: 10px;
 	font-family: "Yeon Sung", cursive;
 	font-size: 20px;
 	position: relative;
@@ -95,3 +95,32 @@
 	margin-bottom: 10px;
 	font-size: 14px;
 }
+.signup_nicname, .signup_id{
+	display: flex;
+	flex-direction: row;
+	width: 158%;
+}
+.signup_nicname input, .signup_id input{
+	width: 60%;
+}
+#signup_nicname_btn{
+	width: 25%;
+	height: 40%;
+	background-color: #395b64;
+	color: white;
+	font-size: 11px;
+	margin-left: 10px;
+	border-radius: 10px;
+	border-style: none;
+	cursor: pointer;
+}
+.inputpw, .inputemail{
+	margin-bottom: 10px;
+}
+.inputpw > input, .inputemail > input{
+	margin-bottom: 0px;
+}
+p{
+	margin-top: 0;
+}
+

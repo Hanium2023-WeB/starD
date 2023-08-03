@@ -25,7 +25,8 @@ svg{
     margin-left: 5%;
     margin-top: 6px;
 }
-.change_nicname, .change_email, .change_interest, .change_pw , .change_phone , .signout{
+.change_nicname,.change_estate, .change_email,
+ .change_interest, .change_pw , .change_phone , .signout{
     width: 100%;
     border-radius: 10px;
     border: lightgray solid 1px;
@@ -75,6 +76,11 @@ input{
     height: 30px;
     margin:10px;
     cursor: pointer;
+    background-color: #F2F2F2;
+    color: #395B64;
+    border-style: none;
+    border-radius: 7px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 
 }
 #save{
@@ -162,6 +168,8 @@ select{
     display: flex;
     flex-direction: row;
 }
+
+
 #checkname input{
     width: 70%;
 }
@@ -175,4 +183,31 @@ select{
     border-radius: 5px;
     border-style: none;
     cursor: pointer;
+}
+/* 거주지 */
+#checkestate{
+    width: 100%;
+}
+.select_estate{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+}
+.select_estate #sido1, #gugun1{
+    width: 40%;
+    height: 30px;
+}
+.select_estate #sido1, #gugun1{
+    margin-right: 10px;
+    background-color: #F2F2F2;
+    color: #395B64;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+option{
+    background-color: #F2F2F2;
+    color: blue;
+    padding: 10px;
+    font-size: 10px;
 }
