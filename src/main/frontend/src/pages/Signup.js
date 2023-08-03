@@ -5,7 +5,7 @@ import { getCsrfTokenFromCookie } from "../csrfUtils";
 
 import "../css/Log.css";
 
-const Signup = () => {
+const Signup = ({sideheader}) => {
   const inputID = useRef();
   const inputPW = useRef();
   const inputName = useRef();
@@ -29,8 +29,10 @@ const Signup = () => {
   const onChange = (e) => {
       setState({
         ...state,
-        [e.target.name]: e.target.value
+        [e.target.name]: e.target.value,
       });
+      console.log(e.target.name);
+      console.log(e.target.value);
     };
 
 
@@ -55,31 +57,37 @@ const Signup = () => {
     }
 
     if (state.id.length < 3) {
+      inputID.current.focus();
       alert("아이디는 3자 이상이어야 합니다.");
       return;
     }
 
     if (state.password.length < 5) {
+      inputPW.current.focus();
       alert("비밀번호는 5자 이상이어야 합니다.");
       return;
     }
 
     if (state.name.length < 3) {
+      inputName.current.focus();
       alert("이름은 3자 이상이어야 합니다.");
       return;
     }
 
     if (state.nickname.length < 2) {
+      inputNicname.current.focus();
       alert("닉네임은 2자 이상이어야 합니다.");
       return;
     }
 
     if (state.phone.length < 7) {
+      inputphone.current.focus();
       alert("전화번호는 7자 이상이어야 합니다.");
       return;
     }
 
     if (state.email.length < 5) {
+      inputemail.current.focus();
       alert("이메일은 5자 이상이어야 합니다.");
       return;
     }
@@ -155,8 +163,9 @@ const Signup = () => {
 
   return (
       <div>
-        <LogoButton />
-        <div className="containers">
+          {sideheader}
+
+          <div className="containers" id="sign">
           <div className="login_info">
             <p>회원가입</p>
           </div>
