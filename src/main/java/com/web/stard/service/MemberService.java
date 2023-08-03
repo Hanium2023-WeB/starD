@@ -110,6 +110,12 @@ public class MemberService {
         memberRepository.save(member);
     }
 
+    /* 관심분야 반환 */
+    public List<Interest> getInterests(String id) {
+        Member member = find(id);
+        return interestRepository.findAllByMember(member);
+    }
+
     /* 관심분야 수정 */
     @Transactional
     public void updateInterest(String id, List<String> interests) {
@@ -129,7 +135,20 @@ public class MemberService {
     }
 
     /* 회원 탈퇴 */
-    public void deleteMember(String id) {
+    public boolean deleteMember(String id, String password) {
+        Member member = find(id);
 
+        if (!checkPw(id, password)) { // 비밀번호 틀림
+            return false; // 실패
+        }
+
+        // 추후 작성 (멤버와 엮이는 게 많아지면 조건 등등 추가 필요)
+        memberRepository.delete(member);
+
+
+        if (find(id) == null) { // 삭제됨
+            return true;
+        }
+        return false;
     }
 }

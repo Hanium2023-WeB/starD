@@ -1,5 +1,6 @@
 package com.web.stard.controller;
 
+import com.web.stard.domain.Interest;
 import com.web.stard.domain.Member;
 import com.web.stard.service.MemberService;
 import lombok.AllArgsConstructor;
@@ -12,7 +13,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Getter @Setter
 @RestController
@@ -24,10 +27,16 @@ public class MyPageController {
     private final PasswordEncoder passwordEncoder;
 
     /* 정보 반환 */
-    @GetMapping("/update")
-    public Member getMember(@RequestParam("id") String id) {
+    @PostMapping("/update")
+    public Map<String, Object> getMember(@RequestParam("id") String id) {
         Member member = memberService.find(id);
-        return member;
+        List<Interest> interests = memberService.getInterests(id);
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("member", member);
+        data.put("interests", interests);
+
+        return data;
     }
 
     /* 닉네임 중복 확인 */
@@ -49,7 +58,7 @@ public class MyPageController {
     public ResponseEntity<String> updateNickname(@RequestParam("id") String id,
                                                  @RequestParam("nickname") String nickname) {
         memberService.updateMember("nickname", id, nickname);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(nickname);
     }
 
     /* 이메일 변경 */
@@ -57,7 +66,7 @@ public class MyPageController {
     public ResponseEntity<String> updateEmail(@RequestParam("id") String id,
                                               @RequestParam("email") String email) {
         memberService.updateMember("email", id, email);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(email);
     }
 
     /* 전화번호 변경 */
@@ -65,7 +74,7 @@ public class MyPageController {
     public ResponseEntity<String> updatePhone(@RequestParam("id") String id,
                                               @RequestParam("phone") String phone) {
         memberService.updateMember("phone", id, phone);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(phone);
     }
 
     /* 비밀번호 변경 */
@@ -99,9 +108,10 @@ public class MyPageController {
         return ResponseEntity.ok().build();
     }
 
-    /* 회원 탈퇴 (아직 기능 X 그냥 메소드만 만듦) */
+    /* 회원 탈퇴 (아직 기능 X) */
     @PostMapping("/delete")
-    public void delete(@RequestParam("id") String id) {
-        memberService.deleteMember(id);
+    public boolean delete(@RequestParam("id") String id,
+                          @RequestParam("password") String password) {
+        return memberService.deleteMember(id, password);
     }
 }
