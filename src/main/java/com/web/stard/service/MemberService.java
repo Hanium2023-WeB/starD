@@ -51,7 +51,6 @@ public class MemberService {
         // 회원가입 시 기본적으로 'USER' 권한을 부여
         Authority userAuthority = authorityRepository.findByAuthorityName("USER");
         if (userAuthority == null) {
-            // "USER" 값을 가진 권한 객체가 데이터베이스에 존재하지 않을 경우 새로 생성하여 저장합니다.
             userAuthority = new Authority("USER");
             authorityRepository.save(userAuthority);
         }
