@@ -38,7 +38,15 @@ const category = () => {
 							>
 								<li>스터디 참여 내역</li>
 							</Link>
-							<li>스터디 개설 내역</li>
+							<Link
+								to={"/myopenstudy"}
+								style={{
+									textDecoration: "none",
+									color: "inherit",
+								}}
+							>
+								<li>스터디 개설 내역</li>
+							</Link>
 							<li>스터디 신청 내역</li>
 						</ul>
 					</nav>
