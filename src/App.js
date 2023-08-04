@@ -12,8 +12,6 @@ import Mypage from "./pages/Mypage";
 import Footer from "./components/Footer";
 import Editinfo from "./pages/Editinfo";
 import MyParticipateStudy from "./pages/MyParticipateStudy";
-import MyOpenStudy from "./pages/MyOpenStudy";
-import StudyDetail from "./pages/StudyDetail";
 
 const side = () => {
 	return (
@@ -122,14 +120,6 @@ function App() {
 						element={
 							<MyParticipateStudy sideheader={rendsidecenter()} />
 						}
-					/>
-					<Route
-						path="/myopenstudy"
-						element={<MyOpenStudy sideheader={rendsidecenter()} />}
-					/>
-					<Route
-						path="/studydetail/:id"
-						element={<StudyDetail sideheader={rendsidecenter()} />}
 					/>
 				</Routes>
 				<div></div>

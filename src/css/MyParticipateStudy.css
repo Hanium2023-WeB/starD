@@ -92,7 +92,6 @@ html {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	margin-bottom: 20px;
 }
 .study_list .list_sub_header {
 	display: flex;
@@ -118,15 +117,10 @@ html {
 	font-size: 13px;
 	padding-top: -10px;
 	color: #99a3af;
-	margin-bottom: 20px;
 }
 .study_list .list_title {
 	font-size: 20px;
 	font-weight: bold;
-	margin-bottom: 20px;
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
 }
 .study_list .list_tag {
 	width: fit-content;
@@ -134,7 +128,6 @@ html {
 	border: 0.275px solid #a5c9ca;
 	padding: 7px 10px;
 	border-radius: 50px;
-	margin-bottom: 10px;
 }
 .study_list .list_onoff {
 	width: fit-content;
@@ -145,5 +138,4 @@ html {
 }
 .study_list .stroke {
 	border-bottom: 1px solid #c6c6c6;
-	margin: 15px 0;
 }

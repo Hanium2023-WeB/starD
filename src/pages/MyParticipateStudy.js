@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
 import Category from "../components/Category.js";
 import App from "../App.js";
 import "../css/MyParticipateStudy.css";
@@ -37,33 +36,25 @@ const MyParticipateStudy = ({ sideheader }) => {
 			<div className="study_list">
 				{state.map((d) => (
 					<div className="list">
-						<Link
-							to={`/studydetail/${d.id}`}
-							style={{
-								textDecoration: "none",
-								color: "inherit",
-							}}
-						>
-							<div className="list_header">
-								<div className="list_sub_header">
-									<div className="list_day">
-										{d.id}일간의 우주여행
-									</div>
-									<div className="list_status">진행중</div>
+						<div className="list_header">
+							<div className="list_sub_header">
+								<div className="list_day">
+									{d.id}일간의 우주여행
 								</div>
-								<div className="list_like">
-									<FontAwesomeIcon icon={faStar} />
-								</div>
+								<div className="list_status">진행중</div>
 							</div>
-							<div className="list_deadline">
-								마감일 | {d.created_date}
+							<div className="list_like">
+								<FontAwesomeIcon icon={faStar} />
 							</div>
-							<div className="list_title">{d.title}</div>
-							<div className="list_tag">{d.tag}</div>
-							<div className="list_onoff">{d.tag}</div>
-							<div className="stroke"></div>
-							<div className="list_founder">{d.author}</div>
-						</Link>
+						</div>
+						<div className="list_deadline">
+							마감일 | {d.created_date}
+						</div>
+						<div className="list_title">{d.title}</div>
+						<div className="list_tag">{d.tag}</div>
+						<div className="list_onoff">{d.tag}</div>
+						<div className="stroke"></div>
+						<div className="list_founder">{d.author}</div>
 					</div>
 				))}
 			</div>
