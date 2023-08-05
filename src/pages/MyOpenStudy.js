@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import Category from "../components/Category.js";
-import App from "../App.js";
-import "../css/MyParticipateStudy.css";
+
+import "../css/MyOpenStudy.css";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 
-const MyParticipateStudy = ({ sideheader }) => {
+const MyOpenStudy = ({ sideheader }) => {
 	const dataId = useRef(0);
 	const [state, setState] = useState([]);
 
@@ -75,7 +75,7 @@ const MyParticipateStudy = ({ sideheader }) => {
 			<div className="container">
 				<Category />
 				<div className="main_container">
-					<h2>스터디 참여 내역</h2>
+					<h2>스터디 개설 내역</h2>
 					<div className="content_container">
 						{mypartistudylist()}
 					</div>
@@ -84,4 +84,4 @@ const MyParticipateStudy = ({ sideheader }) => {
 		</div>
 	);
 };
-export default MyParticipateStudy;
+export default MyOpenStudy;
