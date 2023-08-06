@@ -69,12 +69,12 @@ const Signup = ({sideheader}) => {
 
     // 입력 값 유효성 검사
     if (
-        state.id.length < 3 &&
-          state.password.length < 5 &&
-          state.name.length < 2 &&
-          state.nickname.length < 2 &&
-          state.phone.length < 7 &&
-          state.email.length < 5
+          state.id.length < 1 &&
+          state.password.length < 1 &&
+          state.name.length < 1 &&
+          state.nickname.length < 1 &&
+          state.phone.length < 1 &&
+          state.email.length < 1
         ) {
 
         alert("회원 정보를 입력해 주세요.");
@@ -111,15 +111,9 @@ const Signup = ({sideheader}) => {
       return;
     }
 
-    if (state.phone.length < 7) {
-      inputphone.current.focus();
-      alert("전화번호는 7자 이상이어야 합니다.");
-      return;
-    }
-
     if (state.email.length < 1) {
       inputemail.current.focus();
-      alert("이메일 주소를 입력해 주세요.");
+      alert("이메일을 입력해 주세요.");
       return;
     }
 
@@ -268,7 +262,7 @@ const Signup = ({sideheader}) => {
                   onChange={onChange}
                   placeholder="아이디를 입력해주세요."
                 />
-                <button id="signup_id_btn" type="button" onClick={handleCheckDuplicateID}>
+                <button id="signup_nicname_btn" type="button" onClick={handleCheckDuplicateID}>
                     중복확인
                 </button>
               </div>
@@ -280,7 +274,7 @@ const Signup = ({sideheader}) => {
                   name={"password"}
                   value={state.password}
                   onChange={handleEditPasswordChange}   // 비밀번호 핸들러 실행
-                  placeholder="8 ~ 15자 영문, 숫자 조합"
+                  placeholder="8 ~ 15자 영문, 숫자, 특수문자 조합"
                 />
                 {state.password !== "" ? (
                   state.isValidPassword ? (
