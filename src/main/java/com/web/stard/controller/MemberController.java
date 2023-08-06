@@ -35,19 +35,29 @@ public class MemberController {
         String encodedPassword = passwordEncoder.encode(member.getPassword());
         member.setPassword(encodedPassword);
 
-/*
-        System.out.println("이름: " + member.getName());
-        System.out.println("아이디: " + member.getId());
-        System.out.println("닉네임: " + member.getNickname());
-        System.out.println("비밀번호: " + member.getPassword());
-        System.out.println("이메일: " + member.getEmail());
-        System.out.println("전화번호: " + member.getPhone());
-*/
+        // 중복 아이디 검증
+        boolean isDuplicateId = memberService.checkDuplicateMember(member.getId());
+        if (isDuplicateId) {
+            System.out.println("이미 존재하는 아이디입니다: " + member.getId());
+            return "redirect:/signup";
+        }
 
-        // 중복 아이디 검증 - server
-        boolean isDuplicate = memberService.checkDuplicateMember(member.getId());
-        if (isDuplicate) {
-            System.out.println("이미 존재하는 아이디입니다.");
+        // 중복 닉네임 검증
+        boolean isDuplicateNickname = memberService.checkNickname(member.getNickname());
+        if (isDuplicateNickname) {
+            System.out.println("이미 존재하는 닉네임입니다: " + member.getNickname());
+            return "redirect:/signup";
+        }
+
+        // 비밀번호 정규식 검증
+        if (!isValidPassword(member.getPassword())) {
+            System.out.println("유효하지 않은 비밀번호입니다: " + member.getPassword());
+            return "redirect:/signup";
+        }
+
+        // 이메일 정규식 검증
+        if (!isValidEmail(member.getEmail())) {
+            System.out.println("유효하지 않은 이메일 주소입니다: " + member.getEmail());
             return "redirect:/signup";
         }
 
@@ -61,11 +71,34 @@ public class MemberController {
         Map<String, Boolean> response = new HashMap<>();
         boolean isDuplicate = memberService.checkDuplicateMember(id);
 
-        System.out.println("검증 아이디: " + id);
-        System.out.println("중복 여부: " + isDuplicate);
+        System.out.println("검증 아이디: " + id + " 중복 여부: " + isDuplicate);
 
         response.put("duplicate", isDuplicate);
         return ResponseEntity.ok(response);
+    }
+
+    // 중복 닉네임 검증 - client
+    @GetMapping("/checkDuplicateNickname")
+    public ResponseEntity<Map<String, Boolean>> checkDuplicateNickname(@RequestParam String nickname) {
+        Map<String, Boolean> response = new HashMap<>();
+        boolean isDuplicate = memberService.checkNickname(nickname);
+
+        System.out.println("검증 닉네임: " + nickname + " 중복 여부: " + isDuplicate);
+
+        response.put("duplicate", isDuplicate);
+        return ResponseEntity.ok(response);
+    }
+
+    // 비밀번호 정규식 검증
+    private boolean isValidPassword(String password) {
+        String regex = "^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,15}$";
+        return password.matches(regex);
+    }
+
+    // 이메일 정규식 검증
+    private boolean isValidEmail(String email) {
+        String regex = "^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$";
+        return email.matches(regex);
     }
 
 }

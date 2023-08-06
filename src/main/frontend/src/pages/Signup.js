@@ -1,9 +1,10 @@
 import LogoButton from "../components/LogoButton";
 import React, { useState, useRef } from "react";
+import { isEmail, isPassword } from "../util/check";
+import "../css/Log.css";
+
 import axios from "axios";
 import { getCsrfTokenFromCookie } from "../csrfUtils";
-import {isEmail, isPassword} from "../util/check.js";
-import "../css/Log.css";
 
 const Signup = ({sideheader}) => {
   const inputID = useRef();
@@ -20,11 +21,13 @@ const Signup = ({sideheader}) => {
     name: "",
     nickname:"",
     phone : "",
-    email:""
-
+    email:"",
+    isValidEmail: false,
+    isValidPassword: false,
   });
 
-  const [isIdDuplicate, setIsIdDuplicate] = useState(true); // 중복 여부 상태 변수
+  const [isIdDuplicate, setIsIdDuplicate] = useState(true); // id 중복 여부 상태 변수
+  const [isNicknameDuplicate, setIsNicknameDuplicate] = useState(true); // nickname 중복 여부 상태 변수
 
   const onChange = (e) => {
       setState({
@@ -35,18 +38,40 @@ const Signup = ({sideheader}) => {
       console.log(e.target.value);
     };
 
+  // 이메일 핸들러
+  const handleEditemailChange = (e) => {
+      const Email = e.target.value;
+
+      setState((prevState) => ({
+        ...prevState,
+        email: Email,
+        isValidEmail: isEmail(Email), // 이메일 유효성 검사
+      }));
+  };
+
+  // 비밀번호 핸들러
+  const handleEditPasswordChange = (e) => {
+      const PW = e.target.value;
+
+      setState((prevState) => ({
+        ...prevState,
+        password: PW,
+        isValidPassword: isPassword(PW), // 비밀번호 유효성 검사
+      }));
+   };
 
   const handleSubmit = async (e) => {
     e.preventDefault(); // 폼 기본 제출 이벤트 방지
 
     console.log("handleSubmit 함수 호출");
     console.log("isIdDuplicate 상태:", isIdDuplicate);
+    console.log("isNicknameDuplicate 상태:", isNicknameDuplicate);
 
     // 입력 값 유효성 검사
     if (
-          state.id.length < 3 &&
+        state.id.length < 3 &&
           state.password.length < 5 &&
-          state.name.length < 3 &&
+          state.name.length < 2 &&
           state.nickname.length < 2 &&
           state.phone.length < 7 &&
           state.email.length < 5
@@ -64,13 +89,13 @@ const Signup = ({sideheader}) => {
 
     if (state.password.length < 5) {
       inputPW.current.focus();
-      alert("비밀번호는 5자 이상이어야 합니다.");
+      alert("비밀번호는 8자 이상이어야 합니다.");
       return;
     }
 
-    if (state.name.length < 3) {
+    if (state.name.length < 2) {
       inputName.current.focus();
-      alert("이름은 3자 이상이어야 합니다.");
+      alert("이름은 2자 이상이어야 합니다.");
       return;
     }
 
@@ -86,15 +111,42 @@ const Signup = ({sideheader}) => {
       return;
     }
 
-    if (state.email.length < 5) {
-      inputemail.current.focus();
-      alert("이메일은 5자 이상이어야 합니다.");
+    if (state.phone.length < 7) {
+      inputphone.current.focus();
+      alert("전화번호는 7자 이상이어야 합니다.");
       return;
     }
 
-    // 중복 확인을 안 한 경우, 가입 처리하지 않음
+    if (state.email.length < 1) {
+      inputemail.current.focus();
+      alert("이메일 주소를 입력해 주세요.");
+      return;
+    }
+
+
+    // 비밀번호 정규식 검증
+    if (!isPassword(state.password)) {
+      inputPW.current.focus();
+      alert("비밀번호는 8 ~ 12자 영문, 숫자, 특수문자 조합이어야 합니다.");
+      return;
+    }
+
+    // 이메일 정규식 검증
+    if (!isEmail(state.email)) {
+      inputemail.current.focus();
+      alert("유효한 이메일 주소를 입력해 주세요.");
+      return;
+    }
+
+    // id 중복 확인을 안 한 경우, 중복인 경우 가입 처리하지 않음
     if (isIdDuplicate) {
-      alert("중복 확인을 해주세요.");
+      alert("아이디 중복 확인을 해주세요.");
+      return;
+    }
+
+    // 닉네임 중복 확인을 안 한 경우, 중복인 경우 가입 처리하지 않음
+    if (isNicknameDuplicate) {
+      alert("닉네임 중복 확인을 해주세요.");
       return;
     }
 
@@ -127,6 +179,7 @@ const Signup = ({sideheader}) => {
     }
   };
 
+  // 중복 아이디 검증
   const handleCheckDuplicateID = async () => {
     // 입력한 아이디 가져오기
     const id = state.id; // state에서 아이디 값을 가져오기
@@ -140,7 +193,7 @@ const Signup = ({sideheader}) => {
     try {
       // 서버에 아이디 중복 검증 요청 보내기
       const response = await axios.get("http://localhost:8080/checkDuplicateID", {
-        params: { id: id }, // 쿼리 매개변수로 아이디를 전달
+        params: { id: id },
       });
 
     // 서버로부터 받은 응답 확인
@@ -161,11 +214,46 @@ const Signup = ({sideheader}) => {
     }
   };
 
+  // 중복 닉네임 검증
+  const handleCheckDuplicateNickname = async () => {
+    // 입력한 닉네임 가져오기
+    const nickname = state.nickname;
+
+    // 입력 값이 없는 경우 요청을 보내지 않음
+    if (!nickname) {
+      alert("닉네임을 입력해 주세요.");
+      return;
+    }
+
+    try {
+      // 서버에 닉네임 중복 검증 요청 보내기
+      const response = await axios.get("http://localhost:8080/checkDuplicateNickname", {
+        params: { nickname: nickname },
+      });
+
+      // 서버로부터 받은 응답 확인
+      const isDuplicate = response.data.duplicate;
+
+      console.log("handleCheckDuplicateNickname 함수 호출");
+      console.log("isDuplicate 상태:", isDuplicate);
+
+      setIsNicknameDuplicate(isDuplicate);
+
+      if (isDuplicate) {
+        alert("이미 존재하는 닉네임입니다.");
+      } else {
+        alert("사용 가능한 닉네임입니다.");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
   return (
       <div>
           {sideheader}
 
-          <div className="containers" id="sign">
+        <div className="containers" id="sign">
           <div className="login_info">
             <p>회원가입</p>
           </div>
@@ -180,7 +268,9 @@ const Signup = ({sideheader}) => {
                   onChange={onChange}
                   placeholder="아이디를 입력해주세요."
                 />
-                <button id="signup_nicname_btn" onClick={handleCheckDuplicateID}>중복 확인</button>
+                <button id="signup_id_btn" type="button" onClick={handleCheckDuplicateID}>
+                    중복확인
+                </button>
               </div>
 
               <div className="subinfo">비밀번호</div>
@@ -189,9 +279,16 @@ const Signup = ({sideheader}) => {
                   ref={inputPW}
                   name={"password"}
                   value={state.password}
-                  onChange={onChange}
-                  placeholder=" 8 ~ 12자 영문, 숫자 조합"
+                  onChange={handleEditPasswordChange}   // 비밀번호 핸들러 실행
+                  placeholder="8 ~ 15자 영문, 숫자 조합"
                 />
+                {state.password !== "" ? (
+                  state.isValidPassword ? (
+                    <p style={{ color: "blue" }}>유효한 비밀번호입니다.</p>
+                  ) : (
+                    <p style={{ color: "red" }}>비밀번호는 8 ~ 15자 영문, 숫자, 특수문자 조합이어야 합니다.</p>
+                  )
+                ) : null}
               </div>
 
               {/* 이름 추가 */}
@@ -202,6 +299,7 @@ const Signup = ({sideheader}) => {
                   name={"name"}
                   value={state.name}
                   onChange={onChange}
+                  placeholder="이름을 입력해주세요."
                  />
               </div>
 
@@ -214,7 +312,9 @@ const Signup = ({sideheader}) => {
                   onChange={onChange}
                   placeholder="닉네임을 입력해주세요."
                 />
-                <button id="signup_nicname_btn">중복 확인</button>
+                 <button id="signup_nicname_btn" type="button" onClick={handleCheckDuplicateNickname}>
+                    중복 확인
+                </button>
               </div>
 
               <div className="subinfo">전화번호</div>
@@ -227,19 +327,26 @@ const Signup = ({sideheader}) => {
                   placeholder="전화번호를 입력해주세요."
                 />
               </div>
+
               <div className="subinfo">이메일</div>
               <div className="inputemail">
                 <input
                   ref={inputemail}
                   name={"email"}
                   value={state.email}
-                  onChange={onChange}
+                  onChange={handleEditemailChange}  // 이메일 핸들러 실행
                   placeholder="이메일을 입력해주세요."
-
                 />
+                {state.email !== "" ? (
+                  state.isValidEmail ? (
+                    <p style={{ color: "blue" }}>사용 가능한 email입니다.</p>
+                  ) : (
+                    <p style={{ color: "red" }}>유효하지 않은 email입니다.</p>
+                  )
+                ) : null}
               </div>
             </div>
-            <div className="loginbtn">
+            <div className="signbtn">
               <button type="submit">가입하기</button>
             </div>
           </form>
