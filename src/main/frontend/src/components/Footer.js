@@ -129,7 +129,7 @@ const Footer = () => {
           )}
           <hr/>
         </div>
-       
+
         <div className="smallwidth_sub">
         <span>개인정보처리방침 이용약관</span>
         <p id="3" onClick={handlertoggle3}>

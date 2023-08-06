@@ -55,7 +55,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .and()
                 .authorizeRequests()
                 // 해당 url 요청에 대해서는 로그인 요구 X
-                .antMatchers("/", "/signup","/login", "/current-member").permitAll()
+                .antMatchers("/", "/signup", "/checkDuplicateID", "/checkDuplicateNickname", "/login", "/current-member").permitAll()
                 // admin 요청에 대해서는 ROLE_ADMIN 역할을 가지고 있어야 함
 //                .antMatchers("/admin").hasRole("ADMIN")
                 // 나머지 요청에 대해서는 로그인 요구 O
