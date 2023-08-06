@@ -68,7 +68,7 @@ const Login = ({sideheader}) => {
             {/* <LogoButton /> */}
             {/* <div className ="Logo"> STAR D </div> */}
             {sideheader}
-            <div className="containers">
+            <div className="containers" id="log">
                 <div className="login_info">
                     <p>로그인</p>
                 </div>
@@ -78,7 +78,7 @@ const Login = ({sideheader}) => {
                         <input
                             ref={inputID}
                             name={"ID"}
-                            placeholder="아이디를 입력하세요."
+                            placeholder="아이디를 입력해주세요"
                             value={state.ID}
                             onChange={onChange}
                         />
@@ -88,7 +88,7 @@ const Login = ({sideheader}) => {
                     <div>
                         <input
                             ref={inputPW}
-                            placeholder="비밀번호를 입력하세요."
+                            placeholder="비밀번호를 입력해주세요"
                             name={"PW"}
                             type={"password"}
                             value={state.PW}

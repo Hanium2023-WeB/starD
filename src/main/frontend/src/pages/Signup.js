@@ -2,7 +2,7 @@ import LogoButton from "../components/LogoButton";
 import React, { useState, useRef } from "react";
 import axios from "axios";
 import { getCsrfTokenFromCookie } from "../csrfUtils";
-
+import {isEmail, isPassword} from "../util/check.js";
 import "../css/Log.css";
 
 const Signup = ({sideheader}) => {
@@ -172,25 +172,25 @@ const Signup = ({sideheader}) => {
           <form onSubmit={handleSubmit}>
             <div className="input_info">
               <div className="subinfo">아이디</div>
-              <div>
+              <div className="signup_id">
                 <input
                   ref={inputID}
                   name={"id"} // Member 클래스의 필드 이름과 일치해야 함
                   value={state.id} // state에서 사용하는 이름도 Member 클래스의 필드 이름과 일치해야 함
                   onChange={onChange}
+                  placeholder="아이디를 입력해주세요."
                 />
-                <button type="button" onClick={handleCheckDuplicateID}>
-                    중복확인
-                </button>
+                <button id="signup_nicname_btn" onClick={handleCheckDuplicateID}>중복 확인</button>
               </div>
 
               <div className="subinfo">비밀번호</div>
-              <div>
+              <div className="inputpw">
                 <input
                   ref={inputPW}
                   name={"password"}
                   value={state.password}
                   onChange={onChange}
+                  placeholder=" 8 ~ 12자 영문, 숫자 조합"
                 />
               </div>
 
@@ -206,13 +206,15 @@ const Signup = ({sideheader}) => {
               </div>
 
               <div className="subinfo">닉네임</div>
-              <div>
+              <div className="signup_nicname">
                 <input
                   ref={inputNicname}
                   name={"nickname"}
                   value={state.nickname}
                   onChange={onChange}
+                  placeholder="닉네임을 입력해주세요."
                 />
+                <button id="signup_nicname_btn">중복 확인</button>
               </div>
 
               <div className="subinfo">전화번호</div>
@@ -222,15 +224,18 @@ const Signup = ({sideheader}) => {
                   name={"phone"}
                   value={state.phone}
                   onChange={onChange}
+                  placeholder="전화번호를 입력해주세요."
                 />
               </div>
               <div className="subinfo">이메일</div>
-              <div>
+              <div className="inputemail">
                 <input
                   ref={inputemail}
                   name={"email"}
                   value={state.email}
                   onChange={onChange}
+                  placeholder="이메일을 입력해주세요."
+
                 />
               </div>
             </div>
