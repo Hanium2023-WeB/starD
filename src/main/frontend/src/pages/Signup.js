@@ -272,6 +272,7 @@ const Signup = ({sideheader}) => {
                 <input
                   ref={inputPW}
                   name={"password"}
+                  type={"password"}
                   value={state.password}
                   onChange={handleEditPasswordChange}   // 비밀번호 핸들러 실행
                   placeholder="8 ~ 15자 영문, 숫자, 특수문자 조합"
