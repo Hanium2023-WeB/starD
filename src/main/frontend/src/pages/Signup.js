@@ -121,7 +121,7 @@ const Signup = ({sideheader}) => {
     // 비밀번호 정규식 검증
     if (!isPassword(state.password)) {
       inputPW.current.focus();
-      alert("비밀번호는 8 ~ 12자 영문, 숫자, 특수문자 조합이어야 합니다.");
+      alert("비밀번호는 8 ~ 15자 영문, 숫자, 특수문자 조합이어야 합니다.");
       return;
     }
 
