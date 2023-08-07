@@ -4,6 +4,9 @@ import { ReactComponent as Arrow } from "../images/Arrow.svg";
 import edit from "../css/edit.css";
 import arrowdown from "../images/arrowdown.png";
 import arrowup from "../images/arrowup.png";
+import Signout from "../components/Signout.js";
+
+import {isEmail, isPassword} from "../util/check.js";
 
 const options = [
   { value: "+82", name: "대한민국" },
@@ -38,10 +41,11 @@ const tagoptions = [
   { value: "클라우드", name: "클라우드" },
 ];
 
+
 const Tagoption = (props) => {
   const [Tag, setTag] = useState("");
 
-  const handletagChange = (e) => {
+  const handletagChange = (e) => { ///태그 핸들러
     // event handler
     setTag({
       ...Tag,
@@ -65,7 +69,7 @@ const Tagoption = (props) => {
   );
 };
 
-const SelectBox = (props) => {
+const SelectBox = (props) => { //전화번호 나라 선택 
   const handleChange = (e) => {
     // event handler
     console.log(e.target.value);
@@ -93,9 +97,24 @@ const Editinfo = ({ sideheader }) => {
     NEWPW: "",
     CHECKNEWPW: "",
     PHONE: "",
+    isValidEmail: false,
   });
+  const checkValidEmail = () =>{ //일정 시간이 지난 후 유효성 검사 및 state 변경 
+     let timer;
+    if (timer){
+      clearTimeout(timer);
+    }
+     timer = setTimeout(() => {
+      if(!isEmail(state.EMAIL)){
+        setState({isValidEmail:false});
+      }else{
+        setState({isValidEmail:true});
+      }
+     }, 300);
+  };
+  
 
-  const handleEditChange = (e) => {
+  const handleEditChange = (e) => { //핸들러 나누기
     // event handler
     setState({
       ...state,
@@ -104,6 +123,17 @@ const Editinfo = ({ sideheader }) => {
     console.log(e.target.name);
     console.log(e.target.value);
   };
+  const handleEditemailChange = (e) => { //이메일 정규식 핸들러
+    // event handler
+    setState({
+      ...state,
+      [e.target.name]: e.target.value,
+    });
+    checkValidEmail(); //함수 실행
+    console.log(e.target.name);
+    console.log(e.target.value);
+  };
+
   return (
     <div>
       {sideheader}
@@ -117,6 +147,7 @@ const Editinfo = ({ sideheader }) => {
           <div className="sub_container">
             <div className="change_nicname">
               <div id="title">닉네임</div>
+              <div id="checkname"> 
               <input
                 id="content"
                 name={"NICNAME"}
@@ -124,10 +155,14 @@ const Editinfo = ({ sideheader }) => {
                 onChange={handleEditChange}
                 placeholder="닉네임을 입력하세요."
               />
+              <button id="check_double_nicname">증복확인</button>
+              </div>
+
+        
               <button id="save">저장하기</button>
             </div>
           </div>
-          <div className="sub_container">
+          <div className="sub_container" id="c_email">
             <div className="change_email">
               <div id="title">
                 이메일<span id="sub_title">(이메일 변경 후 재인증 필요)</span>
@@ -136,9 +171,16 @@ const Editinfo = ({ sideheader }) => {
                 id="content"
                 name={"EMAIL"}
                 value={state.EMAIL}
-                onChange={handleEditChange}
+                onChange={handleEditemailChange}
                 placeholder="이메일을 입력하세요."
               />
+              {state.EMAIL !="" ? (
+                state.isValidEmail ?(
+                  <p style={{ color: "blue" }}>사용가능한 email입니다.</p>
+                ):(
+                  <p style={{ color: "red" }}>유효하지 않은 email입니다.</p>
+                )
+              ): null}
               <button id="save">저장하기</button>
             </div>
           </div>
@@ -188,25 +230,22 @@ const Editinfo = ({ sideheader }) => {
                 전화번호
                 <span id="sub_title">(-없이 전화번호만 입력)</span>
               </div>
+           
               <input
                 id="content"
                 name={"PHONE"}
                 value={state.PHONE}
                 onChange={handleEditChange}
+                placeholder="전화번호를 입력해주세요."
               ></input>
               <div className="select_country">
                 <SelectBox options={options} defaultValue="       " />
               </div>
+
               <button id="save">저장하기</button>
             </div>
           </div>
-          <div className="sub_container" id="sign_out">
-            <div className="signout">
-              <div id="title">
-                탈퇴
-              </div>
-            </div>
-          </div>
+          <Signout/>
         </div>
       </div>
     </div>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import Category from "../components/Category.js";
-
+import App from "../App.js";
 import "../css/MyParticipateStudy.css";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
