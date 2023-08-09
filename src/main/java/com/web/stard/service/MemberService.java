@@ -56,10 +56,6 @@ public class MemberService {
         }
         member.setRoles(userAuthority);
 
-        // TODO 스프링 스큐리티에서 자동으로 암호화 진행함으로 아래 코드는 주석 처리
-//        String encodedPassword = passwordEncoder.encode(member.getPassword());
-//        member.setPassword(encodedPassword);
-
         memberRepository.save(member);
     }
 

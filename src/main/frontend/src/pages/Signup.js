@@ -4,7 +4,6 @@ import { isEmail, isPassword } from "../util/check";
 import "../css/Log.css";
 
 import axios from "axios";
-import { getCsrfTokenFromCookie } from "../csrfUtils";
 
 const Signup = ({sideheader}) => {
   const inputID = useRef();
@@ -145,21 +144,13 @@ const Signup = ({sideheader}) => {
     }
 
     try {
-      const csrfToken = getCsrfTokenFromCookie();
-
-      const response = await axios.post("http://localhost:8080/signup", null, {
-        params: {
-          id: state.id,
-          password: state.password,
-          name: state.name,
-          nickname: state.nickname,
-          phone: state.phone,
-          email: state.email,
-        },
-        headers: {
-          "Content-Type": "application/json",
-          "X-CSRF-TOKEN": csrfToken,
-        },
+      const response = await axios.post("http://localhost:8080/signup", {
+        id: state.id,
+        password: state.password,
+        name: state.name,
+        nickname: state.nickname,
+        phone: state.phone,
+        email: state.email,
       });
 
       if (response.status === 200) {

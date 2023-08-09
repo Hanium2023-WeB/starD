@@ -30,11 +30,7 @@ public class MemberController {
 
     // 회원 가입
     @PostMapping("/signup")
-    public String saveMember(@ModelAttribute Member member) {
-        // 패스워드 인코딩
-        String encodedPassword = passwordEncoder.encode(member.getPassword());
-        member.setPassword(encodedPassword);
-
+    public String saveMember(@RequestBody  Member member) {
         // 중복 아이디 검증
         boolean isDuplicateId = memberService.checkDuplicateMember(member.getId());
         if (isDuplicateId) {
@@ -54,6 +50,10 @@ public class MemberController {
             System.out.println("유효하지 않은 비밀번호입니다: " + member.getPassword());
             return "redirect:/signup";
         }
+
+        // 비밀번호 인코딩
+        String encodedPassword = passwordEncoder.encode(member.getPassword());
+        member.setPassword(encodedPassword);
 
         // 이메일 정규식 검증
         if (!isValidEmail(member.getEmail())) {
@@ -94,6 +94,7 @@ public class MemberController {
         String regex = "^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,15}$";
         return password.matches(regex);
     }
+
 
     // 이메일 정규식 검증
     private boolean isValidEmail(String email) {
