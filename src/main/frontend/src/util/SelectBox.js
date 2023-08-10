@@ -73,12 +73,7 @@ export function selectBOX (mem){
         }
 
         for (const gugun of gugunList) {
-          if (gugun === mem.district) {
-            $gugunSelect.append(`<option value="${gugun}" selected>${gugun}</option>`);
-          } else {
-            $gugunSelect.append(`<option value="${gugun}">${gugun}</option>`);
-          }
-
+          $gugunSelect.append(`<option value="${gugun}">${gugun}</option>`);
         }
       }
       
