@@ -136,6 +136,41 @@ const [mem, setMem] = useState(null);
     console.log(e.target.value);
   };
 
+  const handleCheckDuplicateNickname = async () => {
+      // 입력한 닉네임 가져오기
+      const nickname = state.nickname;
+
+      // 입력 값이 없는 경우 요청을 보내지 않음
+      if (!nickname) {
+        alert("닉네임을 입력해 주세요.");
+        return;
+      }
+
+        axios.post("http://localhost:8080/user/mypage/check/nickname", null, {
+            params: { id: "aaaaa", nickname: nickname }, // 사용자 ID 추후 수정
+            withCredentials: true
+        })
+            .then(response => {
+                const isDuplicate = response.data;
+
+                if (isDuplicate) {
+                     alert("이미 존재하는 닉네임입니다.");
+                } else {
+                     alert("사용 가능한 닉네임입니다.");
+                }
+            })
+            .catch(error => {
+                if (axios.isAxiosError(error)) {
+                    // AxiosError 처리
+                    console.error("AxiosError:", error.message);
+                    // 요청 실패로 인한 오류 처리를 진행하거나 사용자에게 알리는 등의 작업 수행
+                } else {
+                    // 일반 오류 처리
+                    console.error("데이터 가져오기 중 오류 발생:", error);
+                }
+            });
+  };
+
   return (
     <div>
       {sideheader}
@@ -154,7 +189,7 @@ const [mem, setMem] = useState(null);
                 onChange={handleEditChange}
                 placeholder="닉네임을 입력하세요."
               />
-              <button id="check_double_nicname" onClick={handleEditChange}>중복확인</button>
+              <button id="check_double_nicname" onClick={handleCheckDuplicateNickname}>중복확인</button>
               </div>
     
               <button id="save">저장하기</button>

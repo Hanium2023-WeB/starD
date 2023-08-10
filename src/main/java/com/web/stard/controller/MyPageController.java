@@ -41,7 +41,13 @@ public class MyPageController {
 
     /* 닉네임 중복 확인 */
     @PostMapping("/check/nickname")
-    public boolean checkNickname(@RequestParam("nickname") String nickname) {
+    public boolean checkNickname(@RequestParam("id") String id,
+                                 @RequestParam("nickname") String nickname) {
+        String currentNickname = memberService.find(id).getNickname();
+        System.out.println(nickname);
+        if (nickname.equals(currentNickname)) { // 현재 닉네임 == 바꿀 닉네임이면 사용 가능하게
+            return false;
+        }
         return memberService.checkNickname(nickname);
         // true -> 이미 존재 (사용 불가), false -> 없음 (사용 가능)
     }
