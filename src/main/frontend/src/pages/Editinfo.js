@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { useNavigate } from 'react-router-dom';
 import Category from "../components/Category";
 import { ReactComponent as Arrow } from "../images/Arrow.svg";
@@ -43,14 +44,16 @@ const SelectBox = (props) => { //전화번호 나라 선택
 
 const Editinfo = ({ sideheader }) => {
   const [state, setState] = useState({
-    NICNAME: "",
-    EMAIL: "",
-    PW: "",
-    NEWPW: "",
-    CHECKNEWPW: "",
-    PHONE: "",
+    nickname: "",
+    email: "",
+    password: "",
+    newPassword: "",
+    checkNewPw: "",
+    phone: "",
     isValidEmail: false,
   });
+
+const [mem, setMem] = useState(null);
 
   // //서버에 닉네임 중복확인 요청 함수
   // const checkDuplicateNicname=()=>{
@@ -76,13 +79,41 @@ const Editinfo = ({ sideheader }) => {
       clearTimeout(timer);
     }
      timer = setTimeout(() => {
-      if(!isEmail(state.EMAIL)){
+      if(!isEmail(state.email)){
         setState({isValidEmail:false});
       }else{
         setState({isValidEmail:true});
       }
      }, 300);
   };
+
+  useEffect(() => {
+    axios.post("http://localhost:8080/user/mypage/update", null, {
+            params: { id: "aaaaa" }, // 사용자 ID 추후 수정
+            withCredentials: true
+    })
+        .then(response => {
+            const member = response.data;
+            console.log(member);
+            setMem(member);
+            setState({
+                ...state,
+                nickname: member.nickname,
+                email: member.email,
+                phone: member.phone
+            });
+        })
+        .catch(error => {
+            if (axios.isAxiosError(error)) {
+                // AxiosError 처리
+                console.error("AxiosError:", error.message);
+                // 요청 실패로 인한 오류 처리를 진행하거나 사용자에게 알리는 등의 작업 수행
+            } else {
+                // 일반 오류 처리
+                console.error("데이터 가져오기 중 오류 발생:", error);
+            }
+        });
+  }, []);
   
 
   const handleEditChange = (e) => { //핸들러 나누기
@@ -118,12 +149,12 @@ const Editinfo = ({ sideheader }) => {
               <div id="checkname"> 
               <input
                 id="content"
-                name={"NICNAME"}
-                value={state.NICNAME}
+                name={"nickname"}
+                value={state.nickname}
                 onChange={handleEditChange}
                 placeholder="닉네임을 입력하세요."
               />
-              <button id="check_double_nicname" onClick={handleEditChange}>증복확인</button>
+              <button id="check_double_nicname" onClick={handleEditChange}>중복확인</button>
               </div>
     
               <button id="save">저장하기</button>
@@ -133,7 +164,7 @@ const Editinfo = ({ sideheader }) => {
             <div className="change_estate">
               <div id="title">거주지</div>
               <div id="checkestate"> 
-              <RealEstate/>
+              {mem && <RealEstate mem={mem} />}
               </div>
     
               <button id="save">저장하기</button>
@@ -146,12 +177,12 @@ const Editinfo = ({ sideheader }) => {
               </div>
               <input
                 id="content"
-                name={"EMAIL"}
-                value={state.EMAIL}
+                name={"email"}
+                value={state.email}
                 onChange={handleEditemailChange}
                 placeholder="이메일을 입력하세요."
               />
-              {state.EMAIL !="" ? (
+              {state.email !="" ? (
                 state.isValidEmail ?(
                   <p style={{ color: "blue" }}>사용가능한 email입니다.</p>
                 ):(
@@ -170,22 +201,22 @@ const Editinfo = ({ sideheader }) => {
               </div>
               <input
                 id="content"
-                name={"PW"}
-                value={state.PW}
+                name={"password"}
+                value={state.password}
                 onChange={handleEditChange}
                 placeholder="현재 비밀번호를 입력하세요."
               ></input>
               <input
                 id="content"
-                name={"NEWPW"}
-                value={state.NEWPW}
+                name={"newPassword"}
+                value={state.newPassword}
                 onChange={handleEditChange}
                 placeholder="새로운 비밀번호를 입력하세요."
               ></input>
               <input
                 id="content"
-                name={"CHECKNEWPW"}
-                value={state.CHECKNEWPW}
+                name={"checkNewPw"}
+                value={state.checkNewPw}
                 onChange={handleEditChange}
                 placeholder="비밀번호 확인"
               ></input>
@@ -201,8 +232,8 @@ const Editinfo = ({ sideheader }) => {
            
               <input
                 id="content"
-                name={"PHONE"}
-                value={state.PHONE}
+                name={"phone"}
+                value={state.phone}
                 onChange={handleEditChange}
                 placeholder="전화번호를 입력해주세요."
               ></input>

@@ -28,15 +28,15 @@ public class MyPageController {
 
     /* 정보 반환 */
     @PostMapping("/update")
-    public Map<String, Object> getMember(@RequestParam("id") String id) {
+    public Member getMember(@RequestParam("id") String id) {
         Member member = memberService.find(id);
-        List<Interest> interests = memberService.getInterests(id);
+        return member;
+    }
 
-        Map<String, Object> data = new HashMap<>();
-        data.put("member", member);
-        data.put("interests", interests);
-
-        return data;
+    /* 관심분야 반환 */
+    @PostMapping("/update/interests")
+    public List<Interest> getInterests(@RequestParam("id") String id) {
+        return memberService.getInterests(id);
     }
 
     /* 닉네임 중복 확인 */
