@@ -14,6 +14,7 @@ import Editinfo from "./pages/Editinfo";
 import MyParticipateStudy from "./pages/MyParticipateStudy";
 import MyOpenStudy from "./pages/MyOpenStudy";
 import StudyDetail from "./pages/StudyDetail";
+import ToDoList from "./pages/ToDoList";
 
 const side = () => {
 	return (
@@ -131,6 +132,11 @@ function App() {
 						path="/studydetail/:id"
 						element={<StudyDetail sideheader={rendsidecenter()} />}
 					/>
+					<Route
+						path="/ToDoList"
+						element={<ToDoList sideheader = {rendsidecenter()}/>}
+						/>
+					
 				</Routes>
 				<div></div>
 				<Link

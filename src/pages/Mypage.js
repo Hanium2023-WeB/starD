@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 import App from "../App.js";
 import Slide from "../components/Slide.js";
 import Scrap from "../components/Scrap.js";
 import Category from "../components/Category.js";
+import ToDoList from "../pages/ToDoList.js"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import "../css/MyParticipateStudy.css";
@@ -61,7 +63,6 @@ const Mypage = ({ sideheader }) => {
 		//페이지가 마운트 되자마자 api호출
 		getData();
 	}, []);
-
 	return (
 		<div>
 			{sideheader}
@@ -88,7 +89,12 @@ const Mypage = ({ sideheader }) => {
 						<div className="todo">
 							<div className="tag">
 								<p>TO DO LIST</p>
-								<button id="more">전체보기</button>
+								<Link to ={"/ToDoList"}
+										style={{
+											textDecoration: "none",
+											color: "inherit"}}>
+								<button id="more" >전체보기</button>
+								</Link>
 							</div>
 							<div id="detail">디테일입니다.</div>
 						</div>

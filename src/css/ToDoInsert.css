@@ -1,0 +1,23 @@
+.TodoInsert{
+    width: 100%;
+    position: relative;
+    top: 10px;
+}
+.TodoInsert input{
+    border-radius: 5px;
+    width: 75%;
+    height: 30px;
+    margin-left: 30px;
+}
+.TodoInsert button{
+    background-color: #395b64;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    margin-left: 10px;
+
+    position: relative;
+    bottom: 7px;
+    height: 30px;
+    font-size: 1.3rem;
+}
