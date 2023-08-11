@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import edit from "../css/edit.css";
+import axios from "axios";
 const EditInterest=()=>{
     const tagoptions = [
         { value: "IT기획", name: "IT기획" },
@@ -24,9 +25,9 @@ const EditInterest=()=>{
         { value: "클우드", name: "클라우드" },
       ];
 
+      const [tags, setTags] = useState([]);
       
       const Tagoption = (props) => {
-        const [tags, setTags] = useState([]);
     
         const handletagChange = (value) => {
           if (tags.includes(value)) {
@@ -62,6 +63,35 @@ const EditInterest=()=>{
           </div>
         );
       };
+
+const handleSaveTag = async () => {
+    if (tags.length === 0) {
+        alert("관심분야를 선택하세요.");
+        return;
+    }
+
+//    const encodedTags = tags.map(tag => encodeURIComponent(tag));
+    const interests = tags.join(",");
+
+    axios.post("http://localhost:8080/user/mypage/update/interest", null, {
+        params: { interestList: interests },
+        withCredentials: true
+    })
+        .then(response => {
+            if (response.status === 200) {
+                console.log("관심분야 변경 성공");
+                alert("관심분야가 변경되었습니다.");
+            } else {
+                console.error("관심분야 변경 실패");
+                alert("관심분야 변경에 실패하였습니다.");
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            alert("관심분야 변경에 실패하였습니다.");
+        });
+};
+
 return(
     <div className="sub_container" id="interested">
     <div className="change_interest">
@@ -70,7 +100,7 @@ return(
       </div>
       <Tagoption editoptions={tagoptions} value="" />
 
-      <button id="save">저장하기</button>
+      <button id="save" onClick={handleSaveTag}>저장하기</button>
     </div>
   </div>
 );

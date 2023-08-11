@@ -177,13 +177,17 @@ public class MyPageController {
 
     /* 관심분야 변경 */
     @PostMapping("/update/interest")
-    public ResponseEntity<String> updateInterest(@RequestParam("interestList") List<String> interests) {
+    public ResponseEntity<String> updateInterest(@RequestParam("interestList") String interests) {
+        System.out.println("관심분야 : " + interests);
+
+        String[] interestArray = interests.split(",");
+
         // 현재 로그인한 사용자 정보 가져오기
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.isAuthenticated()) {
             String id = authentication.getName(); // 사용자 아이디
             if (!id.equals("anonymousUser")) {
-                memberService.updateInterest(id, interests);
+                memberService.updateInterest(id, interestArray);
                 return ResponseEntity.ok().build();
             }
         }

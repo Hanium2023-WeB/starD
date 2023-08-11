@@ -113,7 +113,7 @@ public class MemberService {
 
     /* 관심분야 수정 */
     @Transactional
-    public void updateInterest(String id, List<String> interests) {
+    public void updateInterest(String id, String[] interests) {
         Member member = find(id);
 
         // 기존 관심분야 delete 후 새로 insert
