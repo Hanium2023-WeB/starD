@@ -54,6 +54,7 @@ const Editinfo = ({ sideheader }) => {
   });
 
 const [mem, setMem] = useState(null);
+const [isNicknameDuplicate, setIsNicknameDuplicate] = useState(true); // nickname 중복 여부 상태 변수
 
   // //서버에 닉네임 중복확인 요청 함수
   // const checkDuplicateNicname=()=>{
@@ -89,7 +90,6 @@ const [mem, setMem] = useState(null);
 
   useEffect(() => {
     axios.post("http://localhost:8080/user/mypage/update", null, {
-            params: { id: "aaaaa" }, // 사용자 ID 추후 수정
             withCredentials: true
     })
         .then(response => {
@@ -147,11 +147,13 @@ const [mem, setMem] = useState(null);
       }
 
         axios.post("http://localhost:8080/user/mypage/check/nickname", null, {
-            params: { id: "aaaaa", nickname: nickname }, // 사용자 ID 추후 수정
+            params: { nickname: nickname },
             withCredentials: true
         })
             .then(response => {
                 const isDuplicate = response.data;
+
+                setIsNicknameDuplicate(isDuplicate);
 
                 if (isDuplicate) {
                      alert("이미 존재하는 닉네임입니다.");
@@ -170,6 +172,167 @@ const [mem, setMem] = useState(null);
                 }
             });
   };
+
+  const handleSaveNickname = async () => {
+     // 입력한 닉네임 가져오기
+     const nickname = state.nickname;
+
+     // 입력 값이 없는 경우 요청을 보내지 않음
+     if (!nickname) {
+        alert("닉네임을 입력해 주세요.");
+        return;
+     }
+
+     // 닉네임 중복 확인 안 함, 중복 => 처리 X
+     if (isNicknameDuplicate) {
+         alert("닉네임 중복 확인을 해주세요.");
+         return;
+     }
+
+     axios.post("http://localhost:8080/user/mypage/update/nickname", null, {
+        params: { nickname: nickname },
+        withCredentials: true
+     })
+        .then(response => {
+            if (response.status === 200) {
+                console.log("닉네임 변경 성공");
+                alert("닉네임이 변경되었습니다.");
+                setIsNicknameDuplicate(true); // 중복 확인 다시 reset
+            } else {
+                console.error("닉네임 변경 실패");
+                alert("닉네임 변경에 실패하였습니다.");
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            alert("닉네임 변경에 실패하였습니다.");
+        });
+  };
+
+  // 이메일 인증은 아직 X
+  const handleSaveEmail = async () => {
+       // 입력한 이메일 가져오기
+       const email = state.email;
+
+       // 입력 값이 없는 경우 요청을 보내지 않음
+       if (!email) {
+          alert("이메일을 입력해 주세요.");
+          return;
+       }
+
+       axios.post("http://localhost:8080/user/mypage/update/email", null, {
+          params: { email: email },
+          withCredentials: true
+       })
+          .then(response => {
+              if (response.status === 200) {
+                  console.log("이메일 변경 성공");
+                  alert("이메일이 변경되었습니다.");
+              } else {
+                  console.error("이메일 변경 실패");
+                  alert("이메일 변경에 실패하였습니다.");
+              }
+          })
+          .catch(error => {
+              console.error("Error:", error);
+              alert("이메일 변경에 실패하였습니다.");
+          });
+  };
+
+  const handleSavePassword = async () => {
+       // 입력한 비밀번호 가져오기
+       const password = state.password;
+       const newPassword = state.newPassword;
+
+       // 입력 값이 없는 경우 요청을 보내지 않음
+       if (!password || !newPassword) {
+          alert("비밀번호를 입력해 주세요.");
+          return;
+       }
+
+       axios.post("http://localhost:8080/user/mypage/update/password", null, {
+          params: { password: password, newPassword: newPassword },
+          withCredentials: true
+       })
+          .then(response => {
+              if (response.status === 200) {
+                  console.log("비밀번호 변경 성공");
+                  alert("비밀번호가 변경되었습니다.");
+              } else {
+                  console.error("비밀번호 변경 실패");
+                  alert("비밀번호 변경에 실패하였습니다.");
+              }
+          })
+          .catch(error => {
+              if (error.response.status === 401) {
+                  console.log("비밀번호 틀림");
+                  alert("비밀번호가 틀렸습니다. 다시 입력해주세요.");
+              } else {
+                  console.error("Error:", error);
+                  alert("비밀번호 변경에 실패하였습니다.");
+              }
+          });
+  };
+
+  const handleSavePhone = async () => {
+       // 입력한 전화번호 가져오기
+       const phone = state.phone;
+
+       // 입력 값이 없는 경우 요청을 보내지 않음
+       if (!phone) {
+          alert("전화번호를 입력해 주세요.");
+          return;
+       }
+
+       axios.post("http://localhost:8080/user/mypage/update/phone", null, {
+          params: { phone: phone },
+          withCredentials: true
+       })
+          .then(response => {
+              if (response.status === 200) {
+                  console.log("전화번호 변경 성공");
+                  alert("전화번호가 변경되었습니다.");
+              } else {
+                  console.error("전화번호 변경 실패");
+                  alert("전화번호 변경에 실패하였습니다.");
+              }
+          })
+          .catch(error => {
+              console.error("Error:", error);
+              alert("전화번호 변경에 실패하였습니다.");
+          });
+  };
+
+  const handleSaveAddress = async () => {
+      // 선택한 거주지 정보 가져오기
+      const city = document.getElementById("sido1").value;
+      const district = document.getElementById("gugun1").value;
+
+      console.log("city : " + city + ", district : " + district);
+
+      if (city === "시/도 선택" || district === "구/군 선택" || !city || !district) {
+          alert("거주지를 선택해주세요.");
+          return;
+      }
+
+      axios.post("http://localhost:8080/user/mypage/update/address", null, {
+          params: { city: city, district: district },
+          withCredentials: true
+      })
+          .then(response => {
+              if (response.status === 200) {
+                  console.log("거주지 변경 성공");
+                  alert("거주지가 변경되었습니다.");
+              } else {
+                  console.error("거주지 변경 실패");
+                  alert("거주지 변경에 실패하였습니다.");
+              }
+          })
+          .catch(error => {
+              console.error("Error:", error);
+              alert("거주지 변경에 실패하였습니다.");
+          });
+    };
 
   return (
     <div>
@@ -192,7 +355,7 @@ const [mem, setMem] = useState(null);
               <button id="check_double_nicname" onClick={handleCheckDuplicateNickname}>중복확인</button>
               </div>
     
-              <button id="save">저장하기</button>
+              <button id="save" onClick={handleSaveNickname}>저장하기</button>
             </div>
           </div>
           <div className="sub_container">
@@ -202,7 +365,7 @@ const [mem, setMem] = useState(null);
               {mem && <RealEstate mem={mem} />}
               </div>
     
-              <button id="save">저장하기</button>
+              <button id="save" onClick={handleSaveAddress}>저장하기</button>
             </div>
           </div>
           <div className="sub_container" id="c_email">
@@ -224,7 +387,7 @@ const [mem, setMem] = useState(null);
                   <p style={{ color: "red" }}>유효하지 않은 email입니다.</p>
                 )
               ): null}
-              <button id="save">저장하기</button>
+              <button id="save" onClick={handleSaveEmail}>저장하기</button>
             </div>
           </div>
           <EditInterest/>
@@ -255,7 +418,7 @@ const [mem, setMem] = useState(null);
                 onChange={handleEditChange}
                 placeholder="비밀번호 확인"
               ></input>
-              <button id="save">저장하기</button>
+              <button id="save" onClick={handleSavePassword}>저장하기</button>
             </div>
           </div>
           <div className="sub_container" id="phone_number">
@@ -276,7 +439,7 @@ const [mem, setMem] = useState(null);
                 <SelectBox options={options} defaultValue="       " />
               </div>
 
-              <button id="save">저장하기</button>
+              <button id="save" onClick={handleSavePhone}>저장하기</button>
             </div>
           </div>
           <Signout/>
