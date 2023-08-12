@@ -29,7 +29,7 @@ public class MyPageController {
     private final PasswordEncoder passwordEncoder;
 
     /* 정보 반환 */
-    @PostMapping("/update")
+    @GetMapping("/update")
     public Member getMember() {
         Member member = null;
         // 현재 로그인한 사용자 정보 가져오기
@@ -45,7 +45,7 @@ public class MyPageController {
     }
 
     /* 관심분야 반환 */
-    @PostMapping("/update/interests")
+    @GetMapping("/update/interests")
     public List<Interest> getInterests() {
         List<Interest> interests = null;
         // 현재 로그인한 사용자 정보 가져오기

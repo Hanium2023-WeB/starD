@@ -65,7 +65,7 @@ const EditInterest=()=>{
       };
 
     useEffect(() => {
-        axios.post("http://localhost:8080/user/mypage/update/interests", null, {
+        axios.get("http://localhost:8080/user/mypage/update/interests", {
             withCredentials: true
         })
             .then(response => {

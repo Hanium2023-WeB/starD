@@ -89,7 +89,7 @@ const [isNicknameDuplicate, setIsNicknameDuplicate] = useState(true); // nicknam
   };
 
   useEffect(() => {
-    axios.post("http://localhost:8080/user/mypage/update", null, {
+    axios.get("http://localhost:8080/user/mypage/update", {
             withCredentials: true
     })
         .then(response => {
