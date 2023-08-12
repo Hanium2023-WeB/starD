@@ -57,7 +57,8 @@ public class MyPageController {
             }
             interests = memberService.getInterests(id);
         }
-        return null;
+        System.out.println("관심분야 : " + interests);
+        return interests;
     }
 
     /* 닉네임 중복 확인 */

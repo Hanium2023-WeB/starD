@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import edit from "../css/edit.css";
 import axios from "axios";
 const EditInterest=()=>{
@@ -26,7 +26,7 @@ const EditInterest=()=>{
       ];
 
       const [tags, setTags] = useState([]);
-      
+
       const Tagoption = (props) => {
     
         const handletagChange = (value) => {
@@ -63,6 +63,30 @@ const EditInterest=()=>{
           </div>
         );
       };
+
+    useEffect(() => {
+        axios.post("http://localhost:8080/user/mypage/update/interests", null, {
+            withCredentials: true
+        })
+            .then(response => {
+                const serverInterests = response.data;
+                if (serverInterests) {
+                    console.log("관심분야 : " + serverInterests.map(interest => interest.field));
+                    const fieldValues = serverInterests.map(interest => interest.field);
+                    setTags(fieldValues);
+                }
+            })
+            .catch(error => {
+                if (axios.isAxiosError(error)) {
+                    // AxiosError 처리
+                    console.error("AxiosError:", error.message);
+                    // 요청 실패로 인한 오류 처리를 진행하거나 사용자에게 알리는 등의 작업 수행
+                } else {
+                    // 일반 오류 처리
+                    console.error("데이터 가져오기 중 오류 발생:", error);
+                }
+            })
+    }, []);
 
 const handleSaveTag = async () => {
     if (tags.length === 0) {
