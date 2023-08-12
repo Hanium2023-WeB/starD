@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useAuth } from "./pages/AuthContext";
 import axios from "axios";
 import "./App.css";
 import React, { useState, useRef, useEffect } from "react";
@@ -17,6 +18,8 @@ import MyOpenStudy from "./pages/MyOpenStudy";
 import StudyDetail from "./pages/StudyDetail";
 
 const Side = () => {
+
+	// const { isLoggedIn } = useAuth(); // useAuth를 이용하여 로그인 상태를 가져옴
 
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
 
