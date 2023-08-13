@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.PostRemove;
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Transactional
 @Getter @Setter
@@ -26,29 +27,35 @@ public class QnaController {
     private final QnaService qnaService;
 
     // qna 등록
-    @PostMapping("/create")
-    public Post createQna(@RequestBody Post post) {
-        // 현재 로그인한 사용자 정보 가져오기
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    @PostMapping
+    public Post createQna(@RequestBody Post post, Authentication authentication) {
+        qnaService.createQna(post, authentication);
+        return post;
+    }
 
-        if (authentication != null && authentication.isAuthenticated()) {
-            String userId = authentication.getName();
+    // qna 리스트 조회
+/*    @GetMapping
+    public List<Post> getAllCommunityPost(@RequestParam("page") int page) {
+        return qnaService.getAllQna(page);
+    }*/
 
-            if (!userId.equals("anonymousUser")) {
-                qnaService.createQna(userId, post);
-            }
-        }
 
+    // qna 상세 조회
+    @GetMapping("/{id}")
+    public Post getCommunityPost(@PathVariable Long id) {
+        return qnaService.getQnaDetail(id);
+    }
+
+    // 수정
+    @PostMapping("/{id}")
+    public Post updateQna(@PathVariable Long id, @RequestBody Post requestPost, Authentication authentication) {
+        Post post = qnaService.updateQna(id, requestPost, authentication);
         return post;
     }
 
     // qna 삭제
-    @DeleteMapping("/delete/{postId}")
-    public ResponseEntity<String> deleteQna(@PathVariable Long postId) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String userId = authentication.getName();
-
-        qnaService.deleteQna(postId, userId);
-        return ResponseEntity.ok("게시글 삭제 완료");
+    @DeleteMapping("/{postId}")
+    public void deleteQna(@PathVariable Long postId, Authentication authentication) {
+        qnaService.deleteQna(postId, authentication);
     }
 }

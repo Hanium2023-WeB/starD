@@ -45,12 +45,14 @@ class QnaServiceTest {
         member.setId("testUser");
         memberService.saveMember(member);
 
+        Authentication authentication = new UsernamePasswordAuthenticationToken(member.getId(), null);  // 비밀번호 사용x -> null
+
         Post post = new Post();
         post.setTitle("Test Title");
         post.setContent("Test Content");
 
         //when
-        qnaService.createQna(member.getId(), post);
+        qnaService.createQna(post, authentication);
 
         //then
         List<Post> savedPosts = postRepository.findAll();
@@ -64,7 +66,37 @@ class QnaServiceTest {
 
     @Rollback(false)
     @Test
-    void qna_작성자가_삭제() {
+    void qna_수정() {
+        //given
+        Member member = new Member();
+        member.setId("testUser");
+        memberService.saveMember(member);
+
+        Authentication authentication = new UsernamePasswordAuthenticationToken(member.getId(), null);
+
+        Post post = new Post();
+        post.setTitle("Test Title");
+        post.setContent("Test Content");
+        qnaService.createQna(post, authentication);
+
+        //when
+        post.setTitle("Updated Title");
+        post.setContent("Updated Content");
+        qnaService.updateQna(post.getId(), post, authentication);
+
+        //then
+        List<Post> savedPosts = postRepository.findAll();
+        assertEquals(1, savedPosts.size()); // 저장된 qna가 1개인지 확인
+
+        Post updatedPost = savedPosts.get(0);
+        assertEquals(post.getId(), updatedPost.getId()); // 수정된 qna의 아이디와 검색된 게시글의 아이디가 같은지 확인
+        assertEquals(PostType.QNA, updatedPost.getType()); // 수정된 qna의 타입이 QNA인지 확인
+        assertEquals(member.getId(), updatedPost.getMember().getId()); // 수정된 qna의 작성자가 맞는지 확인
+    }
+    
+    @Rollback(false)
+    @Test
+    void qna_작성자_삭제() {
         //given
         Member member = new Member();
         member.setId("testUser");
@@ -72,15 +104,17 @@ class QnaServiceTest {
         member.setRoles(authority);
         memberService.saveMember(member);
 
+        Authentication authentication = new UsernamePasswordAuthenticationToken(member.getId(), null);
+
         Post post = new Post();
         post.setTitle("Test Title2");
         post.setContent("Test Content2");
-        qnaService.createQna(member.getId(), post);
+        qnaService.createQna(post, authentication);
 
         Long postId = post.getId();
 
         //when
-        qnaService.deleteQna(postId, member.getId());
+        qnaService.deleteQna(postId, authentication);
 
         //then
         Optional<Post> deletedPost = postRepository.findById(postId);
@@ -89,7 +123,7 @@ class QnaServiceTest {
 
     @Rollback(false)
     @Test
-    void qna_관리자가_삭제() {
+    void qna_관리자_삭제() {
         //given
         Member member = new Member();
         member.setId("testUser");
@@ -97,14 +131,17 @@ class QnaServiceTest {
         member.setRoles(authority);
         memberService.saveMember(member);
 
+        Authentication authentication = new UsernamePasswordAuthenticationToken(member.getId(), null);
+        Authentication adminAuth = new UsernamePasswordAuthenticationToken("testAdmin", null);
+
         Post post = new Post();
         post.setTitle("Test Title2");
         post.setContent("Test Content2");
-        qnaService.createQna(member.getId(), post);
+        qnaService.createQna(post, authentication);
         Long postId = post.getId();
 
         //when
-        qnaService.deleteQna(postId, "testAdmin");  // db에 수동으로 관리자 계정을 넣어줬다고 가정 (회원가입 시 모든 회원은 user로 설정됨)
+        qnaService.deleteQna(postId, adminAuth);  // db에 수동으로 관리자 계정을 넣어줬다고 가정 (회원가입 시 모든 회원은 user로 설정됨)
 
         //then
         Optional<Post> deletedPost = postRepository.findById(postId);
