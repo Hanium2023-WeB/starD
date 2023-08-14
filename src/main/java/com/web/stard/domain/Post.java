@@ -24,9 +24,6 @@ public class Post extends BaseEntity {
     @NotNull
     private String category; // 카테고리 (취미 / 공부 / 잡담)
 
-    //@NotNull
-    //private String type; // Post or QNA
-
     @Enumerated(EnumType.STRING)
     private PostType type; // post 타입 [POST, QNA]
 
