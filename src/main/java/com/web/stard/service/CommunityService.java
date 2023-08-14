@@ -2,6 +2,7 @@ package com.web.stard.service;
 
 import com.web.stard.domain.Member;
 import com.web.stard.domain.Post;
+import com.web.stard.domain.PostType;
 import com.web.stard.repository.PostRepository;
 import lombok.Getter;
 import lombok.Setter;
@@ -28,12 +29,12 @@ public class CommunityService {
         PageRequest pageReq = PageRequest.of(page-1, 10, sort);
         // page -> 배열 인덱스처럼 들어가서 -1 해야 함
         // 한 페이지에 Post 10개 (개수는 추후 수정)
-        return postRepository.findByType("Post", (Pageable) pageReq);
+        return postRepository.findByType(PostType.POST, (Pageable) pageReq);
     }
 
     /* 커뮤니티 게시글 세부 조회 */
     public Post getCommunityPost(Long id) {
-        Optional<Post> result = postRepository.findByIdAndType(id, "Post");
+        Optional<Post> result = postRepository.findByIdAndType(id, PostType.POST);
         if (result.isPresent()) {
             return result.get();
         }
@@ -45,7 +46,7 @@ public class CommunityService {
         Member member = memberService.find(userId);
 
         post.setMember(member);
-        post.setType("Post");
+        post.setType(PostType.POST);
 
         postRepository.save(post);
 
