@@ -25,7 +25,7 @@ public class Post extends BaseEntity {
     private String category; // 카테고리 (취미 / 공부 / 잡담)
 
     @Enumerated(EnumType.STRING)
-    private PostType type; // post 타입 [POST, QNA]
+    private PostType type; // post 타입 [POST, QNA, NOTICE, FAQ]
 
 
 }

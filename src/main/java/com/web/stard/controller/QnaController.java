@@ -32,15 +32,15 @@ public class QnaController {
 
     // qna 리스트 조회
     @GetMapping
-    public List<Post> getAllCommunityPost(@RequestParam("page") int page) {
+    public List<Post> getAllQna(@RequestParam("page") int page) {
         return qnaService.getAllQna(page);
     }
 
 
     // qna 상세 조회
     @GetMapping("/{id}")
-    public Post getCommunityPost(@PathVariable Long id, Authentication authentication) {
-        return qnaService.getQnaDetail(id, authentication);
+    public Post getQnaDetail(@PathVariable Long id ) {
+        return qnaService.getQnaDetail(id);
     }
 
     // 수정

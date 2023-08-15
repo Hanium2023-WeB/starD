@@ -45,13 +45,9 @@ class QnaServiceTest {
         //given
         Member member = new Member();
         member.setId("testUser");
-        Authority authority = new Authority("USER");
-        member.setRoles(authority);
         memberService.saveMember(member);
 
-        // 현재 사용자의 권한 이름을 SimpleGrantedAuthority 객체로 감싸서 리스트에 담긴다.
-        List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority(member.getRoles().getAuthorityName()));
-        Authentication authentication = new UsernamePasswordAuthenticationToken(member.getId(), null, authorities);
+        Authentication authentication = new UsernamePasswordAuthenticationToken(member.getId(), null);  // 비밀번호 사용x -> null
 
         Post post = new Post();
         post.setTitle("Test Title");
@@ -78,8 +74,7 @@ class QnaServiceTest {
         member.setId("testUser");
         memberService.saveMember(member);
 
-        List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority(member.getRoles().getAuthorityName()));
-        Authentication authentication = new UsernamePasswordAuthenticationToken(member.getId(), null, authorities);
+        Authentication authentication = new UsernamePasswordAuthenticationToken(member.getId(), null);
 
         Post post1 = new Post();
         post1.setTitle("Test Title1");
@@ -108,16 +103,14 @@ class QnaServiceTest {
         member.setId("testUser");
         memberService.saveMember(member);
 
-        List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority(member.getRoles().getAuthorityName()));
-        Authentication authentication = new UsernamePasswordAuthenticationToken(member.getId(), null, authorities);
-
+        Authentication authentication = new UsernamePasswordAuthenticationToken(member.getId(), null);
         Post post1 = new Post();
         post1.setTitle("Test Title1");
         post1.setContent("Test Content1");
         qnaService.createQna(post1, authentication);
 
         //when
-        Post detailQna = qnaService.getQnaDetail(post1.getId(), authentication);
+        Post detailQna = qnaService.getQnaDetail(post1.getId());
 
         //then
         assertEquals("Test Title1", detailQna.getTitle()); // 제목이 맞는지 확인
@@ -133,8 +126,7 @@ class QnaServiceTest {
         member.setId("testUser");
         memberService.saveMember(member);
 
-        List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority(member.getRoles().getAuthorityName()));
-        Authentication authentication = new UsernamePasswordAuthenticationToken(member.getId(), null, authorities);
+        Authentication authentication = new UsernamePasswordAuthenticationToken(member.getId(), null);
 
         Post post = new Post();
         post.setTitle("Test Title");
@@ -166,8 +158,7 @@ class QnaServiceTest {
         member.setRoles(authority);
         memberService.saveMember(member);
 
-        List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority(member.getRoles().getAuthorityName()));
-        Authentication authentication = new UsernamePasswordAuthenticationToken(member.getId(), null, authorities);
+        Authentication authentication = new UsernamePasswordAuthenticationToken(member.getId(), null);
 
         Post post = new Post();
         post.setTitle("Test Title2");
@@ -194,18 +185,13 @@ class QnaServiceTest {
         member.setRoles(authority);
         memberService.saveMember(member);
 
-        Member adminMember = memberService.find("testAdmin");
-        List<GrantedAuthority> adminAuthorities = Collections.singletonList(new SimpleGrantedAuthority(adminMember.getRoles().getAuthorityName()));
-
-        List<GrantedAuthority> userAuthorities = Collections.singletonList(new SimpleGrantedAuthority(member.getRoles().getAuthorityName()));
-
-        Authentication userAuth = new UsernamePasswordAuthenticationToken(member.getId(), null, userAuthorities);
-        Authentication adminAuth = new UsernamePasswordAuthenticationToken(adminMember.getId(), null, adminAuthorities);
+        Authentication authentication = new UsernamePasswordAuthenticationToken(member.getId(), null);
+        Authentication adminAuth = new UsernamePasswordAuthenticationToken("testAdmin", null);
 
         Post post = new Post();
         post.setTitle("Test Title2");
         post.setContent("Test Content2");
-        qnaService.createQna(post, userAuth);
+        qnaService.createQna(post, authentication);
         Long postId = post.getId();
 
         //when
@@ -215,4 +201,5 @@ class QnaServiceTest {
         Optional<Post> deletedPost = postRepository.findById(postId);
         assertFalse(deletedPost.isPresent());   // 삭제한 qna가 존재하는지 확인
     }
+
 }
