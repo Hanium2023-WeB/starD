@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Transactional
 @Getter @Setter
@@ -30,16 +31,16 @@ public class QnaController {
     }
 
     // qna 리스트 조회
-/*    @GetMapping
+    @GetMapping
     public List<Post> getAllCommunityPost(@RequestParam("page") int page) {
         return qnaService.getAllQna(page);
-    }*/
+    }
 
 
     // qna 상세 조회
     @GetMapping("/{id}")
-    public Post getCommunityPost(@PathVariable Long id) {
-        return qnaService.getQnaDetail(id);
+    public Post getCommunityPost(@PathVariable Long id, Authentication authentication) {
+        return qnaService.getQnaDetail(id, authentication);
     }
 
     // 수정
