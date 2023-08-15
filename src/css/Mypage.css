@@ -88,6 +88,7 @@ html {
 	/* white-space: nowrap; */
 	font-size: 1.3em;
 	padding-right: 3px;
+	margin-top: 10px;
 }
 
 #more {
@@ -101,12 +102,44 @@ html {
 p {
 	font-size: 1.2rem;
 }
+.todo .tag p{
+	font-size: 13px;
+	font-weight: bold;
+	
+}
+.todo #detail{
+	font-size: 12px;
+} 
+#today{
+	font-size: 14px;
+}
+#todocontent{
+	padding: 10px;
+
+}
+#todocontent li{
+	padding: 3px;
+	display: flex;
+	flex-direction: row;
+}
 /* .list_container{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
 
 } */
+.checked{
+	color: #adb5bd;
+    text-decoration: line-through;
+}
+#todotext{
+	position: relative;
+	top: 3.1px;
+	margin-left: 2px;
+}
+.empty_today_todo{
+	margin-top: 20px;
+}
 .sub_wrap {
 	margin-left: 30px;
 	padding-right: 0;

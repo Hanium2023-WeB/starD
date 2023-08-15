@@ -14,7 +14,7 @@ const Backarrow=()=>{
         onClick={handleSVGClick}
         xmlns="../images/Arrow.svg"
         width="100"
-        height="100"
+        height="40"
       ><Arrow/>
       </svg>
           <p>개인정보 수정</p>

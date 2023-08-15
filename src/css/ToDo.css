@@ -14,5 +14,16 @@
     margin-top: 50px;
   }
   .TodoList{
-    margin-top: 10px;
+    margin-top: 30px;
+  }
+  .today{
+    font-size: 14px;
+    margin-left: 30px;
+    padding-bottom: 10px;
+  }
+  .TodoList span{
+    font-size: 15px;
+  }
+  .alert_empty_todo{
+    margin-left: 25px;
   }

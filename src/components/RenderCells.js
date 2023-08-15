@@ -15,7 +15,7 @@ const RenderCells = ({ currentMonth, selectedDate, onDateClick }) => {
   while (day <= endDate) {
     for (let i = 0; i < 7; i++) {
       formattedDate = format(day, "d");
-      const cloneDay = day;
+      const cloneDay = new Date(day.getFullYear(), day.getMonth(), day.getDate()); // Clone the date without time
       days.push(
         <div
           className={`col cell ${

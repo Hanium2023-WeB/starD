@@ -8,13 +8,11 @@ import ToDoListItems from "../css/ToDoListItem.css";
 
 const ToDoListItem = ({todo, onRemove,onToggle,onChangeSelectedTodo,onInsertToggle})=>{
     const {id, text, checked}= todo;
-
+    
     return (
-
       <li className="TodoListItem">
-        <div className={cn('checkbox',{checked})} onClick={()=>onToggle(id)}>
+        <div className={cn('checkbox',{checked})} onClick={()=>onToggle(id, checked)}>
             {checked ? <img src={checkbox} width="20px"/> : <img src={uncheckbox} width="20px"/>}
-         
             <div className="text" >{text}</div>
             </div>
         <div className="Edit" onClick={()=>{onChangeSelectedTodo(todo); onInsertToggle();}}>

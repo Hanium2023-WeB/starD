@@ -5,8 +5,9 @@ import RenderHeader from "./RenderHeader";
 import RenderDays from "./RenderDays";
 import RenderCells from "./RenderCells";
 import Calender_css from "../css/Calender.css";
+import ToDoList from "../pages/ToDoList";
 
-export const Calender = ({todo}) => {
+export const Calender = ({todo, onDateClick}) => {
     const[currentMonth, setCurrentMonth] =useState(new Date());
     const[selectedDate, setSelectedDate] =useState(new Date());
 
@@ -18,10 +19,11 @@ export const Calender = ({todo}) => {
         setCurrentMonth(addMonths(currentMonth, 1));
 
     };
-    const onDateClick = (day)=>{
-        setSelectedDate(day);
+    const handleDateClick = (day)=>{
+        setSelectedDate(new Date(day));
         console.log("클릭한 날짜");
         console.log(selectedDate);
+        onDateClick(new Date(day)); //부모 컴포넌트로 선택한 날짜 전달하기
     };
     return (
         <div className= "calendar">
