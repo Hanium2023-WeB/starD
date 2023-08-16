@@ -13,6 +13,7 @@ import Footer from "./components/Footer";
 import Editinfo from "./pages/Editinfo";
 import MyParticipateStudy from "./pages/MyParticipateStudy";
 import MyOpenStudy from "./pages/MyOpenStudy";
+import MyApplyStudy from "./pages/MyApplyStudy";
 import StudyDetail from "./pages/StudyDetail";
 
 const side = () => {
@@ -126,6 +127,10 @@ function App() {
 					<Route
 						path="/myopenstudy"
 						element={<MyOpenStudy sideheader={rendsidecenter()} />}
+					/>
+					<Route
+						path="/myapplystudy"
+						element={<MyApplyStudy sideheader={rendsidecenter()} />}
 					/>
 					<Route
 						path="/studydetail/:id"
