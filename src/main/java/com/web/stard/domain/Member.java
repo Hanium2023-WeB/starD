@@ -7,7 +7,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Getter @Setter
 @Entity
@@ -64,7 +66,9 @@ public class Member implements UserDetails {
     // 계정의 권한 목록 return
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return (Collection<? extends GrantedAuthority>) this.roles;
+        List<Authority> authorities = new ArrayList<>();
+        authorities.add(this.roles);
+        return authorities;
     }
 
     // 계정의 고유한 값 ex) PK return
