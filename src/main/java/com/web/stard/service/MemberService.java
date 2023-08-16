@@ -119,6 +119,10 @@ public class MemberService {
         // 기존 관심분야 delete 후 새로 insert
         interestRepository.deleteAllByMember(member);
 
+        if (interests[0].equals("")) {
+            return;
+        }
+
         List<Interest> interestList = new ArrayList<>();
         for (String s : interests) {
             Interest interest = new Interest();

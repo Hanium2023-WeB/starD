@@ -89,11 +89,6 @@ const EditInterest=()=>{
     }, []);
 
 const handleSaveTag = async () => {
-    if (tags.length === 0) {
-        alert("관심분야를 선택하세요.");
-        return;
-    }
-
 //    const encodedTags = tags.map(tag => encodeURIComponent(tag));
     const interests = tags.join(",");
 
