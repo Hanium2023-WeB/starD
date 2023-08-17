@@ -4,6 +4,7 @@ import com.sun.istack.NotNull;
 import lombok.*;
 import org.hibernate.annotations.Comment;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
@@ -69,6 +70,9 @@ public class Member implements UserDetails {
         List<Authority> authorities = new ArrayList<>();
         authorities.add(this.roles);
         return authorities;
+//        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+//        authorities.add(new SimpleGrantedAuthority(this.roles.getAuthorityName()));
+//        return authorities;
     }
 
     // 계정의 고유한 값 ex) PK return

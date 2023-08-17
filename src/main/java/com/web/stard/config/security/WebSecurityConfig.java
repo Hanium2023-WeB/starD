@@ -2,9 +2,11 @@ package com.web.stard.config.security;
 
 import com.web.stard.config.jwt.JwtAuthenticationFilter;
 import com.web.stard.config.jwt.JwtTokenProvider;
+import com.web.stard.service.CustomMemberDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -19,6 +21,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JwtTokenProvider jwtTokenProvider;
     private final RedisTemplate redisTemplate;
+    private final CustomMemberDetailsService customMemberDetailsService;
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
@@ -33,6 +36,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/v1/users/userTest").hasRole("USER")
                 .antMatchers("/api/v1/users/adminTest").hasRole("ADMIN")
 
+                // 해당 url 요청에 대해서는 로그인 요구 X
+//                .antMatchers("/", "/signup", "/checkDuplicateID", "/checkDuplicateNickname", "/login", "/current-member").permitAll() //TODO 주석 제거
+                // admin 요청에 대해서는 ROLE_ADMIN 역할을 가지고 있어야 함
+//                .antMatchers("/admin").hasRole("ADMIN")
+                // 나머지 요청에 대해서는 로그인 요구 O
+//                .anyRequest().authenticated() //TODO 주석 제거
+
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider, redisTemplate), UsernamePasswordAuthenticationFilter.class);
 
@@ -44,4 +54,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
+//    @Override
+//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//        auth.userDetailsService(customMemberDetailsService).passwordEncoder(passwordEncoder());
+//    }
 }

@@ -1,9 +1,9 @@
 import TodoList from "../pages/ToDoList.js";
 import React, {useEffect} from "react";
 
-const RenderTodo=(todo)=>{
+// const RenderTodo=(todo)=>{
     // const {id, text, checked}= todo;
-     return (
+    //  return (
     //   <li className="TodoListItem">
     //     <div className={cn('checkbox',{checked})} onClick={()=>onToggle(id, checked)}>
     //         {checked ? <img src={checkbox} width="20px"/> : <img src={uncheckbox} width="20px"/>}
@@ -18,6 +18,6 @@ const RenderTodo=(todo)=>{
     //         </div>
     //     </li>
    
-    );
-}
-export default RenderTodo;
+//     );
+// }
+// export default RenderTodo;

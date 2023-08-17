@@ -7,6 +7,7 @@ import com.web.stard.repository.AuthorityRepository;
 import com.web.stard.repository.InterestRepository;
 import com.web.stard.repository.MemberRepository;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,6 +20,7 @@ import java.util.Optional;
 
 @Service
 @Getter @Setter
+@RequiredArgsConstructor
 public class MemberService {
 
     MemberRepository memberRepository;
