@@ -2,12 +2,14 @@ import React, { useEffect, useState, useRef, } from 'react';
  import { selectBOX } from '../util/SelectBox.js';
  import edit from "../css/edit.css";
  
-function RealEstate () {  // 컴포넌트.
+function RealEstate ({ mem }) {  // 컴포넌트.
 
     useEffect(() => { 
-        selectBOX();  // 시/도/군/구 selectBOX 생성함수를 컴포넌트가 로드 되자마자 실행해준다.
-    
-    }, []);
+//        selectBOX(mem);  // 시/도/군/구 selectBOX 생성함수를 컴포넌트가 로드 되자마자 실행해준다.
+        if (mem) {
+           selectBOX(mem);
+        }
+    }, [mem]);
 
     return (
        <div class="select_estate">

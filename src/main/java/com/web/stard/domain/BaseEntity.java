@@ -27,6 +27,7 @@ public abstract class BaseEntity {
     @Column(updatable = false)
     private String createdBy;*/
 
+
     /* @LastModifiedBy
     private String lastModifiedBy;*/
 }

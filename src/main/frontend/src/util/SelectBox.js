@@ -1,12 +1,13 @@
-
 //거주지 시 도 구
-import React, { useEffect} from 'react';
 import edit from "../css/edit.css";
 
 import $ from 'jquery';
 
-export function selectBOX (){  
-
+export function selectBOX (mem){
+    if (selectBOX.initialized) {
+        // 이미 초기화되었을 경우, 중복 호출 방지
+        return;
+    }
     // 시/도/군/구 selectBOX 생성함수
     const areas = {
         "시/도 선택": ["구/군 선택"],
@@ -31,69 +32,62 @@ export function selectBOX (){
     };
       const $sidoSelect = $("#sido1");
       const $gugunSelect = $("#gugun1");
-
-      if (selectBOX.initialized) {
-        // 이미 초기화되었을 경우, 중복 호출 방지
-        return;
-      }
-
+    
+    
       function initializeSidoSelect() {
-        //option 초기화
+        console.log("거주지 확인 : " + mem.city + " 그리고 " + mem.district);
+        let gugunList = null;
         for (const sido in areas) {
-          $sidoSelect.append(`<option value="${sido}">${sido}</option>`);
+            if (sido === mem.city) {
+                $sidoSelect.append(`<option value="${sido}" selected>${sido}</option>`);
+                gugunList = areas[mem.city];
+            } else {
+                $sidoSelect.append(`<option value="${sido}">${sido}</option>`);
+            }
         }
-        $gugunSelect.append(`<option selected value='' >구/군 선택</option>`);
-        console.log("초기화 완료");
-      }
+        if (mem.district === null) {
+            $gugunSelect.append("<option value='' selected>구/군 선택</option>");
+        } else {
+            $gugunSelect.append("<option value=''>구/군 선택</option>");
+            for (const gugun of gugunList) {
+                if (gugun === mem.district) {
+                    $gugunSelect.append(`<option value="${gugun}" selected>${gugun}</option>`);
+                } else {
+                    $gugunSelect.append(`<option value="${gugun}">${gugun}</option>`);
+                }
+            }
+        }
 
+
+
+      }
       function updateGugunSelect(selectedSido) {
-        //시,도를 선택했을 시 구, 군 선택지 업데이트
         const gugunList = areas[selectedSido];
         $gugunSelect.empty();
-        if (selectedSido != "시/도 선택")
-          $gugunSelect.append(`<option value='' selected>구/군 선택</option>`);
+        if(selectedSido!="시/도 선택") {
+            if (mem.district === null) {
+                $gugunSelect.append(`<option value='' selected>구/군 선택</option>`);
+            } else {
+                $gugunSelect.append(`<option value=''>구/군 선택</option>`);
+            }
+        }
 
         for (const gugun of gugunList) {
           $gugunSelect.append(`<option value="${gugun}">${gugun}</option>`);
         }
       }
-
-      function saveSelectedValues(selectedSido, selectedGugun) {
-        localStorage.setItem("selectedSido", selectedSido);
-        localStorage.setItem("selectedGugun", selectedGugun);
-      }
-
-      function loadSelectedValues() {
-        const selectedSido = localStorage.getItem("selectedSido");
-        const selectedGugun = localStorage.getItem("selectedGugun");
-
-        if (selectedSido) {
-          $sidoSelect.val(selectedSido);
-          updateGugunSelect(selectedSido);
-          if (selectedGugun) {
-            $gugunSelect.val(selectedGugun);
-          }
-        }
-        console.log("로드 완료");
-      }
-
-      $sidoSelect.on("change", function () {
+      
+      $sidoSelect.on("change", function() {
         const selectedSido = $(this).val();
-        const selectedGugun = $gugunSelect.val();
-     
         if (selectedSido) {
           updateGugunSelect(selectedSido);
-          saveSelectedValues(selectedSido, selectedGugun);
         } else {
           $gugunSelect.empty();
-          saveSelectedValues("", "");
         }
       });
-      //초기화 상태 표시
-      selectBOX.initialized = true;
-
+      // 초기화 상태 표시
+    selectBOX.initialized = true;
+      
       // 초기화 호출
-
-      initializeSidoSelect();
-      loadSelectedValues();
+        initializeSidoSelect();
 }

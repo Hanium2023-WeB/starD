@@ -67,8 +67,6 @@
 	align-items: center;
 	position: relative;
 	bottom: 40px;
-	left: 10px;
-	
 }
 .loginbtn {
 	top: 10px;
@@ -100,7 +98,7 @@
 .signup_nicname, .signup_id{
 	display: flex;
 	flex-direction: row;
-	width: 148%;
+	width: 158%;
 }
 .signup_nicname input, .signup_id input{
 	width: 60%;
@@ -125,4 +123,3 @@
 p{
 	margin-top: 0;
 }
-

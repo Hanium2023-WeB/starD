@@ -1,18 +1,15 @@
 package com.web.stard.domain;
 
 import com.sun.istack.NotNull;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.hibernate.annotations.Comment;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Collection;
+import java.util.List;
 
 @Getter @Setter
 @Entity
@@ -42,8 +39,8 @@ public class Member implements UserDetails {
 
     private String district; // 구
 
-//    @OneToOne @JoinColumn(name = "profile_id")
-//    private Profile profile; // 프로필
+    @OneToOne @JoinColumn(name = "profile_id")
+    private Profile profile; // 프로필
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "authority_id") // Member 테이블에 authority_id 컬럼 추가
@@ -60,12 +57,17 @@ public class Member implements UserDetails {
         this.nickname = nickname;
     }
 
+    @Builder
+    public Member(String id, String password) {
+        this.id = id;
+        this.password = password;
+    }
 
     // 계정의 권한 목록 return
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(this.roles.getAuthorityName()));
+        List<Authority> authorities = new ArrayList<>();
+        authorities.add(this.roles);
         return authorities;
     }
 
