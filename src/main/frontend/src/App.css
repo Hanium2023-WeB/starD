@@ -247,7 +247,7 @@ button#todo_more{
   padding-top: 10px;
   margin-bottom: 0px;
   justify-content: start;
-
+ 
 }
 .subfooter_info ul li{
 	color: white;
@@ -304,7 +304,7 @@ footer p {
 }
 
 /* 투두리스트, 대시보드 세로로 배치하기 */
-@media (max-width: 750px) {
+@media (max-width: 750px) { 
 	.dashboard {
 		display: flex;
 		flex-direction: column;
@@ -353,7 +353,7 @@ footer p {
 		bottom: 60%;
 	}
 	.searchbar ul {
-		width: 220px;
+		width: 220px;	
 		display: flex;
 		flex-direction: column;
 		position: relative;
@@ -413,7 +413,7 @@ footer p {
 	}
 	#todocontent ul{
 		padding: 10px;
-
+		
 	}
 	footer .footer_info> *{
 		display: none;
@@ -469,13 +469,13 @@ footer p {
 		flex-direction: column;
 		/* color: lightgray; */
 	}
-
+	
 	.smallwidth_sub span{
 			margin-top: 30px;
 			margin-right: 10px;
 	}
 }
-@media (max-width: 525px) {
+@media (max-width: 525px) { 
 	.sidebar nav ul {
 		position: relative;
 		right: 53px;

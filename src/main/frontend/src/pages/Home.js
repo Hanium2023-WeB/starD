@@ -36,14 +36,14 @@ const Home = ({sideheader}) => {
       setParsedTodos(parsed);
       console.log(parsedTodos);
 
-//       오늘의 날짜를 키로 사용하여 해당 ToDo 항목 배열을 가져옴
+
       const todayKey = today.toDateString();
       setTodayKey(todayKey);
 
       console.log(todayKey);
       if (parsedTodos.hasOwnProperty(todayKey)) {
         const todayTodos = parsedTodos[todayKey];
-//         오늘의 ToDo 항목 배열이 존재하면 해당 항목의 text 값을 출력
+
         todayTodos.forEach((todo) => {
           console.log(todo.text);
           console.log(todo.checked);

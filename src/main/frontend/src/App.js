@@ -141,7 +141,7 @@ function App() {
 						path="/MyPage/Schedule"
 						element={<Schedule sideheader = {rendsidecenter()}/>}
 						/>
-
+					
 				</Routes>
 				<div></div>
 				<Link

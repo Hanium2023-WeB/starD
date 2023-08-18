@@ -1,0 +1,73 @@
+.Schedulecalendar{
+    width: 90%;
+    margin-left: 90px;
+    margin-top: 10px;
+}
+.Schedulecalendar > .header.row{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 18px;
+    margin-right: 10px;
+
+}
+.col.col-start{
+    width: 80%;
+} 
+.col.col-start .text{
+    font-size: 1.5rem;
+    width: 100%;
+}
+.Schedulecalendar > .header.row >.col.col-end{
+    width: 40%;
+    margin-left: 70%;
+}
+svg{
+    font-size: 1.5rem;
+    margin-left: 5px;
+}
+.Schedulecalendar > .days.row{
+    display: flex;
+    flex-direction: row;
+    width: 86%;
+    justify-content: space-between;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+.Schedulerow{
+    display: flex;
+    flex-direction: row;
+}
+.Schedulerow > .col.cell{
+    border: 1.5px solid #395b64;
+    width: 13%;
+    height: 80px;
+    font-size: 1.2rem;
+    margin:2px;
+    cursor: pointer;
+}
+.col.cell:hover{
+    border: 1.5px solid red;
+}
+.Schedulerow > .col.cell > span{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 5px;
+}
+.Schedulerow > .col.cell > span > svg{
+   margin-left: 0px;
+}
+.Schedulerow > .col.cell > span > svg:hover{
+    color: darkblue;
+ }
+ .Schedulerow > .col.cell > span.text.not-valid{
+    margin-left:0px;
+    width: 90%;
+}
+.col.cell.disabled{
+   color: gray;
+   border: 1.5px solid gray;
+}
