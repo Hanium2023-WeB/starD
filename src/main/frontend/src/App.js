@@ -1,6 +1,4 @@
 import { Link } from "react-router-dom";
-import { useAuth } from "./pages/AuthContext";
-import axios from "axios";
 import "./App.css";
 import React, { useState, useRef, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -16,71 +14,35 @@ import Editinfo from "./pages/Editinfo";
 import MyParticipateStudy from "./pages/MyParticipateStudy";
 import MyOpenStudy from "./pages/MyOpenStudy";
 import StudyDetail from "./pages/StudyDetail";
+import ToDoList from "./pages/ToDoList";
+import Schedule from "./pages/Schedule.js";
 
-const Side = () => {
-
-	// const { isLoggedIn } = useAuth(); // useAuth를 이용하여 로그인 상태를 가져옴
-
-	const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-	useEffect(() => {
-
-		axios
-			.get("http://localhost:8080/current-member", {
-				withCredentials: true
-			})
-			.then((res) => {
-				console.log(res.data);
-
-				// 서버로부터 받은 데이터가 null이 아니면 로그인한 상태로 설정
-				setIsLoggedIn(res.data !== 'anonymousUser');
-			})
-			.catch(error => {
-				console.log(error);
-			});
-	}, []);
-
+const side = () => {
 	return (
 		<div className="headerbar">
 			<nav>
 				<ul>
-					{isLoggedIn ? (
-						<React.Fragment>
-							<li>
-								<Link
-									to={"/logout"}
-									style={{textDecoration: "none", color: "inherit"}}
-								>
-									로그아웃
-								</Link>
-							</li>
-						</React.Fragment>
-					) : (
-						<React.Fragment>
-							<li>
-								<Link
-									to={"/login"}
-									style={{textDecoration: "none", color: "inherit"}}
-								>
-									로그인
-								</Link>
-							</li>
-							<li>
-								<Link
-									to={"/signup"}
-									style={{textDecoration: "none", color: "inherit"}}
-								>
-									회원가입
-								</Link>
-							</li>
-						</React.Fragment>
-					)}
+					<li>
+						<Link
+							to={"/login"}
+							style={{ textDecoration: "none", color: "inherit" }}
+						>
+							로그인
+						</Link>
+					</li>
+					<li>
+						<Link
+							to={"/signup"}
+							style={{ textDecoration: "none", color: "inherit" }}
+						>
+							회원가입
+						</Link>
+					</li>
 				</ul>
 			</nav>
 		</div>
 	);
 };
-
 
 const sideleft = () => {
 	return (
@@ -115,14 +77,14 @@ const sidecenter = () => {
 };
 
 const nosidecenter = () => {
-	return <Header headText={""} leftChild={sideleft()} rightChild={Side()} />;
+	return <Header headText={""} leftChild={sideleft()} rightChild={side()} />;
 };
 const rendsidecenter = () => {
 	return (
 		<Header
 			headText={sidecenter()}
 			leftChild={sideleft()}
-			rightChild={Side()}
+			rightChild={side()}
 		/>
 	);
 };
@@ -171,6 +133,15 @@ function App() {
 						path="/studydetail/:id"
 						element={<StudyDetail sideheader={rendsidecenter()} />}
 					/>
+					<Route
+						path="/ToDoList"
+						element={<ToDoList sideheader = {rendsidecenter()}/>}
+						/>
+							<Route
+						path="/MyPage/Schedule"
+						element={<Schedule sideheader = {rendsidecenter()}/>}
+						/>
+
 				</Routes>
 				<div></div>
 				<Link

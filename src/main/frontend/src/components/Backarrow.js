@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import edit from "../css/edit.css";
 import { ReactComponent as Arrow } from "../images/Arrow.svg";
 
-const Backarrow=()=>{
+const Backarrow=({subname})=>{
     const navigate = useNavigate();
     const handleSVGClick =()=>{
      navigate(-1);
@@ -14,10 +14,10 @@ const Backarrow=()=>{
         onClick={handleSVGClick}
         xmlns="../images/Arrow.svg"
         width="100"
-        height="100"
+        height="40"
       ><Arrow/>
       </svg>
-          <p>개인정보 수정</p>
+          <p>{subname}</p>
         </div>
     )
     };
