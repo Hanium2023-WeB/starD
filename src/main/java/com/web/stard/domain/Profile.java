@@ -16,6 +16,10 @@ public class Profile {
     private Long id;
     private float credibility; // 신뢰도 (별점 평균)
     private String introduce; // 자기소개
-    private String img_name; // 이미지 이름
-    private String img_url; // 이미지 경로
+
+    @Column(name = "img_name")
+    private String imgName; // 이미지 이름
+
+    @Column(name = "img_url")
+    private String imgUrl; // 이미지 경로
 }

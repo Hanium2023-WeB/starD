@@ -1,5 +1,5 @@
 package com.web.stard.domain;
 
 public enum PostType {
-    POST, QNA, NOTICE, FAQ
+    COMM, QNA, NOTICE, FAQ
 }

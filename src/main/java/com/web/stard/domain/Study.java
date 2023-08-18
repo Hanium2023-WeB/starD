@@ -4,6 +4,7 @@ import com.sun.istack.NotNull;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -39,30 +40,30 @@ public class Study extends BaseEntity {
 
     private String tags;    // 태그 들
 
-    @NotNull
-    private String on_off;      // 온/오프/무관
+    @NotNull @Column(name = "on_off")
+    private String onOff;      // 온/오프/무관
 
-    @NotNull
+    @NotNull @Column(name = "activity_start")
     @DateTimeFormat(pattern = "yyyy-MM-dd kk:mm:ss")
-    private LocalDateTime activity_start;        // 활동 시작 기간
+    private LocalDateTime activityStart;        // 활동 시작 기간
 
-    @NotNull
+    @NotNull @Column(name = "activity_deadline")
     @DateTimeFormat(pattern = "yyyy-MM-dd kk:mm:ss")
-    private LocalDateTime activity_deadline;     // 활동 마감 기간
+    private LocalDateTime activityDeadline;     // 활동 마감 기간
 
-    @NotNull
+    @NotNull @Column(name = "recruitment_start")
     @DateTimeFormat(pattern = "yyyy-MM-dd kk:mm:ss")
-    private LocalDateTime recruitment_start;
+    private LocalDateTime recruitmentStart;
 
-    @NotNull
+    @NotNull @Column(name = "recruitment_deadline")
     @DateTimeFormat(pattern = "yyyy-MM-dd kk:mm:ss")
-    private LocalDateTime recruitment_deadline;
+    private LocalDateTime recruitmentDeadline;
 
     @NotNull
     private String status;  // 스터디 진행 상황 (진행 중, 진행 완료, 중단 등)
 
-    @NotNull
-    private int view_count;
+    @NotNull @Column(name = "view_count")
+    private int viewCount;
 
 
 }
