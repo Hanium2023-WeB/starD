@@ -4,16 +4,33 @@ import {useState} from "react";
 
 const Logout = ({sideheader}) => {
     const navigate = useNavigate(); // useNavigate 훅을 사용하여 navigate 함수를 가져옴
-
+    const accessToken = localStorage.getItem('accessToken');
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     const handleLogout = async () => {
 
         try {
             const member = await currentMember();
-            if (member !== "anonymousUser") {
-                await axios.post("http://localhost:8080/logout", {}, {withCredentials: true});
+            const accessToken = localStorage.getItem('accessToken');
+
+            if (member !== "") {
+                await axios.post("http://localhost:8080/api/v1/members/logout", {
+                    accessToken : accessToken,
+                    memberId : member
+                }, {
+                    withCredentials: true,
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`
+                    },
+                    params : {
+                        accessToken : accessToken,
+                        memberId : member
+                    }
+                });
+
                 console.log("로그아웃 성공");
+                localStorage.removeItem('accessToken');
+
                 navigate("/");
             } else {
                 console.log("로그아웃 실패");
@@ -21,7 +38,7 @@ const Logout = ({sideheader}) => {
             }
         } catch (error) {
             console.error("로그아웃 에러", error);
-            navigate("/login");
+            navigate("/logout");
         }
 
         // axios.post("http://localhost:8080/logout", {}, {
@@ -41,7 +58,12 @@ const Logout = ({sideheader}) => {
 
     const currentMember = () => {
         return axios
-            .get("http://localhost:8080/current-member", { withCredentials: true })
+            .get("http://localhost:8080/api/v1/members/check", {
+                withCredentials: true,
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`
+                }
+            })
             .then((res) => {
                 console.log(res.data);
                 return res.data;

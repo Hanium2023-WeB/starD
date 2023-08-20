@@ -39,17 +39,20 @@ const Login = ({sideheader}) => {
         console.log(state.ID, state.PW);
 
         axios
-            .post("http://localhost:8080/login", {
-                username: state.ID,
+            .post("http://localhost:8080/api/v1/members/login", {
+                memberId: state.ID,
                 password: state.PW
             }, {params: {
-                    username: state.ID,
+                    memberId: state.ID,
                     password: state.PW},
                 withCredentials: true
             })
             .then((res) => {
                 console.log('전송 성공');
                 console.log(res.data);
+                
+                const accessToken = res.data.data.accessToken;
+                localStorage.setItem('accessToken', accessToken);
 
                 // 로그인 성공 시 메인 페이지로 리다이렉트
                 navigate('/'); // useNavigate를 사용하여 페이지를 이동
@@ -59,7 +62,7 @@ const Login = ({sideheader}) => {
                 console.log('전송 실패', error);
                 // 로그인 실패 시 현재 페이지 다시 로드
                 // window.location.reload();
-                alert("입력값을 확인해주세요. \n 로그인 실패");
+                alert("입력값을 확인해주세요. \n로그인 실패");
             });
     };
     return (

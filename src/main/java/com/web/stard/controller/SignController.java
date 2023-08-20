@@ -2,18 +2,26 @@ package com.web.stard.controller;
 
 import com.web.stard.config.jwt.JwtTokenProvider;
 import com.web.stard.config.lib.Helper;
+import com.web.stard.config.security.SecurityUtil;
+import com.web.stard.domain.Member;
 import com.web.stard.dto.Response;
 import com.web.stard.dto.request.MemberRequestDto;
+import com.web.stard.dto.response.MemLoginCheckDto;
 import com.web.stard.service.SignService;
+import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -24,7 +32,31 @@ public class SignController {
     private final JwtTokenProvider jwtTokenProvider;
     private final SignService signService;
     private final Response response;
+    private final RedisTemplate redisTemplate;
 
+    @GetMapping("/current-member")
+    public String getCurrentMember() {
+//    public String getCurrentMember(@AuthenticationPrincipal Member member) {
+//        System.out.println(member);
+//        System.out.println("test" + SecurityUtil.getCurrentUserEmail());
+//        return SecurityUtil.getCurrentUserEmail();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        return "Current user: " + username;
+//        // 현재 로그인한 사용자 정보 가져오기
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//
+//        if (authentication != null && authentication.isAuthenticated()) {
+//            String username = authentication.getName(); // 사용자의 아이디 (username) 가져오기
+//
+//            System.out.println("로그인 O " + username);
+//
+//            return username;
+//        } else {
+//            System.out.println("로그인 X");
+//            return null;
+//        }
+    }
 
     @PostMapping("/login")
     public ResponseEntity<?> login(MemberRequestDto.Login login) {
@@ -43,6 +75,9 @@ public class SignController {
 
     @PostMapping("/logout")
     public ResponseEntity<?> logout(@Validated MemberRequestDto.Logout logout, Errors errors) {
+        String refreshToken = (String)redisTemplate.opsForValue().get("RT:" + logout.getMemberId());
+        logout.setRefreshToken(refreshToken);
+
         // validation check
         if (errors.hasErrors()) {
             return response.invalidFields(Helper.refineErrors(errors));
@@ -67,4 +102,29 @@ public class SignController {
         log.info("ROLE_ADMIN TEST");
         return response.success();
     }
+
+
+    @GetMapping("/check")
+    public String check() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return authentication.getName();
+    }
+
+    @GetMapping("/isAccessTokenExpired")
+    public boolean isAccessTokenExpired(@RequestParam String accessToken) {
+
+        System.out.println("진입 isAccessTokenExpired" + accessToken);
+
+        try {
+            if (accessToken != null && jwtTokenProvider.validateToken(accessToken)) {
+                System.out.println("진입");
+                return false;
+            }
+        } catch (Exception e) {
+            return true;
+        }
+        return false;
+    }
+
+
 }

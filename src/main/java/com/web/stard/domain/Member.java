@@ -47,7 +47,6 @@ public class Member implements UserDetails {
     @JoinColumn(name = "authority_id") // Member 테이블에 authority_id 컬럼 추가
     private Authority roles;
 
-
     @Builder
     public Member(String id, String name, String email, String password, String phone, String nickname) {
         this.id = id;

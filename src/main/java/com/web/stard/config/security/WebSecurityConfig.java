@@ -32,7 +32,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
 
                 .authorizeRequests()
-                .antMatchers("/api/v1/users/sign-up", "/api/v1/users/login", "/api/v1/users/authority", "/api/v1/users/reissue", "/api/v1/users/logout").permitAll()
+                .antMatchers("/api/v1/members/sign-up", "/api/v1/members/login", "/api/v1/members/authority", "/api/v1/members/reissue", "/api/v1/members/logout", "/api/v1/members/check", "/api/v1/members/check2", "/api/v1/members/isAccessTokenExpired").permitAll()
                 .antMatchers("/api/v1/users/userTest").hasRole("USER")
                 .antMatchers("/api/v1/users/adminTest").hasRole("ADMIN")
 
