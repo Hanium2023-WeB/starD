@@ -1,15 +1,12 @@
 package com.web.stard.controller;
 
-import com.web.stard.domain.Scrap;
-import com.web.stard.domain.Star;
+import com.web.stard.domain.StarScrap;
 import com.web.stard.service.StarScrapService;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Getter
 @Setter
@@ -23,7 +20,7 @@ public class StarScrapController {
 
     /* Post(community) 공감 추가 */
     @PostMapping("/star/post/{id}")
-    public Star addPostStar(@PathVariable Long id, Authentication authentication) {
+    public StarScrap addPostStar(@PathVariable Long id, Authentication authentication) {
         return starScrapService.addPostStar(id, authentication);
     }
 
@@ -37,7 +34,7 @@ public class StarScrapController {
 
     /* Study 공감 추가 */
     @PostMapping("/star/study/{id}")
-    public Star addStudyStar(@PathVariable Long id, Authentication authentication) {
+    public StarScrap addStudyStar(@PathVariable Long id, Authentication authentication) {
         return starScrapService.addStudyStar(id, authentication);
     }
 
@@ -53,7 +50,7 @@ public class StarScrapController {
 
     /* Post(community) 스크랩 추가 */
     @PostMapping("/scrap/post/{id}")
-    public Scrap addPostScrap(@PathVariable Long id, Authentication authentication) {
+    public StarScrap addPostScrap(@PathVariable Long id, Authentication authentication) {
         return starScrapService.addPostScrap(id, authentication);
     }
 
@@ -67,7 +64,7 @@ public class StarScrapController {
 
     /* Study 스크랩 추가 */
     @PostMapping("/scrap/study/{id}")
-    public Scrap addStudyScrap(@PathVariable Long id, Authentication authentication) {
+    public StarScrap addStudyScrap(@PathVariable Long id, Authentication authentication) {
         return starScrapService.addStudyScrap(id, authentication);
     }
 

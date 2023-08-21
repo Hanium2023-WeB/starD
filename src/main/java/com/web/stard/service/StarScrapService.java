@@ -1,8 +1,7 @@
 package com.web.stard.service;
 
 import com.web.stard.domain.*;
-import com.web.stard.repository.ScrapRepository;
-import com.web.stard.repository.StarRepository;
+import com.web.stard.repository.StarScrapRepository;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.Authentication;
@@ -18,14 +17,12 @@ public class StarScrapService {
     MemberService memberService;
     CommunityService communityService;
     StudyService studyService;
-    StarRepository starRepository;
-    ScrapRepository scrapRepository;
-
+    StarScrapRepository starScrapRepository;
 
 
     /* Post(community) Star 여부 확인 */
-    public Star existsCommStar(Member member, Post post) {
-        Optional<Star> star = starRepository.findByMemberAndPostAndType(member, post, PostType.COMM);
+    public StarScrap existsCommStar(Member member, Post post) {
+        Optional<StarScrap> star = starScrapRepository.findByMemberAndPostAndTypeAndPostType(member, post, "STAR", PostType.COMM);
 
         if (star.isPresent()) {
             return star.get();
@@ -33,30 +30,31 @@ public class StarScrapService {
     }
 
     /* 공감한 Post(community) List 조회 */
-    public List<Star> allPostStarList(Authentication authentication) {
+    public List<StarScrap> allPostStarList(Authentication authentication) {
         Member member = memberService.find(authentication.getName());
-        return starRepository.findAllByMemberAndType(member, PostType.COMM);
+        return starScrapRepository.findAllByMemberAndTypeAndPostType(member, "STAR", PostType.COMM);
     }
 
 
     /* Post(community) 공감 추가 */
-    public Star addPostStar(Long id, Authentication authentication) {
+    public StarScrap addPostStar(Long id, Authentication authentication) {
         Post post = communityService.getCommunityPost(id);
         Member member = memberService.find(authentication.getName());
 
         // 이미 존재하는지 확인 (혹시 모를 중복 저장 방지)
-        Star star = existsCommStar(member, post);
+        StarScrap star = existsCommStar(member, post);
         if (star != null) {
             return star;
         }
 
-        star = Star.builder()
+        star = StarScrap.builder()
                 .post(post)
-                .type(PostType.COMM)
+                .type("STAR")
+                .tableType(PostType.COMM)
                 .member(member)
                 .build();
 
-        starRepository.save(star);
+        starScrapRepository.save(star);
 
         return star;
     }
@@ -65,13 +63,13 @@ public class StarScrapService {
     public boolean deletePostStar(Long id, Authentication authentication) {
         Post post = communityService.getCommunityPost(id);
         Member member = memberService.find(authentication.getName());
-        Star star = existsCommStar(member, post);
+        StarScrap star = existsCommStar(member, post);
 
         if (star == null) { // 혹시 모를 오류 방지
             return false;
         }
 
-        starRepository.delete(star);
+        starScrapRepository.delete(star);
 
         star = existsCommStar(member, post);
         if (star == null) {
@@ -82,8 +80,8 @@ public class StarScrapService {
 
 
     /* Study Star 여부 확인 */
-    public Star existsStudyStar(Member member, Study study) {
-        Optional<Star> star = starRepository.findByMemberAndStudyAndType(member, study, PostType.STUDY);
+    public StarScrap existsStudyStar(Member member, Study study) {
+        Optional<StarScrap> star = starScrapRepository.findByMemberAndStudyAndTypeAndPostType(member, study,"STAR", PostType.STUDY);
 
         if (star.isPresent()) {
             return star.get();
@@ -91,29 +89,30 @@ public class StarScrapService {
     }
 
     /* 공감한 Study List 조회 */
-    public List<Star> allStudyStarList(Authentication authentication) {
+    public List<StarScrap> allStudyStarList(Authentication authentication) {
         Member member = memberService.find(authentication.getName());
-        return starRepository.findAllByMemberAndType(member, PostType.STUDY);
+        return starScrapRepository.findAllByMemberAndTypeAndPostType(member,"STAR", PostType.STUDY);
     }
 
     /* Study 공감 추가 */
-    public Star addStudyStar(Long id, Authentication authentication) {
+    public StarScrap addStudyStar(Long id, Authentication authentication) {
         Study study = studyService.findById(id);
         Member member = memberService.find(authentication.getName());
 
         // 이미 존재하는지 확인 (혹시 모를 중복 저장 방지)
-        Star star = existsStudyStar(member, study);
+        StarScrap star = existsStudyStar(member, study);
         if (star != null) {
             return star;
         }
 
-        star = Star.builder()
+        star = StarScrap.builder()
                 .study(study)
-                .type(PostType.STUDY)
+                .type("STAR")
+                .tableType(PostType.STUDY)
                 .member(member)
                 .build();
 
-        starRepository.save(star);
+        starScrapRepository.save(star);
 
         return star;
     }
@@ -122,13 +121,13 @@ public class StarScrapService {
     public boolean deleteStudyStar(Long id, Authentication authentication) {
         Study study = studyService.findById(id);
         Member member = memberService.find(authentication.getName());
-        Star star = existsStudyStar(member, study);
+        StarScrap star = existsStudyStar(member, study);
 
         if (star == null) { // 혹시 모를 오류 방지
             return false;
         }
 
-        starRepository.delete(star);
+        starScrapRepository.delete(star);
 
         star = existsStudyStar(member, study);
         if (star == null) {
@@ -142,8 +141,8 @@ public class StarScrapService {
 
 
     /* Post(community) Scrap 여부 확인 */
-    public Scrap existsCommScrap(Member member, Post post) {
-        Optional<Scrap> scrap = scrapRepository.findByMemberAndPostAndType(member, post, PostType.COMM);
+    public StarScrap existsCommScrap(Member member, Post post) {
+        Optional<StarScrap> scrap = starScrapRepository.findByMemberAndPostAndTypeAndPostType(member, post, "SCRAP", PostType.COMM);
 
         if (scrap.isPresent()) {
             return scrap.get();
@@ -151,29 +150,30 @@ public class StarScrapService {
     }
 
     /* 스크랩한 Post(community) List 조회 */
-    public List<Scrap> allPostScrapList(Authentication authentication) {
+    public List<StarScrap> allPostScrapList(Authentication authentication) {
         Member member = memberService.find(authentication.getName());
-        return scrapRepository.findAllByMemberAndType(member, PostType.COMM);
+        return starScrapRepository.findAllByMemberAndTypeAndPostType(member, "SCRAP", PostType.COMM);
     }
 
     /* Post(community) Scrap 추가 */
-    public Scrap addPostScrap(Long id, Authentication authentication) {
+    public StarScrap addPostScrap(Long id, Authentication authentication) {
         Post post = communityService.getCommunityPost(id);
         Member member = memberService.find(authentication.getName());
 
         // 이미 존재하는지 확인 (혹시 모를 중복 저장 방지)
-        Scrap scrap = existsCommScrap(member, post);
+        StarScrap scrap = existsCommScrap(member, post);
         if (scrap != null) {
             return scrap;
         }
 
-        scrap = Scrap.builder()
+        scrap = StarScrap.builder()
                 .post(post)
-                .type(PostType.COMM)
+                .type("SCRAP")
+                .tableType(PostType.COMM)
                 .member(member)
                 .build();
 
-        scrapRepository.save(scrap);
+        starScrapRepository.save(scrap);
 
         return scrap;
     }
@@ -182,13 +182,13 @@ public class StarScrapService {
     public boolean deletePostScrap(Long id, Authentication authentication) {
         Post post = communityService.getCommunityPost(id);
         Member member = memberService.find(authentication.getName());
-        Scrap scrap = existsCommScrap(member, post);
+        StarScrap scrap = existsCommScrap(member, post);
 
         if (scrap == null) { // 혹시 모를 오류 방지
             return false;
         }
 
-        scrapRepository.delete(scrap);
+        starScrapRepository.delete(scrap);
 
         scrap = existsCommScrap(member, post);
         if (scrap == null) {
@@ -199,8 +199,8 @@ public class StarScrapService {
 
 
     /* Study Scrap 여부 확인 */
-    public Scrap existsStudyScrap(Member member, Study study) {
-        Optional<Scrap> scrap = scrapRepository.findByMemberAndStudyAndType(member, study, PostType.STUDY);
+    public StarScrap existsStudyScrap(Member member, Study study) {
+        Optional<StarScrap> scrap = starScrapRepository.findByMemberAndStudyAndTypeAndPostType(member, study, "SCRAP", PostType.STUDY);
 
         if (scrap.isPresent()) {
             return scrap.get();
@@ -208,29 +208,30 @@ public class StarScrapService {
     }
 
     /* 스크랩한 Study List 조회 */
-    public List<Scrap> allStudyScrapList(Authentication authentication) {
+    public List<StarScrap> allStudyScrapList(Authentication authentication) {
         Member member = memberService.find(authentication.getName());
-        return scrapRepository.findAllByMemberAndType(member, PostType.STUDY);
+        return starScrapRepository.findAllByMemberAndTypeAndPostType(member, "SCRAP", PostType.STUDY);
     }
 
     /* Study Scrap 추가 */
-    public Scrap addStudyScrap(Long id, Authentication authentication) {
+    public StarScrap addStudyScrap(Long id, Authentication authentication) {
         Study study = studyService.findById(id);
         Member member = memberService.find(authentication.getName());
 
         // 이미 존재하는지 확인 (혹시 모를 중복 저장 방지)
-        Scrap scrap = existsStudyScrap(member, study);
+        StarScrap scrap = existsStudyScrap(member, study);
         if (scrap != null) {
             return scrap;
         }
 
-        scrap = Scrap.builder()
+        scrap = StarScrap.builder()
                 .study(study)
-                .type(PostType.STUDY)
+                .type("SCRAP")
+                .tableType(PostType.STUDY)
                 .member(member)
                 .build();
 
-        scrapRepository.save(scrap);
+        starScrapRepository.save(scrap);
 
         return scrap;
     }
@@ -239,13 +240,13 @@ public class StarScrapService {
     public boolean deleteStudyScrap(Long id, Authentication authentication) {
         Study study = studyService.findById(id);
         Member member = memberService.find(authentication.getName());
-        Scrap scrap = existsStudyScrap(member, study);
+        StarScrap scrap = existsStudyScrap(member, study);
 
         if (scrap == null) { // 혹시 모를 오류 방지
             return false;
         }
 
-        scrapRepository.delete(scrap);
+        starScrapRepository.delete(scrap);
 
         scrap = existsStudyScrap(member, study);
         if (scrap == null) {

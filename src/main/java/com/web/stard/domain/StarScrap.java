@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Builder
-public class Scrap {
+public class StarScrap {
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
@@ -25,8 +25,10 @@ public class Scrap {
     @JoinColumn(name = "study_id")
     private Study study;
 
+    private String type; // STAR or SCRAP
+
     @Enumerated(EnumType.STRING)
-    private PostType type; // 게시글 타입 (COMM / STUDY)
+    private PostType tableType; // 게시글 타입 (COMM / STUDY)
 
     @NotNull @ManyToOne
     @JoinColumn(name = "member_id")
