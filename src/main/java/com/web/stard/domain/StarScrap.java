@@ -25,7 +25,7 @@ public class StarScrap {
     @JoinColumn(name = "study_id")
     private Study study;
 
-    private String type; // STAR or SCRAP
+    private ActType type; // STAR or SCRAP
 
     @Enumerated(EnumType.STRING)
     private PostType tableType; // 게시글 타입 (COMM / STUDY)

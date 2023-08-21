@@ -22,7 +22,7 @@ public class StarScrapService {
 
     /* Post(community) Star 여부 확인 */
     public StarScrap existsCommStar(Member member, Post post) {
-        Optional<StarScrap> star = starScrapRepository.findByMemberAndPostAndTypeAndPostType(member, post, "STAR", PostType.COMM);
+        Optional<StarScrap> star = starScrapRepository.findByMemberAndPostAndTypeAndPostType(member, post, ActType.STAR, PostType.COMM);
 
         if (star.isPresent()) {
             return star.get();
@@ -32,7 +32,7 @@ public class StarScrapService {
     /* 공감한 Post(community) List 조회 */
     public List<StarScrap> allPostStarList(Authentication authentication) {
         Member member = memberService.find(authentication.getName());
-        return starScrapRepository.findAllByMemberAndTypeAndPostType(member, "STAR", PostType.COMM);
+        return starScrapRepository.findAllByMemberAndTypeAndPostType(member, ActType.STAR, PostType.COMM);
     }
 
 
@@ -49,7 +49,7 @@ public class StarScrapService {
 
         star = StarScrap.builder()
                 .post(post)
-                .type("STAR")
+                .type(ActType.STAR)
                 .tableType(PostType.COMM)
                 .member(member)
                 .build();
@@ -81,7 +81,7 @@ public class StarScrapService {
 
     /* Study Star 여부 확인 */
     public StarScrap existsStudyStar(Member member, Study study) {
-        Optional<StarScrap> star = starScrapRepository.findByMemberAndStudyAndTypeAndPostType(member, study,"STAR", PostType.STUDY);
+        Optional<StarScrap> star = starScrapRepository.findByMemberAndStudyAndTypeAndPostType(member, study,ActType.STAR, PostType.STUDY);
 
         if (star.isPresent()) {
             return star.get();
@@ -91,7 +91,7 @@ public class StarScrapService {
     /* 공감한 Study List 조회 */
     public List<StarScrap> allStudyStarList(Authentication authentication) {
         Member member = memberService.find(authentication.getName());
-        return starScrapRepository.findAllByMemberAndTypeAndPostType(member,"STAR", PostType.STUDY);
+        return starScrapRepository.findAllByMemberAndTypeAndPostType(member,ActType.STAR, PostType.STUDY);
     }
 
     /* Study 공감 추가 */
@@ -107,7 +107,7 @@ public class StarScrapService {
 
         star = StarScrap.builder()
                 .study(study)
-                .type("STAR")
+                .type(ActType.STAR)
                 .tableType(PostType.STUDY)
                 .member(member)
                 .build();
@@ -142,7 +142,7 @@ public class StarScrapService {
 
     /* Post(community) Scrap 여부 확인 */
     public StarScrap existsCommScrap(Member member, Post post) {
-        Optional<StarScrap> scrap = starScrapRepository.findByMemberAndPostAndTypeAndPostType(member, post, "SCRAP", PostType.COMM);
+        Optional<StarScrap> scrap = starScrapRepository.findByMemberAndPostAndTypeAndPostType(member, post, ActType.SCRAP, PostType.COMM);
 
         if (scrap.isPresent()) {
             return scrap.get();
@@ -152,7 +152,7 @@ public class StarScrapService {
     /* 스크랩한 Post(community) List 조회 */
     public List<StarScrap> allPostScrapList(Authentication authentication) {
         Member member = memberService.find(authentication.getName());
-        return starScrapRepository.findAllByMemberAndTypeAndPostType(member, "SCRAP", PostType.COMM);
+        return starScrapRepository.findAllByMemberAndTypeAndPostType(member, ActType.SCRAP, PostType.COMM);
     }
 
     /* Post(community) Scrap 추가 */
@@ -168,7 +168,7 @@ public class StarScrapService {
 
         scrap = StarScrap.builder()
                 .post(post)
-                .type("SCRAP")
+                .type(ActType.SCRAP)
                 .tableType(PostType.COMM)
                 .member(member)
                 .build();
@@ -200,7 +200,7 @@ public class StarScrapService {
 
     /* Study Scrap 여부 확인 */
     public StarScrap existsStudyScrap(Member member, Study study) {
-        Optional<StarScrap> scrap = starScrapRepository.findByMemberAndStudyAndTypeAndPostType(member, study, "SCRAP", PostType.STUDY);
+        Optional<StarScrap> scrap = starScrapRepository.findByMemberAndStudyAndTypeAndPostType(member, study, ActType.SCRAP, PostType.STUDY);
 
         if (scrap.isPresent()) {
             return scrap.get();
@@ -210,7 +210,7 @@ public class StarScrapService {
     /* 스크랩한 Study List 조회 */
     public List<StarScrap> allStudyScrapList(Authentication authentication) {
         Member member = memberService.find(authentication.getName());
-        return starScrapRepository.findAllByMemberAndTypeAndPostType(member, "SCRAP", PostType.STUDY);
+        return starScrapRepository.findAllByMemberAndTypeAndPostType(member, ActType.SCRAP, PostType.STUDY);
     }
 
     /* Study Scrap 추가 */
@@ -226,7 +226,7 @@ public class StarScrapService {
 
         scrap = StarScrap.builder()
                 .study(study)
-                .type("SCRAP")
+                .type(ActType.SCRAP)
                 .tableType(PostType.STUDY)
                 .member(member)
                 .build();
