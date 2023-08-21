@@ -86,8 +86,7 @@ public class StudyService {
         result.setRecruitment_deadline(studyDto.getRecruitment_deadline());
         result.setStatus(studyDto.getStatus());
 
-
-        studyRepository.save(result);
+//        studyRepository.save(result);
 
         return result;
     }
