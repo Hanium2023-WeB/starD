@@ -46,13 +46,6 @@ public class Member implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role roles; // post 타입 [COMM, QNA, NOTICE, FAQ]
 
-/*
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "authority_id") // Member 테이블에 authority_id 컬럼 추가
-    private Authority roles;
-*/
-
-
     @Builder
     public Member(String id, String name, String email, String password, String phone, String nickname) {
         this.id = id;
