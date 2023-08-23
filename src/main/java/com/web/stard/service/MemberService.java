@@ -1,9 +1,8 @@
 package com.web.stard.service;
 
-import com.web.stard.domain.Authority;
 import com.web.stard.domain.Interest;
 import com.web.stard.domain.Member;
-import com.web.stard.repository.AuthorityRepository;
+import com.web.stard.domain.Role;
 import com.web.stard.repository.InterestRepository;
 import com.web.stard.repository.MemberRepository;
 import lombok.Getter;
@@ -23,17 +22,14 @@ public class MemberService {
 
     MemberRepository memberRepository;
 
-    AuthorityRepository authorityRepository;
-
     InterestRepository interestRepository;
 
     PasswordEncoder passwordEncoder;
 
     @Autowired
-    public MemberService(MemberRepository memberRepository, AuthorityRepository authorityRepository,
+    public MemberService(MemberRepository memberRepository,
                          InterestRepository interestRepository, PasswordEncoder passwordEncoder) {
         this.memberRepository = memberRepository;
-        this.authorityRepository = authorityRepository;
         this.interestRepository = interestRepository;
         this.passwordEncoder = passwordEncoder;
     }
@@ -49,12 +45,7 @@ public class MemberService {
     // 회원 정보 저장
     public void saveMember(Member member) {
         // 회원가입 시 기본적으로 'USER' 권한을 부여
-        Authority userAuthority = authorityRepository.findByAuthorityName("USER");
-        if (userAuthority == null) {
-            userAuthority = new Authority("USER");
-            authorityRepository.save(userAuthority);
-        }
-        member.setRoles(userAuthority);
+        member.setRoles(Role.USER);
 
         memberRepository.save(member);
     }

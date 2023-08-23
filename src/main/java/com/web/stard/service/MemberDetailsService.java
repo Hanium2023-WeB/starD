@@ -1,9 +1,9 @@
 package com.web.stard.service;
 
 
-import com.web.stard.domain.Authority;
 import com.web.stard.domain.LoginTestEntity;
 import com.web.stard.domain.Member;
+import com.web.stard.domain.Role;
 import com.web.stard.repository.MemberRepository;
 import com.web.stard.repository.TestRepository;
 import lombok.AllArgsConstructor;
@@ -43,7 +43,7 @@ public class MemberDetailsService implements UserDetailsService {
     }
 
     private Collection<? extends GrantedAuthority> getAuthorities(Member member) {
-        Authority role = member.getRoles();
-        return AuthorityUtils.createAuthorityList(role.getAuthorityName());
+        Role role = member.getRoles();
+        return AuthorityUtils.createAuthorityList(role.getRoleValue());
     }
 }

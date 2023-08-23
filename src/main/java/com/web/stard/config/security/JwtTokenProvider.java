@@ -1,6 +1,6 @@
 package com.web.stard.config.security;
 
-import com.web.stard.domain.Authority;
+import com.web.stard.domain.Role;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -12,15 +12,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
-import org.springframework.web.util.WebUtils;
 
 import javax.annotation.PostConstruct;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Date;
-import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -39,9 +36,9 @@ public class JwtTokenProvider {
     }
 
     // JWT 토큰 생성
-    public String createToken(String userPk, Authority roles) {
+    public String createToken(String userPk, Role role) {
         Claims claims = Jwts.claims().setSubject(userPk);
-        claims.put("roles", roles);
+        claims.put("roles", role.getRoleValue());
         Date now = new Date();
         return Jwts.builder()
                 .setClaims(claims)

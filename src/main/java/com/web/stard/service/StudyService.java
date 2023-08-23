@@ -52,12 +52,12 @@ public class StudyService {
                 .city(studyDto.getCity())
                 .district(studyDto.getDistrict())
                 .tags(studyDto.getTags())
-                .on_off(studyDto.getOn_off())
-                .activity_start(studyDto.getActivity_start())
-                .activity_deadline(studyDto.getActivity_deadline())
-                .recruitment_start(studyDto.getRecruitment_start())
-                .recruitment_deadline(studyDto.getRecruitment_deadline())
-                .view_count(studyDto.getView_count())
+                .onOff(studyDto.getOn_off())
+                .activityStart(studyDto.getActivity_start())
+                .activityDeadline(studyDto.getActivity_deadline())
+                .recruitmentStart(studyDto.getRecruitment_start())
+                .recruitmentDeadline(studyDto.getRecruitment_deadline())
+                .viewCount(studyDto.getView_count())
                 .status(studyDto.getStatus())
                 .build();
 
@@ -79,11 +79,12 @@ public class StudyService {
         result.setCity(studyDto.getCity());
         result.setDistrict(studyDto.getDistrict());
         result.setTags(studyDto.getTags());
-        result.setOn_off(studyDto.getOn_off());
-        result.setActivity_start(studyDto.getActivity_start());
-        result.setActivity_deadline(studyDto.getActivity_deadline());
-        result.setRecruitment_start(studyDto.getRecruitment_start());
-        result.setRecruitment_deadline(studyDto.getRecruitment_deadline());
+        result.setOnOff(studyDto.getOn_off());
+        result.setActivityStart(studyDto.getActivity_start());
+        result.setActivityDeadline(studyDto.getActivity_deadline());
+        result.setRecruitmentStart(studyDto.getRecruitment_start());
+        result.setRecruitmentDeadline(studyDto.getRecruitment_deadline());
+
         result.setStatus(studyDto.getStatus());
 
 

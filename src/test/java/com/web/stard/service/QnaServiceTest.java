@@ -1,9 +1,9 @@
 package com.web.stard.service;
 
-import com.web.stard.domain.Authority;
 import com.web.stard.domain.Member;
 import com.web.stard.domain.Post;
 import com.web.stard.domain.PostType;
+import com.web.stard.domain.Role;
 import com.web.stard.repository.PostRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -11,13 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,7 +36,7 @@ class QnaServiceTest {
     QnaServiceTest() {
     }
 
-    @Rollback(false)
+    //@Rollback(false)
     @Test
     void qna_등록() {
         //given
@@ -66,7 +63,7 @@ class QnaServiceTest {
         assertEquals(member.getId(), savedPost.getMember().getId()); // 생성된 qna의 작성자가 맞는지 확인
     }
 
-    @Rollback(false)
+    //@Rollback(false)
     @Test
     void qna_리스트_조회() {
         //given
@@ -95,7 +92,7 @@ class QnaServiceTest {
 
     }
 
-    @Rollback(false)
+    //@Rollback(false)
     @Test
     void qna_상세_조회() {
         //given
@@ -118,7 +115,7 @@ class QnaServiceTest {
         assertEquals(member.getId(), detailQna.getMember().getId()); // 작성자가 맞는지 확인
     }
 
-    @Rollback(false)
+    //@Rollback(false)
     @Test
     void qna_수정() {
         //given
@@ -148,14 +145,14 @@ class QnaServiceTest {
         assertEquals(member.getId(), updatedPost.getMember().getId()); // 수정된 qna의 작성자가 맞는지 확인
     }
     
-    @Rollback(false)
+    //@Rollback(false)
     @Test
     void qna_작성자_삭제() {
         //given
         Member member = new Member();
         member.setId("testUser");
-        Authority authority = new Authority("user");
-        member.setRoles(authority);
+        Role role = Role.USER;
+        member.setRoles(role);
         memberService.saveMember(member);
 
         Authentication authentication = new UsernamePasswordAuthenticationToken(member.getId(), null);
@@ -175,14 +172,14 @@ class QnaServiceTest {
         assertFalse(deletedPost.isPresent());   // 삭제한 qna가 존재하는지 확인
     }
 
-    @Rollback(false)
+    //@Rollback(false)
     @Test
     void qna_관리자_삭제() {
         //given
         Member member = new Member();
         member.setId("testUser");
-        Authority authority = new Authority("user");
-        member.setRoles(authority);
+        Role role = Role.USER;
+        member.setRoles(role);
         memberService.saveMember(member);
 
         Authentication authentication = new UsernamePasswordAuthenticationToken(member.getId(), null);

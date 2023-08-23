@@ -1,15 +1,14 @@
 package com.web.stard.service;
 
-import com.web.stard.domain.Authority;
 import com.web.stard.domain.Member;
 import com.web.stard.domain.Post;
 import com.web.stard.domain.PostType;
+import com.web.stard.domain.Role;
 import com.web.stard.repository.PostRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -49,6 +48,7 @@ class NoticeServiceTest {
     void notice_등록_관리자() {
         //given
         Member adminMember = memberService.find("testAdmin");
+        Role userRole = adminMember.getRoles();
 
         // 현재 사용자의 권한 이름을 SimpleGrantedAuthority 객체로 감싸서 리스트에 담긴다.
         Authentication authentication = new UsernamePasswordAuthenticationToken(adminMember.getId(), null);
@@ -68,7 +68,7 @@ class NoticeServiceTest {
         assertEquals(savedPost.getId(), savedPost.getId()); // 생성된 글의 아이디와 검색된 게시글의 아이디가 같은지 확인
         assertEquals(PostType.NOTICE, savedPost.getType()); // 생성된 글의 타입이 NOTICE인지 확인
         assertEquals(adminMember.getId(), savedPost.getMember().getId()); // 생성된 글의 작성자가 맞는지 확인
-        assertThat(savedPosts.get(0).getMember().getRoles().getAuthorityName()).isEqualTo("ADMIN"); // 작성자가 ADMIN인지 확인
+        assertThat(userRole).isEqualTo(Role.ADMIN); // 작성자가 ADMIN인지 확인
     }
 
     @Rollback(false)
@@ -78,8 +78,8 @@ class NoticeServiceTest {
         //given
         Member member = new Member();
         member.setId("testUser");
-        Authority authority = new Authority("USER");
-        member.setRoles(authority);
+        Role role = Role.USER;
+        member.setRoles(role);
         memberService.saveMember(member);
 
         Authentication userAuth = new UsernamePasswordAuthenticationToken(member.getId(), null);
@@ -99,7 +99,7 @@ class NoticeServiceTest {
         assertEquals(savedPost.getId(), savedPost.getId()); // 생성된 글의 아이디와 검색된 게시글의 아이디가 같은지 확인
         assertEquals(PostType.NOTICE, savedPost.getType()); // 생성된 글의 타입이 NOTICE인지 확인
         assertEquals(member.getId(), savedPost.getMember().getId()); // 생성된 글의 작성자가 맞는지 확인
-        assertThat(savedPosts.get(0).getMember().getRoles().getAuthorityName()).isEqualTo("ADMIN"); // 작성자가 ADMIN인지 확인 -> 실패
+        assertThat(savedPosts.get(0).getMember().getRoles()).isEqualTo(Role.ADMIN); // 작성자가 ADMIN인지 확인 -> 실패
     }
 
     @Rollback(false)
@@ -136,8 +136,8 @@ class NoticeServiceTest {
 
         Member member = new Member();
         member.setId("testUser");
-        Authority authority = new Authority("USER");
-        member.setRoles(authority);
+        Role role = Role.USER;
+        member.setRoles(role);
         memberService.saveMember(member);
 
         Authentication adminAuth = new UsernamePasswordAuthenticationToken(adminMember.getId(), null);
@@ -227,8 +227,8 @@ class NoticeServiceTest {
 
         Member member = new Member();
         member.setId("testUser");
-        Authority authority = new Authority("user");
-        member.setRoles(authority);
+        Role role = Role.USER;
+        member.setRoles(role);
         memberService.saveMember(member);
 
         Authentication adminAuth = new UsernamePasswordAuthenticationToken(adminMember.getId(), null);
@@ -282,7 +282,7 @@ class NoticeServiceTest {
         assertEquals(PostType.NOTICE, updatedPost.getType()); // 수정된 글의 타입이 NOTICE인지 확인
         assertEquals(post.getTitle(), updatedPost.getTitle()); // 제목이 맞는지 확인
         assertEquals(post.getContent(), updatedPost.getContent()); // 내용이 맞는지 확인
-        assertThat(savedPosts.get(0).getMember().getRoles().getAuthorityName()).isEqualTo("ADMIN"); // 작성자가 ADMIN인지 확인
+        assertThat(savedPosts.get(0).getMember().getRoles()).isEqualTo(Role.ADMIN); // 작성자가 ADMIN인지 확인
     }
 
     @WithMockUser(authorities = "USER")
@@ -294,8 +294,8 @@ class NoticeServiceTest {
 
         Member member = new Member();
         member.setId("testUser");
-        Authority authority = new Authority("USER");
-        member.setRoles(authority);
+        Role role = Role.USER;
+        member.setRoles(role);
         memberService.saveMember(member);
 
         Authentication adminAuth = new UsernamePasswordAuthenticationToken(adminMember.getId(), null);
@@ -311,7 +311,7 @@ class NoticeServiceTest {
         //when
         post.setTitle("Updated Notice Title");
         post.setContent("Updated Notice Content");
-        post.setMember(member);
+        //post.setMember(member);
         noticeService.updateNotice(post.getId(), post, userAuth);
 
         //then
@@ -323,7 +323,7 @@ class NoticeServiceTest {
         assertEquals(PostType.NOTICE, updatedPost.getType()); // 수정된 글의 타입이 NOTICE인지 확인
         assertEquals(post.getTitle(), updatedPost.getTitle()); // 제목이 맞는지 확인
         assertEquals(post.getContent(), updatedPost.getContent()); // 내용이 맞는지 확인
-        assertThat(savedPosts.get(0).getMember().getRoles().getAuthorityName()).isEqualTo("ADMIN"); // 작성자가 ADMIN인지 확인 -> 실패
+        assertThat(savedPosts.get(0).getMember().getRoles()).isEqualTo(Role.ADMIN); // 작성자가 ADMIN인지 확인 -> 실패
     }
 
     @WithMockUser(authorities = "ADMIN")
@@ -364,8 +364,8 @@ class NoticeServiceTest {
 
         Member member = new Member();
         member.setId("testUser");
-        Authority authority = new Authority("USER");
-        member.setRoles(authority);
+        Role role = Role.USER;
+        member.setRoles(role);
         memberService.saveMember(member);
 
         Authentication adminAuth = new UsernamePasswordAuthenticationToken(adminMember.getId(), null);
