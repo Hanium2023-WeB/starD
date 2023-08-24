@@ -1,12 +1,10 @@
 package com.web.stard.controller;
 
-import com.web.stard.domain.Post;
 import com.web.stard.domain.Reply;
 import com.web.stard.service.ReplyService;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,6 +41,18 @@ public class ReplyController {
     @DeleteMapping("/{id}")
     public void deleteReply(@PathVariable Long replyId, Authentication authentication) {
         replyService.deleteReply(replyId, authentication);
+    }
+
+    // 댓글 리스트로 조회
+    @GetMapping
+    public List<Reply> findAllReply(){
+        return replyService.findAll();
+    }
+
+    // 댓글 조회
+    @GetMapping("/{id}")
+    public Reply getReply(@PathVariable Long id){
+        return replyService.getReply(id);
     }
 
 }

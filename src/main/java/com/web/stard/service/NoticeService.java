@@ -5,6 +5,7 @@ import com.web.stard.domain.Post;
 import com.web.stard.domain.PostType;
 import com.web.stard.domain.Role;
 import com.web.stard.repository.PostRepository;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,14 +21,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Transactional
-@Getter
-@Setter
+@Getter @Setter
+@AllArgsConstructor
 @Service
 public class NoticeService {
 
-    @Autowired
     MemberService memberService;
-    @Autowired
     PostRepository postRepository;
 
     // Notice 등록

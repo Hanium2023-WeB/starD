@@ -5,6 +5,7 @@ import com.web.stard.domain.Member;
 import com.web.stard.domain.Role;
 import com.web.stard.repository.InterestRepository;
 import com.web.stard.repository.MemberRepository;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import java.util.Optional;
 
 @Service
 @Getter @Setter
+@AllArgsConstructor
 public class MemberService {
 
     MemberRepository memberRepository;
@@ -25,14 +27,6 @@ public class MemberService {
     InterestRepository interestRepository;
 
     PasswordEncoder passwordEncoder;
-
-    @Autowired
-    public MemberService(MemberRepository memberRepository,
-                         InterestRepository interestRepository, PasswordEncoder passwordEncoder) {
-        this.memberRepository = memberRepository;
-        this.interestRepository = interestRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
 
     public Member find(String id) {
         Optional<Member> result = memberRepository.findById(id);

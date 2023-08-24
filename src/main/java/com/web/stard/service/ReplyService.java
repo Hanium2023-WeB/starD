@@ -1,23 +1,29 @@
 package com.web.stard.service;
 
 import com.web.stard.domain.*;
+import com.web.stard.repository.PostRepository;
 import com.web.stard.repository.ReplyRepository;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
+import java.util.List;
 import java.util.Optional;
 
 @Transactional
+@Service
 @AllArgsConstructor
 @Getter @Setter
 public class ReplyService {
 
     MemberService memberService;
     CommunityService communityService;
+    PostRepository postRepository;
     ReplyRepository replyRepository;
     StudyService studyService;
 
@@ -44,7 +50,13 @@ public class ReplyService {
     public Reply createPostReply(Long postId, String replyContent, Authentication authentication) {
         String userId = authentication.getName();
         Member replier = memberService.find(userId);
-        Post targetPost = communityService.getCommunityPost(postId);
+
+        Optional<Post> optionalPost = postRepository.findById(postId);
+        if (optionalPost.isEmpty()) {
+            throw new EntityNotFoundException("게시물을 찾을 수 없습니다.");
+        }
+
+        Post targetPost = optionalPost.get();
 
         Reply reply = Reply.builder()
                 .member(replier)
@@ -97,4 +109,18 @@ public class ReplyService {
         replyRepository.delete(reply);
     }
 
+    // 댓글 리스트로 조회
+    public List<Reply> findAll(){
+        List<Reply> replies = replyRepository.findAll();
+        return replies;
+    }
+
+    // 댓글 조회
+    public Reply getReply(Long id) {
+        Optional<Reply> reply = replyRepository.findById(id);
+        if (reply.isPresent()) {
+            return reply.get();
+        }
+        return null;
+    }
 }

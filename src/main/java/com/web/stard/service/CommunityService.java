@@ -4,8 +4,10 @@ import com.web.stard.domain.Member;
 import com.web.stard.domain.Post;
 import com.web.stard.domain.PostType;
 import com.web.stard.repository.PostRepository;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -16,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Getter @Setter
+@AllArgsConstructor
 @Service
 public class CommunityService {
 

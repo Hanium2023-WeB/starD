@@ -5,6 +5,7 @@ import com.web.stard.domain.Post;
 import com.web.stard.domain.PostType;
 import com.web.stard.domain.Role;
 import com.web.stard.repository.PostRepository;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,12 +22,11 @@ import java.util.Optional;
 
 @Transactional
 @Getter @Setter
+@AllArgsConstructor
 @Service
 public class QnaService {
 
-    @Autowired
     MemberService memberService;
-    @Autowired
     PostRepository postRepository;
 
     // qna 등록
