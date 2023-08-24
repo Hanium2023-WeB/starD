@@ -478,7 +478,7 @@ footer p {
 @media (max-width: 525px) { 
 	.sidebar nav ul {
 		position: relative;
-		right: 53px;
+		right: 33px;
 	}
 	#sub {
 	position: relative;

@@ -2,13 +2,17 @@ import React, { useState, useRef, useCallback, useEffect } from "react";
 import { startOfMonth, endOfMonth, startOfWeek, endOfWeek } from "date-fns";
 import { isSameMonth, isSameDay, addDays, parse, format } from "date-fns";
 import { CgAddR } from "react-icons/cg";
-const RenderScheduleCells = ({ currentMonth, selectedDate, onDateClick, meetings}) => {
+const RenderScheduleCells = ({
+  currentMonth,
+  selectedDate,
+  onDateClick,
+  meetings,
+}) => {
   const monthStart = startOfMonth(currentMonth); //오늘이 속한 달의 시작일
   const monthEnd = endOfMonth(monthStart); //오늘이 속한 달의 마지막일
   const startDate = startOfWeek(monthStart); //monthStart가 속한 주의 시작일
   const endDate = endOfWeek(monthEnd); //monthEnd가 속한 주의 마지막일
 
- 
   const rows = []; //일월화수목금토(한 주) * 4주 or 5주
   let days = []; //일월화수목금토 (한 주)
   let day = startDate;
@@ -46,18 +50,33 @@ const RenderScheduleCells = ({ currentMonth, selectedDate, onDateClick, meetings
             <CgAddR onClick={() => onDateClick(cloneDay)} />
             {formattedDate}
           </span>
-          {meetings[day.toDateString()] &&
-          Object.keys(meetings[day.toDateString()]).map((study) =>
-            meetings[day.toDateString()][study].map((meeting) => (
-              <div
-                key={meeting.id}
-                className="event"
-                style={{ backgroundColor: meeting.color}}
-              >
-                {meeting.title}
-              </div>
-            ))
-          )}
+          <div>
+            {meetings[day.toDateString()] &&
+              Object.keys(meetings[day.toDateString()]).map((study) =>
+                meetings[day.toDateString()][study].map((meeting) => (
+                  <div
+                    key={meeting.id}
+                    className="event"
+                    style={{ backgroundColor: meeting.color }}
+                  >
+                    <p>
+                      {study}
+                      <br />
+                      {meeting.title}
+                    </p>
+                  </div>
+                ))
+              )}
+            <div className="event_cnt">
+              <p>
+                +{" "}
+                {Object.values(meetings[day.toDateString()] || {}).reduce(
+                  (total, study) => total + study.length,
+                  0
+                )}
+              </p>
+            </div>
+          </div>
         </div>
       );
       day = addDays(day, 1);

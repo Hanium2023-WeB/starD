@@ -58,7 +58,7 @@ const Schedule = ({ sideheader }) => {
             <Category />
             <ScheduleCalender onDateClick={handleToggle} meetings={meetings}/>
             {addToggle && (
-              <AddSchedule selectedDate={selectedDate} onInsert={onInsert}/>
+              <AddSchedule selectedDate={selectedDate} onInsert = {onInsert} onClose={()=>{setAddToggle(false)}}/>
             )}
           </div>
         </div>

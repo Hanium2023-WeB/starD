@@ -1,19 +1,18 @@
+import React, {useCallback, useContext, useState} from 'react';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faArrowLeft} from "@fortawesome/free-solid-svg-icons";
-import React, {useCallback, useContext, useState} from 'react';
 import {useParams, useNavigate, Link, useLocation} from "react-router-dom";
-
 import "../css/StudyOpenForm.css";
 import RealEstate from "../components/RealEstate";
 
 const StudyInsert = ({sideheader, onInsertStudy}) => {
     const navigate = useNavigate();
-    const location = useLocation();
-    console.log("location: " + location);
-    const {state} = location;
-    console.log("state: " + state);
-    const {orderId} = state;
-    console.log("orderId " + orderId);
+    // const location = useLocation();
+    // console.log("location: " + location);
+    // const {state} = location;
+    // console.log("state: " + state);
+    // const {orderId} = state;
+    // console.log("orderId " + orderId);
 
     const [showSelect, setShowSelect] = useState(false);
     const [selectedOption, setSelectedOption] = useState(null);
@@ -37,6 +36,7 @@ const StudyInsert = ({sideheader, onInsertStudy}) => {
         })
     };
 
+
     const handleRadioChange = (e) => {
         const selectedValue = e.target.value;
         setSelectedOption(selectedValue);
@@ -46,8 +46,11 @@ const StudyInsert = ({sideheader, onInsertStudy}) => {
         })
         setShowSelect(selectedValue === "offline");
     }
+   
     const handleSubmit = useCallback(e => {
-        if (formData.title.trim() !== '' && formData.tag.trim() !== '' && formData.number.trim() !== '' && formData.deadline.trim() !== '' && formData.duration.trim() !== '' && formData.description.trim() !== '') {
+        if (formData.title.trim() !== '' && formData.tag.trim() !== '' 
+        && formData.number.trim() !== '' && formData.deadline.trim() !== '' 
+        && formData.duration.trim() !== '' && formData.description.trim() !== '') {
             // onInsertStudy(formData);
             setFormData({
                 title: "",
@@ -60,13 +63,19 @@ const StudyInsert = ({sideheader, onInsertStudy}) => {
                 description: "",
                 created_date: new Date(),
             });
+            //JSON.stringify(formData) 이렇게 안해주고 그냥 formData만 넘겨주게 되면 Object Object 가 뜸
+            console.log(`formData: ${JSON.stringify(formData)}`)
+            //myopenstudy에 navigate로 데이터 넘기기
+            navigate("/myopenstudy",{state: formData});
         }
-        e.preventDefault();
-        // 여기서 formData를 사용하여 데이터 처리하거나 API 호출 등을 수행합니다.
-        // 예를 들어 navigate("/other-page", { state: formData })와 같이 사용할 수 있습니다.
-        console.log('Form data submitted:', formData);
-        navigate("/myopenstudy", {state: formData});
-    })
+    },[formData, navigate]);
+
+        // e.preventDefault();
+        // // 여기서 formData를 사용하여 데이터 처리하거나 API 호출 등을 수행합니다.
+        // // 예를 들어 navigate("/other-page", { state: formData })와 같이 사용할 수 있습니다.
+        // console.log('Form data submitted:', formData);
+        // navigate("/myopenstudy", {state: formData});
+
     const studyinsertform = () => {
         return (
             <form className="study_open_form" onSubmit={handleSubmit}>

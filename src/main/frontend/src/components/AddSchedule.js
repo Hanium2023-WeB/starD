@@ -1,10 +1,10 @@
-import React, { useState, useRef, useCallback } from "react";
+import React, { useState, useRef, useCallback} from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import ScheduleAdd from "../css/ScheduleAdd.css";
 import {CirclePicker} from 'react-color';
 
-const AddSchedule = ({ selectedDate, onInsert}) => {
+const AddSchedule = ({ selectedDate, onInsert, onClose}) => {
   const localDate = new Date(selectedDate);
   const localDateString = localDate.toLocaleDateString();
   const [startDate, setStartDate] = useState(new Date(selectedDate));
@@ -12,7 +12,9 @@ const AddSchedule = ({ selectedDate, onInsert}) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [study, setStudy] = useState();
-  const [color, setColor] = useState("#000000");
+  const [color, setColor] = useState("");
+
+
   const onChangeTitle = useCallback((e) => {
     setTitle(e.target.value);
   }, []);
@@ -26,8 +28,9 @@ const AddSchedule = ({ selectedDate, onInsert}) => {
     setColor(color.hex);
   }, []);
   const onSubmit = useCallback(
-    //나중에 todos 배열에 새 데이터(객체)를 추가하는 함수를 추가해줄겁니다1!
-    (e) => {
+    //나중에 todos 배열에 새 데이터(객체)를 추가하는 함수를 추가해줄겁니다!
+    (e) => {  
+     
       if (title != "") {
         onInsert(endDate, title, content, study,color);
     } else {
@@ -41,9 +44,12 @@ const AddSchedule = ({ selectedDate, onInsert}) => {
       //기본이벤트(새로고침) 방지
       e.preventDefault();
     },
-    [title]
+    [content, color]
   );
+
   return (
+    // <div>
+    // {showForm &&(
     <div className="background">
       <form className="todoedit_insert">
         <h2>{localDateString}</h2>
@@ -98,8 +104,13 @@ const AddSchedule = ({ selectedDate, onInsert}) => {
         <button type="submit" onClick={onSubmit}>
           일정 추가하기
         </button>
+        <button type="button"onClick={onClose}>
+          취소
+        </button>
       </form>
     </div>
+    // )}
+    // </div>
   );
 };
 export default AddSchedule;

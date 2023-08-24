@@ -12,7 +12,7 @@ const MyOpenStudy = ({ sideheader }) => {
 	const [state, setState] = useState([]);
 
 	const location = useLocation();
-	console.log("state: " + location.state);
+	console.log("state: " + JSON.stringify(location.state));
 
 	const getData = async () => {
 		const res = await fetch(
