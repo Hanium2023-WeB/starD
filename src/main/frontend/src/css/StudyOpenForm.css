@@ -1,0 +1,97 @@
+html {
+    font-size: 62.5%;
+} /*10px*/
+
+.study_detail_container {
+    width: 60%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+}
+.study_detail_container h1 {
+    font-size: 27px;
+    text-align: center;
+}
+.study_detail_container .arrow_left {
+    text-align: left;
+    font-size: 50px;
+    color: #898989;
+    cursor: pointer;
+}
+
+.study_open_form {
+    margin-top: 50px;
+}
+.study_open_form > div:nth-of-type(1){
+    display: flex;
+}
+.study_open_form span{
+    font-size: 15px;
+}
+.study_open_form .inputbox{
+    width:300px;
+    position:inherit;
+}
+.study_open_form .left,
+.study_open_form .right{
+    text-align: right;
+}
+.study_open_form .left{
+    margin-right: 34px;
+}
+.study_open_form .left > div,
+.study_open_form .right > div{
+    margin-bottom: 25px;
+}
+.study_open_form .right .onoff {
+    display: inline-block;
+    width:300px;
+    height:50px;
+    text-align: left;
+    font-size: 15px;
+    margin-left: 20px;
+}
+.study_open_form .right input[name="onoff"]{
+    width:auto;
+    height:auto;
+    background: none;
+    box-shadow: none;
+    margin-left: 0;
+    position: inherit;
+}
+.select_estate{
+    display: inherit;
+    margin-top: 5px;
+}
+
+.study_open_detail{
+    display: flex;
+    margin-top:10px;
+}
+.study_open_detail span{
+    margin-left: 15px;
+    margin-right:20px;
+    display: inline-block;
+}
+.study_open_detail textarea {
+    border: 1px solid #dbdbdb;
+    border-radius: 20px;
+    padding: 15px 10px;
+    width: 85%;
+    height: 100px;
+}
+
+.btn .recruit_btn {
+    width:inherit;
+    box-shadow: inherit;
+    background-color: #395b64;
+    border: none;
+    font-size: 20px;
+    color: #fff;
+    padding: 15px 70px;
+    border-radius: 50px;
+    font-family: "Nanum Myeongjo", serif;
+    cursor: pointer;
+}

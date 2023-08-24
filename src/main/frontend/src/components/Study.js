@@ -1,4 +1,5 @@
 import Slide from "../components/Slide.js";
+import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import "../css/MyParticipateStudy.css";
@@ -15,6 +16,13 @@ const Study = ({ study, slide }) => {
         transition: "0.5s ease",
       }}
     >
+      <Link
+          to={`/studydetail/${id}`}
+          style={{
+            textDecoration: "none",
+            color: "inherit",
+          }}
+      >
       <div className="list_header">
         <div className="list_sub_header">
           <div className="list_day">{id}일간의 우주여행</div>
@@ -30,6 +38,7 @@ const Study = ({ study, slide }) => {
       <div className="list_onoff">{tag}</div>
       <div className="stroke"></div>
       <div className="list_founder">{author}</div>
+      </Link>
     </li>
   );
 };

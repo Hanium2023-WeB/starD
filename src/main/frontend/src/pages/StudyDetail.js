@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 
 import "../css/StudyDetail.css";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import StudyInfo from "../components/StudyInfo";
 
 const StudyDetail = ({ sideheader }) => {
 	const { id } = useParams();
@@ -42,42 +43,21 @@ const StudyDetail = ({ sideheader }) => {
 			<div className="study_detail">
 				{studyDetail.map((study) => (
 					<div key={study.id}>
-						<div className="study_header">
-							<h2 className="study_title">{study.title}</h2>
-							<div className="study_author_info">
-								<p className="study_author">{study.author}</p>
-								<p className="study_created_date">
-									{study.created_date}
-								</p>
-							</div>
+						<StudyInfo study={study} />
+						<div className="study_intro">
+							<div>스터디 소개</div>
+							<div>{study.content}</div>
 						</div>
-						<div className="study_content">
-							<ul className="study_info">
-								<li>
-									<span>분야</span>
-									<span>{study.tag}</span>
-								</li>
-								<li>
-									<span>모집 중</span>
-									<span>{study.tag}</span>
-								</li>
-								<li>
-									<span>진행 방식</span>
-									<span>{study.tag}</span>
-								</li>
-								<li>
-									<span>모집 마감일</span>
-									<span>{study.tag}</span>
-								</li>
-								<li>
-									<span>스터디 기간</span>
-									<span>{study.tag}</span>
-								</li>
-							</ul>
-							<div className="study_intro">
-								<div>스터디 소개</div>
-								<div>{study.content}</div>
-							</div>
+						<div className="btn">
+							<Link
+								to={`/studyapplyform/${study.id}`}
+								style={{
+									textDecoration: "none",
+									color: "inherit",
+								}}
+							>
+								<button className="apply_btn">탑승하기</button>
+							</Link>
 						</div>
 					</div>
 				))}

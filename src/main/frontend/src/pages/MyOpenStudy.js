@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Category from "../components/Category.js";
 
 import "../css/MyOpenStudy.css";
@@ -11,17 +11,23 @@ const MyOpenStudy = ({ sideheader }) => {
 	const dataId = useRef(0);
 	const [state, setState] = useState([]);
 
+	const location = useLocation();
+	console.log("state: " + location.state);
+
 	const getData = async () => {
 		const res = await fetch(
 			"https://jsonplaceholder.typicode.com/comments"
 		).then((res) => res.json());
 		const initDate = res.slice(0, 10).map((it) => {
 			return {
+				title: it.name,
 				tag: it.email,
 				author: it.email,
-				day: it.postId,
-				title: it.name,
-				last: 5,
+				number: it.email,
+				onoff: it.email,
+				deadline: new Date(),
+				duration:it.email,
+				description:"",
 				created_date: new Date().getTime(),
 				id: dataId.current++,
 			};

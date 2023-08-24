@@ -16,6 +16,9 @@ import MyOpenStudy from "./pages/MyOpenStudy";
 import StudyDetail from "./pages/StudyDetail";
 import ToDoList from "./pages/ToDoList";
 import Schedule from "./pages/Schedule.js";
+import StudyApplyForm from "./pages/StudyApplyForm";
+import Study from "./pages/Study";
+import StudyInsert from "./components/StudyInsert";
 
 const side = () => {
 	return (
@@ -67,7 +70,10 @@ const sidecenter = () => {
 		<div className="sidebar">
 			<nav>
 				<ul>
-					<li>스터디</li>
+					<Link
+						to={"/study"}
+						style={{ textDecoration: "none", color: "inherit" }}
+					><li>스터디</li></Link>
 					<li>커뮤니티</li>
 					<li>공지사항</li>
 				</ul>
@@ -141,6 +147,24 @@ function App() {
 						path="/MyPage/Schedule"
 						element={<Schedule sideheader = {rendsidecenter()}/>}
 						/>
+					<Route
+						path="/studyapplyform/:id"
+						element={
+							<StudyApplyForm sideheader={rendsidecenter()} />
+						}
+					/>
+					<Route
+						path="/study"
+						element={
+							<Study sideheader={rendsidecenter()} />
+						}
+					/>
+					<Route
+						path="/studyopen"
+						element={
+							<StudyInsert sideheader={rendsidecenter()} />
+						}
+					/>
 					
 				</Routes>
 				<div></div>
