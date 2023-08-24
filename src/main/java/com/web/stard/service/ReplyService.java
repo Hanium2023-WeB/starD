@@ -1,9 +1,6 @@
 package com.web.stard.service;
 
-import com.web.stard.domain.Member;
-import com.web.stard.domain.Post;
-import com.web.stard.domain.PostType;
-import com.web.stard.domain.Reply;
+import com.web.stard.domain.*;
 import com.web.stard.repository.ReplyRepository;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,7 +19,7 @@ public class ReplyService {
     MemberService memberService;
     CommunityService communityService;
     ReplyRepository replyRepository;
-
+    StudyService studyService;
 
     // 댓글이 존재하는지 확인
     private Reply getExistingReply(Long replyId) {
@@ -43,8 +40,8 @@ public class ReplyService {
     }
 
 
-    // Post 댓글 생성
-    public Reply createQnaReply(Long postId, String replyContent, Authentication authentication) {
+    // Post(Community, Qna) 댓글 생성
+    public Reply createPostReply(Long postId, String replyContent, Authentication authentication) {
         String userId = authentication.getName();
         Member replier = memberService.find(userId);
         Post targetPost = communityService.getCommunityPost(postId);
@@ -59,8 +56,24 @@ public class ReplyService {
         return replyRepository.save(reply);
     }
 
-    // Post 댓글 수정
-    public Reply updateQnaReply(Long replyId, String replyContent, Authentication authentication) {
+    // Study 댓글 생성
+    public Reply createStudyReply(Long studyId, String replyContent, Authentication authentication) {
+        String userId = authentication.getName();
+        Member replier = memberService.find(userId);
+        Study targetStudy = studyService.findById(studyId);
+
+        Reply reply = Reply.builder()
+                .member(replier)
+                .study(targetStudy)
+                .content(replyContent)
+                .type(PostType.STUDY)
+                .build();
+
+        return replyRepository.save(reply);
+    }
+
+    // 댓글 수정 (Post, Study 공통)
+    public Reply updateReply(Long replyId, String replyContent, Authentication authentication) {
         String userId = authentication.getName();
         Member replier = memberService.find(userId);
 
@@ -72,8 +85,8 @@ public class ReplyService {
         return replyRepository.save(reply);
     }
 
-    // Post 댓글 삭제
-    public void deleteQnaReply(Long replyId, Authentication authentication) {
+    // 댓글 삭제 (Post, Study 공통)
+    public void deleteReply(Long replyId, Authentication authentication) {
         String userId = authentication.getName();
         Member replier = memberService.find(userId);
 
