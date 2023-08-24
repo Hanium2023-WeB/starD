@@ -1,21 +1,19 @@
-import React, {useCallback, useContext, useState} from 'react';
+import React, {useCallback, useContext, useEffect, useRef, useState} from 'react';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faArrowLeft} from "@fortawesome/free-solid-svg-icons";
 import {useParams, useNavigate, Link, useLocation} from "react-router-dom";
 import "../css/StudyOpenForm.css";
 import RealEstate from "../components/RealEstate";
 
-const StudyInsert = ({sideheader, onInsertStudy}) => {
+const StudyInsert = ({sideheader}) => {
+    // const dataId = useRef(0);
+    const [dataId, setDataId] = useState(0);
     const navigate = useNavigate();
-    // const location = useLocation();
-    // console.log("location: " + location);
-    // const {state} = location;
-    // console.log("state: " + state);
-    // const {orderId} = state;
-    // console.log("orderId " + orderId);
+    const location = useLocation();
 
     const [showSelect, setShowSelect] = useState(false);
     const [selectedOption, setSelectedOption] = useState(null);
+    const [studies, setStudies] = useState([]);
 
     const [formData, setFormData] = useState({
         title: "",
@@ -46,12 +44,42 @@ const StudyInsert = ({sideheader, onInsertStudy}) => {
         })
         setShowSelect(selectedValue === "offline");
     }
-   
+
+    const onInsertStudy = useCallback((study) => {
+        const { title, tag, author, number, onoff, deadline, duration, description, created_date } = study;
+        const newData = {
+            title,
+            tag,
+            author,
+            number,
+            onoff,
+            deadline,
+            duration,
+            description,
+            created_date,
+            id: dataId,
+        };
+        console.log("id : "+ newData.id );
+        setStudies((prevStudies) => [...prevStudies, newData]);
+        const updatedStudies = [...studies, newData];
+        localStorage.setItem("studies", JSON.stringify(updatedStudies));
+
+        setDataId((prevDataId) => prevDataId + 1);
+    }, [studies, dataId]);
+
+    useEffect(() => {
+        const storedStudies = JSON.parse(localStorage.getItem("studies") || "[]");
+        setStudies(storedStudies);
+        // dataId 값을 로컬 스토리지에서 가져와서 설정
+        const lastDataId = storedStudies.length > 0 ? storedStudies[storedStudies.length - 1].id : 0;
+        setDataId(lastDataId + 1);
+    }, []);
+
     const handleSubmit = useCallback(e => {
         if (formData.title.trim() !== '' && formData.tag.trim() !== '' 
         && formData.number.trim() !== '' && formData.deadline.trim() !== '' 
         && formData.duration.trim() !== '' && formData.description.trim() !== '') {
-            // onInsertStudy(formData);
+            onInsertStudy(formData);
             setFormData({
                 title: "",
                 tag: "",
@@ -65,7 +93,9 @@ const StudyInsert = ({sideheader, onInsertStudy}) => {
             });
             //JSON.stringify(formData) 이렇게 안해주고 그냥 formData만 넘겨주게 되면 Object Object 가 뜸
             console.log(`formData: ${JSON.stringify(formData)}`)
+            // console.log(`studies: ${JSON.stringify(studies)}`)
             //myopenstudy에 navigate로 데이터 넘기기
+            e.preventDefault();
             navigate("/myopenstudy",{state: formData});
         }
     },[formData, navigate]);

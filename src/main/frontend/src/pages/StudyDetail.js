@@ -14,30 +14,17 @@ const StudyDetail = ({ sideheader }) => {
 	const [state, setState] = useState([]);
 	const navigate = useNavigate();
 
-	const studyDetail = state.filter((study) => study.id === Number(id));
+	const [studies, setStudies] = useState([]);
 
-	const getData = async () => {
-		const res = await fetch(
-			"https://jsonplaceholder.typicode.com/comments"
-		).then((res) => res.json());
-		const initDate = res.slice(0, 10).map((it) => {
-			return {
-				tag: it.email,
-				author: it.email,
-				day: it.postId,
-				title: it.name,
-				last: 5,
-				created_date: new Date().getTime(),
-				id: dataId.current++,
-				content: it.body,
-			};
-		});
-		setState(initDate);
-		console.log(initDate);
-	};
+	const studyDetail = studies.filter((study) => study.id === Number(id));
+
 	useEffect(() => {
-		getData();
+		const storedStudies = localStorage.getItem("studies");
+		if (storedStudies) {
+			setStudies(JSON.parse(storedStudies));
+		}
 	}, []);
+
 	const studydetail = () => {
 		return (
 			<div className="study_detail">
@@ -46,7 +33,7 @@ const StudyDetail = ({ sideheader }) => {
 						<StudyInfo study={study} />
 						<div className="study_intro">
 							<div>스터디 소개</div>
-							<div>{study.content}</div>
+							<div>{study.description}</div>
 						</div>
 						<div className="btn">
 							<Link
