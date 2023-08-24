@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.*;
@@ -111,7 +112,7 @@ class ReplyServiceTest {
         assertEquals(PostType.QNA, savedReply.getType()); // 댓글 단 게시글의 타입이 QNA인지 확인
     }
 
-    @Rollback(false)
+    //@Rollback(false)
     @Test
     void Study_댓글_등록() {
         //given
@@ -150,51 +151,456 @@ class ReplyServiceTest {
         assertEquals(PostType.STUDY, savedReply.getType()); // 댓글 단 게시글의 타입이 STUDY인지 확인
     }
 
-    @Rollback(false)
+    //@Rollback(false)
     @Test
     void Post_댓글_수정_작성자() {
+        //given
+        Member member = new Member();
+        member.setId("testUser");
+        memberService.saveMember(member);
 
+        Authentication authentication = new UsernamePasswordAuthenticationToken(member.getId(), null);
+
+        // 1. qna
+/*
+        Post post = new Post();
+        post.setTitle("qna post 제목");
+        post.setContent("qna post 내용");
+        Post createdPost = qnaService.createQna(post, authentication);
+*/
+
+        // 2. comm
+        Post post = new Post();
+        post.setTitle("comm post 제목");
+        post.setContent("comm post 내용");
+        Post createdPost = communityService.registerCommPost(post, authentication);
+
+        // 댓글 생성
+        Reply reply = new Reply();
+        reply.setMember(member);
+        reply.setContent("원래 댓글 내용");
+        Reply createdReply = replyService.createPostReply(createdPost.getId(), reply.getContent(), authentication);
+
+        String updatedContent = "수정된 댓글 내용";
+
+        //when
+        Reply updatedReply = replyService.updateReply(createdReply.getId(), updatedContent, authentication);
+
+        //then
+        assertNotNull(updatedReply);
+        assertEquals(updatedContent, updatedReply.getContent());    // 수정한 댓글이 반영됐는지
+        assertEquals(member.getId(), updatedReply.getMember().getId()); // 작성자가 맞는지
     }
 
-    @Rollback(false)
+    //@Rollback(false)
     @Test
     void Study_댓글_수정_작성자() {
+        //given
+        Member member = new Member();
+        member.setId("testUser");
+        memberService.saveMember(member);
 
+        Authentication authentication = new UsernamePasswordAuthenticationToken(member.getId(), null);
+
+        StudyDto studyDto = new StudyDto("study 제목", "study 내용", 5, member.getId(),
+                null, null, null, "online", LocalDateTime.now().plusDays(7), LocalDateTime.now().plusDays(14),
+                LocalDateTime.now(),LocalDateTime.now().plusDays(7), "모집중", 0);
+        Study createdStudy = studyService.createStudy(studyDto, authentication);
+
+        // 댓글 생성
+        Reply reply = new Reply();
+        reply.setMember(member);
+        reply.setContent("원래 댓글 내용");
+        Reply createdReply = replyService.createStudyReply(createdStudy.getId(), reply.getContent(), authentication);
+
+        String updatedContent = "수정된 댓글 내용";
+
+        //when
+        Reply updatedReply = replyService.updateReply(createdReply.getId(), updatedContent, authentication);
+
+        //then
+        assertNotNull(updatedReply);
+        assertEquals(updatedContent, updatedReply.getContent());    // 수정한 댓글이 반영됐는지
+        assertEquals(member.getId(), updatedReply.getMember().getId()); // 작성자가 맞는지
     }
 
-    @Rollback(false)
+    //@Rollback(false)
     @Test
     void Post_댓글_수정_사용자_예외() {
+        //given
+        Member member = new Member();
+        member.setId("testUser");
+        memberService.saveMember(member);
 
+        Member member2 = new Member();
+        member2.setId("testUser2");
+        memberService.saveMember(member2);
+
+        Authentication authentication = new UsernamePasswordAuthenticationToken(member.getId(), null);
+        Authentication authentication2 = new UsernamePasswordAuthenticationToken(member2.getId(), null);
+
+        // 1. qna
+        Post post = new Post();
+        post.setTitle("qna post 제목");
+        post.setContent("qna post 내용");
+        Post createdPost = qnaService.createQna(post, authentication);
+
+        // 2. comm
+/*
+        Post post = new Post();
+        post.setTitle("comm post 제목");
+        post.setContent("comm post 내용");
+        Post createdPost = communityService.registerCommPost(post, authentication);
+*/
+
+        // 댓글 생성
+        Reply reply = new Reply();
+        reply.setMember(member);
+        reply.setContent("원래 댓글 내용");
+        Reply createdReply = replyService.createPostReply(createdPost.getId(), reply.getContent(), authentication);
+
+        String updatedContent = "수정된 댓글 내용";
+
+        //when
+        Reply updatedReply = replyService.updateReply(createdReply.getId(), updatedContent, authentication2);   // 작성자 아닌 회원이 수정
+
+        //then
+        assertNotNull(updatedReply);
+        assertEquals(updatedContent, updatedReply.getContent());    // 수정한 댓글이 반영됐는지
+        assertEquals(member.getId(), updatedReply.getMember().getId()); // 작성자가 맞는지(-> IllegalStateException 예외 발생)
     }
 
-    @Rollback(false)
+    //@Rollback(false)
     @Test
     void Study_댓글_수정_사용자_예외() {
+        //given
+        Member member = new Member();
+        member.setId("testUser");
+        memberService.saveMember(member);
 
+        Member member2 = new Member();
+        member2.setId("testUser2");
+        memberService.saveMember(member2);
+
+        Authentication authentication = new UsernamePasswordAuthenticationToken(member.getId(), null);
+        Authentication authentication2 = new UsernamePasswordAuthenticationToken(member2.getId(), null);
+
+        StudyDto studyDto = new StudyDto("study 제목", "study 내용", 5, member.getId(),
+                null, null, null, "online", LocalDateTime.now().plusDays(7), LocalDateTime.now().plusDays(14),
+                LocalDateTime.now(),LocalDateTime.now().plusDays(7), "모집중", 0);
+        Study createdStudy = studyService.createStudy(studyDto, authentication);
+
+        // 댓글 생성
+        Reply reply = new Reply();
+        reply.setMember(member);
+        reply.setContent("원래 댓글 내용");
+        Reply createdReply = replyService.createStudyReply(createdStudy.getId(), reply.getContent(), authentication);
+
+        String updatedContent = "수정된 댓글 내용";
+
+        //when
+        Reply updatedReply = replyService.updateReply(createdReply.getId(), updatedContent, authentication2);   // 작성자 아닌 회원이 수정
+
+        //then
+        assertNotNull(updatedReply);
+        assertEquals(updatedContent, updatedReply.getContent());    // 수정한 댓글이 반영됐는지
+        assertEquals(member.getId(), updatedReply.getMember().getId()); // 작성자가 맞는지(-> IllegalStateException 예외 발생)
     }
 
-    @Rollback(false)
+    //@Rollback(false)
     @Test
     void Post_댓글_삭제_작성자() {
+        //given
+        Member member = new Member();
+        member.setId("testUser");
+        memberService.saveMember(member);
 
+        Authentication authentication = new UsernamePasswordAuthenticationToken(member.getId(), null);
+
+        // 1. qna
+        Post post = new Post();
+        post.setTitle("qna post 제목");
+        post.setContent("qna post 내용");
+        Post createdPost = qnaService.createQna(post, authentication);
+
+        // 2. comm
+/*
+        Post post = new Post();
+        post.setTitle("comm post 제목");
+        post.setContent("comm post 내용");
+        Post createdPost = communityService.registerCommPost(post, authentication);
+*/
+
+        // 댓글 생성
+        Reply reply = new Reply();
+        reply.setMember(member);
+        reply.setContent("댓글 내용");
+        Reply createdReply = replyService.createPostReply(createdPost.getId(), reply.getContent(), authentication);
+
+        //when
+        replyService.deleteReply(createdReply.getId(), authentication);
+
+        //then
+        Optional<Post> deletedPost = postRepository.findById(createdReply.getId());
+        assertFalse(deletedPost.isPresent());   // 삭제한 댓글이 존재하는지 확인
     }
 
-    @Rollback(false)
+    //@Rollback(false)
     @Test
     void Study_댓글_삭제_작성자() {
+        //given
+        Member member = new Member();
+        member.setId("testUser");
+        memberService.saveMember(member);
 
+        Authentication authentication = new UsernamePasswordAuthenticationToken(member.getId(), null);
+
+        StudyDto studyDto = new StudyDto("study 제목", "study 내용", 5, member.getId(),
+                null, null, null, "online", LocalDateTime.now().plusDays(7), LocalDateTime.now().plusDays(14),
+                LocalDateTime.now(),LocalDateTime.now().plusDays(7), "모집중", 0);
+        Study createdStudy = studyService.createStudy(studyDto, authentication);
+
+        // 댓글 생성
+        Reply reply = new Reply();
+        reply.setMember(member);
+        reply.setContent("댓글 내용");
+        Reply createdReply = replyService.createStudyReply(createdStudy.getId(), reply.getContent(), authentication);
+
+        //when
+        replyService.deleteReply(createdReply.getId(), authentication);
+
+        //then
+        Optional<Post> deletedPost = postRepository.findById(createdReply.getId());
+        assertFalse(deletedPost.isPresent());   // 삭제한 댓글이 존재하는지 확인
     }
     
-    @Rollback(false)
+    //@Rollback(false)
     @Test
     void Post_댓글_삭제_사용자_예외() {
+        //given
+        Member member = new Member();
+        member.setId("testUser");
+        memberService.saveMember(member);
 
+        Member member2 = new Member();
+        member2.setId("testUser2");
+        memberService.saveMember(member2);
+
+        Authentication authentication = new UsernamePasswordAuthenticationToken(member.getId(), null);
+        Authentication authentication2 = new UsernamePasswordAuthenticationToken(member2.getId(), null);
+
+        // 1. qna
+        Post post = new Post();
+        post.setTitle("qna post 제목");
+        post.setContent("qna post 내용");
+        Post createdPost = qnaService.createQna(post, authentication);
+
+        // 2. comm
+/*
+        Post post = new Post();
+        post.setTitle("comm post 제목");
+        post.setContent("comm post 내용");
+        Post createdPost = communityService.registerCommPost(post, authentication);
+*/
+
+        // 댓글 생성
+        Reply reply = new Reply();
+        reply.setMember(member);
+        reply.setContent("댓글 내용");
+        Reply createdReply = replyService.createPostReply(createdPost.getId(), reply.getContent(), authentication);
+
+        //when
+        replyService.deleteReply(createdReply.getId(), authentication2);
+
+        //then
+        Optional<Post> deletedPost = postRepository.findById(createdReply.getId());
+        assertFalse(deletedPost.isPresent());   // 삭제한 댓글이 존재하는지 확인
     }
 
-    @Rollback(false)
+    //@Rollback(false)
     @Test
     void Study_댓글_삭제_사용자_예외() {
+        //given
+        Member member = new Member();
+        member.setId("testUser");
+        memberService.saveMember(member);
 
+        Member member2 = new Member();
+        member2.setId("testUser2");
+        memberService.saveMember(member2);
+
+        Authentication authentication = new UsernamePasswordAuthenticationToken(member.getId(), null);
+        Authentication authentication2 = new UsernamePasswordAuthenticationToken(member2.getId(), null);
+
+        StudyDto studyDto = new StudyDto("study 제목", "study 내용", 5, member.getId(),
+                null, null, null, "online", LocalDateTime.now().plusDays(7), LocalDateTime.now().plusDays(14),
+                LocalDateTime.now(),LocalDateTime.now().plusDays(7), "모집중", 0);
+        Study createdStudy = studyService.createStudy(studyDto, authentication);
+
+        // 댓글 생성
+        Reply reply = new Reply();
+        reply.setMember(member);
+        reply.setContent("댓글 내용");
+        Reply createdReply = replyService.createStudyReply(createdStudy.getId(), reply.getContent(), authentication);
+
+        //when
+        replyService.deleteReply(createdReply.getId(), authentication2);    // 작성자x
+
+        //then
+        Optional<Post> deletedPost = postRepository.findById(createdReply.getId());
+        assertFalse(deletedPost.isPresent());   // 삭제한 댓글이 존재하는지 확인
+    }
+
+    //@Rollback(false)
+    @Test
+    void Post_댓글_조회() {
+        //given
+        Member member = new Member();
+        member.setId("testUser");
+        memberService.saveMember(member);
+
+        Authentication authentication = new UsernamePasswordAuthenticationToken(member.getId(), null);
+
+        // 1. qna
+/*
+        Post post = new Post();
+        post.setTitle("qna post 제목");
+        post.setContent("qna post 내용");
+        Post createdPost = qnaService.createQna(post, authentication);
+*/
+
+        // 2. comm
+        Post post = new Post();
+        post.setTitle("comm post 제목");
+        post.setContent("comm post 내용");
+        Post createdPost = communityService.registerCommPost(post, authentication);
+
+        Reply reply = new Reply();
+        reply.setMember(member);
+        reply.setContent("댓글");
+        Reply createdReply = replyService.createPostReply(createdPost.getId(), reply.getContent(), authentication);
+
+        //when
+        Reply retrievedReply = replyService.getReply(createdReply.getId());
+
+        //then
+        assertNotNull(retrievedReply);
+        assertEquals(createdReply.getId(), retrievedReply.getId());
+        assertEquals(createdReply.getContent(), retrievedReply.getContent());
+        assertEquals(createdReply.getMember().getId(), retrievedReply.getMember().getId());
+//        assertEquals(PostType.QNA, retrievedReply.getType());
+        assertEquals(PostType.COMM, retrievedReply.getType());
+        assertEquals(createdReply.getType(), retrievedReply.getType());
+    }
+
+    //@Rollback(false)
+    @Test
+    void Study_댓글_조회() {
+        //given
+        Member member = new Member();
+        member.setId("testUser");
+        memberService.saveMember(member);
+
+        Authentication authentication = new UsernamePasswordAuthenticationToken(member.getId(), null);
+
+        StudyDto studyDto = new StudyDto("study 제목", "study 내용", 5, member.getId(),
+                null, null, null, "online", LocalDateTime.now().plusDays(7), LocalDateTime.now().plusDays(14),
+                LocalDateTime.now(),LocalDateTime.now().plusDays(7), "모집중", 0);
+        Study createdStudy = studyService.createStudy(studyDto, authentication);
+
+        // 댓글 생성
+        Reply reply = new Reply();
+        reply.setMember(member);
+        reply.setContent("댓글");
+        Reply createdReply = replyService.createStudyReply(createdStudy.getId(), reply.getContent(), authentication);
+
+        //when
+        Reply retrievedReply = replyService.getReply(createdReply.getId());
+
+        //then
+        assertNotNull(retrievedReply);
+        assertEquals(createdReply.getId(), retrievedReply.getId());
+        assertEquals(createdReply.getContent(), retrievedReply.getContent());
+        assertEquals(createdReply.getMember().getId(), retrievedReply.getMember().getId());
+        assertEquals(PostType.STUDY, retrievedReply.getType());
+        assertEquals(createdReply.getType(), retrievedReply.getType());
+    }
+
+    //@Rollback(false)
+    @Test
+    void Post_댓글_리스트조회() {
+        //given
+        Member member = new Member();
+        member.setId("testUser");
+        memberService.saveMember(member);
+
+        Authentication authentication = new UsernamePasswordAuthenticationToken(member.getId(), null);
+
+        // 1. qna
+/*
+        Post post = new Post();
+        post.setTitle("qna post 제목");
+        post.setContent("qna post 내용");
+        Post createdPost = qnaService.createQna(post, authentication);
+*/
+
+        // 2. comm
+        Post post = new Post();
+        post.setTitle("comm post 제목");
+        post.setContent("comm post 내용");
+        Post createdPost = communityService.registerCommPost(post, authentication);
+
+        Reply reply = new Reply();
+        reply.setMember(member);
+        reply.setContent("댓글 내용 1");
+        Reply createdReply = replyService.createPostReply(createdPost.getId(), reply.getContent(), authentication);
+
+        Reply reply2 = new Reply();
+        reply2.setMember(member);
+        reply2.setContent("댓글 내용 2");
+        replyService.createPostReply(createdPost.getId(), reply2.getContent(), authentication);
+
+        // When
+        List<Reply> replies = replyService.findAll();
+
+        // Then
+        assertEquals(2, replies.size()); // 생성된 댓글 개수 확인
+        assertEquals("댓글 내용 1", replies.get(0).getContent());
+        assertEquals("댓글 내용 2", replies.get(1).getContent());
+    }
+
+    //@Rollback(false)
+    @Test
+    void Study_댓글_리스트조회() {
+        //given
+        Member member = new Member();
+        member.setId("testUser");
+        memberService.saveMember(member);
+
+        Authentication authentication = new UsernamePasswordAuthenticationToken(member.getId(), null);
+
+        StudyDto studyDto = new StudyDto("study 제목", "study 내용", 5, member.getId(),
+                null, null, null, "online", LocalDateTime.now().plusDays(7), LocalDateTime.now().plusDays(14),
+                LocalDateTime.now(),LocalDateTime.now().plusDays(7), "모집중", 0);
+        Study createdStudy = studyService.createStudy(studyDto, authentication);
+
+        // 댓글 생성
+        Reply reply = new Reply();
+        reply.setMember(member);
+        reply.setContent("댓글 내용 1");
+        Reply createdReply = replyService.createStudyReply(createdStudy.getId(), reply.getContent(), authentication);
+
+        Reply reply2 = new Reply();
+        reply2.setMember(member);
+        reply2.setContent("댓글 내용 2");
+        replyService.createStudyReply(createdStudy.getId(), reply2.getContent(), authentication);
+
+        // When
+        List<Reply> replies = replyService.findAll();
+
+        // Then
+        assertEquals(2, replies.size()); // 생성된 댓글 개수 확인
+        assertEquals("댓글 내용 1", replies.get(0).getContent());
+        assertEquals("댓글 내용 2", replies.get(1).getContent());
     }
 }
