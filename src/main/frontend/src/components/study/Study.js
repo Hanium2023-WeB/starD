@@ -2,8 +2,8 @@ import Slide from "./Slide.js";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
-import "../../css/MyParticipateStudy.css";
-import "../../css/Mypage_Scrap.css";
+import "../../css/study_css/MyParticipateStudy.css";
+import "../../css/mypage_css/Mypage_Scrap.css";
 
 const Study = ({ study, slide }) => {
   const { tag, author, day, title, last, created_date, id} = study;

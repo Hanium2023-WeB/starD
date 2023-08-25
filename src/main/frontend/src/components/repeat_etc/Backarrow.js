@@ -1,6 +1,6 @@
 //뒤로가기 컴포넌트
 import { useNavigate } from 'react-router-dom';
-import edit from "../../css/edit.css";
+import edit from "../../css/mypage_css/edit.css";
 import { ReactComponent as Arrow } from "../../images/Arrow.svg";
 
 const Backarrow=({subname})=>{

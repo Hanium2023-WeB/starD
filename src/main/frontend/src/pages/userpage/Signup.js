@@ -1,7 +1,7 @@
 import LogoButton from "../../components/repeat_etc/LogoButton";
 import React, { useState, useRef } from "react";
 import {isEmail, isPassword} from "../../util/check.js";
-import "../../css/Log.css";
+import "../../css/user_css/Log.css";
 
 const Signup = ({sideheader}) => {
   const inputID = useRef();

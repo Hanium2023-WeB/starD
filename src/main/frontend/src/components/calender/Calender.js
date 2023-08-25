@@ -4,7 +4,7 @@ import {format, subMonths, addMonths} from "date-fns"
 import RenderHeader from "./RenderHeader";
 import RenderDays from "./RenderDays";
 import RenderCells from "./RenderCells";
-import Calender_css from "../../css/Calender.css";
+import Calender_css from "../../css/calender_css/Calender.css";
 import ToDoList from "../../pages/mypage/ToDoList";
 
 export const Calender = ({todo, onDateClick}) => {

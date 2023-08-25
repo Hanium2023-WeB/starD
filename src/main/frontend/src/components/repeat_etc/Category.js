@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import App from "../../App.js";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import "../../css/Mypage.css";
+import "../../css/mypage_css/Mypage.css";
 const category = () => {
 	return (
 		<div className="category">

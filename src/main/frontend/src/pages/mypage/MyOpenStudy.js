@@ -2,7 +2,7 @@ import React, {useState, useEffect, useRef, useCallback} from "react";
 import { Link, useLocation } from "react-router-dom";
 import Category from "../../components/repeat_etc/Category.js";
 
-import "../../css/MyOpenStudy.css";
+import "../../css/study_css/MyOpenStudy.css";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";

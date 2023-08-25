@@ -4,7 +4,7 @@ import checkbox from "../../images/check.png";
 import uncheckbox from "../../images/unchecked.png";
 import editicon from "../../images/edit.png";
 import removeicon from "../../images/remove.png";
-import ToDoListItems from "../../css/ToDoListItem.css";
+import ToDoListItems from "../../css/todo_css/ToDoListItem.css";
 
 const ToDoListItem = ({todo, onRemove,onToggle,onChangeSelectedTodo,onInsertToggle})=>{
     const {id, text, checked}= todo;

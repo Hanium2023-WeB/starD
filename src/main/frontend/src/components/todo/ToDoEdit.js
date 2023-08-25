@@ -1,5 +1,5 @@
 import React, { useState, useRef, useCallback,useEffect } from "react";
-import Editcss from "../../css/ToDoEdit.css";
+import Editcss from "../../css/todo_css/ToDoEdit.css";
 
 const ToDoEdit=({selectedTodo, onUpdate})=>{
     const [value,setValue] =useState('');

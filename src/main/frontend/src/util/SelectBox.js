@@ -1,7 +1,7 @@
 
 //거주지 시 도 구
 import React, { useEffect} from 'react';
-import edit from "../css/edit.css";
+import edit from "../css/mypage_css/edit.css";
 
 import $ from 'jquery';
 

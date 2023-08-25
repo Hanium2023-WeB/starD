@@ -2,7 +2,7 @@ import React, {useCallback, useContext, useEffect, useRef, useState} from 'react
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faArrowLeft} from "@fortawesome/free-solid-svg-icons";
 import {useParams, useNavigate, Link, useLocation} from "react-router-dom";
-import "../../css/StudyOpenForm.css";
+import "../../css/study_css/StudyOpenForm.css";
 import RealEstate from "../info/RealEstate";
 
 const StudyInsert = ({sideheader}) => {

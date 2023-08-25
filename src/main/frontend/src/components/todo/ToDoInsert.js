@@ -1,5 +1,5 @@
 import React, { useState, useRef, useCallback } from "react";
-import ToDoInserts from "../../css/ToDoInsert.css";
+import ToDoInserts from "../../css/todo_css/ToDoInsert.css";
 
 const ToDoInsert = ({onInsert})=>{
     const [value, setValue] = useState('');

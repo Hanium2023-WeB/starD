@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
-import "../../css/Mypage.css";
+import "../../css/mypage_css/Mypage.css";
 import Study from "./Study.js";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
-import "../../css/MyParticipateStudy.css";
-import "../../css/Mypage_Scrap.css";
+import "../../css/study_css/MyParticipateStudy.css";
+import "../../css/mypage_css/Mypage_Scrap.css";
 
 const Slide = ({ state }) => {
   const [slidePx, setSlidePx] = useState(0);
