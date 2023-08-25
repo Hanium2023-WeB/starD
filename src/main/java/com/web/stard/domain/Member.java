@@ -44,7 +44,7 @@ public class Member implements UserDetails {
     private Profile profile; // 프로필
 
     @Enumerated(EnumType.STRING)
-    private Role roles; // post 타입 [COMM, QNA, NOTICE, FAQ]
+    private Role roles; // [ADMIN, USER]
 
     @Builder
     public Member(String id, String name, String email, String password, String phone, String nickname) {

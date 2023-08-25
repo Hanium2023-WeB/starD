@@ -7,7 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
@@ -18,7 +17,7 @@ import java.util.List;
 @Setter
 @RequestMapping("/notice")
 @AllArgsConstructor
-@Controller
+@RestController
 public class NoticeController {
 
     private final MemberService memberService;

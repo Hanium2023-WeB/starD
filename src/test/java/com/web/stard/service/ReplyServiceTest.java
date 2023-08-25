@@ -453,6 +453,75 @@ class ReplyServiceTest {
 
     //@Rollback(false)
     @Test
+    void Post_댓글_삭제_관리자() {
+        //given
+        Member member = new Member();
+        member.setId("testUser");
+        memberService.saveMember(member);
+
+        Authentication authentication = new UsernamePasswordAuthenticationToken(member.getId(), null);
+        Authentication adminAuth = new UsernamePasswordAuthenticationToken("testAdmin", null);
+
+        // 1. qna
+/*
+        Post post = new Post();
+        post.setTitle("qna post 제목");
+        post.setContent("qna post 내용");
+        Post createdPost = qnaService.createQna(post, authentication);
+*/
+
+        // 2. comm
+        Post post = new Post();
+        post.setTitle("comm post 제목");
+        post.setContent("comm post 내용");
+        Post createdPost = communityService.registerCommPost(post, authentication);
+
+        // 댓글 생성
+        Reply reply = new Reply();
+        reply.setMember(member);
+        reply.setContent("댓글 내용");
+        Reply createdReply = replyService.createPostReply(createdPost.getId(), reply.getContent(), authentication);
+
+        //when
+        replyService.deleteReply(createdReply.getId(), adminAuth);  // 관리자가 삭제
+
+        //then
+        Optional<Post> deletedPost = postRepository.findById(createdReply.getId());
+        assertFalse(deletedPost.isPresent());   // 삭제한 댓글이 존재하는지 확인
+    }
+
+    //@Rollback(false)
+    @Test
+    void Study_댓글_삭제_관리자() {
+        //given
+        Member member = new Member();
+        member.setId("testUser");
+        memberService.saveMember(member);
+
+        Authentication authentication = new UsernamePasswordAuthenticationToken(member.getId(), null);
+        Authentication adminAuth = new UsernamePasswordAuthenticationToken("testAdmin", null);
+
+        StudyDto studyDto = new StudyDto("study 제목", "study 내용", 5, member.getId(),
+                null, null, null, "online", LocalDateTime.now().plusDays(7), LocalDateTime.now().plusDays(14),
+                LocalDateTime.now(),LocalDateTime.now().plusDays(7), "모집중", 0);
+        Study createdStudy = studyService.createStudy(studyDto, authentication);
+
+        // 댓글 생성
+        Reply reply = new Reply();
+        reply.setMember(member);
+        reply.setContent("댓글 내용");
+        Reply createdReply = replyService.createStudyReply(createdStudy.getId(), reply.getContent(), authentication);
+
+        //when
+        replyService.deleteReply(createdReply.getId(), adminAuth);    // 관리자가 삭제
+
+        //then
+        Optional<Post> deletedPost = postRepository.findById(createdReply.getId());
+        assertFalse(deletedPost.isPresent());   // 삭제한 댓글이 존재하는지 확인
+    }
+
+    //@Rollback(false)
+    @Test
     void Post_댓글_조회() {
         //given
         Member member = new Member();

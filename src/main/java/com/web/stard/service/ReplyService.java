@@ -104,7 +104,9 @@ public class ReplyService {
 
         Reply reply = getExistingReply(replyId);
 
-        checkAuth(reply, replier);
+        if (replier.getRoles() != Role.ADMIN) {
+            checkAuth(reply, replier);
+        }
 
         replyRepository.delete(reply);
     }
