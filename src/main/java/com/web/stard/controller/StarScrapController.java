@@ -8,6 +8,8 @@ import lombok.Setter;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -47,6 +49,11 @@ public class StarScrapController {
 
 
 
+    /* Post(community) 스크랩한 게시글 전체 조회 */
+    @GetMapping("/scrap/post")
+    public List<StarScrap> allPostScrapList(Authentication authentication) {
+        return starScrapService.allPostScrapList(authentication);
+    }
 
     /* Post(community) 스크랩 추가 */
     @PostMapping("/scrap/post/{id}")
@@ -61,6 +68,12 @@ public class StarScrapController {
     }
 
 
+
+    /* Study 스크랩한 게시글 전체 조회 */
+    @GetMapping("/scrap/study")
+    public List<StarScrap> allStudyScrapList(Authentication authentication) {
+        return starScrapService.allStudyScrapList(authentication);
+    }
 
     /* Study 스크랩 추가 */
     @PostMapping("/scrap/study/{id}")

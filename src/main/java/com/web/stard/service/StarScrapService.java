@@ -2,6 +2,7 @@ package com.web.stard.service;
 
 import com.web.stard.domain.*;
 import com.web.stard.repository.StarScrapRepository;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.Authentication;
@@ -12,6 +13,7 @@ import java.util.Optional;
 
 @Getter @Setter
 @Service
+@AllArgsConstructor
 public class StarScrapService {
 
     MemberService memberService;
@@ -40,6 +42,11 @@ public class StarScrapService {
     public StarScrap addPostStar(Long id, Authentication authentication) {
         Post post = communityService.getCommunityPost(id);
         Member member = memberService.find(authentication.getName());
+
+        // 자신의 글은 공감 불가능
+        if (post.getMember().equals(member.getId())) {
+            return null;
+        }
 
         // 이미 존재하는지 확인 (혹시 모를 중복 저장 방지)
         StarScrap star = existsCommStar(member, post);
@@ -98,6 +105,11 @@ public class StarScrapService {
     public StarScrap addStudyStar(Long id, Authentication authentication) {
         Study study = studyService.findById(id);
         Member member = memberService.find(authentication.getName());
+
+        // 자신의 글은 공감 불가능
+        if (study.getRecruiter().equals(member.getId())) {
+            return null;
+        }
 
         // 이미 존재하는지 확인 (혹시 모를 중복 저장 방지)
         StarScrap star = existsStudyStar(member, study);
@@ -178,7 +190,7 @@ public class StarScrapService {
         return scrap;
     }
 
-    /* Scrap 공감 삭제 */
+    /* Post(community) Scrap 삭제 */
     public boolean deletePostScrap(Long id, Authentication authentication) {
         Post post = communityService.getCommunityPost(id);
         Member member = memberService.find(authentication.getName());

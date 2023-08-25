@@ -4,6 +4,7 @@ import com.web.stard.domain.Member;
 import com.web.stard.domain.Post;
 import com.web.stard.domain.PostType;
 import com.web.stard.repository.PostRepository;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.domain.PageRequest;
@@ -17,6 +18,7 @@ import java.util.Optional;
 
 @Getter @Setter
 @Service
+@AllArgsConstructor
 public class CommunityService {
 
     MemberService memberService;

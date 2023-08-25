@@ -25,6 +25,7 @@ public class StarScrap {
     @JoinColumn(name = "study_id")
     private Study study;
 
+    @Enumerated(EnumType.STRING)
     private ActType type; // STAR or SCRAP
 
     @Enumerated(EnumType.STRING)
