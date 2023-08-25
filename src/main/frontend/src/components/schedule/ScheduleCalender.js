@@ -4,7 +4,7 @@ import { format, subMonths, addMonths } from "date-fns";
 import RenderHeader from "../calender/RenderHeader";
 import RenderDays from "../calender/RenderDays";
 import RenderScheduleCells from "./RenderScheduleCells";
-import ScheduleCalender_CSS from "../../css/ScheduleCalender.css";
+import ScheduleCalender_CSS from "../../css/schedule_css/ScheduleCalender.css";
 
 const ScheduleCalender = ({ onDateClick ,meetings}) => {
   const [currentMonth, setCurrentMonth] = useState(new Date());

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Category from "../repeat_etc/Category";
 import { ReactComponent as Arrow } from "../../images/Arrow.svg";
-import edit from "../../css/edit.css";
+import edit from "../../css/mypage_css/edit.css";
 import arrowdown from "../../images/arrowdown.png";
 import arrowup from "../../images/arrowup.png";
 //탈퇴 컴포넌트

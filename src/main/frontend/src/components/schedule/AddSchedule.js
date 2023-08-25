@@ -1,7 +1,7 @@
 import React, { useState, useRef, useCallback} from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import ScheduleAdd from "../../css/ScheduleAdd.css";
+import ScheduleAdd from "../../css/schedule_css/ScheduleAdd.css";
 import {CirclePicker} from 'react-color';
 
 const AddSchedule = ({ selectedDate, onInsert, onClose}) => {

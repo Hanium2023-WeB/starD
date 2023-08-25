@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import Category from "../../components/repeat_etc/Category";
 import { ReactComponent as Arrow } from "../../images/Arrow.svg";
-import edit from "../../css/edit.css";
+import edit from "../../css/mypage_css/edit.css";
 import arrowdown from "../../images/arrowdown.png";
 import arrowup from "../../images/arrowup.png";
 import Signout from "../../components/info/Signout.js";

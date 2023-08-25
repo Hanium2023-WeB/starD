@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import edit from "../../css/edit.css";
+import edit from "../../css/mypage_css/edit.css";
 const EditInterest=()=>{
     const tagoptions = [
         { value: "IT기획", name: "IT기획" },

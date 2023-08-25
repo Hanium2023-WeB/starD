@@ -6,8 +6,8 @@ import Category from "../../components/repeat_etc/Category.js";
 import ToDoList from "../../pages/mypage/ToDoList.js";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
-import "../../css/MyParticipateStudy.css";
-import "../../css/Mypage_Scrap.css";
+import "../../css/study_css/MyParticipateStudy.css";
+import "../../css/mypage_css/Mypage_Scrap.css";
 import { format } from "date-fns";
 import cn from "classnames";
 import checkbox from "../../images/check.png";
@@ -16,7 +16,7 @@ import Schedule from "../mypage/Schedule.js";
 
 //https://jsonplaceholder.typicode.com/comments
 
-import "../../css/Mypage.css";
+import "../../css/mypage_css/Mypage.css";
 
 const Mypage = ({ sideheader }) => {
   const dataId = useRef(0);

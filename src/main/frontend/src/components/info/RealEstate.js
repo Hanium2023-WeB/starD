@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef, } from 'react';
  import { selectBOX } from '../../util/SelectBox.js';
- import edit from "../../css/edit.css";
+ import edit from "../../css/mypage_css/edit.css";
  
 function RealEstate () {  // 컴포넌트.
 
