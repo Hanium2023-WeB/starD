@@ -13,8 +13,7 @@ const Study = ({sideheader}) => {
 
     const handleMoveToStudyInsert = (e) => {
         e.preventDefault();
-
-        navigate("/studyopen", {state : {orderId: 1}});
+        navigate("/studyopen");
     }
     const onInsertStudy = (study) => {
         const newStudy = {

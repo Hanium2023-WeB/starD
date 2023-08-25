@@ -16,19 +16,19 @@ const StudyInfo = ({ study }) => {
                     </li>
                     <li>
                         <span>모집 중</span>
-                        <span>{study.tag}</span>
+                        <span>{study.number}</span>
                     </li>
                     <li>
                         <span>진행 방식</span>
-                        <span>{study.tag}</span>
+                        <span>{study.onoff}</span>
                     </li>
                     <li>
                         <span>모집 마감일</span>
-                        <span>{study.tag}</span>
+                        <span>{study.deadline}</span>
                     </li>
                     <li>
                         <span>스터디 기간</span>
-                        <span>{study.tag}</span>
+                        <span>{study.duration}</span>
                     </li>
                 </ul>
             </div>

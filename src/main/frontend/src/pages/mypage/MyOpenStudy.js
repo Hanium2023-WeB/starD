@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, {useState, useEffect, useRef, useCallback} from "react";
 import { Link, useLocation } from "react-router-dom";
 import Category from "../../components/repeat_etc/Category.js";
 
@@ -8,41 +8,24 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 
 const MyOpenStudy = ({ sideheader }) => {
-	const dataId = useRef(0);
-	const [state, setState] = useState([]);
+	// const dataId = useRef(1);
+	const [studies, setStudies] = useState([]);
 
 	const location = useLocation();
-	console.log("state: " + JSON.stringify(location.state));
+	const studyState = location.state;
 
-	const getData = async () => {
-		const res = await fetch(
-			"https://jsonplaceholder.typicode.com/comments"
-		).then((res) => res.json());
-		const initDate = res.slice(0, 10).map((it) => {
-			return {
-				title: it.name,
-				tag: it.email,
-				author: it.email,
-				number: it.email,
-				onoff: it.email,
-				deadline: new Date(),
-				duration:it.email,
-				description:"",
-				created_date: new Date().getTime(),
-				id: dataId.current++,
-			};
-		});
-		setState(initDate);
-		console.log(initDate);
-	};
 	useEffect(() => {
-		getData();
+		const storedStudies = localStorage.getItem("studies");
+		if (storedStudies) {
+			setStudies(JSON.parse(storedStudies));
+		}
 	}, []);
+
 	const mypartistudylist = () => {
 		return (
 			<div className="study_list">
-				{state.map((d) => (
-					<div className="list">
+				{studies.map((d) => (
+					<div className="list" key={d.id}>
 						<Link
 							to={`/studydetail/${d.id}`}
 							style={{
@@ -62,11 +45,11 @@ const MyOpenStudy = ({ sideheader }) => {
 								</div>
 							</div>
 							<div className="list_deadline">
-								마감일 | {d.created_date}
+								마감일 | {d.deadline}
 							</div>
 							<div className="list_title">{d.title}</div>
 							<div className="list_tag">{d.tag}</div>
-							<div className="list_onoff">{d.tag}</div>
+							<div className="list_onoff">{d.onoff}</div>
 							<div className="stroke"></div>
 							<div className="list_founder">{d.author}</div>
 						</Link>
