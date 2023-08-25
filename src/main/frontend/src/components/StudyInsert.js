@@ -9,7 +9,6 @@ const StudyInsert = ({sideheader}) => {
     // const dataId = useRef(0);
     const [dataId, setDataId] = useState(0);
     const navigate = useNavigate();
-    const location = useLocation();
 
     const [showSelect, setShowSelect] = useState(false);
     const [selectedOption, setSelectedOption] = useState(null);
@@ -99,12 +98,6 @@ const StudyInsert = ({sideheader}) => {
             navigate("/myopenstudy",{state: formData});
         }
     },[formData, navigate]);
-
-        // e.preventDefault();
-        // // 여기서 formData를 사용하여 데이터 처리하거나 API 호출 등을 수행합니다.
-        // // 예를 들어 navigate("/other-page", { state: formData })와 같이 사용할 수 있습니다.
-        // console.log('Form data submitted:', formData);
-        // navigate("/myopenstudy", {state: formData});
 
     const studyinsertform = () => {
         return (

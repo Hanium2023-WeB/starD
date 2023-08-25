@@ -1,8 +1,8 @@
 import React, {useState} from "react";
-import {useNavigate, Link} from "react-router-dom";
-import StudyInsert from "../components/StudyInsert";
+import {useNavigate} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faArrowLeft} from "@fortawesome/free-solid-svg-icons";
+import "../css/StudyDetail.css";
 
 const Study = ({sideheader}) => {
     const navigate = useNavigate();
@@ -40,11 +40,15 @@ const Study = ({sideheader}) => {
                     icon={faArrowLeft}
                     onClick={() => navigate(-1)}
                 />
+                <button className="openStudy" onClick={handleMoveToStudyInsert}>스터디 개설</button>
             </div>
-            {studies.length == 0 && (
-                <p>스터디 리스트가 비었습니다.</p>
-            )}
-            <button onClick={handleMoveToStudyInsert}>스터디 개설</button>
+            <div className="study">
+                {studies.length == 0 && (
+                    <h3>스터디 리스트가 비었습니다.</h3>
+                )}
+
+            </div>
+
         </div>
     </div>);
 }
