@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import SearchBar from '../SearchBar';
-import LogoButton from '../components/LogoButton';
+import LogoButton from '../components/repeat_etc/LogoButton';
 import { format } from "date-fns";
 import cn from "classnames";
 import checkbox from "../images/check.png";
