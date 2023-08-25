@@ -2,23 +2,23 @@ import { Link } from "react-router-dom";
 import "./App.css";
 import React, { useState, useRef, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Header from "./components/Header";
+import Header from "./components/repeat_etc/Header";
 
 import Home from "./pages/Home";
-import Login from "./pages/Login";
-import Logout from "./pages/Logout";
-import Signup from "./pages/Signup";
-import Mypage from "./pages/Mypage";
-import Footer from "./components/Footer";
-import Editinfo from "./pages/Editinfo";
-import MyParticipateStudy from "./pages/MyParticipateStudy";
-import MyOpenStudy from "./pages/MyOpenStudy";
-import StudyDetail from "./pages/StudyDetail";
-import ToDoList from "./pages/ToDoList";
-import Schedule from "./pages/Schedule.js";
-import StudyApplyForm from "./pages/StudyApplyForm";
-import Study from "./pages/Study";
-import StudyInsert from "./components/StudyInsert";
+import Login from "./pages/userpage/Login";
+import Logout from "./pages/userpage/Logout";
+import Signup from "./pages/userpage/Signup";
+import Mypage from "./pages/mypage/Mypage";
+import Footer from "./components/repeat_etc/Footer";
+import Editinfo from "./pages/mypage/Editinfo";
+import MyParticipateStudy from "./pages/mypage/MyParticipateStudy";
+import MyOpenStudy from "./pages/mypage/MyOpenStudy";
+import StudyDetail from "./pages/studypage/StudyDetail";
+import ToDoList from "./pages/mypage/ToDoList";
+import Schedule from "./pages/mypage/Schedule.js";
+import StudyApplyForm from "./pages/studypage/StudyApplyForm";
+import Study from "./pages/studypage/Study";
+import StudyInsert from "./components/study/StudyInsert";
 
 const side = () => {
 	return (
