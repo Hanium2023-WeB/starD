@@ -37,6 +37,15 @@ public class StarScrapService {
         return starScrapRepository.findAllByMemberAndTypeAndPostType(member, ActType.STAR, PostType.COMM);
     }
 
+    /* 해당 Post(community)의 공감 개수 */
+    public int countPostStar(Long id) {
+        Post post = communityService.getCommunityPost(id);
+
+        List<StarScrap> allStarList = starScrapRepository.findAllByPostAndTypeAndPostType(post, ActType.STAR, PostType.COMM);
+
+        return allStarList.size();
+    }
+
 
     /* Post(community) 공감 추가 */
     public StarScrap addPostStar(Long id, Authentication authentication) {
@@ -99,6 +108,15 @@ public class StarScrapService {
     public List<StarScrap> allStudyStarList(Authentication authentication) {
         Member member = memberService.find(authentication.getName());
         return starScrapRepository.findAllByMemberAndTypeAndPostType(member,ActType.STAR, PostType.STUDY);
+    }
+
+    /* 해당 Study의 공감 개수 */
+    public int countStudyStar(Long id) {
+        Study study = studyService.findById(id);
+
+        List<StarScrap> allStarList = starScrapRepository.findAllByStudyAndTypeAndPostType(study, ActType.STAR, PostType.STUDY);
+
+        return allStarList.size();
     }
 
     /* Study 공감 추가 */
@@ -167,6 +185,15 @@ public class StarScrapService {
         return starScrapRepository.findAllByMemberAndTypeAndPostType(member, ActType.SCRAP, PostType.COMM);
     }
 
+    /* 해당 Post(community)의 스크랩 개수 */
+    public int countPostScrap(Long id) {
+        Post post = communityService.getCommunityPost(id);
+
+        List<StarScrap> allScrapList = starScrapRepository.findAllByPostAndTypeAndPostType(post, ActType.SCRAP, PostType.COMM);
+
+        return allScrapList.size();
+    }
+
     /* Post(community) Scrap 추가 */
     public StarScrap addPostScrap(Long id, Authentication authentication) {
         Post post = communityService.getCommunityPost(id);
@@ -223,6 +250,15 @@ public class StarScrapService {
     public List<StarScrap> allStudyScrapList(Authentication authentication) {
         Member member = memberService.find(authentication.getName());
         return starScrapRepository.findAllByMemberAndTypeAndPostType(member, ActType.SCRAP, PostType.STUDY);
+    }
+
+    /* 해당 Study의 스크랩 개수 */
+    public int countStudyScrap(Long id) {
+        Study study = studyService.findById(id);
+
+        List<StarScrap> allScrapList = starScrapRepository.findAllByStudyAndTypeAndPostType(study, ActType.SCRAP, PostType.STUDY);
+
+        return allScrapList.size();
     }
 
     /* Study Scrap 추가 */
