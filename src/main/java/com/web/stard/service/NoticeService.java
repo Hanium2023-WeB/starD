@@ -3,7 +3,9 @@ package com.web.stard.service;
 import com.web.stard.domain.Member;
 import com.web.stard.domain.Post;
 import com.web.stard.domain.PostType;
+import com.web.stard.domain.Role;
 import com.web.stard.repository.PostRepository;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,14 +21,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Transactional
-@Getter
-@Setter
+@Getter @Setter
+@AllArgsConstructor
 @Service
 public class NoticeService {
 
-    @Autowired
     MemberService memberService;
-    @Autowired
     PostRepository postRepository;
 
     // Notice 등록
@@ -76,13 +76,12 @@ public class NoticeService {
     // Notice 삭제
     public void deleteNotice(Long postId, Authentication authentication) {
         String userId = authentication.getName();
+        Role userRole = memberService.find(userId).getRoles();
 
         Optional<Post> optionalPost = postRepository.findById(postId);
 
-        String auth = memberService.find(userId).getRoles().getAuthorityName();
-
         optionalPost.ifPresent(post -> {
-            if ("ADMIN".equals(auth)) {   // 관리자일때만
+            if (userRole == Role.ADMIN ) {   // 관리자일때만
                 postRepository.deleteById(postId);
             }
         });

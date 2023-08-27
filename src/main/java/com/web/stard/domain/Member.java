@@ -43,9 +43,8 @@ public class Member implements UserDetails {
     @OneToOne @JoinColumn(name = "profile_id")
     private Profile profile; // 프로필
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "authority_id") // Member 테이블에 authority_id 컬럼 추가
-    private Authority roles;
+    @Enumerated(EnumType.STRING)
+    private Role roles; // [ADMIN, USER]
 
     @Builder
     public Member(String id, String name, String email, String password, String phone, String nickname) {
@@ -66,12 +65,9 @@ public class Member implements UserDetails {
     // 계정의 권한 목록 return
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<Authority> authorities = new ArrayList<>();
-        authorities.add(this.roles);
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority(this.roles.getRoleValue()));
         return authorities;
-//        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-//        authorities.add(new SimpleGrantedAuthority(this.roles.getAuthorityName()));
-//        return authorities;
     }
 
     // 계정의 고유한 값 ex) PK return

@@ -1,13 +1,9 @@
 package com.web.stard.service;
 
-import com.web.stard.domain.Authority;
 import com.web.stard.domain.LoginTestEntity;
-import com.web.stard.domain.Member;
-import com.web.stard.repository.MemberRepository;
 import com.web.stard.repository.TestRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
