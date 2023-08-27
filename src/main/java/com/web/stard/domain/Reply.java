@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table
-@Data
+@ToString
 @NoArgsConstructor(force = true)
 @AllArgsConstructor
 @Getter
