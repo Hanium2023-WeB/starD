@@ -1,13 +1,11 @@
 package com.web.stard.service;
 
 
-import com.web.stard.domain.Member;
 import com.web.stard.domain.Study;
 import com.web.stard.dto.StudyDto;
 import com.web.stard.repository.StudyRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -84,7 +82,6 @@ public class StudyService {
         result.setActivityDeadline(studyDto.getActivity_deadline());
         result.setRecruitmentStart(studyDto.getRecruitment_start());
         result.setRecruitmentDeadline(studyDto.getRecruitment_deadline());
-
         result.setStatus(studyDto.getStatus());
 
 

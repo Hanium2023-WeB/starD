@@ -20,6 +20,7 @@ import java.util.Optional;
 @Getter @Setter
 @AllArgsConstructor
 @Service
+@AllArgsConstructor
 public class CommunityService {
 
     MemberService memberService;
