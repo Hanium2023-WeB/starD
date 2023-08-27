@@ -2,11 +2,11 @@ package com.web.stard.domain;
 
 import com.sun.istack.NotNull;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -50,16 +50,24 @@ public class Study extends BaseEntity {
     @DateTimeFormat(pattern = "yyyy-MM-dd kk:mm:ss")
     private LocalDateTime activity_deadline;     // 활동 마감 기간
 
-    @NotNull
-    @DateTimeFormat(pattern = "yyyy-MM-dd kk:mm:ss")
+    @CreatedDate
+    @Column(updatable = false)
     private LocalDateTime recruitment_start;
 
     @NotNull
     @DateTimeFormat(pattern = "yyyy-MM-dd kk:mm:ss")
     private LocalDateTime recruitment_deadline;
 
+//    @NotNull
+//    @Enumerated(EnumType.STRING)
+//    private StudyType status;  // 스터디 진행 상황 (진행 중, 진행 완료, 중단 등)
+
     @NotNull
-    private String status;  // 스터디 진행 상황 (진행 중, 진행 완료, 중단 등)
+    @Enumerated(EnumType.STRING)
+    private RecruitStatus recruitStatus;  // 스터디 모집 현황 (모집 중, 모집 완료)
+
+    @Enumerated(EnumType.STRING)
+    private ProgressStatus progressStatus;  // 스터디 진행 상황 (진행 중, 진행 완료, 중단 등)
 
     @NotNull
     private int view_count;
