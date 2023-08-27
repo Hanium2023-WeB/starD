@@ -45,15 +45,15 @@ public class StudyDto implements Serializable {
     private String tags;    // 태그 들
 
     @NotNull
-    private String on_off;      // 온/오프/무관
+    private String onOff;      // 온/오프/무관
 
     @NotNull
     @DateTimeFormat(pattern = "yyyy-MM-dd kk:mm:ss")
-    private LocalDateTime activity_start;        // 활동 시작 기간
+    private LocalDateTime activityStart;        // 활동 시작 기간
 
     @NotNull
     @DateTimeFormat(pattern = "yyyy-MM-dd kk:mm:ss")
-    private LocalDateTime activity_deadline;     // 활동 마감 기간
+    private LocalDateTime activityDeadline;     // 활동 마감 기간
 
 //    @NotNull
 //    @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -61,7 +61,7 @@ public class StudyDto implements Serializable {
 
     @NotNull
     @DateTimeFormat(pattern = "yyyy-MM-dd kk:mm:ss")
-    private LocalDateTime recruitment_deadline;
+    private LocalDateTime recruitmentDeadline;
 
     @NotNull
     @Enumerated(EnumType.STRING)

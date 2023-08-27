@@ -2,8 +2,8 @@ package com.web.stard.service;
 
 import com.web.stard.config.jwt.JwtTokenProvider;
 import com.web.stard.config.security.SecurityUtil;
-import com.web.stard.domain.Authority;
 import com.web.stard.domain.Member;
+import com.web.stard.domain.Role;
 import com.web.stard.dto.Response;
 import com.web.stard.dto.request.MemberRequestDto;
 import com.web.stard.dto.response.TokenInfo;
@@ -134,7 +134,8 @@ public class SignService {
 
         // add ROLE_ADMIN
 //        member.getRoles().add(Authority.ROLE_ADMIN.name());
-        member.getRoles().setAuthorityName("USER");  // TODO
+
+        member.setRoles(Role.USER);     // TODO 수정 필요 / 사용자의 role 지정
         memberRepository.save(member);
 
         return response.success();

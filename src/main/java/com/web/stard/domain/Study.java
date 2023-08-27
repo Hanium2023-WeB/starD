@@ -39,24 +39,25 @@ public class Study extends BaseEntity {
 
     private String tags;    // 태그 들
 
-    @NotNull
-    private String on_off;      // 온/오프/무관
+    @NotNull @Column(name = "on_off")
+    private String onOff;      // 온/오프/무관
 
-    @NotNull
+    @NotNull @Column(name = "activity_start")
     @DateTimeFormat(pattern = "yyyy-MM-dd kk:mm:ss")
-    private LocalDateTime activity_start;        // 활동 시작 기간
+    private LocalDateTime activityStart;        // 활동 시작 기간
 
-    @NotNull
+    @NotNull @Column(name = "activity_deadline")
     @DateTimeFormat(pattern = "yyyy-MM-dd kk:mm:ss")
-    private LocalDateTime activity_deadline;     // 활동 마감 기간
+    private LocalDateTime activityDeadline;     // 활동 마감 기간
+
 
     @CreatedDate
-    @Column(updatable = false)
-    private LocalDateTime recruitment_start;
+    @Column(name = "recruitment_start", updatable = false)
+    private LocalDateTime recruitmentStart;
 
-    @NotNull
+    @NotNull @Column(name = "recruitment_deadline")
     @DateTimeFormat(pattern = "yyyy-MM-dd kk:mm:ss")
-    private LocalDateTime recruitment_deadline;
+    private LocalDateTime recruitmentDeadline;
 
 //    @NotNull
 //    @Enumerated(EnumType.STRING)
@@ -64,13 +65,17 @@ public class Study extends BaseEntity {
 
     @NotNull
     @Enumerated(EnumType.STRING)
+    @Column(name = "recruit_status")
     private RecruitStatus recruitStatus;  // 스터디 모집 현황 (모집 중, 모집 완료)
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "progress_status")
     private ProgressStatus progressStatus;  // 스터디 진행 상황 (진행 중, 진행 완료, 중단 등)
 
     @NotNull
-    private int view_count;
+    @Column(name = "view_count")
+    private int viewCount;
+
 
 
 }
