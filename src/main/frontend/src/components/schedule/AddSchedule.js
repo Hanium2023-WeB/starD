@@ -108,7 +108,7 @@ const AddSchedule = ({ selectedDate, onInsert, onClose}) => {
           취소
         </button>
       </form>
-    </div>
+      </div>
     // )}
     // </div>
   );
