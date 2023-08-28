@@ -1,22 +1,46 @@
-import React, { useState, useEffect, useRef } from "react";
-import { useParams, useNavigate, Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useParams, Link } from "react-router-dom";
 
 import "../../css/study_css/StudyDetail.css";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import StudyInfo from "../../components/study/StudyInfo";
+import StudyEdit from "../../components/study/StudyEdit";
+import Backarrow from "../../components/repeat_etc/Backarrow";
 
 const StudyDetail = ({ sideheader }) => {
 	const { id } = useParams();
 	console.log(id);
-	const dataId = useRef(0);
-	const [state, setState] = useState([]);
-	const navigate = useNavigate();
 
 	const [studies, setStudies] = useState([]);
+	const [editing, setEditing] = useState(false);
+	const [studyDetail, setStudyDetail] = useState([]);// 스터디 상세 정보를 상태로 관리
 
-	const studyDetail = studies.filter((study) => study.id === Number(id));
+	const handleEditClick = () => {
+		setEditing(true);
+	}
+
+	const handleCancelEdit = () => {
+		setEditing(false);
+	}
+
+	const handleStudyUpdate = (updatedStudy) => {
+		setEditing(false);
+		setStudyDetail([updatedStudy]);
+		const updatedStudies = studies.map(study =>
+			study.id === updatedStudy.id ? updatedStudy : study
+		);
+		setStudies(updatedStudies);
+	}
+
+	const handleStudyDelete = () => {
+		const confirmDelete = window.confirm("정말로 스터디를 삭제하시겠습니까?");
+		if (confirmDelete) {
+			const updatedStudies = studies.filter(study => study.id !== studyDetail[0].id);
+			setStudies(updatedStudies);
+			localStorage.setItem("studies", JSON.stringify(updatedStudies));
+			window.location.href = "/myopenstudy";
+		}
+	}
 
 	useEffect(() => {
 		const storedStudies = localStorage.getItem("studies");
@@ -25,44 +49,49 @@ const StudyDetail = ({ sideheader }) => {
 		}
 	}, []);
 
-	const studydetail = () => {
-		return (
-			<div className="study_detail">
-				{studyDetail.map((study) => (
-					<div key={study.id}>
-						<StudyInfo study={study} />
-						<div className="study_intro">
-							<div>스터디 소개</div>
-							<div>{study.description}</div>
-						</div>
-						<div className="btn">
-							<Link
-								to={`/studyapplyform/${study.id}`}
-								style={{
-									textDecoration: "none",
-									color: "inherit",
-								}}
-							>
-								<button className="apply_btn">탑승하기</button>
-							</Link>
-						</div>
-					</div>
-				))}
-			</div>
-		);
-	};
+	useEffect(() => {
+		const filteredStudyDetail = studies.filter(study => study.id == Number(id));
+		setStudyDetail(filteredStudyDetail); //해당 페이지의 스터디 상세 정보 랜더링에 사용
+	}, [studies, id]);
+
 	return (
 		<div>
 			{sideheader}
 			<div className="study_detail_container">
 				<h1>STAR TOUR STORY</h1>
 				<div className="arrow_left">
-					<FontAwesomeIcon
-						icon={faArrowLeft}
-						onClick={() => navigate(-1)}
-					/>
+					<Backarrow />
 				</div>
-				{studydetail()}
+				{editing ? (
+					<StudyEdit
+						study={studyDetail[0]}
+						onUpdateStudy={handleStudyUpdate}
+						onCancel={handleCancelEdit}
+					/>
+				) : (
+					<div className="study_detail">
+						{studyDetail.map((study) => (
+							<div key={study.id}>
+								<StudyInfo study={study} handleEditClick={handleEditClick} handleStudyDelete={handleStudyDelete}/>
+								<div className="study_intro">
+									<div>스터디 소개</div>
+									<div>{study.description}</div>
+								</div>
+								<div className="btn">
+									<Link
+										to={`/studyapplyform/${study.id}`}
+										style={{
+											textDecoration: "none",
+											color: "inherit",
+										}}
+									>
+										<button className="apply_btn">탑승하기</button>
+									</Link>
+								</div>
+							</div>
+						))}
+					</div>
+				)}
 			</div>
 		</div>
 	);
