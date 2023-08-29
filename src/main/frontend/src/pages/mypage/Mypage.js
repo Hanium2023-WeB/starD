@@ -24,12 +24,15 @@ const Mypage = ({ sideheader }) => {
   const [todos, setTodos] = useState({});
   const [today, setToday] = useState(new Date());
   const [parsedTodos, setParsedTodos] = useState({});
+  const [parsedmeetings, setParsedMeetings] = useState({});
+  const [meetings, setMeetings] = useState({});
   const [todayKey, setTodayKey] = useState("");
 
   const Year = today.getFullYear();
   const Month = today.getMonth() + 1;
   const Dates = today.getDate();
 
+  //todo
   useEffect(() => {
     // Load todos from localStorage when the component mounts
     const savedTodos = localStorage.getItem("todos");
@@ -54,13 +57,40 @@ const Mypage = ({ sideheader }) => {
     }
   }, []);
 
-  const getTodoItemClassName = (checked)=>{
-	return checked? "checked" :"unchecked";
+  //Schedule
+  useEffect(() => {
+    // Load todos from localStorage when the component mounts
+    const todayKey = today.toDateString();
+    setTodayKey(todayKey);
+
+    const storedMeetings = localStorage.getItem("schedule");
+    if (storedMeetings) {
+      const parsed = JSON.parse(storedMeetings);
+      setParsedMeetings(parsed);
+      console.log("parsedsssss:", parsedmeetings[todayKey]);
+
+      if (parsedmeetings.hasOwnProperty(todayKey)) {
+        const todaySchedule = parsedmeetings[todayKey];
+
+        // Extract study values from todaySchedule object
+        const studyValues = Object.keys(todaySchedule);
+        console.log("Study Values:", studyValues);
+
+        for (const studyKey in todaySchedule) {
+          console.log(`Study: ${studyKey}`);
+          todaySchedule[studyKey].forEach((meeting) => {
+            console.log(`  id: ${meeting.id}, title: ${meeting.title}`);
+          });
+        }
+      }
+    }
+  }, []);
+
+  const getTodoItemClassName = (checked) => {
+    return checked ? "checked" : "unchecked";
   };
 
-  // const getFormattedDate = (date) => {
-  // 	return format(date, "yyyy-MM-dd");
-  //   };
+
   //api 사용하기
   const getData = async () => {
     const res = await fetch(
@@ -132,10 +162,40 @@ const Mypage = ({ sideheader }) => {
                     color: "inherit",
                   }}
                 >
-                <button id="more">전체보기</button>
+                  <button id="more">전체보기</button>
                 </Link>
               </div>
-              <div id="detail">디테일입니다.</div>
+              <div id="detail">
+                <span id="today">{`${Year}. ${Month}. ${Dates}`}</span>
+                <hr />
+                {parsedmeetings.hasOwnProperty(todayKey) ? (
+                  <ul id="todocontent">
+                    {Object.entries(parsedmeetings[todayKey]).map(
+                      ([studyName, meetings]) => (
+                        <li key={studyName}>
+                          <div className="study-info">
+                            <p className="study-name">{studyName}</p>
+                            <ul className="meetings-list">
+                              {meetings.map((meet) => (
+                                <li key={meet.id}>
+                                  <div className="meeting-info">
+                                    <p className="meeting-id">{`ID: ${meet.id}`}</p>
+                                    <p className="meeting-title">{`Title: ${meet.title}`}</p>
+                                  </div>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        </li>
+                      )
+                    )}
+                  </ul>
+                ) : (
+                  <div className="empty_today_todo">
+                    <span>할 일이 없습니다. 할 일을 입력해주세요.</span>
+                  </div>
+                )}
+              </div>
             </div>
 
             <div className="todo">
@@ -157,24 +217,27 @@ const Mypage = ({ sideheader }) => {
                 {parsedTodos.hasOwnProperty(todayKey) ? (
                   <ul id="todocontent">
                     {parsedTodos[todayKey].map((todo) => (
-                      <li key={todo.id}
-					  className={getTodoItemClassName(todo.checked)}>
+                      <li
+                        key={todo.id}
+                        className={getTodoItemClassName(todo.checked)}
+                      >
                         {todo.checked ? (
                           <img src={checkbox} alt="checked" width="20px" />
                         ) : (
                           <img src={uncheckbox} alt="unchecked" width="20px" />
                         )}
-						<div id="todotext">
-                        {todo.text}
-						</div>
+                        <div id="todotext">{todo.text}</div>
                       </li>
                     ))}
                   </ul>
-                ):(
-					<div className="empty_today_todo">
-                <span>할 일이 없습니다.<br/>  할 일을 입력해주세요.</span>
-                </div>
-				)}
+                ) : (
+                  <div className="empty_today_todo">
+                    <span>
+                      할 일이 없습니다.
+                      <br /> 할 일을 입력해주세요.
+                    </span>
+                  </div>
+                )}
               </div>
             </div>
           </div>

@@ -3,37 +3,33 @@ import { useLocation, useNavigate } from "react-router-dom";
 import DatePicker from "react-datepicker";
 // import "react-datepicker/dist/react-datepicker.css";
 import { CirclePicker } from "react-color";
-const EditSchedule = ({ editScheduleData, onUpdate, onRemove, onClose }) => {
-  //   const location = useLocation();
-  //   const meetinginfo = {...location.state};
-  //   const ggg =()=>{
-  //     console.log('일정 정보', editScheduleData.meeting.title);
-  //     console.log('End Date:', editScheduleData.meeting.end_date);
-  // console.log('End Date Type:', typeof editScheduleData.meeting.end_date);
-  // console.log('Start Date Type:', typeof editScheduleData.meeting.start_date);
-  //     console.log(`일정 시작일 정보: ${editScheduleData.meeting.start_date}`);
-  //     console.log(`일정 끝나는 일 정보: ${editScheduleData.meeting.end_date}`);
 
-  // }
-  // const formatDate = (date) => {
-  //   const options = { weekday: 'short', month: 'short', day: '2-digit', year: 'numeric' };
-  //   return date.toLocaleDateString(undefined, options);
-  // };
+const EditSchedule = ({ editScheduleData, onUpdate, onRemove, onClose }) => {
   const localDate = new Date(editScheduleData.meeting.start_date);
   const localDateString = localDate.toLocaleDateString();
-  const [startDate, setStartDate] = useState(new Date(editScheduleData.meeting.start_date));
-  const [endDate, setEndDate] = useState(new Date(editScheduleData.meeting.end_date));
+
+  const [startDate, setStartDate] = useState(
+    new Date(editScheduleData.meeting.start_date)
+  );
+
+  const [endDate, setEndDate] = useState(
+    new Date(editScheduleData.meeting.end_date)
+  );
+
   const [title, setTitle] = useState(editScheduleData.meeting.title);
   const [content, setContent] = useState(editScheduleData.meeting.content);
   const [study, setStudy] = useState(editScheduleData.meeting.study);
   const [color, setColor] = useState(editScheduleData.meeting.color);
 
-  const handleStartDateChange = (date) => {
+  const handleStartDateChange = useCallback((date) => {
     setStartDate(date);
-  };
-  const handleEndDateChange = (date) => {
+    console.log(startDate);
+  }, []);
+
+  const handleEndDateChange = useCallback((date) => {
     setEndDate(date);
-  };
+    console.log(endDate);
+  }, []);
   const onChangeTitle = useCallback((e) => {
     setTitle(e.target.value);
   }, []);
@@ -48,15 +44,21 @@ const EditSchedule = ({ editScheduleData, onUpdate, onRemove, onClose }) => {
   }, []);
   const onSubmit = useCallback(
     //나중에 todos 배열에 새 데이터(객체)를 추가하는 함수를 추가해줄겁니다!
+
     (e) => {
       if (title != "") {
-        console.log("Start_Dateas: ", editScheduleData.meeting.start_date);
+        // ggg();
         onUpdate(
-          editScheduleData.meeting.id,startDate, endDate, title,content, study,color
+          editScheduleData.meeting.id,
+          new Date(startDate),
+          new Date(endDate),
+          title,
+          content,
+          study,
+          color
         );
       } else {
         alert("모두 입력해주세요.");
-        return;
       }
       setTitle("");
       setEndDate("");
@@ -66,21 +68,30 @@ const EditSchedule = ({ editScheduleData, onUpdate, onRemove, onClose }) => {
       onClose();
       e.preventDefault();
     },
-    [startDate,endDate,title,content, color,study]
+    [startDate, endDate, title, content, color, study]
+  );
+  const onDelete = useCallback(
+    //나중에 todos 배열에 새 데이터(객체)를 추가하는 함수를 추가해줄겁니다!
+    (e) => {
+      onRemove(editScheduleData.meeting.id);
+      onClose();
+    },
+    []
   );
 
   return (
     <div className="background">
-      <form className="todoedit_insert">
+      <form className="Scheduleedit_insert">
         <h2>{editScheduleData.meeting.title}</h2>
         <div className="selectstudy">
           <p>스터디 선택:</p>
           <select
             value={study}
-            default={editScheduleData.meeting.study}
+            // default={editScheduleData.meeting.study}
             onChange={onChangeStudy}
+            disabled
           >
-            <option value="">스터디 선택</option>
+            <option value="My">나의 일정</option>
             <option value="study1">스터디 1</option>
             <option value="study2">스터디 2</option>
           </select>
@@ -89,19 +100,20 @@ const EditSchedule = ({ editScheduleData, onUpdate, onRemove, onClose }) => {
           <div className="selectstartDay">
             <p>시작 날짜:</p>
             <DatePicker
-              selected={new Date(editScheduleData.meeting.start_date)}
+              selected={startDate}
               onChange={handleStartDateChange}
               dateFormat="yyyy-MM-dd"
+              readOnly
               placeholder="시작 날짜 선택"
-            
             />
           </div>
           <div className="selectendDay">
             <p>끝나는 날짜:</p>
             <DatePicker
-              selected={new Date(editScheduleData.meeting.end_date)}
+              selected={endDate}
               onChange={handleEndDateChange}
               dateFormat="yyyy-MM-dd"
+              minDate={startDate}
               placeholder="끝나는 날짜 선택"
             />
           </div>
@@ -126,15 +138,23 @@ const EditSchedule = ({ editScheduleData, onUpdate, onRemove, onClose }) => {
           <p>표시 색상:</p>
           <CirclePicker color={color} onChange={onChangeColor} />
         </div>
-        <button type="submit" onClick={onSubmit}>
-          일정 수정하기
+        <ul className="meeting_btn">
+          <li>
+        <button id="add" type="submit" onClick={onSubmit}>
+           수정
         </button>
-        {/* <button type="button" onClick={onRemove(id)}>
-          일정 수정하기
-        </button> */}
-        <button type="button" onClick={onClose}>
+        </li>
+        <li>
+        <button id="del" type="button" onClick={onDelete}>
+           삭제
+        </button>
+        </li>
+        <li>
+        <button id="cancel" type="button" onClick={onClose}>
           취소
         </button>
+        </li>
+        </ul>
       </form>
     </div>
   );

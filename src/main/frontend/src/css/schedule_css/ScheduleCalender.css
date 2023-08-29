@@ -1,5 +1,7 @@
+
 .Schedulecalendar{
     width: 90%;
+    height: auto;
     margin-left: 90px;
     margin-top: 10px;
 }
@@ -39,14 +41,31 @@ svg{
 .Schedulerow{
     display: flex;
     flex-direction: row;
+   height: 90px;
 }
 .Schedulerow > .col.cell{
     border: 1.5px solid #395b64;
-    width: 13%;
-    height: 80px;
+    width: 14%;
+    height: auto;
     font-size: 1.2rem;
-    margin:2px;
     cursor: pointer;
+   
+}
+.Schedulerow > .col.cell.selected{
+    overflow-y: auto;
+}
+.Schedulerow > .col.cell.selected::-webkit-scrollbar {
+/* 스크롤바 너비 */
+    width: 3px;
+
+}
+.Schedulerow > .col.cell.selected::-webkit-scrollbar-thumb {
+    height: 3px; /*스크롤바의 길이*/
+    background: gray; /* 스크롤바의 색상 */
+    border-radius: 10px;
+}
+.Schedulerow > .col.cell.selected::-webkit-scrollbar-track {
+    background: rgba(33, 122, 244, .1);  /*스크롤바 뒷 배경 색상*/
 }
 .col.cell:hover{
     border: 1.5px solid red;
@@ -70,4 +89,13 @@ svg{
 .col.cell.disabled{
    color: gray;
    border: 1.5px solid gray;
+}
+
+#meeting_detail >p{
+    margin-bottom: 2px;
+}
+#line{
+    width: 85px;
+    height:2px;
+    margin: 0px;
 }
