@@ -49,6 +49,9 @@ dependencies {
 
 	// Validation
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+	// junit
+	testImplementation 'junit:junit:4.12'
 }
 
 tasks.named('test') {

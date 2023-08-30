@@ -27,6 +27,8 @@ public class JwtTokenProvider {
     private static final String AUTHORITIES_KEY = "auth";
     private static final String BEARER_TYPE = "Bearer";
     private static final long ACCESS_TOKEN_EXPIRE_TIME = 30 * 60 * 1000L;              // 30분
+
+//    private static final long ACCESS_TOKEN_EXPIRE_TIME = 60 * 1000L;              // 유효 기간 Test 용 (1분)
     private static final long REFRESH_TOKEN_EXPIRE_TIME = 7 * 24 * 60 * 60 * 1000L;    // 7일
 
     private final Key key;
@@ -88,18 +90,22 @@ public class JwtTokenProvider {
     }
 
     // 토큰 정보를 검증하는 메서드
-    public boolean validateToken(String token) {
+    public boolean validateToken(String token) throws JwtException{
         try {
+            System.out.println("validateToken() token2 : " + token);
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
         } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
             log.info("Invalid JWT Token", e);
+            throw new JwtException("Invalid JWT Token");
         } catch (ExpiredJwtException e) {
             log.info("Expired JWT Token", e);
         } catch (UnsupportedJwtException e) {
             log.info("Unsupported JWT Token", e);
+            throw new JwtException("Unsupported JWT Token");
         } catch (IllegalArgumentException e) {
             log.info("JWT claims string is empty.", e);
+            throw new JwtException("JWT claims string is empty.");
         }
         return false;
     }
@@ -118,8 +124,9 @@ public class JwtTokenProvider {
         // 현재 시간
         System.out.println(expiration);
         Long now = new Date().getTime();
-        System.out.println(now);
-        System.out.println(expiration.getTime() - now);
+
+        System.out.println("getExpiration () : " + (expiration.getTime() - now));
+
         return (expiration.getTime() - now);
     }
 }

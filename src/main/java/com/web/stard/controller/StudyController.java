@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/studies")
+@RequestMapping("/api/v2/studies")
 public class StudyController {
 
     private final StudyService studyService;
@@ -110,9 +110,8 @@ public class StudyController {
     }
 
     @DeleteMapping("/{id}")      // [D] 스터디 게시글 삭제
-    public void deleteStudy(@PathVariable long id){
-        Study result = studyService.findById(id);
-        studyService.deleteStudy(result);
+    public void deleteStudy(@PathVariable long id, Authentication authentication){
+        studyService.deleteStudy(id, authentication);
     }
 
     @PutMapping("/{id}")     // [U] 스터디 게시글 수정

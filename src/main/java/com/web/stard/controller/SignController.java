@@ -25,7 +25,7 @@ import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/members")
+@RequestMapping("/api/v2/members")
 @RestController
 public class SignController {
 
@@ -75,7 +75,8 @@ public class SignController {
 
     @PostMapping("/logout")
     public ResponseEntity<?> logout(@Validated MemberRequestDto.Logout logout, Errors errors) {
-        String refreshToken = (String)redisTemplate.opsForValue().get("RT:" + logout.getMemberId());
+
+        String refreshToken = (String) redisTemplate.opsForValue().get("RT:" + logout.getMemberId());
         logout.setRefreshToken(refreshToken);
 
         // validation check
@@ -110,21 +111,10 @@ public class SignController {
         return authentication.getName();
     }
 
-    @GetMapping("/isAccessTokenExpired")
+    @GetMapping("/accessToken-expiration")
     public boolean isAccessTokenExpired(@RequestParam String accessToken) {
-
-        System.out.println("진입 isAccessTokenExpired" + accessToken);
-
-        try {
-            if (accessToken != null && jwtTokenProvider.validateToken(accessToken)) {
-                System.out.println("진입");
-                return false;
-            }
-        } catch (Exception e) {
-            return true;
-        }
-        return false;
+        if (accessToken != null && jwtTokenProvider.validateToken(accessToken))
+            return false;
+        return true;
     }
-
-
 }

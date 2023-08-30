@@ -144,7 +144,7 @@ class QnaServiceTest {
         assertEquals(PostType.QNA, updatedPost.getType()); // 수정된 qna의 타입이 QNA인지 확인
         assertEquals(member.getId(), updatedPost.getMember().getId()); // 수정된 qna의 작성자가 맞는지 확인
     }
-    
+
     //@Rollback(false)
     @Test
     void qna_작성자_삭제() {

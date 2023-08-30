@@ -135,4 +135,8 @@ public class MemberService {
         }
         return false;
     }
+
+    public Member findId(String email, String phone) {
+        return memberRepository.findByEmailAndPhone(email, phone);
+    }
 }

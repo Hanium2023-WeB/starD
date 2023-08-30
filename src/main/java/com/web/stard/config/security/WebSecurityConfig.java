@@ -23,6 +23,34 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final RedisTemplate redisTemplate;
     private final CustomMemberDetailsService customMemberDetailsService;
 
+    private static final String[] PERMIT_URL_ARRAY = {
+
+            /* swagger v2 */
+            "/v2/api-docs",
+            "/swagger-resources",
+            "/swagger-resources/**",
+            "/configuration/ui",
+            "/configuration/security",
+            "/swagger-ui.html",
+            "/webjars/**",
+
+            /* swagger v3 */
+//            "/v3/api-docs/**",
+//            "/swagger-ui/**"
+
+            "/api/v2/members/sign-up",
+            "/api/v2/members/login",
+            "/api/v2/members/authority",
+            "/api/v2/members/reissue",
+            "/api/v2/members/logout",
+            "/api/v2/members/check",
+            "/api/v2/members/check2",
+            "/api/v2/members/accessToken-expiration",
+
+            "/api/v2/studies/**"    // TODO URL 수정
+
+    };
+
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
@@ -32,9 +60,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
 
                 .authorizeRequests()
-                .antMatchers("/api/v1/members/sign-up", "/api/v1/members/login", "/api/v1/members/authority", "/api/v1/members/reissue", "/api/v1/members/logout", "/api/v1/members/check", "/api/v1/members/check2", "/api/v1/members/isAccessTokenExpired").permitAll()
+                .antMatchers(PERMIT_URL_ARRAY).permitAll()
                 .antMatchers("/api/v1/users/userTest").hasRole("USER")
                 .antMatchers("/api/v1/users/adminTest").hasRole("ADMIN")
+                .anyRequest().authenticated()
 
                 // 해당 url 요청에 대해서는 로그인 요구 X
 //                .antMatchers("/", "/signup", "/checkDuplicateID", "/checkDuplicateNickname", "/login", "/current-member").permitAll() //TODO 주석 제거

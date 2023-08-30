@@ -8,6 +8,7 @@ import com.web.stard.dto.Response;
 import com.web.stard.dto.request.MemberRequestDto;
 import com.web.stard.dto.response.TokenInfo;
 import com.web.stard.repository.MemberRepository;
+import io.jsonwebtoken.JwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -103,8 +104,16 @@ public class SignService {
     }
 
     public ResponseEntity<?> logout(MemberRequestDto.Logout logout) {
+
         // 1. Access Token 검증
-        if (!jwtTokenProvider.validateToken(logout.getAccessToken())) {
+        boolean validateToken;
+        try {
+            validateToken = jwtTokenProvider.validateToken(logout.getAccessToken());
+//            if (!jwtTokenProvider.validateToken(logout.getAccessToken())) {
+//                return response.fail("잘못된 요청입니다.", HttpStatus.BAD_REQUEST);
+//            }
+        } catch (Exception e) {
+            log.info("검증 오류 발생");
             return response.fail("잘못된 요청입니다.", HttpStatus.BAD_REQUEST);
         }
 
@@ -117,10 +126,12 @@ public class SignService {
             redisTemplate.delete("RT:" + authentication.getName());
         }
 
-        // 4. 해당 Access Token 유효시간 가지고 와서 BlackList 로 저장하기
-        Long expiration = jwtTokenProvider.getExpiration(logout.getAccessToken());
-        redisTemplate.opsForValue()
-                .set(logout.getAccessToken(), "logout", expiration, TimeUnit.MILLISECONDS);
+        // 4. 유효 시간이 만료되지 않는 경우, 해당 Access Token 유효시간 가지고 와서 BlackList 로 저장하기
+        if (validateToken) {
+            Long expiration = jwtTokenProvider.getExpiration(logout.getAccessToken());
+            redisTemplate.opsForValue()
+                    .set(logout.getAccessToken(), "logout", expiration, TimeUnit.MILLISECONDS);
+        }
 
         return response.success("로그아웃 되었습니다.");
     }

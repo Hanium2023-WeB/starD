@@ -373,7 +373,7 @@ class ReplyServiceTest {
         Optional<Post> deletedPost = postRepository.findById(createdReply.getId());
         assertFalse(deletedPost.isPresent());   // 삭제한 댓글이 존재하는지 확인
     }
-    
+
     //@Rollback(false)
     @Test
     void Post_댓글_삭제_사용자_예외() {

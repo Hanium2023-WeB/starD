@@ -123,14 +123,33 @@ public class StudyService {
     }
 
     @Transactional
-    public void deleteStudy(Study study) {
+    public void deleteStudy(long id, Authentication authentication){
+
+        Study study = findById(id);
+
+        // TODO 삭제할 스터디 게시글이 개설 전, 후 상태 확인하기
+        // 삭제할 스터디 게시글이 개설 후라면 삭제 불가
+        if (!study.getProgressStatus().toString().equals(null))
+            return;
+
+        // TODO 삭제할 스터디 게시글의 작성자가 로그인된 사용자의 아이디와 같은지 체크
+        // String userId = authentication.getName();
+
+        // 로그인된 사용자가 아니거나, 로그인된 사용자와 게시글 작성자가 다르거나
+        // 해당 id를 가진 게시글이 없을 경우 null 반환
+//        if(userId == null || study == null || !study.getRecruiter().equals(memberRepository.findNicknameById(userId)))     // TODO 추후에 주석 제거 필요
+//            return;
+
         studyRepository.delete(study);
     }
 
     @Transactional
     public Study createStudy(StudyDto studyDto, Authentication authentication){
 
-//        String id = authentication.getName();     // TODO 로그인된 사용자의 닉네임 가져오기
+        // TODO 로그인된 사용자인지 확인할 코드 추가
+//        String userId = authentication.getName();  // TODO 로그인된 사용자의 닉네임 가져오기
+//        if(userId == null)
+//            return null;
 
         Study result = Study.builder()
                 .title(studyDto.getTitle())
@@ -154,17 +173,18 @@ public class StudyService {
         return result;
     }
 
+    @Transactional
     public Study updateStudy(long id, StudyDto studyDto, Authentication authentication){
 
 //        String userId = authentication.getName();     // TODO 추후에 주석 제거 필요
-
+//        if(userId == null)
+//            return null;
         Study result = findById(id);
 
         // 로그인된 사용자가 아니거나, 로그인된 사용자와 게시글 작성자가 다르거나
         // 해당 id를 가진 게시글이 없을 경우 null 반환
 //        if(userId == null || result == null || !result.getRecruiter().equals(memberRepository.findNicknameById(userId)))     // TODO 추후에 주석 제거 필요
 //            return null;
-
 
         RecruitStatus recruitStatus = result.getRecruitStatus();
 

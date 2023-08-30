@@ -21,14 +21,18 @@ const Side = () => {
 
     // const { isLoggedIn } = useAuth(); // useAuth를 이용하여 로그인 상태를 가져옴
 
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const accessToken = localStorage.getItem('accessToken');
+    const [isLoggedIn, setIsLoggedIn] = useState(false);    // 로그인 여부 확인 변수
+    const accessToken = localStorage.getItem('accessToken');       // localStorage에 저장된 accessToken 추출
+    const isLoggedInUserId = localStorage.getItem('isLoggedInUserId');       // localStorage에 저장된 로그인한 사용자 Id 추출
+
+    // console.log(accessToken, isLoggedInUserId);     // accessToken과 로그인한 사용자 Id 추출
+    // localStorage.removeItem('accessToken');
+    // localStorage.removeItem('isLoggedInUserId');
 
     useEffect(() => {
 
-        const logout = (member) => {
-
-            axios.post("http://localhost:8080/api/v1/members/logout", {
+        const logout = (member) => {    // 로그아웃 function
+            axios.post("http://localhost:8080/api/v2/members/logout", {
                 accessToken: accessToken,
                 memberId: member
             }, {
@@ -43,7 +47,12 @@ const Side = () => {
             })
                 .then(() => {
                     console.log("로그아웃 성공");
+
+                    // 로그아웃 성공 시 localStorage에 저장된 accessToken, isLoggedInUserId 제거
                     localStorage.removeItem('accessToken');
+                    localStorage.removeItem('isLoggedInUserId');
+
+                    // 로그아웃 상태로 설정
                     setIsLoggedIn(false);
                 })
                 .catch(error => {
@@ -51,8 +60,10 @@ const Side = () => {
                 });
         };
 
-        const isAccessTokenExpired = () => {
-            axios.get("http://localhost:8080/api/v1/members/isAccessTokenExpired", {
+
+        if (accessToken != null && isLoggedInUserId != null) {      // 로그인 한 상태이거나 accessToken이 만료된 상태
+
+            axios.get("http://localhost:8080/api/v2/members/accessToken-expiration", {    // accessToken 만료 여부 확인 function
                 withCredentials: true,
                 headers: {
                     'Authorization': `Bearer ${accessToken}`
@@ -64,47 +75,20 @@ const Side = () => {
                 .then((res) => {
                     console.log("결과 값 : " + res.data);
 
-                    if (res.data === false)
-                        return false;
-                    return true;
+                    if (res.data === false)      // accessToken이 만료되지 않는 상태
+                        setIsLoggedIn(true);
+                    else {                      // accessToken이 만료된 상태 -> 로그아웃 및 로그아웃 상태로 변환
+                        logout(isLoggedInUserId);
+                        setIsLoggedIn(false);
+                    }
                 })
                 .catch(error => {
                     console.log(error);
+
                 });
+        } else {    // accessToken이 존재하지 않다면 로그인 안 한 상태
+            setIsLoggedIn(false);
         }
-
-        axios
-            .get("http://localhost:8080/api/v1/members/check", {
-                withCredentials: true,
-                headers: {
-                    'Authorization': `Bearer ${accessToken}`
-                }
-            })
-            .then((res) => {
-                console.log("현재 로그인한 사용자 ID : " + res.data);
-                console.log("현재 로그인한 사용자 accessToken : " + accessToken);
-
-                // 서버로부터 받은 데이터가 null이 아니면 로그인한 상태로 설정
-                if (res.data == "anonymousUser" || res.data == null)
-                    setIsLoggedIn(false);
-                else {
-                    if (isAccessTokenExpired()){
-                        logout(res.data);
-                        setIsLoggedIn(false);
-                    } else {
-                        setIsLoggedIn(true);
-                    }
-
-
-                }
-                // setIsLoggedIn(res.data != null || res.data != "anonymousUser");
-                return res.data;
-            })
-            .catch(error => {
-                console.log(error);
-            });
-
-
     }, []);
 
     return (

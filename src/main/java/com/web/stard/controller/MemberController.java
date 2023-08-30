@@ -102,4 +102,10 @@ public class MemberController {
         return email.matches(regex);
     }
 
+    // [R] 아이디 찾기
+    @GetMapping("/member/find-id")
+    private Member findId(@RequestParam(value = "email") String email, @RequestParam(value = "phone") String phone) {
+        return memberService.findId(email, phone);
+    }
+
 }
