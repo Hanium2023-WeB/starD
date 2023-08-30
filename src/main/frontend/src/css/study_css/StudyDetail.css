@@ -36,14 +36,12 @@ html {
 	top:0;
 }
 .study{
-	margin: 100px 0 100px;
+	margin-bottom: 100px;
 }
 .study h3{
 	font-size: 17px;
 	text-align: center;
 }
-
-
 
 .study_detail {
 	width: 80%;

@@ -5,7 +5,7 @@ import {useParams, useNavigate, Link, useLocation} from "react-router-dom";
 import "../../css/study_css/StudyOpenForm.css";
 import RealEstate from "../info/RealEstate";
 
-const StudyInsert = ({sideheader}) => {
+const StudyInsert = ({updateStudies}) => {
     // const dataId = useRef(0);
     const [dataId, setDataId] = useState(0);
     const navigate = useNavigate();
@@ -62,6 +62,7 @@ const StudyInsert = ({sideheader}) => {
         setStudies((prevStudies) => [...prevStudies, newData]);
         const updatedStudies = [...studies, newData];
         localStorage.setItem("studies", JSON.stringify(updatedStudies));
+        updateStudies(updatedStudies);
 
         setDataId((prevDataId) => prevDataId + 1);
     }, [studies, dataId]);
@@ -157,17 +158,7 @@ const StudyInsert = ({sideheader}) => {
     }
 
     return (<div>
-        {sideheader}
-        <div className="study_detail_container">
-            <h1>STAR TOUR STORY</h1>
-            <div className="arrow_left">
-                <FontAwesomeIcon
-                    icon={faArrowLeft}
-                    onClick={() => navigate(-1)}
-                />
-            </div>
-            {studyinsertform()}
-        </div>
+        {studyinsertform()}
     </div>);
 }
 export default StudyInsert;

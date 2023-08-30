@@ -70,6 +70,7 @@ html {
 .study_list {
 	display: flex;
 	flex-wrap: wrap;
+	justify-content: space-between;
 }
 .study_list .list {
 	width: 25%;
