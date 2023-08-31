@@ -1,26 +1,21 @@
 package com.web.stard.domain;
 
+import com.sun.istack.NotNull;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 
 @Entity
 @Table
-@ToString
+@Data
 @NoArgsConstructor(force = true)
 @AllArgsConstructor
 @Getter
 @Setter
 @Builder
-public class Reply  extends BaseEntity {
+public class StarScrap {
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
-    @NotNull
-    @ManyToOne
-    @JoinColumn(name = "member_id")
-    private Member member;
 
     @ManyToOne
     @JoinColumn(name = "post_id")
@@ -30,10 +25,13 @@ public class Reply  extends BaseEntity {
     @JoinColumn(name = "study_id")
     private Study study;
 
-    @NotNull
-    private String content;
+    @Enumerated(EnumType.STRING)
+    private ActType type; // STAR or SCRAP
 
     @Enumerated(EnumType.STRING)
-    private PostType type; // [COMM, QNA, STUDY]
+    private PostType tableType; // 게시글 타입 (COMM / STUDY)
 
+    @NotNull @ManyToOne
+    @JoinColumn(name = "member_id")
+    private Member member;
 }
