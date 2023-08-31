@@ -7,9 +7,6 @@ const Login = ({sideheader}) => {
   const inputID = useRef();
   const inputPW = useRef();
 
-
-
-
   const [state, setState] = useState({
     ID: "",
     PW: "",
