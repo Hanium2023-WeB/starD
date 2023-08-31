@@ -7,6 +7,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.test.annotation.Rollback;
@@ -66,7 +69,9 @@ class ReplyServiceTest {
         replyService.createPostReply(createdPost.getId(), reply.getContent(), authentication2);    // 다른 회원이 댓글 생성
 
         //then
-        List<Reply> savedReplies = replyService.findAll();
+        Page<Reply> savedRepliesPage = replyService.findAllReplies(1);
+        List<Reply> savedReplies = savedRepliesPage.getContent();
+
         assertEquals(1, savedReplies.size()); // 생성된 댓글이 1개인지 확인
 
         Reply savedReply = savedReplies.get(0);
@@ -103,7 +108,9 @@ class ReplyServiceTest {
         replyService.createPostReply(createdPost.getId(), reply.getContent(), authentication2);    // 다른 회원이 댓글 생성
 
         //then
-        List<Reply> savedReplies = replyService.findAll();
+        Page<Reply> savedRepliesPage = replyService.findAllReplies(1);
+        List<Reply> savedReplies = savedRepliesPage.getContent();
+
         assertEquals(1, savedReplies.size()); // 생성된 댓글이 1개인지 확인
 
         Reply savedReply = savedReplies.get(0);
@@ -140,7 +147,9 @@ class ReplyServiceTest {
         //replyService.createStudyReply(createdStudy.getId(), reply.getContent(), authentication2);    // 다른 회원이 댓글 생성
 
         //then
-        List<Reply> savedReplies = replyService.findAll();
+        Page<Reply> savedRepliesPage = replyService.findAllReplies(1);
+        List<Reply> savedReplies = savedRepliesPage.getContent();
+        
         assertEquals(1, savedReplies.size()); // 생성된 댓글이 1개인지 확인
 
         Reply savedReply = savedReplies.get(0);
@@ -597,7 +606,50 @@ class ReplyServiceTest {
 
     //@Rollback(false)
     @Test
-    void Post_댓글_리스트조회() {
+    void 댓글_전체조회() {
+        //given
+        Member member = new Member();
+        member.setId("testUser");
+        memberService.saveMember(member);
+
+        Authentication authentication = new UsernamePasswordAuthenticationToken(member.getId(), null);
+
+        // 게시글 생성
+        Post post = new Post();
+        post.setTitle("comm post 제목");
+        post.setContent("comm post 내용");
+        Post createdPost = communityService.registerCommPost(post, authentication);
+
+        Post post2 = new Post();
+        post2.setTitle("qna post 제목");
+        post2.setContent("qna post 내용");
+        Post createdPost2 = qnaService.createQna(post2, authentication);
+
+        StudyDto studyDto = new StudyDto("study 제목", "study 내용", 5, member.getId(),
+                null, null, null, "online", LocalDateTime.now().plusDays(7), LocalDateTime.now().plusDays(14),
+                LocalDateTime.now(),LocalDateTime.now().plusDays(7), "모집중", 0);
+        Study createdStudy = studyService.createStudy(studyDto, authentication);
+
+        // 댓글 생성
+        Reply createdCommReply = replyService.createPostReply(createdPost.getId(), "커뮤니티 댓글 내용", authentication);
+        Reply createdQnaReply = replyService.createPostReply(createdPost2.getId(), "qna 댓글 내용", authentication);
+        Reply createdStudyReply = replyService.createStudyReply(createdStudy.getId(), "스터디 댓글 내용", authentication);
+
+        // When
+        Page<Reply> savedRepliesPage = replyService.findAllReplies(1);
+        List<Reply> savedReplies = savedRepliesPage.getContent();   // 페이지의 댓글 리스트 가져오기
+
+        // Then
+        assertEquals(3, savedReplies.size()); // 생성된 댓글 개수 확인
+        // 댓글 리스트 최신 순으로 나오는지 확인
+        assertEquals("스터디 댓글 내용", savedReplies.get(0).getContent());
+        assertEquals("qna 댓글 내용", savedReplies.get(1).getContent());
+        assertEquals("커뮤니티 댓글 내용", savedReplies.get(2).getContent());
+    }
+
+    //@Rollback(false)
+    @Test
+    void Post_아이디별_댓글조회() {
         //given
         Member member = new Member();
         member.setId("testUser");
@@ -606,41 +658,41 @@ class ReplyServiceTest {
         Authentication authentication = new UsernamePasswordAuthenticationToken(member.getId(), null);
 
         // 1. qna
-/*
         Post post = new Post();
         post.setTitle("qna post 제목");
         post.setContent("qna post 내용");
         Post createdPost = qnaService.createQna(post, authentication);
-*/
 
         // 2. comm
+/*
         Post post = new Post();
         post.setTitle("comm post 제목");
         post.setContent("comm post 내용");
         Post createdPost = communityService.registerCommPost(post, authentication);
+*/
 
         Reply reply = new Reply();
         reply.setMember(member);
         reply.setContent("댓글 내용 1");
-        Reply createdReply = replyService.createPostReply(createdPost.getId(), reply.getContent(), authentication);
+        Reply createdReply1 = replyService.createPostReply(createdPost.getId(), reply.getContent(), authentication);
 
         Reply reply2 = new Reply();
         reply2.setMember(member);
         reply2.setContent("댓글 내용 2");
-        replyService.createPostReply(createdPost.getId(), reply2.getContent(), authentication);
+        Reply createdReply2 = replyService.createPostReply(createdPost.getId(), reply2.getContent(), authentication);
 
-        // When
-        List<Reply> replies = replyService.findAll();
+        //when
+        List<Reply> replies = replyService.findAllRepliesByPostIdOrderByCreatedAtAsc(createdPost.getId());
 
-        // Then
+        //then
         assertEquals(2, replies.size()); // 생성된 댓글 개수 확인
-        assertEquals("댓글 내용 1", replies.get(0).getContent());
-        assertEquals("댓글 내용 2", replies.get(1).getContent());
+        assertEquals(createdReply1.getContent(), replies.get(0).getContent()); // 댓글 내용 순서 확인
+        assertEquals(createdReply2.getContent(), replies.get(1).getContent());
     }
 
     //@Rollback(false)
     @Test
-    void Study_댓글_리스트조회() {
+    void Study_아이디별_댓글조회() {
         //given
         Member member = new Member();
         member.setId("testUser");
@@ -657,19 +709,19 @@ class ReplyServiceTest {
         Reply reply = new Reply();
         reply.setMember(member);
         reply.setContent("댓글 내용 1");
-        Reply createdReply = replyService.createStudyReply(createdStudy.getId(), reply.getContent(), authentication);
+        Reply createdReply1 = replyService.createStudyReply(createdStudy.getId(), reply.getContent(), authentication);
 
         Reply reply2 = new Reply();
         reply2.setMember(member);
         reply2.setContent("댓글 내용 2");
-        replyService.createStudyReply(createdStudy.getId(), reply2.getContent(), authentication);
+        Reply createdReply2 = replyService.createStudyReply(createdStudy.getId(), reply2.getContent(), authentication);
 
-        // When
-        List<Reply> replies = replyService.findAll();
+        //when
+        List<Reply> replies = replyService.findAllRepliesByStudyIdOrderByCreatedAtAsc(createdStudy.getId());
 
-        // Then
+        //then
         assertEquals(2, replies.size()); // 생성된 댓글 개수 확인
-        assertEquals("댓글 내용 1", replies.get(0).getContent());
-        assertEquals("댓글 내용 2", replies.get(1).getContent());
+        assertEquals(createdReply1.getContent(), replies.get(0).getContent()); // 댓글 내용 순서 확인
+        assertEquals(createdReply2.getContent(), replies.get(1).getContent());
     }
 }
