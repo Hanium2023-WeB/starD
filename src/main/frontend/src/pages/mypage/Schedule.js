@@ -15,6 +15,7 @@ const Schedule = ({ sideheader }) => {
   const Dates = selectedDate.getDate();
   //서버 요청
   const sendMeetingsToBackend = () => {
+
     const backendEndpoint = "https://your-backend-url.com/save-meetings";
   
     axios.post(backendEndpoint, { meetings })

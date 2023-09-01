@@ -5,6 +5,8 @@ import {useParams, useNavigate, Link, useLocation} from "react-router-dom";
 import "../../css/study_css/StudyOpenForm.css";
 import RealEstate from "../info/RealEstate";
 
+// TODO 스터디 모집 폼 -> 백엔드와 연결 필요
+
 const StudyInsert = ({sideheader}) => {
     // const dataId = useRef(0);
     const [dataId, setDataId] = useState(0);
