@@ -20,7 +20,8 @@ import Schedule from "./pages/mypage/Schedule.js";
 import StudyApplyForm from "./pages/studypage/StudyApplyForm";
 import Study from "./pages/studypage/Study";
 import StudyInsert from "./components/study/StudyInsert";
-import EditSchedule from "./components/schedule/EditSchedule";
+import MyApplyStudy from "./pages/mypage/MyApplyStudy";
+
 
 const Side = () => {
 
@@ -214,73 +215,73 @@ function App() {
                 <Routes>
                     <Route
                         path="/"
-                        element={<Home sideheader={rendsidecenter()}/>}
+                        element={<Home sideheader={rendsidecenter()} />}
                     />
                     <Route
                         path="/login"
-                        element={<Login sideheader={nosidecenter()}/>}
+                        element={<Login sideheader={nosidecenter()} />}
                     />
                     <Route
                         path="/signup"
-                        element={<Signup sideheader={nosidecenter()}/>}
+                        element={<Signup sideheader={nosidecenter()} />}
                     />
                     <Route
                         path="/logout"
-                        element={<Logout sideheader={rendsidecenter()}/>}
+                        element={<Logout sideheader={rendsidecenter()} />}
                     />
                     <Route
                         path="/mypage"
-                        element={<Mypage sideheader={rendsidecenter()}/>}
+                        element={<Mypage sideheader={rendsidecenter()} />}
                     />
 
                     <Route
                         path="/editinfo"
-                        element={<Editinfo sideheader={rendsidecenter()}/>}
+                        element={<Editinfo sideheader={rendsidecenter()} />}
                     />
                     <Route
                         path="/myparticipatestudy"
                         element={
-                            <MyParticipateStudy sideheader={rendsidecenter()}/>
+                            <MyParticipateStudy sideheader={rendsidecenter()} />
+                        }
+                    />
+                    <Route
+                        path="/myapplystudy"
+                        element={
+                            <MyApplyStudy sideheader={rendsidecenter()} />
                         }
                     />
                     <Route
                         path="/myopenstudy"
-                        element={<MyOpenStudy sideheader={rendsidecenter()}/>}
+                        element={<MyOpenStudy sideheader={rendsidecenter()} />}
                     />
                     <Route
                         path="/studydetail/:id"
-                        element={<StudyDetail sideheader={rendsidecenter()}/>}
+                        element={<StudyDetail sideheader={rendsidecenter()} />}
                     />
                     <Route
                         path="/ToDoList"
-                        element={<ToDoList sideheader={rendsidecenter()}/>}
+                        element={<ToDoList sideheader = {rendsidecenter()}/>}
                     />
                     <Route
                         path="/MyPage/Schedule"
-                        element={<Schedule sideheader={rendsidecenter()}/>}
+                        element={<Schedule sideheader = {rendsidecenter()}/>}
                     />
                     <Route
                         path="/studyapplyform/:id"
                         element={
-                            <StudyApplyForm sideheader={rendsidecenter()}/>
+                            <StudyApplyForm sideheader={rendsidecenter()} />
                         }
                     />
                     <Route
                         path="/study"
                         element={
-                            <Study sideheader={rendsidecenter()}/>
+                            <Study sideheader={rendsidecenter()} />
                         }
                     />
                     <Route
                         path="/studyopen"
                         element={
-                            <StudyInsert sideheader={rendsidecenter()}/>
-                        }
-                    />
-                    <Route
-                        path="/MyPage/Schedule/schedule/editschedule"
-                        element={
-                            <EditSchedule sideheader={rendsidecenter()}/>
+                            <StudyInsert sideheader={rendsidecenter()} />
                         }
                     />
 
@@ -288,11 +289,12 @@ function App() {
                 <div></div>
                 <Link
                     to={"/mypage"}
-                    style={{textDecoration: "none", color: "inherit"}}
+                    style={{ textDecoration: "none", color: "inherit" }}
                 >
                     마이페이지
                 </Link>
-                <Footer/>
+                <Footer />
+
             </div>
         </BrowserRouter>
     );

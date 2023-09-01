@@ -1,18 +1,17 @@
+
 //거주지 시 도 구
+import React, { useEffect} from 'react';
 import edit from "../css/mypage_css/edit.css";
 
 import $ from 'jquery';
 
-export function selectBOX (mem){
-    if (selectBOX.initialized) {
-        // 이미 초기화되었을 경우, 중복 호출 방지
-        return;
-    }
+export function selectBOX (){
+
     // 시/도/군/구 selectBOX 생성함수
     const areas = {
         "시/도 선택": ["구/군 선택"],
         "서울특별시": ["강남구", "강동구", "강북구", "강서구","관악구","광진구","구로구","금천구","노원구"
-        ,"도봉구","동대문구","동작구","마포구","서대문구","서초구","성동구","성북구","송파구","양천구","영등포구","용산구","은평구","종로구","중구(서울특별시)","중랑구"],
+            ,"도봉구","동대문구","동작구","마포구","서대문구","서초구","성동구","성북구","송파구","양천구","영등포구","용산구","은평구","종로구","중구(서울특별시)","중랑구"],
         "인천광역시": ["계양구", "미추홀구", "남동구", "동구","미추홀구","부평구","서구(인천광역시)","연수구","중구(인천광역시)"],
         "대전광역시": ["대덕구", "동구", "서구", "유성구", "중구"],
         "광주광역시": ["광산구", "남구(광주광역시)", "동구(광주광역시)", "북구(광주광역시)", "서구(광주광역시)"],
@@ -30,64 +29,71 @@ export function selectBOX (mem){
         "제주특별자치도": ["서귀포시", "제주시"],
 
     };
-      const $sidoSelect = $("#sido1");
-      const $gugunSelect = $("#gugun1");
-    
-    
-      function initializeSidoSelect() {
-        console.log("거주지 확인 : " + mem.city + " 그리고 " + mem.district);
-        let gugunList = null;
+    const $sidoSelect = $("#sido1");
+    const $gugunSelect = $("#gugun1");
+
+    if (selectBOX.initialized) {
+        // 이미 초기화되었을 경우, 중복 호출 방지
+        return;
+    }
+
+    function initializeSidoSelect() {
+        //option 초기화
         for (const sido in areas) {
-            if (sido === mem.city) {
-                $sidoSelect.append(`<option value="${sido}" selected>${sido}</option>`);
-                gugunList = areas[mem.city];
-            } else {
-                $sidoSelect.append(`<option value="${sido}">${sido}</option>`);
-            }
+            $sidoSelect.append(`<option value="${sido}">${sido}</option>`);
         }
-        if (mem.district === null) {
-            $gugunSelect.append("<option value='' selected>구/군 선택</option>");
-        } else {
-            $gugunSelect.append("<option value=''>구/군 선택</option>");
-            for (const gugun of gugunList) {
-                if (gugun === mem.district) {
-                    $gugunSelect.append(`<option value="${gugun}" selected>${gugun}</option>`);
-                } else {
-                    $gugunSelect.append(`<option value="${gugun}">${gugun}</option>`);
-                }
-            }
-        }
+        $gugunSelect.append(`<option selected value='' >구/군 선택</option>`);
+        console.log("초기화 완료");
+    }
 
-
-
-      }
-      function updateGugunSelect(selectedSido) {
+    function updateGugunSelect(selectedSido) {
+        //시,도를 선택했을 시 구, 군 선택지 업데이트
         const gugunList = areas[selectedSido];
         $gugunSelect.empty();
-        if(selectedSido!="시/도 선택") {
-            if (mem.district === null) {
-                $gugunSelect.append(`<option value='' selected>구/군 선택</option>`);
-            } else {
-                $gugunSelect.append(`<option value=''>구/군 선택</option>`);
-            }
-        }
+        if (selectedSido != "시/도 선택")
+            $gugunSelect.append(`<option value='' selected>구/군 선택</option>`);
 
         for (const gugun of gugunList) {
-          $gugunSelect.append(`<option value="${gugun}">${gugun}</option>`);
+            $gugunSelect.append(`<option value="${gugun}">${gugun}</option>`);
         }
-      }
-      
-      $sidoSelect.on("change", function() {
-        const selectedSido = $(this).val();
+    }
+
+    function saveSelectedValues(selectedSido, selectedGugun) {
+        localStorage.setItem("selectedSido", selectedSido);
+        localStorage.setItem("selectedGugun", selectedGugun);
+    }
+
+    function loadSelectedValues() {
+        const selectedSido = localStorage.getItem("selectedSido");
+        const selectedGugun = localStorage.getItem("selectedGugun");
+
         if (selectedSido) {
-          updateGugunSelect(selectedSido);
-        } else {
-          $gugunSelect.empty();
+            $sidoSelect.val(selectedSido);
+            updateGugunSelect(selectedSido);
+            if (selectedGugun) {
+                $gugunSelect.val(selectedGugun);
+            }
         }
-      });
-      // 초기화 상태 표시
+        console.log("로드 완료");
+    }
+
+    $sidoSelect.on("change", function () {
+        const selectedSido = $(this).val();
+        const selectedGugun = $gugunSelect.val();
+
+        if (selectedSido) {
+            updateGugunSelect(selectedSido);
+            saveSelectedValues(selectedSido, selectedGugun);
+        } else {
+            $gugunSelect.empty();
+            saveSelectedValues("", "");
+        }
+    });
+    //초기화 상태 표시
     selectBOX.initialized = true;
-      
-      // 초기화 호출
-        initializeSidoSelect();
+
+    // 초기화 호출
+
+    initializeSidoSelect();
+    loadSelectedValues();
 }
