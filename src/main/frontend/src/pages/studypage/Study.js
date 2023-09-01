@@ -56,7 +56,7 @@ const Study = ({sideheader}) => {
                 )}
                 {!showStudyInsert && (
                     <div className="content_container">
-                        <div className="study_list">
+                        <div className="study_list" style={{justifyContent:"space-between"}}>
                             {studies.map((d) => (
                                 <div className="list" key={d.id}>
                                     <Link

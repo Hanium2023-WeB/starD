@@ -112,13 +112,17 @@ html {
 .study_info li > span:nth-of-type(2) {
 	color: #898989;
 }
+.study_intro{
+	margin-bottom: 30px;
+}
 .study_intro,
 .study_apply_reason {
 	font-size: 15px;
 	margin-left: 15px;
 }
 .study_intro > div:nth-of-type(2),
-.study_apply_reason textarea {
+.study_apply_reason textarea,
+.study_apply_reason > div:nth-of-type(2) {
 	border: 1px solid #dbdbdb;
 	border-radius: 10px;
 	padding: 15px 10px;

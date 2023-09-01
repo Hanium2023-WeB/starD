@@ -19,6 +19,7 @@ import Schedule from "./pages/mypage/Schedule.js";
 import StudyApplyForm from "./pages/studypage/StudyApplyForm";
 import Study from "./pages/studypage/Study";
 import StudyInsert from "./components/study/StudyInsert";
+import MyApplyStudy from "./pages/mypage/MyApplyStudy";
 
 const side = () => {
 	return (
@@ -129,6 +130,12 @@ function App() {
 						path="/myparticipatestudy"
 						element={
 							<MyParticipateStudy sideheader={rendsidecenter()} />
+						}
+					/>
+					<Route
+						path="/myapplystudy"
+						element={
+							<MyApplyStudy sideheader={rendsidecenter()} />
 						}
 					/>
 					<Route

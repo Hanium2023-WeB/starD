@@ -14,6 +14,7 @@ const StudyDetail = ({ sideheader }) => {
 	const [studies, setStudies] = useState([]);
 	const [editing, setEditing] = useState(false);
 	const [studyDetail, setStudyDetail] = useState([]);// 스터디 상세 정보를 상태로 관리
+	const [isApply, setIsApply] = useState(false);
 
 	const handleEditClick = () => {
 		setEditing(true);
@@ -54,6 +55,14 @@ const StudyDetail = ({ sideheader }) => {
 		setStudyDetail(filteredStudyDetail); //해당 페이지의 스터디 상세 정보 랜더링에 사용
 	}, [studies, id]);
 
+	useEffect(() => {
+		if (studyDetail.length > 0 && studyDetail[0].reason) {
+			setIsApply(true);
+		} else {
+			setIsApply(false);
+		}
+	}, [studyDetail]);
+
 	return (
 		<div>
 			{sideheader}
@@ -77,6 +86,12 @@ const StudyDetail = ({ sideheader }) => {
 									<div>스터디 소개</div>
 									<div>{study.description}</div>
 								</div>
+								{isApply && (
+									<div className="study_apply_reason">
+										<div>나의 지원동기 및 각오</div>
+										<div>{study.reason}</div>
+									</div>
+								)}
 								<div className="btn">
 									<Link
 										to={`/studyapplyform/${study.id}`}

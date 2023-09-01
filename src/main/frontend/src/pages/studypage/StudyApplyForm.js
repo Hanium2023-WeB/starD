@@ -6,44 +6,40 @@ import "../../css/study_css/StudyDetail.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import StudyInfo from "../../components/study/StudyInfo";
+import Backarrow from "../../components/repeat_etc/Backarrow";
 
 const StudyApplyForm = ({ sideheader }) => {
     const { id } = useParams();
     const dataId = useRef(0);
     const contentRef = useRef();
-    const [state, setState] = useState([]);
+    const [studies, setStudies] = useState([]);
     const [content, setContent] = useState("");
-    const navigate = useNavigate();
-    const studyDetail = state.filter((study) => study.id === Number(id));
 
-    const getData = async () => {
-        const res = await fetch(
-            "https://jsonplaceholder.typicode.com/comments"
-        ).then((res) => res.json());
-        const initDate = res.slice(0, 10).map((it) => {
-            return {
-                tag: it.email,
-                author: it.email,
-                day: it.postId,
-                title: it.name,
-                last: 5,
-                created_date: new Date().getTime(),
-                id: dataId.current++,
-                content: it.body,
-            };
-        });
-        setState(initDate);
-        console.log(initDate);
-    };
+    const studyDetail = studies.filter((study) => study.id === Number(id));
+
+
     useEffect(() => {
-        getData();
+        const storedStudies = localStorage.getItem("studies");
+        if (storedStudies) {
+            setStudies(JSON.parse(storedStudies));
+        }
     }, []);
     const handleSubmit = () => {
         if (content.length < 1) {
             contentRef.current.focus();
             return;
         }
-        setState([...state, content]);
+        const updatedStudies = studies.map(study => {
+            if (study.id === Number(id)) {
+                return {
+                    ...study,
+                    reason: content,
+                };
+            }
+            return study;
+        });
+        setStudies(updatedStudies);
+        localStorage.setItem("studies", JSON.stringify(updatedStudies));
     };
     const studyinfo = () => {
         return (
@@ -67,7 +63,7 @@ const StudyApplyForm = ({ sideheader }) => {
                                     textDecoration: "none",
                                     color: "inherit",
                                 }}
-                                addState={{ state }}
+                                addState={{ studies }}
                             >
                                 <button
                                     className="apply_btn"
@@ -88,10 +84,7 @@ const StudyApplyForm = ({ sideheader }) => {
             <div className="study_detail_container">
                 <h1>STAR TOUR STORY</h1>
                 <div className="arrow_left">
-                    <FontAwesomeIcon
-                        icon={faArrowLeft}
-                        onClick={() => navigate(-1)}
-                    />
+                    <Backarrow />
                 </div>
                 {studyinfo()}
             </div>

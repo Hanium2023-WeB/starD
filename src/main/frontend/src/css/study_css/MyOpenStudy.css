@@ -66,11 +66,13 @@ html {
 	height: 100%;
 	overflow: hidden;
 }
-
+.content_container .study_list {
+	display: flex;
+	flex-wrap: wrap;
+}
 .study_list {
 	display: flex;
 	flex-wrap: wrap;
-	justify-content: space-between;
 }
 .study_list .list {
 	width: 25%;
