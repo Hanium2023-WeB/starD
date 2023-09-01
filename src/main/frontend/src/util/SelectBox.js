@@ -1,5 +1,5 @@
 //거주지 시 도 구
-import edit from "../css/edit.css";
+import edit from "../css/mypage_css/edit.css";
 
 import $ from 'jquery';
 

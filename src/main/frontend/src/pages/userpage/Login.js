@@ -1,8 +1,8 @@
-import LogoButton from "../components/LogoButton";
+import LogoButton from "../../components/repeat_etc/LogoButton";
 import { Link } from 'react-router-dom';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import React, {useState, useRef} from "react";
-import "../css/Log.css";
+import "../../css/user_css/Log.css";
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
 

@@ -1,7 +1,7 @@
-import LogoButton from "../components/LogoButton";
+import LogoButton from "../../components/repeat_etc/LogoButton";
 import React, { useState, useRef } from "react";
-import { isEmail, isPassword } from "../util/check";
-import "../css/Log.css";
+import {isEmail, isPassword} from "../../util/check.js";
+import "../../css/user_css/Log.css";
 
 import axios from "axios";
 

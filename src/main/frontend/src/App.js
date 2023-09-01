@@ -1,21 +1,26 @@
 import {Link} from "react-router-dom";
-import {useAuth} from "./pages/AuthContext";
 import axios from "axios";
 import "./App.css";
-import React, {useState, useRef, useEffect} from "react";
+import React, {useState, useRef, useEffect, lazy, Suspense} from "react";
 import {BrowserRouter, Routes, Route} from "react-router-dom";
-import Header from "./components/Header";
+import Header from "./components/repeat_etc/Header";
 
 import Home from "./pages/Home";
-import Login from "./pages/Login";
-import Logout from "./pages/Logout";
-import Signup from "./pages/Signup";
-import Mypage from "./pages/Mypage";
-import Footer from "./components/Footer";
-import Editinfo from "./pages/Editinfo";
-import MyParticipateStudy from "./pages/MyParticipateStudy";
-import MyOpenStudy from "./pages/MyOpenStudy";
-import StudyDetail from "./pages/StudyDetail";
+import Login from "./pages/userpage/Login";
+import Logout from "./pages/userpage/Logout";
+import Signup from "./pages/userpage/Signup";
+import Mypage from "./pages/mypage/Mypage";
+import Footer from "./components/repeat_etc/Footer";
+import Editinfo from "./pages/mypage/Editinfo";
+import MyParticipateStudy from "./pages/mypage/MyParticipateStudy";
+import MyOpenStudy from "./pages/mypage/MyOpenStudy";
+import StudyDetail from "./pages/studypage/StudyDetail";
+import ToDoList from "./pages/mypage/ToDoList";
+import Schedule from "./pages/mypage/Schedule.js";
+import StudyApplyForm from "./pages/studypage/StudyApplyForm";
+import Study from "./pages/studypage/Study";
+import StudyInsert from "./components/study/StudyInsert";
+import EditSchedule from "./components/schedule/EditSchedule";
 
 const Side = () => {
 
@@ -62,7 +67,7 @@ const Side = () => {
 
 
         if (accessToken != null && isLoggedInUserId != null) {      // 로그인 한 상태이거나 accessToken이 만료된 상태
-
+            console.log("test");
             axios.get("http://localhost:8080/api/v2/members/accessToken-expiration", {    // accessToken 만료 여부 확인 function
                 withCredentials: true,
                 headers: {
@@ -84,9 +89,9 @@ const Side = () => {
                 })
                 .catch(error => {
                     console.log(error);
-
                 });
         } else {    // accessToken이 존재하지 않다면 로그인 안 한 상태
+            console.log("test2");
             setIsLoggedIn(false);
         }
     }, []);
@@ -156,7 +161,12 @@ const sidecenter = () => {
         <div className="sidebar">
             <nav>
                 <ul>
-                    <li>스터디</li>
+                    <Link
+                        to={"/study"}
+                        style={{textDecoration: "none", color: "inherit"}}
+                    >
+                        <li>스터디</li>
+                    </Link>
                     <li>커뮤니티</li>
                     <li>공지사항</li>
                 </ul>
@@ -179,9 +189,28 @@ const rendsidecenter = () => {
 };
 
 function App() {
+
+    // const Home = lazy(() => import('./pages/Home'));
+    // const Login = lazy(() => import('./pages/Login'));
+    // const Signup = lazy(() => import('./pages/Signup'));
+
     return (
         <BrowserRouter>
             <div className="App">
+
+                {/*<Suspense fallback={<div>Loading...</div>}>*/}
+                {/*    <Routes>*/}
+                {/*        <Route path="/" element={<Home sideheader={rendsidecenter()} />} />*/}
+                {/*        <Route path="/login" element={<Login sideheader={nosidecenter()} />} />*/}
+                {/*    </Routes>*/}
+                {/*</Suspense>*/}
+
+                {/*<Suspense fallback={<div>Loading...</div>}>*/}
+                {/*    <Routes>*/}
+                {/*        <Route path="/signup" element={<Signup sideheader={nosidecenter()} />} />*/}
+                {/*    </Routes>*/}
+                {/*</Suspense>*/}
+
                 <Routes>
                     <Route
                         path="/"
@@ -222,6 +251,39 @@ function App() {
                         path="/studydetail/:id"
                         element={<StudyDetail sideheader={rendsidecenter()}/>}
                     />
+                    <Route
+                        path="/ToDoList"
+                        element={<ToDoList sideheader={rendsidecenter()}/>}
+                    />
+                    <Route
+                        path="/MyPage/Schedule"
+                        element={<Schedule sideheader={rendsidecenter()}/>}
+                    />
+                    <Route
+                        path="/studyapplyform/:id"
+                        element={
+                            <StudyApplyForm sideheader={rendsidecenter()}/>
+                        }
+                    />
+                    <Route
+                        path="/study"
+                        element={
+                            <Study sideheader={rendsidecenter()}/>
+                        }
+                    />
+                    <Route
+                        path="/studyopen"
+                        element={
+                            <StudyInsert sideheader={rendsidecenter()}/>
+                        }
+                    />
+                    <Route
+                        path="/MyPage/Schedule/schedule/editschedule"
+                        element={
+                            <EditSchedule sideheader={rendsidecenter()}/>
+                        }
+                    />
+
                 </Routes>
                 <div></div>
                 <Link

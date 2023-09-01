@@ -6,17 +6,30 @@ import searchicon from "./images/search.png";
 const SearchBar = (props) => {
 	const items = props.searchItems;
 	const [search, setSearch] = useState("");
+	const [selectsearch ,setSelectSearch] =useState();
 
 	const onChange = (e) => {
 		setSearch(e.target.value);
 		console.log(e.target.value);
 	};
+	const onHandleselect = (e)=>{
+		setSelectSearch(e.target.value);
+		console.log(`value = ${e.target.value}`)
+	}
 
 	const filterProducts = items.filter((item) => {
 		return item.includes(search);
 	});
 
 	return (
+		<div className="Home_wrap">
+		<div className="select_search">
+				<select id="sub" onClick={onHandleselect}>
+					<option value="제목">제목</option>
+					<option value="내용">내용</option>
+					<option value="주제">작성자</option>
+					</select>
+				</div>
 		<div className="searchbar">
 			<div className="searchinput">
 			<input
@@ -51,6 +64,7 @@ const SearchBar = (props) => {
 					</ul>
 				) : null}
 			</div>
+		</div>
 		</div>
 	);
 };
