@@ -7,6 +7,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -111,12 +115,6 @@ public class ReplyService {
         replyRepository.delete(reply);
     }
 
-    // 댓글 리스트로 조회
-    public List<Reply> findAll(){
-        List<Reply> replies = replyRepository.findAll();
-        return replies;
-    }
-
     // 댓글 조회
     public Reply getReply(Long id) {
         Optional<Reply> reply = replyRepository.findById(id);
@@ -125,4 +123,22 @@ public class ReplyService {
         }
         return null;
     }
+
+    // 댓글 전체 조회 (최신순, 페이징)
+    public Page<Reply> findAllReplies(int page) {
+        Sort sort = Sort.by(new Sort.Order(Sort.Direction.DESC, "createdAt"));
+        Pageable pageable = PageRequest.of(page-1, 10, sort);
+        return replyRepository.findAllByOrderByCreatedAtDesc(pageable);
+    }
+
+    // post 게시글 아이디 별 댓글 조회 (생성일 순)
+    public List<Reply> findAllRepliesByPostIdOrderByCreatedAtAsc(Long postId) {
+        return replyRepository.findAllByPostIdOrderByCreatedAtAsc(postId);
+    }
+
+    // study 게시글 아이디 별 댓글 조회 (생성일 순)
+    public List<Reply> findAllRepliesByStudyIdOrderByCreatedAtAsc(Long studyId) {
+        return replyRepository.findAllByStudyIdOrderByCreatedAtAsc(studyId);
+    }
+
 }
