@@ -1,10 +1,15 @@
 package com.web.stard.controller;
 
+import com.web.stard.domain.Post;
 import com.web.stard.domain.Reply;
 import com.web.stard.service.ReplyService;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,16 +48,28 @@ public class ReplyController {
         replyService.deleteReply(replyId, authentication);
     }
 
-    // 댓글 리스트로 조회
-    @GetMapping
-    public List<Reply> findAllReply(){
-        return replyService.findAll();
-    }
-
     // 댓글 조회
     @GetMapping("/{id}")
     public Reply getReply(@PathVariable Long id){
         return replyService.getReply(id);
+    }
+
+    // 댓글 전체 조회 (최신순, 페이징)
+    @GetMapping()
+    public Page<Reply> findAllReplies(@RequestParam("page") int page) {
+        return replyService.findAllReplies(page);
+    }
+
+    // post 게시글 아이디 별 댓글 조회 (생성일 순)
+    @GetMapping("/post/{postId}")
+    public List<Reply> findAllRepliesByPostId(@PathVariable Long postId) {
+        return replyService.findAllRepliesByPostIdOrderByCreatedAtAsc(postId);
+    }
+
+    // study 게시글 아이디 별 댓글 조회 (생성일 순)
+    @GetMapping("/study/{studyId}")
+    public List<Reply> findAllRepliesByStudyId(@PathVariable Long studyId) {
+        return replyService.findAllRepliesByStudyIdOrderByCreatedAtAsc(studyId);
     }
 
 }
