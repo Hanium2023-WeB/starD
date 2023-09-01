@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import edit from "../../css/mypage_css/edit.css";
+import axios from "axios";
 const EditInterest=()=>{
     const tagoptions = [
         { value: "IT기획", name: "IT기획" },
@@ -24,9 +25,9 @@ const EditInterest=()=>{
         { value: "클우드", name: "클라우드" },
       ];
 
-      
+      const [tags, setTags] = useState([]);
+
       const Tagoption = (props) => {
-        const [tags, setTags] = useState([]);
     
         const handletagChange = (value) => {
           if (tags.includes(value)) {
@@ -62,6 +63,55 @@ const EditInterest=()=>{
           </div>
         );
       };
+
+    useEffect(() => {
+        axios.get("http://localhost:8080/user/mypage/update/interests", {
+            withCredentials: true
+        })
+            .then(response => {
+                const serverInterests = response.data;
+                if (serverInterests) {
+                    console.log("관심분야 : " + serverInterests.map(interest => interest.field));
+                    const fieldValues = serverInterests.map(interest => interest.field);
+                    setTags(fieldValues);
+                }
+            })
+            .catch(error => {
+                if (axios.isAxiosError(error)) {
+                    // AxiosError 처리
+                    console.error("AxiosError:", error.message);
+                    // 요청 실패로 인한 오류 처리를 진행하거나 사용자에게 알리는 등의 작업 수행
+                } else {
+                    // 일반 오류 처리
+                    console.error("데이터 가져오기 중 오류 발생:", error);
+                }
+            })
+    }, []);
+
+const handleSaveTag = async () => {
+//    const encodedTags = tags.map(tag => encodeURIComponent(tag));
+    const interests = tags.join(",");
+
+    axios.post("http://localhost:8080/user/mypage/update/interest", null, {
+        params: { interestList: interests },
+        withCredentials: true
+    })
+        .then(response => {
+            if (response.status === 200) {
+                console.log("관심분야 변경 성공");
+                alert("관심분야가 변경되었습니다.");
+            } else {
+                console.error("관심분야 변경 실패");
+                alert("관심분야 변경에 실패하였습니다.");
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            alert("관심분야 변경에 실패하였습니다.");
+        });
+};
+
+
 return(
     <div className="sub_container" id="interested">
     <div className="change_interest">
@@ -70,7 +120,7 @@ return(
       </div>
       <Tagoption editoptions={tagoptions} value="" />
 
-      <button id="save">저장하기</button>
+      <button id="save" onClick={handleSaveTag}>저장하기</button>
     </div>
   </div>
 );

@@ -5,7 +5,7 @@ import edit from "../css/mypage_css/edit.css";
 
 import $ from 'jquery';
 
-export function selectBOX (){
+export function selectBOX (mem){
 
     // 시/도/군/구 selectBOX 생성함수
     const areas = {
@@ -38,12 +38,30 @@ export function selectBOX (){
     }
 
     function initializeSidoSelect() {
+        console.log("거주지 확인 : " + mem.city + " 그리고 " + mem.district);
+        let gugunList = null;
         //option 초기화
         for (const sido in areas) {
-            $sidoSelect.append(`<option value="${sido}">${sido}</option>`);
+            if (sido === mem.city) {
+                $sidoSelect.append(`<option value="${sido}" selected>${sido}</option>`);
+                gugunList = areas[mem.city];
+            } else {
+                $sidoSelect.append(`<option value="${sido}">${sido}</option>`);
+            }
         }
-        $gugunSelect.append(`<option selected value='' >구/군 선택</option>`);
-        console.log("초기화 완료");
+        if (mem.district === null) {
+            $gugunSelect.append("<option value='' selected>구/군 선택</option>");
+        } else {
+            $gugunSelect.append("<option value=''>구/군 선택</option>");
+            for (const gugun of gugunList) {
+                if (gugun === mem.district) {
+                    $gugunSelect.append(`<option value="${gugun}" selected>${gugun}</option>`);
+                } else {
+                    $gugunSelect.append(`<option value="${gugun}">${gugun}</option>`);
+                }
+            }
+        }
+
     }
 
     function updateGugunSelect(selectedSido) {
@@ -51,7 +69,11 @@ export function selectBOX (){
         const gugunList = areas[selectedSido];
         $gugunSelect.empty();
         if (selectedSido != "시/도 선택")
-            $gugunSelect.append(`<option value='' selected>구/군 선택</option>`);
+            if (mem.district === null) {
+                $gugunSelect.append(`<option value='' selected>구/군 선택</option>`);
+            } else {
+                $gugunSelect.append(`<option value=''>구/군 선택</option>`);
+            }
 
         for (const gugun of gugunList) {
             $gugunSelect.append(`<option value="${gugun}">${gugun}</option>`);
