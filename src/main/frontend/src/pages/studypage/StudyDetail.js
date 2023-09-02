@@ -2,10 +2,12 @@ import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 
 import "../../css/study_css/StudyDetail.css";
+import "../../css/comment_css/Comment.css";
 
 import StudyInfo from "../../components/study/StudyInfo";
 import StudyEdit from "../../components/study/StudyEdit";
 import Backarrow from "../../components/repeat_etc/Backarrow";
+import Comment from "../../components/comment/Comment";
 
 const StudyDetail = ({ sideheader }) => {
 	const { id } = useParams();
@@ -104,11 +106,17 @@ const StudyDetail = ({ sideheader }) => {
 									</Link>
 								</div>
 							</div>
+
 						))}
 					</div>
 				)}
+
+			</div>
+			<div className="comment_container">
+				<Comment />
 			</div>
 		</div>
+
 	);
 };
 export default StudyDetail;
