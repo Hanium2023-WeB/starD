@@ -1,7 +1,10 @@
 package com.web.stard.dto;
 
 import com.sun.istack.NotNull;
+import com.web.stard.domain.ProgressStatus;
+import com.web.stard.domain.RecruitStatus;
 import com.web.stard.domain.Study;
+import com.web.stard.domain.StudyType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,8 +12,11 @@ import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.validation.annotation.Validated;
 
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.validation.Valid;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @SuppressWarnings("serial")
@@ -39,26 +45,30 @@ public class StudyDto implements Serializable {
     private String tags;    // 태그 들
 
     @NotNull
-    private String on_off;      // 온/오프/무관
+    private String onOff;      // 온/오프/무관
 
     @NotNull
     @DateTimeFormat(pattern = "yyyy-MM-dd kk:mm:ss")
-    private LocalDateTime activity_start;        // 활동 시작 기간
+    private LocalDateTime activityStart;        // 활동 시작 기간
 
     @NotNull
     @DateTimeFormat(pattern = "yyyy-MM-dd kk:mm:ss")
-    private LocalDateTime activity_deadline;     // 활동 마감 기간
+    private LocalDateTime activityDeadline;     // 활동 마감 기간
+
+//    @NotNull
+//    @DateTimeFormat(pattern = "yyyy-MM-dd")
+//    private LocalDate recruitment_start;
 
     @NotNull
     @DateTimeFormat(pattern = "yyyy-MM-dd kk:mm:ss")
-    private LocalDateTime recruitment_start;
+    private LocalDateTime recruitmentDeadline;
 
     @NotNull
-    @DateTimeFormat(pattern = "yyyy-MM-dd kk:mm:ss")
-    private LocalDateTime recruitment_deadline;
+    @Enumerated(EnumType.STRING)
+    private RecruitStatus recruitStatus;  // 스터디 모집 현황 (모집 중, 모집 완료)
 
-    @NotNull
-    private String status;  // 스터디 진행 상황 (진행 중, 진행 완료, 중단 등)
+    @Enumerated(EnumType.STRING)
+    private ProgressStatus progressStatus;  // 스터디 진행 상황 (진행 중, 진행 완료, 중단 등)
 
     @NotNull
     private int view_count;

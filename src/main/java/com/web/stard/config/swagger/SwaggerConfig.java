@@ -1,4 +1,4 @@
-package com.web.stard.config;
+package com.web.stard.config.swagger;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

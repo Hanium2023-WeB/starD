@@ -87,7 +87,7 @@ const StudyEdit = ({study, onUpdateStudy, onCancel}) => {
         )
     }
     return (<div>
-            {studyeditform()}
+        {studyeditform()}
     </div>);
 }
 export default StudyEdit;

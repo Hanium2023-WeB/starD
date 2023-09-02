@@ -2,11 +2,11 @@ package com.web.stard.domain;
 
 import com.sun.istack.NotNull;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -39,30 +39,43 @@ public class Study extends BaseEntity {
 
     private String tags;    // 태그 들
 
-    @NotNull
-    private String on_off;      // 온/오프/무관
+    @NotNull @Column(name = "on_off")
+    private String onOff;      // 온/오프/무관
 
-    @NotNull
+    @NotNull @Column(name = "activity_start")
     @DateTimeFormat(pattern = "yyyy-MM-dd kk:mm:ss")
-    private LocalDateTime activity_start;        // 활동 시작 기간
+    private LocalDateTime activityStart;        // 활동 시작 기간
 
-    @NotNull
+    @NotNull @Column(name = "activity_deadline")
     @DateTimeFormat(pattern = "yyyy-MM-dd kk:mm:ss")
-    private LocalDateTime activity_deadline;     // 활동 마감 기간
+    private LocalDateTime activityDeadline;     // 활동 마감 기간
 
-    @NotNull
+
+    @CreatedDate
+    @Column(name = "recruitment_start", updatable = false)
+    private LocalDateTime recruitmentStart;
+
+    @NotNull @Column(name = "recruitment_deadline")
     @DateTimeFormat(pattern = "yyyy-MM-dd kk:mm:ss")
-    private LocalDateTime recruitment_start;
+    private LocalDateTime recruitmentDeadline;
+
+//    @NotNull
+//    @Enumerated(EnumType.STRING)
+//    private StudyType status;  // 스터디 진행 상황 (진행 중, 진행 완료, 중단 등)
 
     @NotNull
-    @DateTimeFormat(pattern = "yyyy-MM-dd kk:mm:ss")
-    private LocalDateTime recruitment_deadline;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "recruit_status")
+    private RecruitStatus recruitStatus;  // 스터디 모집 현황 (모집 중, 모집 완료)
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "progress_status")
+    private ProgressStatus progressStatus;  // 스터디 진행 상황 (진행 중, 진행 완료, 중단 등)
 
     @NotNull
-    private String status;  // 스터디 진행 상황 (진행 중, 진행 완료, 중단 등)
+    @Column(name = "view_count")
+    private int viewCount;
 
-    @NotNull
-    private int view_count;
 
 
 }

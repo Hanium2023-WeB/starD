@@ -1,11 +1,11 @@
 package com.web.stard.service;
 
-import com.web.stard.domain.Authority;
 import com.web.stard.domain.Interest;
 import com.web.stard.domain.Member;
-import com.web.stard.repository.AuthorityRepository;
+import com.web.stard.domain.Role;
 import com.web.stard.repository.InterestRepository;
 import com.web.stard.repository.MemberRepository;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,24 +19,14 @@ import java.util.Optional;
 
 @Service
 @Getter @Setter
+@AllArgsConstructor
 public class MemberService {
 
     MemberRepository memberRepository;
 
-    AuthorityRepository authorityRepository;
-
     InterestRepository interestRepository;
 
     PasswordEncoder passwordEncoder;
-
-    @Autowired
-    public MemberService(MemberRepository memberRepository, AuthorityRepository authorityRepository,
-                         InterestRepository interestRepository, PasswordEncoder passwordEncoder) {
-        this.memberRepository = memberRepository;
-        this.authorityRepository = authorityRepository;
-        this.interestRepository = interestRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
 
     public Member find(String id) {
         Optional<Member> result = memberRepository.findById(id);
@@ -49,12 +39,7 @@ public class MemberService {
     // 회원 정보 저장
     public void saveMember(Member member) {
         // 회원가입 시 기본적으로 'USER' 권한을 부여
-        Authority userAuthority = authorityRepository.findByAuthorityName("USER");
-        if (userAuthority == null) {
-            userAuthority = new Authority("USER");
-            authorityRepository.save(userAuthority);
-        }
-        member.setRoles(userAuthority);
+        member.setRoles(Role.USER);
 
         memberRepository.save(member);
     }
@@ -149,5 +134,9 @@ public class MemberService {
             return true;
         }
         return false;
+    }
+
+    public Member findId(String email, String phone) {
+        return memberRepository.findByEmailAndPhone(email, phone);
     }
 }

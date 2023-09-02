@@ -7,7 +7,7 @@
     z-index: 5;
     background-color: rgba(0, 0, 0, 0.548);
   }
-  .background .todoedit_insert {
+  .background .Scheduleedit_insert {
     width: 40%;
     height: fit-content;
     position: absolute;
@@ -21,10 +21,32 @@
     align-items: center;
     flex-direction: column;
   }
-  .background .todoedit_insert input {
+
+  .Scheduleedit_insert .meeting_btn{
+    width: fit-content;
+    display: flex;
+    flex-direction: row;
+  
+  }
+  .meeting_btn > li{
+    display: flex;
+    flex-direction: row;
+    
+  }
+#add, #cancel, #del{
+  background-color: #395b64;
+  color: white;
+  border-radius: 5px;
+  border-style: none;
+  margin:2px;
+}
+  .background .Scheduleedit_insert input {
     width: fit-content;
     height: 40px;
     border-radius: 10px;
+}
+.background .Scheduleedit_insert h2{
+  background: none;
 }
 
   .selectDay{
@@ -85,13 +107,18 @@ background: #fff;
 box-shadow: 0px 10px 10px 0px rgba(0, 0, 0, 0.15);
 padding: 10px;
 }
-
+.react-datepicker button{
+  width: 20%;
+}
   .react-datepicker-wrapper {
     display: inline-block;
     padding: 0;
     border: 0;
     width: fit-content;
     height: 10px;
+}
+.react-datepicker__navigation-icon {
+  width: 20px;
 }
 .selectcolor{
     position: relative;
@@ -123,7 +150,5 @@ padding: 10px;
 box-shadow: none;
 }
 .todoedit_insert button{
-    width: 100px;
-    height: 30px;
-    margin-top: 10px;
+    height: 22px;
 }

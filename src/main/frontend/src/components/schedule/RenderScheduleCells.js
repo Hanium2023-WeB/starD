@@ -2,13 +2,18 @@ import React, { useState, useRef, useCallback, useEffect } from "react";
 import { startOfMonth, endOfMonth, startOfWeek, endOfWeek } from "date-fns";
 import { isSameMonth, isSameDay, addDays, parse, format } from "date-fns";
 import { CgAddR } from "react-icons/cg";
-import  EditSchedule from "./EditSchedule.js";
+import { Link } from "react-router-dom";
+import EditSchedule from "./EditSchedule.js";
+import { useNavigate } from "react-router-dom";
+
 // import { EditSchedule } from "./EditSchedule.js";
 const RenderScheduleCells = ({
   currentMonth,
   selectedDate,
   onDateClick,
   meetings,
+  onUpdate,
+  onRemove,
 }) => {
   const monthStart = startOfMonth(currentMonth); //오늘이 속한 달의 시작일
   const monthEnd = endOfMonth(monthStart); //오늘이 속한 달의 마지막일
@@ -19,12 +24,23 @@ const RenderScheduleCells = ({
   let days = []; //일월화수목금토 (한 주)
   let day = startDate;
   let formattedDate = "";
-  const [editScheduleData,setEditScheduleData]= useState(null);
-  
-  const openEditSchedule = (meeting) =>{
+  const [editScheduleData, setEditScheduleData] = useState();
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    console.log(`editScheduleData => ${JSON.stringify(editScheduleData)}`);
+  }, [editScheduleData]);
+
+  const openEditSchedule = (meeting) => {
     setEditScheduleData(meeting);
-    console.log(`editScheduleData => ${editScheduleData}`);
+    console.log(`editScheduleData => ${JSON.stringify(editScheduleData)}`);
   };
+  // const handleCheckEdit = ()=>{
+  //   setEditScheduleData('');
+  // }
+
+ 
 
   while (day <= endDate) {
     for (let i = 0; i < 7; i++) {
@@ -33,7 +49,7 @@ const RenderScheduleCells = ({
         day.getFullYear(),
         day.getMonth(),
         day.getDate()
-      ); 
+      );
 
       days.push(
         <div
@@ -45,9 +61,8 @@ const RenderScheduleCells = ({
               : format(currentMonth, "M") !== format(day, "M")
               ? "not-valid"
               : "valid"
-          }`} 
+          }`}
           key={day}
-         
         >
           <span
             className={
@@ -59,33 +74,37 @@ const RenderScheduleCells = ({
             <CgAddR onClick={() => onDateClick(cloneDay)} />
             {formattedDate}
           </span>
-          <div>
-            {meetings[day.toDateString()] &&
+          <div className="meeting_wrap">
+          {meetings[day.toDateString()] &&
               Object.keys(meetings[day.toDateString()]).map((study) =>
-                meetings[day.toDateString()][study].map((meeting) => (
-                  <div
-                    key={meeting.id}
-                    className="event"
-                    style={{ backgroundColor: meeting.color }}
-                    onClick= {()=>openEditSchedule(meeting)}>
-                    <p>
-                      {study}
-                      <br />
-                      {meeting.title}
-                    </p>
-                  </div>
-                ))
-              )}
-
-            <div className="event_cnt">
-              <p>
-                +{" "}
-                {Object.values(meetings[day.toDateString()] || {}).reduce(
-                  (total, study) => total + study.length,
-                  0
-                )}
-              </p>
-            </div>
+                meetings[day.toDateString()][study].map((meeting) => {
+                  const startDay = new Date(meeting.start_date);
+                  const endDay = new Date(meeting.end_date);
+                  return (
+                    <div
+                      key={meeting.id}
+                      className="event"
+                      // style={{ backgroundColor: meeting.color }}
+                      onClick={() => {
+                        openEditSchedule({ meeting });
+                      }}
+                    >
+                      {/* handleEditpage({item:meeting})
+                       */}
+                       <div id="meeting_detail">
+                        <p
+                          id="line"
+                          style={{ backgroundColor: meeting.color }}
+                        ></p>
+                        <p>
+                          {meeting.study} :
+                          {meeting.title}
+                        </p>
+                      </div>
+                    </div>
+                  );
+                })
+              )} 
           </div>
         </div>
       );
@@ -98,14 +117,21 @@ const RenderScheduleCells = ({
     );
     days = [];
   }
-  return <div className="body">{rows}
-    {editScheduleData && (
+  return (
+    <div className="SchedulerContainer">
+      {rows}
+      {editScheduleData && (
         <EditSchedule
-          meeting={editScheduleData}
-          onClose={() => setEditScheduleData(null)}
+          editScheduleData={editScheduleData}
+          onUpdate={onUpdate}
+          onRemove={onRemove}
+          onClose={() => {
+            setEditScheduleData(null);
+          }}
         />
       )}
-  </div>;
+    </div>
+  );
 };
 
 export default RenderScheduleCells;

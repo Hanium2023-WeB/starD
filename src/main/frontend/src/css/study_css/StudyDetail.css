@@ -36,7 +36,7 @@ html {
 	top:0;
 }
 .study{
-	margin: 0 auto 100px;
+	margin-bottom: 100px;
 }
 .study h3{
 	font-size: 17px;
@@ -147,4 +147,3 @@ html {
 	font-family: "Nanum Myeongjo", serif;
 	cursor: pointer;
 }
-

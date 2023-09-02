@@ -36,69 +36,69 @@ const Study = ({sideheader}) => {
 
     return (
         <div>
-        {sideheader}
-        <div className="study_detail_container" style={{width:"70%"}}>
-            <h1>STAR TOUR STORY</h1>
-            <div className="arrow_left">
-                <Backarrow />
-                {!showStudyInsert && (
-                    <button onClick={handleMoveToStudyInsert} className="openStudy">
-                        스터디 개설
-                    </button>
-                )}
-            </div>
-            <div className="study">
-                {showStudyInsert && (
-                    <StudyInsert
-                        updateStudies={updateStudies}
-                        onClose={handleStudyInsertClose}
-                    />
-                )}
-                {!showStudyInsert && (
-                    <div className="content_container">
-                        <div className="study_list" style={{justifyContent:"space-between"}}>
-                            {studies.map((d) => (
-                                <div className="list" key={d.id}>
-                                    <Link
-                                        to={`/studydetail/${d.id}`}
-                                        style={{
-                                            textDecoration: "none",
-                                            color: "inherit",
-                                        }}
-                                    >
-                                        <div className="list_header">
-                                            <div className="list_sub_header">
-                                                <div className="list_day">
-                                                    {d.id}일간의 우주여행
+            {sideheader}
+            <div className="study_detail_container" style={{width:"70%"}}>
+                <h1>STAR TOUR STORY</h1>
+                <div className="arrow_left">
+                    <Backarrow />
+                    {!showStudyInsert && (
+                        <button onClick={handleMoveToStudyInsert} className="openStudy">
+                            스터디 개설
+                        </button>
+                    )}
+                </div>
+                <div className="study">
+                    {showStudyInsert && (
+                        <StudyInsert
+                            updateStudies={updateStudies}
+                            onClose={handleStudyInsertClose}
+                        />
+                    )}
+                    {!showStudyInsert && (
+                        <div className="content_container">
+                            <div className="study_list" style={{justifyContent:"space-between"}}>
+                                {studies.map((d) => (
+                                    <div className="list" key={d.id}>
+                                        <Link
+                                            to={`/studydetail/${d.id}`}
+                                            style={{
+                                                textDecoration: "none",
+                                                color: "inherit",
+                                            }}
+                                        >
+                                            <div className="list_header">
+                                                <div className="list_sub_header">
+                                                    <div className="list_day">
+                                                        {d.id}일간의 우주여행
+                                                    </div>
+                                                    <div className="list_status">진행중</div>
                                                 </div>
-                                                <div className="list_status">진행중</div>
+                                                <div className="list_like">
+                                                    <FontAwesomeIcon icon={faStar} />
+                                                </div>
                                             </div>
-                                            <div className="list_like">
-                                                <FontAwesomeIcon icon={faStar} />
+                                            <div className="list_deadline">
+                                                마감일 | {d.deadline}
                                             </div>
-                                        </div>
-                                        <div className="list_deadline">
-                                            마감일 | {d.deadline}
-                                        </div>
-                                        <div className="list_title">{d.title}</div>
-                                        <div className="list_tag">{d.tag}</div>
-                                        <div className="list_onoff">{d.onoff}</div>
-                                        <div className="stroke"></div>
-                                        <div className="list_founder">{d.author}</div>
-                                    </Link>
-                                </div>
-                            ))}
+                                            <div className="list_title">{d.title}</div>
+                                            <div className="list_tag">{d.tag}</div>
+                                            <div className="list_onoff">{d.onoff}</div>
+                                            <div className="stroke"></div>
+                                            <div className="list_founder">{d.author}</div>
+                                        </Link>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
-                    </div>
-                )}
-                {!showStudyInsert && (
-                    studies.length === 0 && (
-                        <h3>스터디 리스트가 비었습니다.</h3>
-                    )
-                )}
-            </div>
+                    )}
+                    {!showStudyInsert && (
+                        studies.length === 0 && (
+                            <h3>스터디 리스트가 비었습니다.</h3>
+                        )
+                    )}
+                </div>
 
-        </div>
-    </div>);
+            </div>
+        </div>);
 }
 export default Study;
