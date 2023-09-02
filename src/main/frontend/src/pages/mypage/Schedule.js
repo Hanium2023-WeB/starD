@@ -13,7 +13,7 @@ const Schedule = ({sideheader}) => {
     const Year = selectedDate.getFullYear();
     const Month = selectedDate.getMonth() + 1;
     const Dates = selectedDate.getDate();
-    //서버 요청
+    // TODO 백엔드 연동
     const sendMeetingsToBackend = () => {
         const backendEndpoint = "https://your-backend-url.com/save-meetings";
 
