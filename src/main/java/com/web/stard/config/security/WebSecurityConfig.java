@@ -1,105 +1,91 @@
 package com.web.stard.config.security;
 
-import com.web.stard.handler.CustomAuthenticationFailureHandler;
-import com.web.stard.handler.CustomAuthenticationSuccessHandler;
-import com.web.stard.handler.LoginSuccessHandler;
-import com.web.stard.service.MemberDetailsService;
-import com.web.stard.service.MemberService;
-import lombok.AllArgsConstructor;
+import com.web.stard.config.jwt.JwtAuthenticationFilter;
+import com.web.stard.config.jwt.JwtTokenProvider;
+import com.web.stard.service.CustomMemberDetailsService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-@Configuration
 @RequiredArgsConstructor
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+    private final JwtTokenProvider jwtTokenProvider;
+    private final RedisTemplate redisTemplate;
+    private final CustomMemberDetailsService customMemberDetailsService;
 
-//    private final JwtTokenProvider jwtTokenProvider;
+    private static final String[] PERMIT_URL_ARRAY = {
 
-    private final MemberDetailsService memberDetailsService;
+            /* swagger v2 */
+            "/v2/api-docs",
+            "/swagger-resources",
+            "/swagger-resources/**",
+            "/configuration/ui",
+            "/configuration/security",
+            "/swagger-ui.html",
+            "/webjars/**",
 
-    private final CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
-    private final CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
+            /* swagger v3 */
+//            "/v3/api-docs/**",
+//            "/swagger-ui/**"
 
-    // 정적 자원에 대해서는 Security 설정을 적용하지 않음.
-    // static 디렉터리의 하위 파일 목록은 인증 무시 ( = 항상통과 ) ex) css, img
+            "/api/v2/members/sign-up",
+            "/api/v2/members/login",
+            "/api/v2/members/authority",
+            "/api/v2/members/reissue",
+            "/api/v2/members/logout",
+            "/api/v2/members/check",
+            "/api/v2/members/check2",
+            "/api/v2/members/accessToken-expiration",
+
+            "/api/v2/studies/**"    // TODO URL 수정
+
+    };
+
     @Override
-    public void configure(WebSecurity web) {
-        web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations());
-    }
-
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-
-        http
-//                .httpBasic().disable()
-                .cors().and()
+    protected void configure(HttpSecurity httpSecurity) throws Exception {
+        httpSecurity
+                .httpBasic().disable()
                 .csrf().disable()
-//                .sessionManagement()
-//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
 
-//                .and()
                 .authorizeRequests()
+                .antMatchers(PERMIT_URL_ARRAY).permitAll()
+                .antMatchers("/api/v1/users/userTest").hasRole("USER")
+                .antMatchers("/api/v1/users/adminTest").hasRole("ADMIN")
+                .anyRequest().authenticated()
+
                 // 해당 url 요청에 대해서는 로그인 요구 X
 //                .antMatchers("/", "/signup", "/checkDuplicateID", "/checkDuplicateNickname", "/login", "/current-member").permitAll() //TODO 주석 제거
                 // admin 요청에 대해서는 ROLE_ADMIN 역할을 가지고 있어야 함
 //                .antMatchers("/admin").hasRole("ADMIN")
                 // 나머지 요청에 대해서는 로그인 요구 O
 //                .anyRequest().authenticated() //TODO 주석 제거
-                .antMatchers("*").permitAll() //TODO 주석 표시
 
                 .and()
-                .formLogin()
-//                .loginPage("/login")
-                .successHandler(customAuthenticationSuccessHandler) // 로그인 성공 시 핸들러 등록
-                .failureHandler(customAuthenticationFailureHandler) // 로그인 실패 시 핸들러 등록
-//                .defaultSuccessUrl("/", true)
-//                .failureForwardUrl("/login")
-//                .permitAll()
+                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider, redisTemplate), UsernamePasswordAuthenticationFilter.class);
 
-//                .and()
-//                .exceptionHandling().accessDeniedHandler(new CustomAccessDeniedHandler())
-//                .and()
-//                .exceptionHandling().authenticationEntryPoint(new CustomAuthenticationEntryPoint())
-
-                .and()
-                .logout()
-                .logoutUrl("/logout");
-//                .logoutSuccessUrl("/")
-//                .invalidateHttpSession(true);
-
-//                .and()
-//                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);;
-
+        // JwtAuthenticationFilter를 UsernamePasswordAuthentictaionFilter 전에 적용시킨다.
     }
 
-    @Override
-    public void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(memberDetailsService).passwordEncoder(passwordEncoder());
-    }
-
+    // 암호화에 필요한 PasswordEncoder Bean 등록
     @Bean
-    public static PasswordEncoder passwordEncoder() {
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-//    @Bean
-//    public AuthenticationSuccessHandler successHandler() {
-//        return new LoginSuccessHandler("/");
+//    @Override
+//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//        auth.userDetailsService(customMemberDetailsService).passwordEncoder(passwordEncoder());
 //    }
-
 }

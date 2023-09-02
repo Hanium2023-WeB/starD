@@ -34,7 +34,7 @@ const RenderScheduleCells = ({
 
   const openEditSchedule = (meeting) => {
     setEditScheduleData(meeting);
-    // console.log(`editScheduleData => ${JSON.stringify(editScheduleData)}`);
+    console.log(`editScheduleData => ${JSON.stringify(editScheduleData)}`);
   };
   // const handleCheckEdit = ()=>{
   //   setEditScheduleData('');
@@ -97,6 +97,7 @@ const RenderScheduleCells = ({
                           style={{ backgroundColor: meeting.color }}
                         ></p>
                         <p>
+                          {meeting.study} :
                           {meeting.title}
                         </p>
                       </div>

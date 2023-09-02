@@ -19,7 +19,30 @@ html {
 	font-size: 50px;
 	color: #898989;
 	cursor: pointer;
+	position: relative;
 }
+.arrow_left .openStudy{
+	background-color: #395b64;
+	border: none;
+	font-size: 13px;
+	color: #fff;
+	padding: 13px 0;
+	border-radius: 50px;
+	font-family: "Nanum Myeongjo", serif;
+	cursor: pointer;
+	width:100px;
+	position: absolute;
+	right:0;
+	top:0;
+}
+.study{
+	margin-bottom: 100px;
+}
+.study h3{
+	font-size: 17px;
+	text-align: center;
+}
+
 .study_detail {
 	width: 80%;
 	margin: 0 auto;
@@ -27,13 +50,14 @@ html {
 /* study_header */
 .study_detail .study_header {
 	text-align: left;
+	border-bottom: 1px solid #dbdbdb;
 }
 .study_header .study_title {
 	font-size: 25px;
 }
 .study_header .study_author_info {
 	display: flex;
-	border-bottom: 1px solid #dbdbdb;
+	/*border-bottom: 1px solid #dbdbdb;*/
 	padding-bottom: 30px;
 }
 .study_header .study_author_info > p {
@@ -44,6 +68,26 @@ html {
 }
 .study_header .study_author_info .study_created_date {
 	color: #a8a8a8;
+}
+.study_header > div {
+	display: flex;
+	justify-content: space-between;
+}
+.study_header .study_detail_btn{
+	margin-top: -10px;
+}
+.study_header .study_edit{
+	margin-right:10px;
+}
+.study_header .study_edit,
+.study_header .study_remove{
+	background-color: #395b64;
+	border-radius: 50px;
+	font-family: "Nanum Myeongjo", serif;
+	cursor: pointer;
+	color:#fff;
+	border: none;
+	padding:8px 15px;
 }
 
 /* study_content */
@@ -68,13 +112,17 @@ html {
 .study_info li > span:nth-of-type(2) {
 	color: #898989;
 }
+.study_intro{
+	margin-bottom: 30px;
+}
 .study_intro,
 .study_apply_reason {
 	font-size: 15px;
 	margin-left: 15px;
 }
 .study_intro > div:nth-of-type(2),
-.study_apply_reason textarea {
+.study_apply_reason textarea,
+.study_apply_reason > div:nth-of-type(2) {
 	border: 1px solid #dbdbdb;
 	border-radius: 10px;
 	padding: 15px 10px;
@@ -99,3 +147,4 @@ html {
 	font-family: "Nanum Myeongjo", serif;
 	cursor: pointer;
 }
+

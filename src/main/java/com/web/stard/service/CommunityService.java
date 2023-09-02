@@ -4,6 +4,7 @@ import com.web.stard.domain.Member;
 import com.web.stard.domain.Post;
 import com.web.stard.domain.PostType;
 import com.web.stard.repository.PostRepository;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Getter @Setter
+@AllArgsConstructor
 @Service
 public class CommunityService {
 
@@ -31,12 +33,12 @@ public class CommunityService {
         Pageable pageable = PageRequest.of(page-1, 10, sort);
         // page -> 배열 인덱스처럼 들어가서 -1 해야 함
         // 한 페이지에 Post 10개 (개수는 추후 수정)
-        return postRepository.findByType(PostType.POST, pageable);
+        return postRepository.findByType(PostType.COMM, pageable);
     }
 
     /* 커뮤니티 게시글 세부 조회 */
     public Post getCommunityPost(Long id) {
-        Optional<Post> result = postRepository.findByIdAndType(id, PostType.POST);
+        Optional<Post> result = postRepository.findByIdAndType(id, PostType.COMM);
         if (result.isPresent()) {
             return result.get();
         }
@@ -48,7 +50,7 @@ public class CommunityService {
         Member member = memberService.find(authentication.getName());
 
         post.setMember(member);
-        post.setType(PostType.POST);
+        post.setType(PostType.COMM);
 
         postRepository.save(post);
 
