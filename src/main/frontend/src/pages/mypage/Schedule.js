@@ -17,6 +17,7 @@ const Schedule = ({ sideheader }) => {
   const sendMeetingsToBackend = () => {
     const backendEndpoint = "https://your-backend-url.com/save-meetings";
   
+    // TODO backend Schedule
     axios.post(backendEndpoint, { meetings })
       .then(response => {
         console.log("Meetings sent to the backend:", response.data);
