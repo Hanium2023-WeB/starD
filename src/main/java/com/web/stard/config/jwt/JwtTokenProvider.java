@@ -28,7 +28,7 @@ public class JwtTokenProvider {
     private static final String BEARER_TYPE = "Bearer";
     private static final long ACCESS_TOKEN_EXPIRE_TIME = 30 * 60 * 1000L;              // 30분
 
-//    private static final long ACCESS_TOKEN_EXPIRE_TIME = 60 * 1000L;              // 유효 기간 Test 용 (1분)
+    //    private static final long ACCESS_TOKEN_EXPIRE_TIME = 60 * 1000L;              // 유효 기간 Test 용 (1분)
     private static final long REFRESH_TOKEN_EXPIRE_TIME = 7 * 24 * 60 * 60 * 1000L;    // 7일
 
     private final Key key;
