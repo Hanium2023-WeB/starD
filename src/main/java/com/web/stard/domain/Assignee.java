@@ -6,7 +6,6 @@ import javax.persistence.*;
 
 @Entity
 @Table
-@ToString
 @NoArgsConstructor(force = true)
 @AllArgsConstructor
 @Getter @Setter @Builder @EqualsAndHashCode
@@ -22,4 +21,18 @@ public class Assignee {
 
     @Column(name = "to_do_status")
     private boolean toDoStatus; // TO DO 상태 (false 미완료, true 완료)
+
+
+    public boolean isToDoStatus() {
+        return toDoStatus;
+    }
+
+    @Override
+    public String toString() {
+        return "Assignee{" +
+                "toDo=" + toDo.getTask() + ", " + toDo.getDueDate() + ", " + toDo.getStudy().getTitle() +
+                ", member=" + member.getId() +
+                ", toDoStatus=" + toDoStatus +
+                '}';
+    }
 }

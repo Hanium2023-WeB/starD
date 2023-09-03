@@ -6,10 +6,10 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table
-@ToString
 @NoArgsConstructor(force = true)
 @AllArgsConstructor
 @Getter @Setter @Builder
@@ -26,4 +26,24 @@ public class ToDo {
     @Column(name = "due_date")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime dueDate; // TO DO 날짜
+
+
+
+    @Transient // DB랑 매핑되지 않음
+    private List<Assignee> assignees; // 담당자
+
+    @Override
+    public String toString() {
+        String str = "ToDo{" +
+                "id=" + id +
+                ", study=" + study.getTitle() +
+                ", task='" + task + '\'' +
+                ", dueDate=" + dueDate +
+                '}' + "\n" + "assignee : ";
+        for (Assignee a : assignees) {
+            str += a.getMember().getId() + " + " + a.isToDoStatus() + ", ";
+        }
+
+        return str;
+    }
 }

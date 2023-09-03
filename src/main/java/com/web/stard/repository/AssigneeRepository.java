@@ -15,4 +15,10 @@ public interface AssigneeRepository extends JpaRepository<Assignee, AssigneeId> 
     boolean existsByToDoAndMember(ToDo toDo, Member member);
     /* 해당 TO DO 담당자 */
     Optional<Assignee> findByToDoAndMember(ToDo toDo, Member member);
+
+    /* 사용자의 모든 TO DO */
+    List<Assignee> findAllByMember(Member member);
+
+    /* 사용자의 스터디 내 모든 TO DO */
+    List<Assignee> findAllByMemberAndToDoStudy(Member member, Study study);
 }

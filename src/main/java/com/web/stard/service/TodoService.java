@@ -9,6 +9,7 @@ import com.web.stard.repository.TodoRepository;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -52,8 +53,40 @@ public class TodoService {
     }
 
     /* 사용자 TO DO 조회 (전체) */
+    public List<Assignee> getAllToDoListByMember(Authentication authentication) {
+        Member member = memberService.find(authentication.getName());
+
+        // TODO 월 단위??
+
+        return assigneeRepository.findAllByMember(member);
+    }
 
     /* 사용자 TO DO 조회 (스터디별) */
+    public List<Assignee> getToDoListByMemberAndStudy(Authentication authentication, Long studyId) {
+        Member member = memberService.find(authentication.getName());
+        Study study = studyService.findById(studyId);
+
+        // TODO 월 단위??
+
+        return assigneeRepository.findAllByMemberAndToDoStudy(member, study);
+    }
+
+    /* 스터디 내 모든 TO DO 조회 */
+    public List<ToDo> getAllToDoListByStudy(Long studyId) {
+        Study study = studyService.findById(studyId);
+
+        // TODO 월 단위??
+
+        List<ToDo> toDoList = todoRepository.findAllByStudy(study);
+
+        for (ToDo t : toDoList) {
+            List<Assignee> assignees = getAssignee(t.getId());
+            t.setAssignees(assignees);
+        }
+
+        return toDoList;
+    }
+
 
 
 
@@ -80,6 +113,8 @@ public class TodoService {
         }
 
         assigneeRepository.saveAll(assignees);
+
+        toDo.setAssignees(assignees);
 
         return toDo;
     }
@@ -119,6 +154,10 @@ public class TodoService {
         // 리스트에 남아 있는 담당자들은 삭제 (수정된 담당자에서 제외된 경우)
         assigneeRepository.deleteAll(initialAssignee);
 
+
+        List<Assignee> assignees = getAssignee(toDo.getId());
+        toDo.setAssignees(assignees);
+
         return toDo;
     }
 
@@ -137,9 +176,9 @@ public class TodoService {
     }
 
     /* TO DO 상태 변화 (완료, 미완료) */
-    public Assignee updateTodoStatus(Long toDoId, String id, boolean status) {
+    public Assignee updateTodoStatus(Long toDoId, Authentication authentication, boolean status) {
         ToDo toDo = getToDo(toDoId);
-        Member member = memberService.find(id);
+        Member member = memberService.find(authentication.getName());
 
         Assignee assignee = getAssigneeByToDoAndMember(toDo, member);
         assignee.setToDoStatus(status);
