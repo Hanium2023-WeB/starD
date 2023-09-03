@@ -11,7 +11,7 @@ import ToDoInserts from "../../css/todo_css/ToDoInsert.css";
 import Calender from "../../components/calender/Calender.js";
 import { format, subMonths, addMonths } from "date-fns";
 import Backarrow from "../../components/repeat_etc/Backarrow.js";
-
+import Header from "../../components/repeat_etc/Header";
 const ToDoList = ({ sideheader }) => {
   const [selectedTodo, setSelectedTodo] = useState(null);
   const [insertToggle, setInsertToggle] = useState(false);
@@ -123,7 +123,7 @@ const ToDoList = ({ sideheader }) => {
 
   return (
     <div>
-      {sideheader}
+      <Header showSideCenter={true}/>
       <Backarrow subname={"ToDoList & Calender"}/>
       <div className="container">
         <div className="main_container">

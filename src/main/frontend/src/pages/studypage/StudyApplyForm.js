@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-
+import Header from "../../components/repeat_etc/Header";
 import "../../css/study_css/StudyDetail.css";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -80,7 +80,7 @@ const StudyApplyForm = ({ sideheader }) => {
     };
     return (
         <div>
-            {sideheader}
+            <Header showSideCenter={true}/>
             <div className="study_detail_container">
                 <h1>STAR TOUR STORY</h1>
                 <div className="arrow_left">

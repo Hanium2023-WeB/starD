@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Category from "../../components/repeat_etc/Category.js";
 import App from "../../App.js";
 import "../../css/study_css/MyParticipateStudy.css";
-
+import Header from "../../components/repeat_etc/Header";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 
@@ -71,7 +71,7 @@ const MyParticipateStudy = ({ sideheader }) => {
 	};
 	return (
 		<div>
-			{sideheader}
+			<Header showSideCenter={true}/>
 			<div className="container">
 				<Category />
 				<div className="main_container">

@@ -11,7 +11,7 @@ import RealEstate from "../../components/info/RealEstate.js";
 import {isEmail, isPassword} from "../../util/check.js";
 import Backarrow from "../../components/repeat_etc/Backarrow.js";
 import EditInterest from "../../components/info/EditInterest.js";
-
+import Header from "../../components/repeat_etc/Header";
 
 const options = [
     {value: "+82", name: "대한민국"},
@@ -338,7 +338,7 @@ const Editinfo = ({sideheader}) => {
 
     return (
         <div>
-            {sideheader}
+            <Header showSideCenter={true}/>
             <Backarrow/>
             <div className="container">
                 <Category/>

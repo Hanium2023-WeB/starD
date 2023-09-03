@@ -6,6 +6,7 @@ import cn from "classnames";
 import checkbox from "../images/check.png";
 import uncheckbox from "../images/unchecked.png";
 import { Link } from "react-router-dom";
+import Header from "../components/repeat_etc/Header";
 
 const searchItems=[
     "back-end",
@@ -16,7 +17,7 @@ const searchItems=[
   ]
 
   
-const Home = ({sideheader}) => {
+const Home = () => {
   const dataId = useRef(0);
   const [state, setState] = useState([]);
   const [todos, setTodos] = useState({});
@@ -58,7 +59,8 @@ const Home = ({sideheader}) => {
 
   return (
     <div class="main_wrap">
-    {sideheader}
+    {/*{sideheader}*/}
+        <Header showSideCenter={true}/>
     <div className="subground">
     <SearchBar searchItems={searchItems}/>
   </div>
