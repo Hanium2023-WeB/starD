@@ -6,7 +6,8 @@ import Header from "../../components/repeat_etc/Header";
 
 const Login = () => {
 
-    const navigate = useNavigate(); // useNavigate 훅을 사용하여 navigate 함수를 가져옴
+    const navigate = useNavigate();
+    //useNavigate 훅을 사용하여 navigate 함수를 가져옴
 
     const inputID = useRef();
     const inputPW = useRef();
