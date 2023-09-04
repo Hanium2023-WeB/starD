@@ -2,7 +2,10 @@ package com.web.stard.controller;
 
 import com.web.stard.domain.Interest;
 import com.web.stard.domain.Member;
+import com.web.stard.domain.Profile;
+import com.web.stard.dto.ProfileDto;
 import com.web.stard.service.MemberService;
+import com.web.stard.service.ProfileService;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +17,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.List;
@@ -27,6 +31,8 @@ public class MyPageController {
 
     private final MemberService memberService;
     private final PasswordEncoder passwordEncoder;
+
+    private final ProfileService profileService;
 
     /* 정보 반환 */
     @GetMapping("/update")
@@ -208,4 +214,30 @@ public class MyPageController {
         }
         return false;
     }
+
+    // [U] 프로필 수정
+    @PutMapping("/profile")
+    public Profile updateProfile(Authentication authentication, String introduce, MultipartFile imgFile) {
+        return profileService.updateProfile(authentication.getName(), introduce, imgFile);
+    }
+
+    // [D] 프로필 삭제
+    @DeleteMapping("/profile")
+    public void deleteProfile(Authentication authentication) {
+        profileService.deleteProfile(authentication.getName());
+    }
+
+    // [R] 프로필 조회
+    @GetMapping("/profile")
+    public Profile getProfile(Authentication authentication) {
+        return profileService.getProfile(authentication.getName());
+    }
+
+    // [U] 개인 신뢰도 수정
+    @PutMapping("/credibility")
+    public Profile updateCredibility(Authentication authentication) {
+        return profileService.updateCredibility(authentication.getName());
+    }
+
+
 }
