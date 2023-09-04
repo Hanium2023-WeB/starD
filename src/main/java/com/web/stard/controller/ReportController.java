@@ -25,20 +25,20 @@ public class ReportController {
 
     // Post 글 신고
     @PostMapping("/post")
-    public ReportDetail createStudyReply(@RequestParam Long postId, @RequestParam ReportReason reason, @RequestParam(required = false) String customReason, Member writer, Authentication authentication) {
-        return reportService.createPostReport(postId, reason, customReason, writer, authentication);
+    public ReportDetail createStudyReply(@RequestParam Long postId, @RequestParam ReportReason reason, @RequestParam(required = false) String customReason, Authentication authentication) {
+        return reportService.createPostReport(postId, reason, customReason, authentication);
     }
 
     // Study 글 신고
     @PostMapping("/study")
-    public ReportDetail createStudyReport(@RequestParam Long studyId, @RequestParam ReportReason reason, @RequestParam(required = false) String customReason, Member writer, Authentication authentication) {
-        return reportService.createStudyReport(studyId, reason, customReason, writer, authentication);
+    public ReportDetail createStudyReport(@RequestParam Long studyId, @RequestParam ReportReason reason, @RequestParam(required = false) String customReason, Authentication authentication) {
+        return reportService.createStudyReport(studyId, reason, customReason, authentication);
     }
     
     // 댓글 신고
     @PostMapping("/reply")
-    public ReportDetail createPostReply(@RequestParam Long replyId, @RequestParam ReportReason reason, @RequestParam(required = false) String customReason, Member writer, Authentication authentication) {
-        return reportService.createReplyReport(replyId, reason, customReason, writer, authentication);
+    public ReportDetail createPostReply(@RequestParam Long replyId, @RequestParam ReportReason reason, @RequestParam(required = false) String customReason, Authentication authentication) {
+        return reportService.createReplyReport(replyId, reason, customReason, authentication);
     }
 
 }

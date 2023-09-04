@@ -15,12 +15,16 @@ public class Report {
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private Member member;  // 신고 대상자 (글 작성자)
-
+    @ManyToOne
+    @JoinColumn(name = "post_id")
     private Post post;
 
+    @ManyToOne
+    @JoinColumn(name = "study_id")
     private Study study;
 
+    @ManyToOne
+    @JoinColumn(name = "reply_id")
     private Reply reply;
 
     @NotNull

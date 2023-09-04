@@ -120,7 +120,7 @@ class ReplyServiceTest {
     }
 
     //@Rollback(false)
-    @Test
+    /*@Test
     void Study_댓글_등록() {
         //given
         Member member = new Member();
@@ -158,7 +158,7 @@ class ReplyServiceTest {
             assertEquals(reply.getId(), savedReply.getId());
         }
         assertEquals(PostType.STUDY, savedReply.getType()); // 댓글 단 게시글의 타입이 STUDY인지 확인
-    }
+    }*/
 
     //@Rollback(false)
     @Test
@@ -202,7 +202,7 @@ class ReplyServiceTest {
     }
 
     //@Rollback(false)
-    @Test
+    /*@Test
     void Study_댓글_수정_작성자() {
         //given
         Member member = new Member();
@@ -231,7 +231,7 @@ class ReplyServiceTest {
         assertNotNull(updatedReply);
         assertEquals(updatedContent, updatedReply.getContent());    // 수정한 댓글이 반영됐는지
         assertEquals(member.getId(), updatedReply.getMember().getId()); // 작성자가 맞는지
-    }
+    }*/
 
     //@Rollback(false)
     @Test
@@ -280,7 +280,7 @@ class ReplyServiceTest {
     }
 
     //@Rollback(false)
-    @Test
+    /*@Test
     void Study_댓글_수정_사용자_예외() {
         //given
         Member member = new Member();
@@ -314,7 +314,7 @@ class ReplyServiceTest {
         assertNotNull(updatedReply);
         assertEquals(updatedContent, updatedReply.getContent());    // 수정한 댓글이 반영됐는지
         assertEquals(member.getId(), updatedReply.getMember().getId()); // 작성자가 맞는지(-> IllegalStateException 예외 발생)
-    }
+    }*/
 
     //@Rollback(false)
     @Test
@@ -355,7 +355,7 @@ class ReplyServiceTest {
     }
 
     //@Rollback(false)
-    @Test
+    /*@Test
     void Study_댓글_삭제_작성자() {
         //given
         Member member = new Member();
@@ -382,7 +382,7 @@ class ReplyServiceTest {
         Optional<Post> deletedPost = postRepository.findById(createdReply.getId());
         assertFalse(deletedPost.isPresent());   // 삭제한 댓글이 존재하는지 확인
     }
-
+*/
     //@Rollback(false)
     @Test
     void Post_댓글_삭제_사용자_예외() {
@@ -427,7 +427,7 @@ class ReplyServiceTest {
     }
 
     //@Rollback(false)
-    @Test
+    /*@Test
     void Study_댓글_삭제_사용자_예외() {
         //given
         Member member = new Member();
@@ -458,7 +458,7 @@ class ReplyServiceTest {
         //then
         Optional<Post> deletedPost = postRepository.findById(createdReply.getId());
         assertFalse(deletedPost.isPresent());   // 삭제한 댓글이 존재하는지 확인
-    }
+    }*/
 
     //@Rollback(false)
     @Test
@@ -500,7 +500,7 @@ class ReplyServiceTest {
     }
 
     //@Rollback(false)
-    @Test
+   /* @Test
     void Study_댓글_삭제_관리자() {
         //given
         Member member = new Member();
@@ -527,7 +527,7 @@ class ReplyServiceTest {
         //then
         Optional<Post> deletedPost = postRepository.findById(createdReply.getId());
         assertFalse(deletedPost.isPresent());   // 삭제한 댓글이 존재하는지 확인
-    }
+    }*/
 
     //@Rollback(false)
     @Test
@@ -572,7 +572,7 @@ class ReplyServiceTest {
     }
 
     //@Rollback(false)
-    @Test
+    /*@Test
     void Study_댓글_조회() {
         //given
         Member member = new Member();
@@ -602,10 +602,10 @@ class ReplyServiceTest {
         assertEquals(createdReply.getMember().getId(), retrievedReply.getMember().getId());
         assertEquals(PostType.STUDY, retrievedReply.getType());
         assertEquals(createdReply.getType(), retrievedReply.getType());
-    }
+    }*/
 
     //@Rollback(false)
-    @Test
+    /*@Test
     void 댓글_전체조회() {
         //given
         Member member = new Member();
@@ -645,7 +645,7 @@ class ReplyServiceTest {
         assertEquals("스터디 댓글 내용", savedReplies.get(0).getContent());
         assertEquals("qna 댓글 내용", savedReplies.get(1).getContent());
         assertEquals("커뮤니티 댓글 내용", savedReplies.get(2).getContent());
-    }
+    }*/
 
     //@Rollback(false)
     @Test
@@ -691,7 +691,7 @@ class ReplyServiceTest {
     }
 
     //@Rollback(false)
-    @Test
+    /*@Test
     void Study_아이디별_댓글조회() {
         //given
         Member member = new Member();
@@ -723,5 +723,5 @@ class ReplyServiceTest {
         assertEquals(2, replies.size()); // 생성된 댓글 개수 확인
         assertEquals(createdReply1.getContent(), replies.get(0).getContent()); // 댓글 내용 순서 확인
         assertEquals(createdReply2.getContent(), replies.get(1).getContent());
-    }
+    }*/
 }

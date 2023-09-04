@@ -19,8 +19,8 @@ public class ReportDetail extends BaseEntity {
     private Report report;
 
     @ManyToOne
-    @JoinColumn(name = "reporter_id")
-    private Member reporter;
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     @Enumerated(EnumType.STRING)
     private ReportReason reason;
