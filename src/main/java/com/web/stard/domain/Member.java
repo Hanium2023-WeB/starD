@@ -16,6 +16,8 @@ import java.util.List;
 @Entity
 @NoArgsConstructor(force = true)
 @Table(name="Member")
+@SecondaryTable(name = "Member_Detail",
+        pkJoinColumns = @PrimaryKeyJoinColumn(name = "MemBer_Detail_Id"))
 public class Member implements UserDetails {
 
     @Id
@@ -36,15 +38,27 @@ public class Member implements UserDetails {
     @NotNull
     private String phone;
 
-    private String city; // 시
-
-    private String district; // 구
-
-    @OneToOne @JoinColumn(name = "profile_id")
-    private Profile profile; // 프로필
-
     @Enumerated(EnumType.STRING)
     private Role roles; // [ADMIN, USER]
+
+    // MemberDetail 컬럼
+    @Column(table = "Member_Detail",
+            name = "Member_City")
+    private String city;
+
+    @Column(table = "Member_Detail",
+            name = "Member_District")
+    private String district;
+
+    @OneToOne
+    @JoinColumn(name = "profile_id")
+    @Column(table = "Member_Detail",
+            name = "Member_Profile")
+    private Profile profile; // 프로필
+
+    @Column(table = "Member_Detail",
+            name = "Member_Report_Count")
+    private int reportCount;    // 개인 누적 신고수
 
     @Builder
     public Member(String id, String name, String email, String password, String phone, String nickname) {
