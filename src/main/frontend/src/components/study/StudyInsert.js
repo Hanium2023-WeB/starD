@@ -4,10 +4,8 @@ import {faArrowLeft} from "@fortawesome/free-solid-svg-icons";
 import {useParams, useNavigate, Link, useLocation} from "react-router-dom";
 import "../../css/study_css/StudyOpenForm.css";
 import RealEstate from "../info/RealEstate";
-
-// TODO 스터디 모집 폼 -> 백엔드와 연결 필요
-
-const StudyInsert = ({sideheader}) => {
+import Header from "../../components/repeat_etc/Header";
+const StudyInsert = () => {
     // const dataId = useRef(0);
     const [dataId, setDataId] = useState(0);
     const navigate = useNavigate();
@@ -166,7 +164,7 @@ const StudyInsert = ({sideheader}) => {
     }
 
     return (<div>
-        {sideheader}
+        <Header showSideCenter={true}/>
         <div className="study_detail_container">
             <h1>STAR TOUR STORY</h1>
             <div className="arrow_left">

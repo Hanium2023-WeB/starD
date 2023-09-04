@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-
+import Header from "../../components/repeat_etc/Header";
 import "../../css/study_css/StudyDetail.css";
 
 import StudyInfo from "../../components/study/StudyInfo";
@@ -65,7 +65,7 @@ const StudyDetail = ({ sideheader }) => {
 
 	return (
 		<div>
-			{sideheader}
+			<Header showSideCenter={true}/>
 			<div className="study_detail_container">
 				<h1>STAR TOUR STORY</h1>
 				<div className="arrow_left">
