@@ -47,7 +47,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             "/api/v2/members/check2",
             "/api/v2/members/accessToken-expiration",
 
-            "/api/v2/studies/**"    // TODO URL 수정
+            "/api/v2/studies/**",    // TODO URL 수정
+
+            "/checkDuplicateNickname",
+            "/checkDuplicateID",
+            "/signup"
 
     };
 

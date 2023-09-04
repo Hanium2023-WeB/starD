@@ -32,7 +32,7 @@ const AddSchedule = ({ selectedDate, onInsert, onClose }) => {
     (e) => {
       if (title != "") {
         console.log("addschedule:", endDate.toDateString());
-        onInsert(endDate, title, content, study, color);
+        onInsert(startDate, endDate, title, content, study, color);
       } else {
         alert("모두 입력해주세요.");
         // return;
@@ -70,7 +70,7 @@ const AddSchedule = ({ selectedDate, onInsert, onClose }) => {
               selected={startDate}
               onChange={(date) => setStartDate(date)}
               dateFormat="yyyy-MM-dd"
-              readOnly
+              // readOnly
               placeholder="시작 날짜 선택"
             />
           </div>
@@ -81,7 +81,7 @@ const AddSchedule = ({ selectedDate, onInsert, onClose }) => {
               onChange={(date) => setEndDate(date)}
               dateFormat="yyyy-MM-dd"
               placeholder="끝나는 날짜 선택"
-              minDate={selectedDate}
+              minDate={startDate}
             />
           </div>
         </div>

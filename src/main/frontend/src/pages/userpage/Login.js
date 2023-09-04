@@ -1,12 +1,10 @@
-import LogoButton from "../../components/repeat_etc/LogoButton";
-import { Link } from 'react-router-dom';
-import { BrowserRouter, Routes, Route } from "react-router-dom";
 import React, {useState, useRef} from "react";
 import "../../css/user_css/Log.css";
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
+import Header from "../../components/repeat_etc/Header";
 
-const Login = ({sideheader}) => {
+const Login = () => {
 
     const navigate = useNavigate(); // useNavigate 훅을 사용하여 navigate 함수를 가져옴
 
@@ -74,7 +72,7 @@ const Login = ({sideheader}) => {
 
             {/* <LogoButton /> */}
             {/* <div className ="Logo"> STAR D </div> */}
-            {sideheader}
+            <Header showSideCenter={false}/>
             <div className="containers" id="log">
                 <div className="login_info">
                     <p>로그인</p>

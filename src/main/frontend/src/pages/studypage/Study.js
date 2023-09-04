@@ -4,8 +4,9 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faArrowLeft, faStar} from "@fortawesome/free-solid-svg-icons";
 import Backarrow from "../../components/repeat_etc/Backarrow";
 import StudyInsert from "../../components/study/StudyInsert";
+import Header from "../../components/repeat_etc/Header";
 
-const Study = ({sideheader}) => {
+const Study = () => {
     const navigate = useNavigate();
     const [studies, setStudies] = useState([]);
     const [showStudyInsert, setShowStudyInsert] = useState(false);
@@ -36,7 +37,7 @@ const Study = ({sideheader}) => {
 
     return (
         <div>
-            {sideheader}
+            <Header showSideCenter={true}/>
             <div className="study_detail_container" style={{width:"70%"}}>
                 <h1>STAR TOUR STORY</h1>
                 <div className="arrow_left">

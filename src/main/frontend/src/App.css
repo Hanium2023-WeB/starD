@@ -179,7 +179,7 @@ input::placeholder{
 }
 .searchbar ul li {
 	width: 100px;
-	border-bottom: solid 1px gray;
+	border-bottom: solid 1px #99a3af;
 	padding: 5px;
 	margin-bottom: 5px;
 	font-size: 1.5rem;
@@ -212,7 +212,7 @@ input::placeholder{
 button#todo_more{
 	background-color: white;
 	border-style: none;
-	color: gray;
+	color: #99a3af;
 	cursor: pointer;
 	margin-left: 9vw;
 }

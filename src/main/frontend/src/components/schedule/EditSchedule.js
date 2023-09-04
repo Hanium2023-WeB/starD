@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import DatePicker from "react-datepicker";
 // import "react-datepicker/dist/react-datepicker.css";
 import { CirclePicker } from "react-color";
+import studyList from "../../pages/studypage/StudyList";
 
 const EditSchedule = ({ editScheduleData, onUpdate, onRemove, onClose }) => {
   const localDate = new Date(editScheduleData.meeting.start_date);
@@ -20,6 +21,9 @@ const EditSchedule = ({ editScheduleData, onUpdate, onRemove, onClose }) => {
   const [content, setContent] = useState(editScheduleData.meeting.content);
   const [study, setStudy] = useState(editScheduleData.meeting.study);
   const [color, setColor] = useState(editScheduleData.meeting.color);
+
+  //수정하기 전의 스터디 저장
+  const cloneStudy = editScheduleData.meeting.study;
 
   const handleStartDateChange = useCallback((date) => {
     setStartDate(date);
@@ -54,6 +58,7 @@ const EditSchedule = ({ editScheduleData, onUpdate, onRemove, onClose }) => {
           new Date(endDate),
           title,
           content,
+          cloneStudy,
           study,
           color
         );
@@ -89,7 +94,7 @@ const EditSchedule = ({ editScheduleData, onUpdate, onRemove, onClose }) => {
             value={study}
             // default={editScheduleData.meeting.study}
             onChange={onChangeStudy}
-            disabled
+            // disabled
           >
             <option value="My">나의 일정</option>
             <option value="study1">스터디 1</option>
@@ -103,7 +108,7 @@ const EditSchedule = ({ editScheduleData, onUpdate, onRemove, onClose }) => {
               selected={startDate}
               onChange={handleStartDateChange}
               dateFormat="yyyy-MM-dd"
-              readOnly
+              // readOnly
               placeholder="시작 날짜 선택"
             />
           </div>

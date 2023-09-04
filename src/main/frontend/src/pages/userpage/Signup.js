@@ -2,6 +2,7 @@ import LogoButton from "../../components/repeat_etc/LogoButton";
 import React, { useState, useRef } from "react";
 import {isEmail, isPassword} from "../../util/check.js";
 import "../../css/user_css/Log.css";
+import Header from "../../components/repeat_etc/Header";
 
 import axios from "axios";
 
@@ -29,35 +30,35 @@ const Signup = ({sideheader}) => {
   const [isNicknameDuplicate, setIsNicknameDuplicate] = useState(true); // nickname 중복 여부 상태 변수
 
   const onChange = (e) => {
-      setState({
-        ...state,
-        [e.target.name]: e.target.value,
-      });
-      console.log(e.target.name);
-      console.log(e.target.value);
-    };
+    setState({
+      ...state,
+      [e.target.name]: e.target.value,
+    });
+    console.log(e.target.name);
+    console.log(e.target.value);
+  };
 
   // 이메일 핸들러
   const handleEditemailChange = (e) => {
-      const Email = e.target.value;
+    const Email = e.target.value;
 
-      setState((prevState) => ({
-        ...prevState,
-        email: Email,
-        isValidEmail: isEmail(Email), // 이메일 유효성 검사
-      }));
+    setState((prevState) => ({
+      ...prevState,
+      email: Email,
+      isValidEmail: isEmail(Email), // 이메일 유효성 검사
+    }));
   };
 
   // 비밀번호 핸들러
   const handleEditPasswordChange = (e) => {
-      const PW = e.target.value;
+    const PW = e.target.value;
 
-      setState((prevState) => ({
-        ...prevState,
-        password: PW,
-        isValidPassword: isPassword(PW), // 비밀번호 유효성 검사
-      }));
-   };
+    setState((prevState) => ({
+      ...prevState,
+      password: PW,
+      isValidPassword: isPassword(PW), // 비밀번호 유효성 검사
+    }));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault(); // 폼 기본 제출 이벤트 방지
@@ -68,16 +69,16 @@ const Signup = ({sideheader}) => {
 
     // 입력 값 유효성 검사
     if (
-          state.id.length < 1 &&
-          state.password.length < 1 &&
-          state.name.length < 1 &&
-          state.nickname.length < 1 &&
-          state.phone.length < 1 &&
-          state.email.length < 1
-        ) {
+        state.id.length < 1 &&
+        state.password.length < 1 &&
+        state.name.length < 1 &&
+        state.nickname.length < 1 &&
+        state.phone.length < 1 &&
+        state.email.length < 1
+    ) {
 
-        alert("회원 정보를 입력해 주세요.");
-        return;
+      alert("회원 정보를 입력해 주세요.");
+      return;
     }
 
     if (state.id.length < 3) {
@@ -181,7 +182,7 @@ const Signup = ({sideheader}) => {
         params: { id: id },
       });
 
-    // 서버로부터 받은 응답 확인
+      // 서버로부터 받은 응답 확인
       const isDuplicate = response.data.duplicate;
 
       console.log("handleCheckDuplicateID 함수 호출");
@@ -236,7 +237,7 @@ const Signup = ({sideheader}) => {
 
   return (
       <div>
-          {sideheader}
+        <Header showSideCenter={false}/>
 
         <div className="containers" id="sign">
           <div className="login_info">
@@ -247,33 +248,33 @@ const Signup = ({sideheader}) => {
               <div className="subinfo">아이디</div>
               <div className="signup_id">
                 <input
-                  ref={inputID}
-                  name={"id"} // Member 클래스의 필드 이름과 일치해야 함
-                  value={state.id} // state에서 사용하는 이름도 Member 클래스의 필드 이름과 일치해야 함
-                  onChange={onChange}
-                  placeholder="아이디를 입력해주세요."
+                    ref={inputID}
+                    name={"id"} // Member 클래스의 필드 이름과 일치해야 함
+                    value={state.id} // state에서 사용하는 이름도 Member 클래스의 필드 이름과 일치해야 함
+                    onChange={onChange}
+                    placeholder="아이디를 입력해주세요."
                 />
                 <button id="signup_nicname_btn" type="button" onClick={handleCheckDuplicateID}>
-                    중복확인
+                  중복확인
                 </button>
               </div>
 
               <div className="subinfo">비밀번호</div>
               <div className="inputpw">
                 <input
-                  ref={inputPW}
-                  name={"password"}
-                  type={"password"}
-                  value={state.password}
-                  onChange={handleEditPasswordChange}   // 비밀번호 핸들러 실행
-                  placeholder="8 ~ 15자 영문, 숫자, 특수문자 조합"
+                    ref={inputPW}
+                    name={"password"}
+                    type={"password"}
+                    value={state.password}
+                    onChange={handleEditPasswordChange}   // 비밀번호 핸들러 실행
+                    placeholder="8 ~ 15자 영문, 숫자, 특수문자 조합"
                 />
                 {state.password !== "" ? (
-                  state.isValidPassword ? (
-                    <p style={{ color: "blue" }}>유효한 비밀번호입니다.</p>
-                  ) : (
-                    <p style={{ color: "red" }}>비밀번호는 8 ~ 15자 영문, 숫자, 특수문자 조합이어야 합니다.</p>
-                  )
+                    state.isValidPassword ? (
+                        <p style={{ color: "blue" }}>유효한 비밀번호입니다.</p>
+                    ) : (
+                        <p style={{ color: "red" }}>비밀번호는 8 ~ 15자 영문, 숫자, 특수문자 조합이어야 합니다.</p>
+                    )
                 ) : null}
               </div>
 
@@ -281,54 +282,54 @@ const Signup = ({sideheader}) => {
               <div className="subinfo">이름</div>
               <div>
                 <input
-                  ref={inputName}
-                  name={"name"}
-                  value={state.name}
-                  onChange={onChange}
-                  placeholder="이름을 입력해주세요."
-                 />
+                    ref={inputName}
+                    name={"name"}
+                    value={state.name}
+                    onChange={onChange}
+                    placeholder="이름을 입력해주세요."
+                />
               </div>
 
               <div className="subinfo">닉네임</div>
               <div className="signup_nicname">
                 <input
-                  ref={inputNicname}
-                  name={"nickname"}
-                  value={state.nickname}
-                  onChange={onChange}
-                  placeholder="닉네임을 입력해주세요."
+                    ref={inputNicname}
+                    name={"nickname"}
+                    value={state.nickname}
+                    onChange={onChange}
+                    placeholder="닉네임을 입력해주세요."
                 />
-                 <button id="signup_nicname_btn" type="button" onClick={handleCheckDuplicateNickname}>
-                    중복 확인
+                <button id="signup_nicname_btn" type="button" onClick={handleCheckDuplicateNickname}>
+                  중복 확인
                 </button>
               </div>
 
               <div className="subinfo">전화번호</div>
               <div>
                 <input
-                  ref={inputphone}
-                  name={"phone"}
-                  value={state.phone}
-                  onChange={onChange}
-                  placeholder="전화번호를 입력해주세요."
+                    ref={inputphone}
+                    name={"phone"}
+                    value={state.phone}
+                    onChange={onChange}
+                    placeholder="전화번호를 입력해주세요."
                 />
               </div>
 
               <div className="subinfo">이메일</div>
               <div className="inputemail">
                 <input
-                  ref={inputemail}
-                  name={"email"}
-                  value={state.email}
-                  onChange={handleEditemailChange}  // 이메일 핸들러 실행
-                  placeholder="이메일을 입력해주세요."
+                    ref={inputemail}
+                    name={"email"}
+                    value={state.email}
+                    onChange={handleEditemailChange}  // 이메일 핸들러 실행
+                    placeholder="이메일을 입력해주세요."
                 />
                 {state.email !== "" ? (
-                  state.isValidEmail ? (
-                    <p style={{ color: "blue" }}>사용 가능한 email입니다.</p>
-                  ) : (
-                    <p style={{ color: "red" }}>유효하지 않은 email입니다.</p>
-                  )
+                    state.isValidEmail ? (
+                        <p style={{ color: "blue" }}>사용 가능한 email입니다.</p>
+                    ) : (
+                        <p style={{ color: "red" }}>유효하지 않은 email입니다.</p>
+                    )
                 ) : null}
               </div>
             </div>
@@ -338,6 +339,6 @@ const Signup = ({sideheader}) => {
           </form>
         </div>
       </div>
-    );
-  };
+  );
+};
 export default Signup;
