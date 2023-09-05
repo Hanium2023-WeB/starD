@@ -1,6 +1,6 @@
 import {useCallback, useState} from "react";
 
-const CommentForm = ({comments, addComment}) => {
+const CommentForm = ({addComment}) => {
     const [value, setValue] = useState("");
     const onChange = useCallback(e=>{
         setValue(e.target.value);
