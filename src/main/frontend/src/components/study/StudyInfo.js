@@ -33,8 +33,12 @@ const StudyInfo = ({ study, handleEditClick, handleStudyDelete }) => {
                         <span>{study.deadline}</span>
                     </li>
                     <li>
-                        <span>스터디 기간</span>
-                        <span>{study.duration}</span>
+                        <span>스터디 시작일</span>
+                        <span>{study.startDate}</span>
+                    </li>
+                    <li>
+                        <span>스터디 종료일</span>
+                        <span>{study.endDate}</span>
                     </li>
                 </ul>
             </div>

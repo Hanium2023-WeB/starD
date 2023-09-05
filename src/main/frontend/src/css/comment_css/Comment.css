@@ -16,10 +16,11 @@
     margin-bottom: 20px;
 }
 
-input {
+.comment_input, .comment_submit_btn {
     position: inherit;
     box-shadow: inherit;
-    margin:inherit;
+    /*margin:inherit;*/
+    margin:0;
 }
 .comment_form .comment_input{
     border-radius: 10px;
