@@ -1,0 +1,87 @@
+.wrap{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+
+}
+#title{
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+
+}
+.content{
+    width: 50%;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+.subcontent{
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.change_estates #save{
+    margin-top: 10px;
+    margin-bottom: 20px;
+    width: 20%;
+    height: 30px;
+    font-size: 1.3em;
+    color: white;
+    background-color: #395B64;
+    border-style: none;
+    border-radius: 10px;
+
+    cursor: pointer;
+}
+
+#checkestate{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}
+.select_estates{
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.change_estates #realestate #sido1 #gugun1 {
+    width: 70%;
+    margin-bottom: 30px;
+    margin-right: 0px;
+    margin-left: 15%;
+    height: 40px;
+    padding-left: 10px;
+    border-radius: 10px;
+    border: 1.5px solid #a5c9ca;
+    background-color: white;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
+}
+
+.next_btn{
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+#next{
+    background-color: #395b64;
+    color: white;
+    width: 100px;
+    height: 40px;
+    border-radius: 10px;
+    font-family: "Yeon Sung", cursive;
+    font-size: 20px;
+    border-style: none;
+    cursor: pointer;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+#interested.sub_container{
+    padding-left: 0px;
+    width: 100%;
+}

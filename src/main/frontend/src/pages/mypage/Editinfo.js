@@ -365,6 +365,7 @@ const Editinfo = ({sideheader}) => {
                             <div id="title">거주지</div>
                             <div id="checkestate">
                                 {mem && <RealEstate mem={mem}/>}
+                                {/*<RealEstate/>*/}
                             </div>
 
                             <button id="save" onClick={handleSaveAddress}>저장하기</button>
