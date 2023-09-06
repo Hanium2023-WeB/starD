@@ -172,6 +172,9 @@ const Signup = () => {
                 nickname: state.nickname,
                 phone: state.phone,
                 email: state.email,
+                city:location.state.city,
+                district:location.state.district,
+                tags:location.state.tags,
             });
 
             if (response.status === 200) {
