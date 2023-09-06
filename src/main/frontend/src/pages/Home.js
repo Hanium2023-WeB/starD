@@ -38,6 +38,13 @@ const Home = () => {
     const tags = tag;
 
     useEffect(() => {
+        localStorage.removeItem('studies');
+        localStorage.removeItem('todos');
+        localStorage.removeItem('selectedSido');
+        localStorage.removeItem('selectedGugun');
+    },[]);
+
+    useEffect(() => {
         // Load todos from localStorage when the component mounts
         const savedTodos = localStorage.getItem("todos");
         if (savedTodos) {

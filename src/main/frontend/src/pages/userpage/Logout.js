@@ -36,6 +36,11 @@ const Logout = ({sideheader}) => {
                 console.log("로그아웃 성공");
                 localStorage.removeItem('accessToken');
                 localStorage.removeItem('isLoggedInUserId');
+                localStorage.removeItem('studies');
+                localStorage.removeItem('todos');
+                localStorage.removeItem('selectedSido');
+                localStorage.removeItem('selectedGugun');
+                localStorage.removeItem('tags');
 
                 navigate("/");
             } else {

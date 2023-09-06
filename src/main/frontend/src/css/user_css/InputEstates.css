@@ -22,31 +22,39 @@
     margin-top: 20px;
     margin-bottom: 20px;
 }
-.change_estates #save{
-    margin-top: 10px;
-    margin-bottom: 20px;
-    width: 20%;
-    height: 30px;
-    font-size: 1.3em;
-    color: white;
-    background-color: #395B64;
-    border-style: none;
-    border-radius: 10px;
-
-    cursor: pointer;
+.change_estates{
+    height: 150px;
 }
+
+
 
 #checkestate{
     display: flex;
     width: 100%;
     justify-content: center;
 }
+#checkestates{
+    width: 100%;
+    height: fit-content;
+    padding-bottom: 20px;
+    margin-top: 20px;
+    border-radius: 10px;
+    border: lightgray solid 1px;
+
+
+}
+
 .select_estates{
     width: 50%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     margin-top: 20px;
+}
+#estates{
+    border: lightgray solid 1px;
+    border-radius: 10px;
+
 }
 
 .change_estates #realestate #sido1 #gugun1 {
@@ -81,7 +89,8 @@
     margin-right: 10px;
 }
 
-#interested.sub_container{
-    padding-left: 0px;
-    width: 100%;
-}
+/*#interested.sub_container{*/
+/*    padding-left: 0px;*/
+/*    width: 100%;*/
+/*    height: fit-content;*/
+/*}*/

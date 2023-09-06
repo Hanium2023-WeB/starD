@@ -1,12 +1,26 @@
 import LogoButton from "../../components/repeat_etc/LogoButton";
-import React, {useState, useRef} from "react";
+import React, {useState, useRef, useEffect} from "react";
 import {isEmail, isPassword} from "../../util/check.js";
 import "../../css/user_css/Log.css";
 import Header from "../../components/repeat_etc/Header";
-
+import { useLocation } from 'react-router-dom';
 import axios from "axios";
 
 const Signup = () => {
+    const location = useLocation();
+
+    // 2. location.state 에서 파라미터 취득
+
+    useEffect(()=>{
+        const city = location.state.city;
+        const district = location.state.district;
+        const tags = location.state.tags;
+        localStorage.setItem("selectedSido", city);
+        localStorage.setItem("selectedGugun", district);
+        localStorage.setItem("tags", tags);
+    },[location]);
+
+
     const inputID = useRef();
     const inputPW = useRef();
     const inputName = useRef();
@@ -144,6 +158,7 @@ const Signup = () => {
             return;
         }
 
+        //TODO 희망사항: 회원가입했던 정보를 개인정보 수정페이지에 (닉네임, 이메일,전화번호)placeholder로 설정
         try {
             const response = await axios.post("http://localhost:8080/signup", {
                 id: state.id,

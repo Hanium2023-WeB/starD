@@ -3,11 +3,14 @@ import edit from "../css/mypage_css/edit.css";
 
 import $ from 'jquery';
 
-export function selectBOX (mem){
-    if (selectBOX.initialized) {
-        // 이미 초기화되었을 경우, 중복 호출 방지
-        return;
-    }
+export function selectBOX ({mem}){
+
+    //mem을 받아서 거주지를 선택하면 상태 업데이트
+
+    // if (selectBOX.initialized) {
+    //     // 이미 초기화되었을 경우, 중복 호출 방지
+    //     return;
+    // }
     // 시/도/군/구 selectBOX 생성함수
     const areas = {
         "시/도 선택": ["구/군 선택"],
@@ -36,7 +39,7 @@ export function selectBOX (mem){
 
     function initializeSidoSelect() {
         console.log("거주지 확인 : " + mem.city + " 그리고 " + mem.district);
-        let gugunList = null;
+        let gugunList = [];
         for (const sido in areas) {
             if (sido === mem.city) {
                 $sidoSelect.append(`<option value="${sido}" selected>${sido}</option>`);
@@ -64,7 +67,7 @@ export function selectBOX (mem){
     function updateGugunSelect(selectedSido) {
         const gugunList = areas[selectedSido];
         $gugunSelect.empty();
-        if(selectedSido!="시/도 선택") {
+        if(selectedSido != "시/도 선택") {
             if (mem.district === null) {
                 $gugunSelect.append(`<option value='' selected>구/군 선택</option>`);
             } else {
@@ -76,11 +79,50 @@ export function selectBOX (mem){
             $gugunSelect.append(`<option value="${gugun}">${gugun}</option>`);
         }
     }
+    function saveSelectedSidoVal(selectedSido) {
+        localStorage.setItem("selectedSido", selectedSido);
+        mem.city = selectedSido;
+        saveSelectedGugunVal("");
+        console.log("거주지 확인 : " + mem.city + " 그리고 " + mem.district);
+        console.log({mem});
+    }
+function  saveSelectedGugunVal(selectedGugun){
+    localStorage.setItem("selectedGugun", selectedGugun);
+    mem.district = selectedGugun;
+    console.log("거주지 확인 : " + mem.city + " 그리고 " + mem.district);
+}
+    function loadSelectedValues() {
+        const selectedSido = localStorage.getItem("selectedSido");
+        const selectedGugun = localStorage.getItem("selectedGugun");
+
+        if (selectedSido) {
+            $sidoSelect.val(selectedSido);
+            updateGugunSelect(selectedSido);
+
+            if (selectedGugun) {
+                $gugunSelect.val(selectedGugun);
+            }
+        }
+        console.log("로드 완료");
+    }
+
 
     $sidoSelect.on("change", function() {
         const selectedSido = $(this).val();
+
         if (selectedSido) {
             updateGugunSelect(selectedSido);
+            saveSelectedSidoVal(selectedSido)
+
+        } else {
+            $gugunSelect.empty();
+        }
+    });
+    $gugunSelect.on("change", function() {
+        const selectedGugun = $gugunSelect.val();
+        if (selectedGugun) {
+            saveSelectedGugunVal(selectedGugun);
+
         } else {
             $gugunSelect.empty();
         }
