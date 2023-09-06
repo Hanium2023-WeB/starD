@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Entity
 @Table
@@ -36,4 +37,6 @@ public class Reply  extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private PostType type; // [COMM, QNA, STUDY]
 
+    @OneToMany(mappedBy = "reply", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Report> reports;
 }

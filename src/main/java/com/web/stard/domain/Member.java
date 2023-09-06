@@ -57,7 +57,8 @@ public class Member implements UserDetails {
     private Profile profile; // 프로필
 
     @Column(table = "Member_Detail",
-            name = "Member_Report_Count")
+            name = "Member_Report_Count",
+            columnDefinition = "int default 0")
     private int reportCount;    // 개인 누적 신고수
 
     @Builder
