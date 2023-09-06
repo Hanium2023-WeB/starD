@@ -50,6 +50,7 @@ const Tag = () => {
             <input
                 className="tag_input"
                 type="text"
+                name="tag"
                 value={hashtag}
                 onChange={onChangeHashtag}
                 onKeyUp={onKeyUp}

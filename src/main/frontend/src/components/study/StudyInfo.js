@@ -18,7 +18,7 @@ const StudyInfo = ({ study, handleEditClick, handleStudyDelete }) => {
                 <ul className="study_info">
                     <li>
                         <span>분야</span>
-                        <span>{study.tag}</span>
+                        <span>{study.field}</span>
                     </li>
                     <li>
                         <span>모집 중</span>

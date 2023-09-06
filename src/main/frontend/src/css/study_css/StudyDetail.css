@@ -147,3 +147,7 @@ html {
 	font-family: "Nanum Myeongjo", serif;
 	cursor: pointer;
 }
+
+.scrap_img, .like_img{
+	width:20px;
+}

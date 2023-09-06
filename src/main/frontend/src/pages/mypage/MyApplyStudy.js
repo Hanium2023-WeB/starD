@@ -45,7 +45,7 @@ const MyApplyStudy = ({ sideheader }) => {
                                 마감일 | {d.deadline}
                             </div>
                             <div className="list_title">{d.title}</div>
-                            <div className="list_tag">{d.tag}</div>
+                            <div className="list_tag">{d.field}</div>
                             <div className="list_onoff">{d.onoff}</div>
                             <div className="stroke"></div>
                             <div className="list_founder">{d.author}</div>
