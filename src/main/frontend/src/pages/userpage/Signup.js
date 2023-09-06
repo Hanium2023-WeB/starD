@@ -15,10 +15,11 @@ const Signup = () => {
         const city = location.state.city;
         const district = location.state.district;
         const tags = location.state.tags;
+        console.log(city,district,tags);
         localStorage.setItem("selectedSido", city);
         localStorage.setItem("selectedGugun", district);
         localStorage.setItem("tags", tags);
-    },[location]);
+    },[]);
 
 
     const inputID = useRef();
@@ -38,6 +39,10 @@ const Signup = () => {
         email: "",
         isValidEmail: false,
         isValidPassword: false,
+        city:location.state.city,
+        district:location.state.district,
+        tags:location.state.tags,
+
     });
 
     const [isIdDuplicate, setIsIdDuplicate] = useState(true); // id 중복 여부 상태 변수
