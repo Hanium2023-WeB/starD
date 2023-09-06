@@ -164,15 +164,15 @@ const StudyInsert = () => {
     }
 
     return (<div>
-        <Header showSideCenter={true}/>
+        {/*<Header showSideCenter={true}/>*/}
         <div className="study_detail_container">
-            <h1>STAR TOUR STORY</h1>
-            <div className="arrow_left">
-                <FontAwesomeIcon
-                    icon={faArrowLeft}
-                    onClick={() => navigate(-1)}
-                />
-            </div>
+            {/*<h1>STAR TOUR STORY</h1>*/}
+            {/*<div className="arrow_left">*/}
+            {/*    <FontAwesomeIcon*/}
+            {/*        icon={faArrowLeft}*/}
+            {/*        onClick={() => navigate(-1)}*/}
+            {/*    />*/}
+            {/*</div>*/}
             {studyinsertform()}
         </div>
     </div>);
