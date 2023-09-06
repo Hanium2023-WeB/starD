@@ -22,6 +22,7 @@ import Study from "./pages/studypage/Study";
 import StudyInsert from "./components/study/StudyInsert";
 import MyApplyStudy from "./pages/mypage/MyApplyStudy";
 import Header from "./components/repeat_etc/Header";
+import InputSubSign from "./pages/userpage/InputSubSign";
 
 
 function App() {
@@ -118,7 +119,12 @@ function App() {
                             <StudyInsert/>
                         }
                     />
-
+                    <Route
+                        path="/signup/subinfo"
+                        element={
+                        <InputSubSign/>
+                        }
+                        />
                 </Routes>
                 <Footer/>
 

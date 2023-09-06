@@ -122,7 +122,7 @@ const Header = ({ showSideCenter }) => {
 								</li>
 								<li>
 									<Link
-										to={"/signup"}
+										to={"/signup/subinfo"}
 										style={{textDecoration: "none", color: "inherit"}}
 									>
 										회원가입
