@@ -17,7 +17,7 @@ import java.util.List;
 @NoArgsConstructor(force = true)
 @Table(name="Member")
 @SecondaryTable(name = "Member_Detail",
-        pkJoinColumns = @PrimaryKeyJoinColumn(name = "MemBer_Detail_Id"))
+        pkJoinColumns = @PrimaryKeyJoinColumn(name = "Member_Detail_Id"))
 public class Member implements UserDetails {
 
     @Id
@@ -52,14 +52,11 @@ public class Member implements UserDetails {
 
     @OneToOne
     @JoinColumn(name = "profile_id")
-    @Column(table = "Member_Detail",
-            name = "Member_Profile")
     private Profile profile; // 프로필
 
     @Column(table = "Member_Detail",
-            name = "Member_Report_Count",
-            columnDefinition = "int default 0")
-    private int reportCount;    // 개인 누적 신고수
+            name = "Member_Report_Count")
+    private int reportCount; // 개인 누적 신고수
 
     @Builder
     public Member(String id, String name, String email, String password, String phone, String nickname) {
