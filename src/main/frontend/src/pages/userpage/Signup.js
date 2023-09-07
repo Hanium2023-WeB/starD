@@ -1,26 +1,24 @@
 import LogoButton from "../../components/repeat_etc/LogoButton";
-import React, {useState, useRef, useEffect} from "react";
+import React, {useState, useRef, useEffect, useCallback} from "react";
 import {isEmail, isPassword} from "../../util/check.js";
 import "../../css/user_css/Log.css";
 import Header from "../../components/repeat_etc/Header";
-import { useLocation } from 'react-router-dom';
+import {useLocation} from 'react-router-dom';
 import axios from "axios";
+import checkbox from "../../images/check.png";
+import uncheckbox from "../../images/unchecked.png";
+import cn from "classnames";
+import Terms_of_service from "../../components/info/Terms_of_service";
 
 const Signup = () => {
     const location = useLocation();
-
+    let locations = {}
     // 2. location.state 에서 파라미터 취득
-
-    useEffect(()=>{
-        const city = location.state.city;
-        const district = location.state.district;
-        const tags = location.state.tags;
-        console.log(city,district,tags);
-        localStorage.setItem("selectedSido", city);
-        localStorage.setItem("selectedGugun", district);
-        localStorage.setItem("tags", tags);
-    },[]);
-
+    //건너뛰기 누르면 null출력
+    useEffect(() => {
+        locations = location.state;
+        console.log(locations);
+    }, []);
 
     const inputID = useRef();
     const inputPW = useRef();
@@ -39,14 +37,43 @@ const Signup = () => {
         email: "",
         isValidEmail: false,
         isValidPassword: false,
-        city:location.state.city,
-        district:location.state.district,
-        tags:location.state.tags,
+        city: locations.city,
+        district: locations.district,
+        tags: locations.tags,
 
     });
 
     const [isIdDuplicate, setIsIdDuplicate] = useState(true); // id 중복 여부 상태 변수
     const [isNicknameDuplicate, setIsNicknameDuplicate] = useState(true); // nickname 중복 여부 상태 변수
+    const [termToggle, setTermToggle] = useState(false);
+    const [CheckImg, setCheckImg] = useState(false);
+
+    //모달창 보여주기 위한 상태 함수
+    const onTermToggle = useCallback(
+        () => {
+            setTermToggle(true);
+        },);
+
+    //체크버튼 클릭시
+    const onCheckImg = useCallback(
+        () => {
+            // onTermToggle();
+            setCheckImg(!CheckImg);
+        },);
+    //이용약관에 이미 체크가 되어있는데 또 이용약관을 보러 클릭했을 시
+    const onCheckImgs = useCallback(
+        () => {
+            // onTermToggle();
+            setCheckImg(true);
+        },);
+
+    //동의하기 버튼 클릭 시
+    const handlecheckContent = useCallback(() => {
+        if (!termToggle) {
+            alert("이용약관을 동의해주세요");
+            return;
+        }
+    });
 
     const onChange = (e) => {
         setState({
@@ -172,9 +199,9 @@ const Signup = () => {
                 nickname: state.nickname,
                 phone: state.phone,
                 email: state.email,
-                city:location.state.city,
-                district:location.state.district,
-                tags:location.state.tags,
+                city: locations.city,
+                district: locations.district,
+                tags: locations.tags,
             });
 
             if (response.status === 200) {
@@ -356,8 +383,18 @@ const Signup = () => {
                             ) : null}
                         </div>
                     </div>
+                    <div className="check_term_of_service">
+                        {CheckImg ? <span><img src={checkbox} width="20px" onClick={onCheckImg}/>
+                            <p onClick={onTermToggle}>이용약관</p></span>
+                            : <span><img src={uncheckbox} width="20px" onClick={onCheckImg}/>
+                                <p onClick={onTermToggle}>이용약관</p></span>}
+
+                        {termToggle && <Terms_of_service onClose={() => {
+                            setTermToggle(false);
+                        }} CheckImg={CheckImg} onCheckImgs={onCheckImgs} />}
+                    </div>
                     <div className="signbtn">
-                        <button type="submit">가입하기</button>
+                        <button type="submit" onClick={handlecheckContent}>가입하기</button>
                     </div>
                 </form>
             </div>
