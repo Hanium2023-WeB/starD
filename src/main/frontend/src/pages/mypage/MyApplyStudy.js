@@ -11,11 +11,15 @@ const MyApplyStudy = ({ sideheader }) => {
 
     useEffect(() => {
         const storedStudies = localStorage.getItem("studies");
-        if (storedStudies) {
+        if (storedStudies){
             const parsedStudies = JSON.parse(storedStudies);
             const applyStudies = parsedStudies.filter(study => study.reason);
             setStudies(applyStudies);
         }
+        console.log(studies);
+        let ApplyStudies=[];
+        ApplyStudies = localStorage.setItem("ApplyStudies", JSON.stringify(studies));
+        console.log(ApplyStudies);
     }, []);
 
     const myapplystudylist = () => {

@@ -4,19 +4,18 @@ import {Link} from "react-router-dom";
 
 const Header = ({ showSideCenter }) => {
 	//헤더 잡아놓기
+	// const { isLoggedIn } = useAuth(); // useAuth를 이용하여 로그인 상태를 가져옴
+	// 로그인 여부 확인 변수
+	let [isLoggedIn, setIsLoggedIn] = useState(false);
+
+	// localStorage에 저장된 accessToken 추출
+	let accessToken = localStorage.getItem('accessToken');
+
+	// localStorage에 저장된 로그인한 사용자 Id 추출
+	let isLoggedInUserId = localStorage.getItem('isLoggedInUserId');
+
 
 	const Side = () => {
-
-		// const { isLoggedIn } = useAuth(); // useAuth를 이용하여 로그인 상태를 가져옴
-		// 로그인 여부 확인 변수
-		const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-		// localStorage에 저장된 accessToken 추출
-		const accessToken = localStorage.getItem('accessToken');
-
-		// localStorage에 저장된 로그인한 사용자 Id 추출
-		const isLoggedInUserId = localStorage.getItem('isLoggedInUserId');
-
 
 		// console.log(accessToken, isLoggedInUserId);
 		// accessToken과 로그인한 사용자 id 추출
@@ -165,6 +164,7 @@ const Header = ({ showSideCenter }) => {
 						>
 							<li>스터디</li>
 						</Link>
+
 						<li>커뮤니티</li>
 						<li>공지사항</li>
 					</ul>
