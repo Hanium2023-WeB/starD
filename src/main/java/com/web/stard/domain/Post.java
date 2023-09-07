@@ -30,11 +30,4 @@ public class Post extends BaseEntity {
 
     @NotNull @Column(name = "view_count")
     private int viewCount;
-
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Reply> replies;
-
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Report> reports;
-
 }

@@ -32,8 +32,4 @@ public class Report {
     @Column(name = "table_type")
     @Enumerated(EnumType.STRING)
     private PostType tableType;    // [COMM, QNA, STUDY, REPLY]
-
-    @OneToMany(mappedBy = "report", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ReportDetail> reportDetails;
-
 }

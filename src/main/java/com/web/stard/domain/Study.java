@@ -76,11 +76,4 @@ public class Study extends BaseEntity {
     @NotNull
     @Column(name = "view_count")
     private int viewCount;
-
-    @OneToMany(mappedBy = "study", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Reply> replies;
-
-    @OneToMany(mappedBy = "study", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Report> reports;
-
 }

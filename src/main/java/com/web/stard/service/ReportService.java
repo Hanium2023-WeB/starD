@@ -29,6 +29,7 @@ public class ReportService {
     private StudyRepository studyRepository;
     private PostRepository postRepository;
     private ReplyRepository replyRepository;
+    private ReplyService replyService;
     private MemberRepository memberRepository;
 
     // 해당 글이 이미 신고되었는지 확인
@@ -52,7 +53,7 @@ public class ReportService {
     private boolean isUserAlreadyReported(Report report, Member currentUser) {
         ReportDetail reportDetail = null;
         if (report != null) {   // 신고 내역 존재
-            reportDetail = reportDetailRepository.findByReportAndMember(report.getId(), currentUser);
+            reportDetail = reportDetailRepository.findByReportAndMember(report, currentUser);
             if (reportDetail != null) { // 회원이 신고
                 return true;
             }
@@ -221,9 +222,11 @@ public class ReportService {
         Report report = reportRepository.findById(reportId)
                 .orElseThrow(() -> new EntityNotFoundException("해당 신고를 찾을 수 없습니다."));
 
+        List<ReportDetail> reportDetails = reportDetailRepository.findByReportId(reportId);
+
         Set<String> reasons = new HashSet<>();
 
-        for (ReportDetail reportDetail : report.getReportDetails()) {
+        for (ReportDetail reportDetail : reportDetails) {
             ReportReason reason = reportDetail.getReason();
             if (reason == ReportReason.ETC) {
                 String customReason = reportDetail.getCustomReason();
@@ -273,21 +276,40 @@ public class ReportService {
             reporterMember = report.getStudy().getMember();
         }*/
 
-        List<ReportDetail> reportDetail = reportDetailRepository.findByReportId(reportId);
+        List<ReportDetail> reportDetails = reportDetailRepository.findByReportId(reportId);
 
         // 신고 승인된 글의 작성자에게 신고 부여
-        if (reportDetail.size() >= 5) {
+        if (reportDetails.size() >= 5) {
             reporterMember.setReportCount(reporterMember.getReportCount() + 1);
         }
 
-        // 신고 승인된 글 삭제(해당 글 관련 report, reportDetail도 같이 삭제됨)
+        // 신고자 정보 삭제
+
+        reportDetailRepository.deleteAll(reportDetails);
+
+        // 신고 내역 삭제
+        reportRepository.delete(report);
+
+        // 신고 승인된 글, 댓글 삭제
         if (report.getTableType() == PostType.COMM || report.getTableType() == PostType.QNA) {
+            Post post = report.getPost();
+            List<Reply> replies = replyService.findAllRepliesByPostIdOrderByCreatedAtAsc(post.getId());
+
+            if (replies != null) {
+                replyRepository.deleteAll(replies);
+            }
             postRepository.deleteById(report.getPost().getId());
         }
         else if (report.getTableType() == PostType.REPLY) {
             replyRepository.deleteById(report.getReply().getId());
         }
         else if (report.getTableType() == PostType.STUDY) {
+            Study study = report.getStudy();
+            List<Reply> replies = replyService.findAllRepliesByStudyIdOrderByCreatedAtAsc(study.getId());
+
+            if (replies != null) {
+                replyRepository.deleteAll(replies);
+            }
             studyRepository.deleteById(report.getStudy().getId());
         }
 

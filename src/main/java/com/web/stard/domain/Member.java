@@ -54,6 +54,7 @@ public class Member implements UserDetails {
     @JoinColumn(name = "profile_id")
     private Profile profile; // 프로필
 
+    @NotNull
     @Column(table = "Member_Detail",
             name = "Member_Report_Count")
     private int reportCount; // 개인 누적 신고수

@@ -36,7 +36,4 @@ public class Reply  extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private PostType type; // [COMM, QNA, STUDY]
-
-    @OneToMany(mappedBy = "reply", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Report> reports;
 }
