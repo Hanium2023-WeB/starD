@@ -19,6 +19,14 @@ const Study = () => {
     const [scrapStates, setScrapStates] = useState([]);
     const [likeStates, setLikeStates] = useState([]);
 
+    let [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    // localStorage에 저장된 accessToken 추출
+    let accessToken = localStorage.getItem('accessToken');
+
+    // localStorage에 저장된 로그인한 사용자 Id 추출
+    let isLoggedInUserId = localStorage.getItem('isLoggedInUserId');
+
     useEffect(() => {
         const storedStudies = JSON.parse(localStorage.getItem("studies"));
         if (storedStudies) {
@@ -34,8 +42,15 @@ const Study = () => {
     };
 
     const handleMoveToStudyInsert = (e) => {
-        e.preventDefault();
-        setShowStudyInsert(!showStudyInsert);
+        if(isLoggedIn) {
+            e.preventDefault();
+            setShowStudyInsert(!showStudyInsert);
+        }
+        else{
+            alert("로그인 해주세요");
+            navigate("/login");
+        }
+
     };
 
     const handleStudyInsertClose = () => {
