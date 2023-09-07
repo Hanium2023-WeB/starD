@@ -16,7 +16,7 @@ const InputSubSign =()=>{
     const [mem, setMem] = useState(
         {city:"",district:"", tags: []});
     const onClickNextBtn =()=>{
-        navigate("/signup",{state: {
+        navigate("/subinfo/signup",{state: {
             mem
                 // city:mem.city,
                 // district: mem.district,
@@ -35,7 +35,7 @@ const InputSubSign =()=>{
             //건너뛰기 버튼 눌렀을때
             //입력을 안 하겠다는 의미이므로 기존 데이터 모두 초기화
             setMem({city:"",district:"",tags:[]});
-            navigate("/signup",{state: {
+            navigate("/subinfo/signup",{state: {
                     mem
                     // city:mem.city,
                     // district: mem.district,
