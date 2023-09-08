@@ -79,11 +79,12 @@ const StudyInsert = ({updateStudies, onClose}) => {
         const {title, field, author, number, onoff,sido, gugun, deadline, startDate, endDate, description, tag, created_date} = study;
         console.log("study::::::::::: " , tag);
         const selectedField = document.querySelector('select[name="field"]').value;
-        let selectedSido = "";
+        let selectedSido="";
         let selectedGugun = "";
-        if (onoff === "offline" || onoff === "both") {
-            selectedSido = document.querySelector('select[name="sido1"]').value;
-            selectedGugun = document.querySelector('select[name="gugun1"]').value;
+        if(showSelect) {
+            //온라인을 택하지 않았을 때만 값을 받아오고 온라인을 택했을 때는 그냥 "" 처리
+            const selectedSido = document.querySelector('select[name="sido1"]').value;
+            const selectedGugun = document.querySelector('select[name="gugun1"]').value;
         }
         const newData = {
             title,
@@ -109,6 +110,8 @@ const StudyInsert = ({updateStudies, onClose}) => {
         setStudies((prevStudies) => [...prevStudies, newData]);
         const updatedStudies = [...studies, newData];
         localStorage.setItem("studies", JSON.stringify(updatedStudies));
+
+        console.log("update임 : " + JSON.stringify(updatedStudies));
         updateStudies(updatedStudies);
 
         setDataId((prevDataId) => prevDataId + 1);
@@ -179,7 +182,7 @@ const StudyInsert = ({updateStudies, onClose}) => {
             scrap: false,
             like: false,
         });
-            //TODO 스터디 개설 서버 전송 (스크랩, 공감 제외)
+        //TODO 스터디 개설 서버 전송 (스크랩, 공감 제외)
         const response = axios.post("url",
             {
                 title:studies.title,
