@@ -14,6 +14,7 @@ const StudyInsert = ({updateStudies, onClose}) => {
     const [selectedOption, setSelectedOption] = useState(null);
     const [studies, setStudies] = useState([]);
     const value = "*스터디 주제: \n*스터디 목표: \n*예상 스터디 일정(횟수): \n*예상 커리큘럼 간략히: \n*스터디 소개와 개설 이유: \n*스터디 관련 주의사항: ";
+    const [tags, setTags] = useState([]);
     const [formData, setFormData] = useState({
         title: "",
         field: "",
@@ -29,6 +30,29 @@ const StudyInsert = ({updateStudies, onClose}) => {
         scrap: false,
         like: false,
     });
+
+    const tagoptions = [
+        { value: "웹 개발", name: "웹 개발" },
+        { value: "앱 개발", name: "앱 개발" },
+        { value: "머신러닝", name: "머신러닝" },
+        { value: "데이터 분석", name: "데이터 분석" },
+        { value: "게임 개발", name: "게임 개발" },
+        { value: "블록체인", name: "블록체인" },
+        { value: "네트워크 보안", name: "네트워크 보안" },
+        { value: "클라우드 컴퓨팅", name: "클라우드 컴퓨팅" },
+        { value: "인공지능", name: "인공지능" },
+        { value: "사이버 보안", name: "사이버 보안" },
+        { value: "소프트웨어 테스트", name: "소프트웨어 테스트" },
+        { value: "로봇공학", name: "로봇공학" },
+        { value: "사물인터넷 (IoT)", name: "사물인터넷 (IoT)" },
+        { value: "데이터베이스 관리", name: "데이터베이스 관리" },
+        { value: "UI/UX 디자인", name: "UI/UX 디자인" },
+        { value: "프로젝트 관리", name: "프로젝트 관리" },
+        { value: "빅데이터", name: "빅데이터" },
+        { value: "컴퓨터 그래픽스", name: "컴퓨터 그래픽스" },
+        { value: "자동화", name: "자동화" },
+        { value: "블로그 운영", name: "블로그 운영" },
+    ];
 
     const handleInputChange = (e) => {
         setFormData({
@@ -49,19 +73,8 @@ const StudyInsert = ({updateStudies, onClose}) => {
     }
 
     const onInsertStudy = useCallback((study) => {
-        const {
-            title,
-            field,
-            author,
-            number,
-            onoff,
-            deadline,
-            startDate,
-            endDate,
-            description,
-            tag,
-            created_date
-        } = study;
+        const {title, field, author, number, onoff, deadline, startDate, endDate, description, tag, created_date} = study;
+        console.log("study::::::::::: " , tag);
         const newData = {
             title,
             field,
@@ -80,6 +93,7 @@ const StudyInsert = ({updateStudies, onClose}) => {
         };
 
         console.log("id : " + newData.id);
+        console.log("tag : " + newData.tag);
         setStudies((prevStudies) => [...prevStudies, newData]);
         const updatedStudies = [...studies, newData];
         localStorage.setItem("studies", JSON.stringify(updatedStudies));
@@ -88,10 +102,8 @@ const StudyInsert = ({updateStudies, onClose}) => {
         setDataId((prevDataId) => prevDataId + 1);
     }, [studies, dataId]);
 
-    const handleKeyPress = (e) => {
-        if (e.key === "Enter") {
-            // e.preventDefault(); // 엔터 키 이벤트를 기본 동작으로 전파하지 않도록 방지
-        }
+    const handleTagChange = (selectedTag) => {
+        setTags((prevTags) => [...prevTags, selectedTag]);
     };
 
     useEffect(() => {
@@ -107,7 +119,7 @@ const StudyInsert = ({updateStudies, onClose}) => {
 
         if (
             formData.title.trim() === '' ||
-            formData.field.trim() === '' ||
+            formData.field.trim() === null ||
             formData.number.trim() === '' ||
             formData.deadline.trim() === '' ||
             formData.startDate.trim() === '' ||
@@ -124,8 +136,14 @@ const StudyInsert = ({updateStudies, onClose}) => {
             alert('해시태그를 입력해주세요.');
             return; // 창이 넘어가지 않도록 중단
         }
-//추가
-        onInsertStudy(formData);
+
+        const tagsString = tags.toString();
+        const studyWithTags = {
+            ...formData,
+            tag: tagsString.replace(/,/, "") // Tag 컴포넌트에서 전달된 태그를 사용
+        };
+
+        onInsertStudy(studyWithTags);
         setFormData({
             title: "",
             field: "",
@@ -146,8 +164,8 @@ const StudyInsert = ({updateStudies, onClose}) => {
         // console.log(`studies: ${JSON.stringify(studies)}`)
         //myopenstudy에 navigate로 데이터 넘기기
         e.preventDefault();
-        // navigate("/myopenstudy", {state: formData}); // TODO 주석 제거 필요
-    }, [formData, navigate]);
+        navigate("/myopenstudy", {state: formData});
+    }, [formData, navigate, tags, onInsertStudy]);
 
     // e.preventDefault();
     // // 여기서 formData를 사용하여 데이터 처리하거나 API 호출 등을 수행합니다.
@@ -186,8 +204,13 @@ const StudyInsert = ({updateStudies, onClose}) => {
                     <div className="right">
                         <div>
                             <span>분야</span>
-                            <input type="text" name="field" value={formData.field} onChange={handleInputChange}
-                                   className="inputbox" placeholder="사용할 태그를 입력해주세요"/>
+                            {/*<input type="text" name="field" value={formData.field} onChange={handleInputChange}*/}
+                            {/*       className="inputbox" placeholder="사용할 태그를 입력해주세요"/>*/}
+                            <select name="field">
+                                {tagoptions.map((interest) =>
+                                    <option value={interest.value} onChange={handleInputChange}>{interest.name}</option>
+                                )}
+                            </select>
                         </div>
                         <div>
                             <span className="onoff_title">진행 방식</span>
@@ -215,7 +238,7 @@ const StudyInsert = ({updateStudies, onClose}) => {
                 </div>
                 <div className="study_tag">
                     <span>스터디 태그</span>
-                    <Tag/>
+                    <Tag onTagChange={handleTagChange} tags={tags}/>
                 </div>
                 <div className="btn">
                     <input type="submit" value="모집하기" className="recruit_btn"/>
