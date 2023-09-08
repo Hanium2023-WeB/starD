@@ -192,7 +192,7 @@ const StudyInsert = ({updateStudies}) => {
                 <div className="study_open_detail">
                     <span>상세 내용</span>
                     <textarea value={formData.description} name="description" onChange={handleInputChange}
-                              placeholder={value}/>
+                              placeholder={value} defaultValue={value}/>
                 </div>
                 <div className="study_tag">
                     <span>스터디 태그</span>
