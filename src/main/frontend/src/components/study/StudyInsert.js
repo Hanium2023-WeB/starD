@@ -75,9 +75,10 @@ const StudyInsert = ({updateStudies, onClose}) => {
     const onInsertStudy = useCallback((study) => {
         const {title, field, author, number, onoff, deadline, startDate, endDate, description, tag, created_date} = study;
         console.log("study::::::::::: " , tag);
+        const selectedField = document.querySelector('select[name="field"]').value;
         const newData = {
             title,
-            field,
+            field: selectedField,
             author,
             number,
             onoff,
@@ -91,6 +92,7 @@ const StudyInsert = ({updateStudies, onClose}) => {
             scrap: false,
             like: false,
         };
+
         console.log("id : " + newData.id);
         console.log("tag : " + newData.tag);
         setStudies((prevStudies) => [...prevStudies, newData]);
@@ -141,7 +143,7 @@ const StudyInsert = ({updateStudies, onClose}) => {
 
         const studyWithTags = {
             ...formData,
-            tag: tags.join(', '), // 변경된 부분: 태그 정보를 쉼표로 구분된 문자열로 저장
+            tag: tags.join(','), // 변경된 부분: 태그 정보를 쉼표로 구분된 문자열로 저장
         };
 
         onInsertStudy(studyWithTags);

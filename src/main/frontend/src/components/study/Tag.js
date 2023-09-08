@@ -23,9 +23,9 @@ const Tag = ({onTagChange, tags}) => {
                 console.log('쉼표 Key 입력됨!', e.target.value);
 
                 // 새로운 해시태그를 생성하고 추가합니다.
-                newHashTag = ('#' + e.target.value).replace(/,/, "");
+                const newHashTag = `${e.target.value.replace(/,/g, '').trim()}`; // 쉼표 다음의 모든 공백 제거
+                setHashArr((prevTags) => [...prevTags, newHashTag]);
                 console.log("newHashTag" + newHashTag);
-                setHashArr((hashArr) => [...hashArr, newHashTag]);
                 // console.log("hashArr " + hashArr);
 
                 // 입력값과 배열 초기화
@@ -35,7 +35,7 @@ const Tag = ({onTagChange, tags}) => {
                 // 해시태그 목록을 화면에 표시
                 const $HashWrapInner = document.createElement('div');
                 $HashWrapInner.className = 'HashWrapInner';
-                $HashWrapInner.innerHTML = newHashTag.replace(/,/, "");
+                $HashWrapInner.innerHTML = "#" + newHashTag;
 
                 // 클릭 이벤트 처리
                 $HashWrapInner.addEventListener('click', () => {
@@ -46,17 +46,17 @@ const Tag = ({onTagChange, tags}) => {
                 // 화면에 추가
                 $HashWrapOuter?.insertBefore($HashWrapInner, e.target);
 
-                onTagChange(hashArr);
-                setHashtag('');
+                // setHashtag('');
+                // setHashArr((hashArr) => [...hashArr, hashtag.trim().replace(/,/, "")]);
+                // onTagChange(hashArr.join(', '));
             }
-        }, [hashtag, hashArr]
+        }, []
     )
 
     useEffect(() => {
-        tags = hashArr;
-        console.log("tags " , tags);
-        console.log("hashArr " , hashArr);
-    },[newHashTag, hashArr])
+        // 태그 정보가 변경될 때 콜백을 통해 부모 컴포넌트로 전달
+        onTagChange(hashArr); // 변경된 부분: tags 배열 그대로 전달
+    }, [hashArr, onTagChange]);
 
     return (
         <div className="tag_wrapper">
