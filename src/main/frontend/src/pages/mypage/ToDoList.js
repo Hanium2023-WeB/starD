@@ -20,6 +20,14 @@ const ToDoList = ({ sideheader }) => {
   const Year = selectedDate.getFullYear();
   const Month = selectedDate.getMonth()+1;
   const Dates = selectedDate.getDate();
+  const [studies, setStudy]= useState([]);
+
+
+  useEffect(() => {
+    const study = localStorage.getItem('studies');
+    setStudy(study);
+    console.log("참여하는 스터디", study);
+  }, []);
 
   const onInsertToggle = () => {
     if (selectedTodo) {

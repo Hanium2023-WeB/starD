@@ -1,7 +1,7 @@
 import React, {useState, useRef} from "react";
 import "../../css/user_css/Log.css";
 import axios from "axios";
-import { useNavigate } from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import Header from "../../components/repeat_etc/Header";
 
 const Login = () => {
@@ -103,6 +103,20 @@ const Login = () => {
                     </div>
                     <div className="loginbtn">
                         <button onClick={handleSubmit}>로그인</button>
+                    </div>
+                    <div className="findlog">
+                        <Link to={"/login/findeID"}
+                              style={{
+                            textDecoration: "none",
+                            color: "blue",
+                        }}><span id={"id"}>아이디 찾기 / </span>
+                        </Link>
+                        <span id={"pw"}>비밀번호 찾기 / </span>
+                        <Link to={"/subinfo"}
+                              style={{
+                                  textDecoration: "none",
+                                  color: "blue",
+                              }}>  <span id={"signup"}>회원가입</span></Link>
                     </div>
                 </div>
             </div>
