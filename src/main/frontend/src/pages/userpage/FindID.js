@@ -5,14 +5,14 @@ import axios from "axios";
 
 const FindID = () => {
     const [state, setState] = useState({
-            "ID": "",
+            "Email": "",
             "phone": "",
             "certification": "",
         }
     );
 
     const onChange = (e) => {
-        setState(state.ID);
+        setState(state.Email);
     }
     const onhandlecertification = (e) => {
         setState(state.certification);
@@ -95,15 +95,15 @@ const receiveCertificate=()=>{
         <div>
             <Header showSideCenter={false}/>
             <div className="findwrap">
-                <div className={"container"}>
+                <div className={"container_findwrap"}>
                     <div className="container_find" id="logs">
                         <div className="input_infos">
-                            <div className="subinfos">아이디</div>
+                            <div className="subinfos">이메일</div>
                             <div>
                                 <input
-                                    name={"ID"}
-                                    placeholder="아이디를 입력해주세요"
-                                    value={state.ID}
+                                    name={"Email"}
+                                    placeholder="이메일을 입력해주세요"
+                                    value={state.Email}
                                     onChange={onChange}
                                 />
                             </div>
