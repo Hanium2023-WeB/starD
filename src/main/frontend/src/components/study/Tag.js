@@ -17,8 +17,8 @@ const Tag = () => {
             const $HashWrapOuter = document.querySelector('.tag_wrapper');
 
             /* enter 키 코드 :13 */
-            if (e.keyCode === 13 && e.target.value.trim() !== '') {
-                console.log('Enter Key 입력됨!', e.target.value);
+            if (e.keyCode === 188 && e.target.value.trim() !== '') {
+                console.log('쉼표 Key 입력됨!', e.target.value);
 
                 // 새로운 해시태그를 생성하고 추가합니다.
                 const newHashTag = '#' + e.target.value;
