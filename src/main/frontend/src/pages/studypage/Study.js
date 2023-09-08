@@ -10,6 +10,7 @@ import LikeButton from "../../components/repeat_etc/LikeButton";
 import "../../css/study_css/MyOpenStudy.css";
 import "../../css/study_css/StudyDetail.css";
 import SearchBar from "../../SearchBar";
+import axios from "axios";
 
 const Study = () => {
     const navigate = useNavigate();
@@ -20,7 +21,7 @@ const Study = () => {
     const [scrapStates, setScrapStates] = useState(false);
     const [likeStates, setLikeStates] = useState(false);
 
-
+    const [studiesChanged, setStudiesChanged] = useState(false);
     let [isLoggedIn, setIsLoggedIn] = useState(false);
 
     // localStorage에 저장된 accessToken 추출
@@ -30,13 +31,35 @@ const Study = () => {
     let isLoggedInUserId = localStorage.getItem('isLoggedInUserId');
 
     useEffect(() => {
-        // console.log(scrapStates);
-        // console.log(likeStates);
-        console.log("study", studies)
-        // console.log(scrapStates[index]);
-        localStorage.setItem("ScrapStudies", JSON.stringify(scrapStates));
-        localStorage.setItem("LikeStates", JSON.stringify(likeStates));
-    }, [scrapStates, likeStates, studies]);
+        if (studiesChanged) {
+            localStorage.setItem("studies", JSON.stringify(studies));
+            localStorage.setItem("ScrapStudies", JSON.stringify(scrapStates));
+            localStorage.setItem("LikeStates", JSON.stringify(likeStates));
+            // Reset studiesChanged to false
+
+            setStudiesChanged(false);
+        }
+
+    }, [studiesChanged, studies, scrapStates, likeStates]);
+
+    //TODO 스크랩, 공감 서버 전송
+    useEffect(() => {
+        const response = axios.post("url",
+            {
+                scrap: studies.scrap,
+                like:studies.like,
+            })
+            .then((res)=>{
+                console.log("전송 성공");
+                console.log(res.data);
+
+
+            }).catch((error)=>{
+                console.log('전송 실패', error);
+            })
+
+    }, [scrapStates, likeStates]);
+
 
     useEffect(() => {
         const storedStudies = JSON.parse(localStorage.getItem("studies"));
@@ -69,29 +92,21 @@ const Study = () => {
     };
 
     // 각 스터디 리스트 항목의 스크랩 상태를 토글하는 함수
-    // const toggleScrap = (index) => {
-    //     setScrapStates(!scrapStates)
-    //     studies[index].scrap = scrapStates;
-    //     console.log("sss", studies);
-    //     console.log(index);
-    // };
+
     const toggleScrap = (index) => {
         setStudies((prevStudies) => {
             const newStudies = [...prevStudies];
             newStudies[index] = { ...newStudies[index], scrap: !newStudies[index].scrap };
+            setStudiesChanged(true); // Mark studies as changed
             return newStudies;
         });
     };
-    // const toggleLike = (index) => {
-    //     setLikeStates(!likeStates)
-    //     studies[index].like = likeStates;
-    //     console.log("sss", studies);
-    //     console.log(index);
-    // };
+
     const toggleLike = (index) => {
         setStudies((prevStudies) => {
             const newStudies = [...prevStudies];
             newStudies[index] = { ...newStudies[index], like: !newStudies[index].like };
+            setStudiesChanged(true); // Mark studies as changed
             return newStudies;
         });
     };

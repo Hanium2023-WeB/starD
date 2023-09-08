@@ -39,7 +39,7 @@ export function RegionSelectBOX (){
         let gugunList = [];
         for (const sido in areas) {
             if (sido) {
-                $RegionsidoSelect.append(`<option value="${sido}" selected>${sido}</option>`);
+                $RegionsidoSelect.append(`<option value="${sido}">${sido}</option>`);
                 gugunList = areas[sido];
             }
         }

@@ -17,6 +17,18 @@ const MyOpenStudy = ({ sideheader }) => {
 
 	const location = useLocation();
 	const studyState = location.state;
+	const [studiesChanged, setStudiesChanged] = useState(false);
+
+	useEffect(() => {
+		if (studiesChanged) {
+			localStorage.setItem("studies", JSON.stringify(studies));
+			localStorage.setItem("ScrapStudies", JSON.stringify(scrapStates));
+			localStorage.setItem("LikeStates", JSON.stringify(likeStates));
+			// Reset studiesChanged to false
+			setStudiesChanged(false);
+		}
+	}, [studiesChanged, studies, scrapStates, likeStates]);
+
 
 	useEffect(() => {
 		const storedStudies = localStorage.getItem("studies");
@@ -28,6 +40,7 @@ const MyOpenStudy = ({ sideheader }) => {
 		setStudies((prevStudies) => {
 			const newStudies = [...prevStudies];
 			newStudies[index] = { ...newStudies[index], scrap: !newStudies[index].scrap };
+			setStudiesChanged(true); // Mark studies as changed
 			return newStudies;
 		});
 	};
@@ -36,6 +49,7 @@ const MyOpenStudy = ({ sideheader }) => {
 		setStudies((prevStudies) => {
 			const newStudies = [...prevStudies];
 			newStudies[index] = { ...newStudies[index], like: !newStudies[index].like };
+			setStudiesChanged(true); // Mark studies as changed
 			return newStudies;
 		});
 	};

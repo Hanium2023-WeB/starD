@@ -5,6 +5,7 @@ import {useNavigate, useLocation} from "react-router-dom";
 import "../../css/study_css/StudyOpenForm.css";
 import StudyRegion from "./StudyRegion";
 import Tag from "./Tag";
+import axios from "axios";
 
 const StudyInsert = ({updateStudies, onClose}) => {
     const [dataId, setDataId] = useState(0);
@@ -21,6 +22,8 @@ const StudyInsert = ({updateStudies, onClose}) => {
         author: "",
         number: "",
         onoff: "",
+        sido:"",
+        gugun:"",
         deadline: "",
         startDate: "",
         endDate: "",
@@ -73,15 +76,20 @@ const StudyInsert = ({updateStudies, onClose}) => {
     }
 
     const onInsertStudy = useCallback((study) => {
-        const {title, field, author, number, onoff, deadline, startDate, endDate, description, tag, created_date} = study;
+        const {title, field, author, number, onoff,sido, gugun, deadline, startDate, endDate, description, tag, created_date} = study;
         console.log("study::::::::::: " , tag);
         const selectedField = document.querySelector('select[name="field"]').value;
+        const selectedSido = document.querySelector('select[name="sido1"]').value;
+        const selectedGugun = document.querySelector('select[name="gugun1"]').value;
+
         const newData = {
             title,
             field: selectedField,
             author,
             number,
             onoff,
+            sido:selectedSido,
+            gugun:selectedGugun,
             deadline,
             startDate,
             endDate,
@@ -106,6 +114,10 @@ const StudyInsert = ({updateStudies, onClose}) => {
     const handleTagChange = (selectedTag) => {
         setTags(selectedTag); // 변경된 부분: 태그 정보를 배열로 변환하여 설정
     };
+    // const onRegionChange=(selectedRegion)=>{
+    //     setRegion(selectedRegion);
+    // }
+
 
     useEffect(() => {
         const storedStudies = JSON.parse(localStorage.getItem("studies") || "[]");
@@ -153,6 +165,8 @@ const StudyInsert = ({updateStudies, onClose}) => {
             author: "",
             number: "",
             onoff: "",
+            sido:"",
+            gugun:"",
             deadline: "",
             startDate: "",
             endDate: "",
@@ -162,7 +176,38 @@ const StudyInsert = ({updateStudies, onClose}) => {
             scrap: false,
             like: false,
         });
+            //TODO 스터디 개설 서버 전송 (스크랩, 공감 제외)
+        const response = axios.post("url",
+            {
+                title:studies.title,
+                field:studies.field,
+                author:"",
+                number: studies.number,
+                onoff:studies.onoff,
+                sido:studies.sido,
+                gugun:studies.gugun,
+                deadline: studies.deadline,
+                startDate: studies.startDate,
+                endDate:studies.endDate,
+                description: studies.description,
+                tag: studies.tag,
+                created_date: studies.created_date,
+                // scrap: studies.scrap,
+                // like:studies.like,
+
+            })
+            .then((res)=>{
+                console.log("전송 성공");
+                console.log(res.data);
+                //성공하면
+                // navigate("/myopenstudy", {state: formData});
+
+            }).catch((error)=>{
+                console.log('전송 실패', error);
+            })
+
         //JSON.stringify(formData) 이렇게 안해주고 그냥 formData만 넘겨주게 되면 Object Object 가 뜸
+        console.log("Dsdssd",response);
         console.log(`formData: ${JSON.stringify(formData)}`)
         // console.log(`studies: ${JSON.stringify(studies)}`)
         //myopenstudy에 navigate로 데이터 넘기기
@@ -222,7 +267,7 @@ const StudyInsert = ({updateStudies, onClose}) => {
                                 <input type="radio" value="offline" name="onoff" onChange={handleRadioChange}/>오프라인
                                 <input type="radio" value="both" name="onoff" onChange={handleRadioChange}/>무관
                                 {showSelect && (
-                                    <StudyRegion/>
+                                    <StudyRegion />
                                 )}
                             </div>
                         </div>
