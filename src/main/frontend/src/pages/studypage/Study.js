@@ -42,7 +42,7 @@ const Study = () => {
     };
 
     const handleMoveToStudyInsert = (e) => {
-        if(isLoggedIn) {
+        if(accessToken && isLoggedInUserId) {
             e.preventDefault();
             setShowStudyInsert(!showStudyInsert);
         }
