@@ -75,9 +75,10 @@ const StudyInsert = ({updateStudies, onClose}) => {
     const onInsertStudy = useCallback((study) => {
         const {title, field, author, number, onoff, deadline, startDate, endDate, description, tag, created_date} = study;
         console.log("study::::::::::: " , tag);
+        const selectedField = document.querySelector('select[name="field"]').value;
         const newData = {
             title,
-            field,
+            field: selectedField,
             author,
             number,
             onoff,
@@ -91,6 +92,7 @@ const StudyInsert = ({updateStudies, onClose}) => {
             scrap: false,
             like: false,
         };
+
         console.log("id : " + newData.id);
         console.log("tag : " + newData.tag);
         setStudies((prevStudies) => [...prevStudies, newData]);
@@ -102,7 +104,7 @@ const StudyInsert = ({updateStudies, onClose}) => {
     }, [studies, dataId]);
 
     const handleTagChange = (selectedTag) => {
-        setTags((prevTags) => [...prevTags, selectedTag]);
+        setTags(selectedTag); // 변경된 부분: 태그 정보를 배열로 변환하여 설정
     };
 
     useEffect(() => {
@@ -136,10 +138,12 @@ const StudyInsert = ({updateStudies, onClose}) => {
             return; // 창이 넘어가지 않도록 중단
         }
 
-        const tagsString = tags.toString();
+        // const tagsArray = tags.map((tag) => tag.trim());
+        // const tagsJson = JSON.stringify(tagsArray);
+
         const studyWithTags = {
             ...formData,
-            tag: tagsString.replace(/,/, "") // Tag 컴포넌트에서 전달된 태그를 사용
+            tag: tags.join(','), // 변경된 부분: 태그 정보를 쉼표로 구분된 문자열로 저장
         };
 
         onInsertStudy(studyWithTags);
