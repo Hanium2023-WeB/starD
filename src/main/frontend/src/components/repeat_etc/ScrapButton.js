@@ -14,9 +14,9 @@ const ScrapButton = ({ scrap, onClick }) => {
     );
 };
 
-ScrapButton.propTypes = {
-    scrap: PropTypes.bool.isRequired, // 스크랩 상태를 받아와야 함
-    onClick: PropTypes.func.isRequired, // 클릭 시 실행할 함수를 받아와야 함
-};
+// ScrapButton.propTypes = {
+//     scrap: PropTypes.bool.isRequired, // 스크랩 상태를 받아와야 함
+//     onClick: PropTypes.func.isRequired, // 클릭 시 실행할 함수를 받아와야 함
+// };
 
 export default ScrapButton;

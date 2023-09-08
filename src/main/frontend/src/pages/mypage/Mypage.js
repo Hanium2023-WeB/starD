@@ -75,7 +75,7 @@ const Mypage = ({ sideheader }) => {
 
         // Extract study values from todaySchedule object
         const studyValues = Object.keys(todaySchedule);
-        console.log("Study Values:", studyValues);
+        console.log("ScrapStudySlide Values:", studyValues);
 
         for (const studyKey in todaySchedule) {
           console.log(`Study: ${studyKey}`);

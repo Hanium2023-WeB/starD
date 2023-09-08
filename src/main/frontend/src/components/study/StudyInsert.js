@@ -6,7 +6,7 @@ import "../../css/study_css/StudyOpenForm.css";
 import StudyRegion from "./StudyRegion";
 import Tag from "./Tag";
 
-const StudyInsert = ({updateStudies}) => {
+const StudyInsert = ({updateStudies, onClose}) => {
     const [dataId, setDataId] = useState(0);
     const navigate = useNavigate();
 
@@ -24,8 +24,10 @@ const StudyInsert = ({updateStudies}) => {
         startDate: "",
         endDate: "",
         description: "",
-        tag:"",
+        tag: "",
         created_date: new Date(),
+        scrap: false,
+        like: false,
     });
 
     const handleInputChange = (e) => {
@@ -47,7 +49,19 @@ const StudyInsert = ({updateStudies}) => {
     }
 
     const onInsertStudy = useCallback((study) => {
-        const {title, field, author, number, onoff, deadline, startDate, endDate, description, tag, created_date} = study;
+        const {
+            title,
+            field,
+            author,
+            number,
+            onoff,
+            deadline,
+            startDate,
+            endDate,
+            description,
+            tag,
+            created_date
+        } = study;
         const newData = {
             title,
             field,
@@ -61,7 +75,10 @@ const StudyInsert = ({updateStudies}) => {
             tag,
             created_date,
             id: dataId,
+            scrap: false,
+            like: false,
         };
+
         console.log("id : " + newData.id);
         setStudies((prevStudies) => [...prevStudies, newData]);
         const updatedStudies = [...studies, newData];
@@ -107,7 +124,7 @@ const StudyInsert = ({updateStudies}) => {
             alert('해시태그를 입력해주세요.');
             return; // 창이 넘어가지 않도록 중단
         }
-
+//추가
         onInsertStudy(formData);
         setFormData({
             title: "",
@@ -118,9 +135,11 @@ const StudyInsert = ({updateStudies}) => {
             deadline: "",
             startDate: "",
             endDate: "",
-            tag:"",
+            tag: "",
             description: "",
             created_date: new Date(),
+            scrap: false,
+            like: false,
         });
         //JSON.stringify(formData) 이렇게 안해주고 그냥 formData만 넘겨주게 되면 Object Object 가 뜸
         console.log(`formData: ${JSON.stringify(formData)}`)

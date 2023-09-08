@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, {useEffect, useState} from "react";
+import {Link, useNavigate} from "react-router-dom";
 
 import Backarrow from "../../components/repeat_etc/Backarrow";
 import StudyInsert from "../../components/study/StudyInsert";
@@ -16,8 +16,9 @@ const Study = () => {
     const [showStudyInsert, setShowStudyInsert] = useState(false);
 
     // 각 스터디 리스트 항목의 스크랩 상태를 저장하는 배열
-    const [scrapStates, setScrapStates] = useState([]);
-    const [likeStates, setLikeStates] = useState([]);
+    const [scrapStates, setScrapStates] = useState(studies.scrap);
+    const [likeStates, setLikeStates] = useState(studies.like);
+
 
     let [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -28,12 +29,18 @@ const Study = () => {
     let isLoggedInUserId = localStorage.getItem('isLoggedInUserId');
 
     useEffect(() => {
+        // console.log(scrapStates);
+        // console.log(likeStates);
+        console.log("study", studies)
+        // console.log(scrapStates[index]);
+        localStorage.setItem("ScrapStudies", JSON.stringify(scrapStates));
+        localStorage.setItem("LikeStates", JSON.stringify(likeStates));
+    }, [scrapStates, likeStates, studies]);
+
+    useEffect(() => {
         const storedStudies = JSON.parse(localStorage.getItem("studies"));
         if (storedStudies) {
             setStudies(storedStudies);
-            // 각 스터디 리스트 항목의 스크랩 상태를 초기화
-            setScrapStates(Array(storedStudies.length).fill(false));
-            setLikeStates(Array(storedStudies.length).fill(false));
         }
     }, []);
 
@@ -42,11 +49,10 @@ const Study = () => {
     };
 
     const handleMoveToStudyInsert = (e) => {
-        if(accessToken && isLoggedInUserId) {
+        if (accessToken && isLoggedInUserId) {
             e.preventDefault();
             setShowStudyInsert(!showStudyInsert);
-        }
-        else{
+        } else {
             alert("로그인 해주세요");
             navigate("/login");
         }
@@ -63,24 +69,26 @@ const Study = () => {
 
     // 각 스터디 리스트 항목의 스크랩 상태를 토글하는 함수
     const toggleScrap = (index) => {
-        const newScrapStates = [...scrapStates];
-        newScrapStates[index] = !newScrapStates[index];
-        setScrapStates(newScrapStates);
+        setScrapStates(!scrapStates)
+        studies[index].scrap = scrapStates;
+        console.log("sss", studies);
+        console.log(index);
     };
 
     const toggleLike = (index) => {
-        const newLikeStates = [...likeStates];
-        newLikeStates[index] = !newLikeStates[index];
-        setLikeStates(newLikeStates);
+        setLikeStates(!likeStates)
+        studies[index].like = likeStates;
+        console.log("sss", studies);
+        console.log(index);
     };
 
     return (
         <div>
-            <Header showSideCenter={true} />
-            <div className="study_detail_container" style={{ width: "70%" }}>
+            <Header showSideCenter={true}/>
+            <div className="study_detail_container" style={{width: "70%"}}>
                 <h1>STAR TOUR STORY</h1>
                 <div className="arrow_left">
-                    <Backarrow />
+                    <Backarrow/>
                     {!showStudyInsert && (
                         <button onClick={handleMoveToStudyInsert} className="openStudy">
                             스터디 개설
@@ -108,11 +116,13 @@ const Study = () => {
                                             </div>
                                             <div className="list_btn">
                                                 <div className="list_like">
-                                                    <LikeButton like={likeStates[index]} onClick={() => toggleLike(index)} />
+                                                    <LikeButton like={studies[index].like}
+                                                                onClick={() => toggleLike(index)}/>
                                                 </div>
                                                 <div className="list_scrap">
                                                     {/* 스크랩 버튼을 클릭하면 해당 스터디 리스트 항목의 스크랩 상태를 토글 */}
-                                                    <ScrapButton scrap={scrapStates[index]} onClick={() => toggleScrap(index)} />
+                                                    <ScrapButton scrap={studies[index].scrap}
+                                                                 onClick={() => toggleScrap(index)}/>
                                                 </div>
                                             </div>
                                         </div>
