@@ -30,19 +30,19 @@ public class ReplyController {
         return replyService.createPostReply(postId, replyContent, authentication);
     }
 
-    // Study 댓글 생성
+    // ScrapStudySlide 댓글 생성
     @PostMapping("/study")
     public Reply createStudyReply(@RequestParam Long studyId, @RequestParam String replyContent, Authentication authentication) {
         return replyService.createStudyReply(studyId, replyContent, authentication);
     }
 
-    // 댓글 수정 (Post, Study 공통)
+    // 댓글 수정 (Post, ScrapStudySlide 공통)
     @PostMapping("/{id}")
     public Reply updateReply(@PathVariable Long replyId, @RequestParam String replyContent, Authentication authentication) {
         return replyService.updateReply(replyId, replyContent, authentication);
     }
 
-    // 댓글 삭제 (Post, Study 공통)
+    // 댓글 삭제 (Post, ScrapStudySlide 공통)
     @DeleteMapping("/{id}")
     public void deleteReply(@PathVariable Long replyId, Authentication authentication) {
         replyService.deleteReply(replyId, authentication);

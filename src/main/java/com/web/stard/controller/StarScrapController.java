@@ -34,13 +34,13 @@ public class StarScrapController {
 
 
 
-    /* Study 공감 추가 */
+    /* ScrapStudySlide 공감 추가 */
     @PostMapping("/star/study/{id}")
     public StarScrap addStudyStar(@PathVariable Long id, Authentication authentication) {
         return starScrapService.addStudyStar(id, authentication);
     }
 
-    /* Study 공감 삭제 */
+    /* ScrapStudySlide 공감 삭제 */
     @DeleteMapping("/star/study/{id}")
     public boolean deleteStudyStar(@PathVariable Long id, Authentication authentication) {
         return starScrapService.deleteStudyStar(id, authentication);
@@ -69,19 +69,19 @@ public class StarScrapController {
 
 
 
-    /* Study 스크랩한 게시글 전체 조회 */
+    /* ScrapStudySlide 스크랩한 게시글 전체 조회 */
     @GetMapping("/scrap/study")
     public List<StarScrap> allStudyScrapList(Authentication authentication) {
         return starScrapService.allStudyScrapList(authentication);
     }
 
-    /* Study 스크랩 추가 */
+    /* ScrapStudySlide 스크랩 추가 */
     @PostMapping("/scrap/study/{id}")
     public StarScrap addStudyScrap(@PathVariable Long id, Authentication authentication) {
         return starScrapService.addStudyScrap(id, authentication);
     }
 
-    /* Study 스크랩 삭제 */
+    /* ScrapStudySlide 스크랩 삭제 */
     @DeleteMapping("/scrap/study/{id}")
     public boolean deleteStudyScrap(@PathVariable Long id, Authentication authentication) {
         return starScrapService.deleteStudyScrap(id, authentication);

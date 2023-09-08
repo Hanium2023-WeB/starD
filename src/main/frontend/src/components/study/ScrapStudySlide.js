@@ -5,7 +5,7 @@ import { faStar } from "@fortawesome/free-solid-svg-icons";
 import "../../css/study_css/MyParticipateStudy.css";
 import "../../css/mypage_css/Mypage_Scrap.css";
 
-const Study = ({ study, slide }) => {
+const ScrapStudySlide = ({ study, slide }) => {
   const { tag, author, day, title, last, created_date, id} = study;
   return (
     <li
@@ -42,4 +42,4 @@ const Study = ({ study, slide }) => {
     </li>
   );
 };
-export default Study;
+export default ScrapStudySlide;

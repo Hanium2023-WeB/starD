@@ -19,7 +19,7 @@ public class StudyController {
     private final StudyService studyService;
 
 //    @GetMapping     // [R] 스터디 게시글 전체 조회
-//    public Page<Study> getStudies(@RequestParam(value = "page", defaultValue = "1", required = false) int page) {
+//    public Page<ScrapStudySlide> getStudies(@RequestParam(value = "page", defaultValue = "1", required = false) int page) {
 //        return studyService.findAll(page);
 //    }
 

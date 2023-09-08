@@ -6,7 +6,7 @@ import "../../css/study_css/StudyOpenForm.css";
 import StudyRegion from "./StudyRegion";
 import Tag from "./Tag";
 
-const StudyInsert = ({updateStudies}) => {
+const StudyInsert = ({updateStudies, onClose}) => {
     const [dataId, setDataId] = useState(0);
     const navigate = useNavigate();
 
@@ -25,8 +25,10 @@ const StudyInsert = ({updateStudies}) => {
         startDate: "",
         endDate: "",
         description: "",
-        tag:"",
+        tag: "",
         created_date: new Date(),
+        scrap: false,
+        like: false,
     });
 
     const tagoptions = [
@@ -86,6 +88,8 @@ const StudyInsert = ({updateStudies}) => {
             tag,
             created_date,
             id: dataId,
+            scrap: false,
+            like: false,
         };
         console.log("id : " + newData.id);
         console.log("tag : " + newData.tag);
@@ -139,19 +143,21 @@ const StudyInsert = ({updateStudies}) => {
         };
 
         onInsertStudy(studyWithTags);
-        // setFormData({
-        //     title: "",
-        //     field: "",
-        //     author: "",
-        //     number: "",
-        //     onoff: "",
-        //     deadline: "",
-        //     startDate: "",
-        //     endDate: "",
-        //     tag:"",
-        //     description: "",
-        //     created_date: new Date(),
-        // });
+        setFormData({
+            title: "",
+            field: "",
+            author: "",
+            number: "",
+            onoff: "",
+            deadline: "",
+            startDate: "",
+            endDate: "",
+            tag: "",
+            description: "",
+            created_date: new Date(),
+            scrap: false,
+            like: false,
+        });
         //JSON.stringify(formData) 이렇게 안해주고 그냥 formData만 넘겨주게 되면 Object Object 가 뜸
         console.log(`formData: ${JSON.stringify(formData)}`)
         // console.log(`studies: ${JSON.stringify(studies)}`)

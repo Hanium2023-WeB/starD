@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import "../../css/mypage_css/Mypage.css";
-import Study from "./Study.js";
+import ScrapStudySlide from "./ScrapStudySlide.js";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import "../../css/study_css/MyParticipateStudy.css";
@@ -24,7 +24,7 @@ const Slide = ({ state }) => {
         <div className="sub_wrap">
         <ul className="study_list">
           {state.map((d) => (
-                <Study slide={slidePx} key={d.id} study={d}/>
+                <ScrapStudySlide slide={slidePx} key={d.id} study={d}/>
 
           ))}
         </ul>
