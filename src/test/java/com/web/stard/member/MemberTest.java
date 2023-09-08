@@ -7,6 +7,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 
 @SpringBootTest
@@ -14,6 +15,18 @@ public class MemberTest {
 
     @Autowired
     MemberService memberService;
+
+    @Test
+    @DisplayName("비밀번호 테스트")
+    public void pwTest() {
+        String pw = "final";
+
+        String encoded_pw;
+
+
+    }
+
+
 
     @Test
     @DisplayName("아이디 찾기")

@@ -51,7 +51,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
             "/checkDuplicateNickname",
             "/checkDuplicateID",
-            "/signup"
+            "/signup",
+            "/imageTest",
+            "/user/mypage/profile"
 
     };
 

@@ -146,7 +146,7 @@ const StudyInsert = ({updateStudies, onClose}) => {
         // console.log(`studies: ${JSON.stringify(studies)}`)
         //myopenstudy에 navigate로 데이터 넘기기
         e.preventDefault();
-        navigate("/myopenstudy", {state: formData});
+        // navigate("/myopenstudy", {state: formData}); // TODO 주석 제거 필요
     }, [formData, navigate]);
 
     // e.preventDefault();
@@ -167,7 +167,7 @@ const StudyInsert = ({updateStudies, onClose}) => {
                         </div>
                         <div>
                             <span>모집 인원</span>
-                            <input type="text" name="number" value={formData.number} onChange={handleInputChange}
+                            <input type="number" name="number" value={formData.number} onChange={handleInputChange}
                                    className="inputbox" placeholder="모집 인원을 입력해주세요"/>
                         </div>
                         <div>
@@ -211,7 +211,7 @@ const StudyInsert = ({updateStudies, onClose}) => {
                 <div className="study_open_detail">
                     <span>상세 내용</span>
                     <textarea value={formData.description} name="description" onChange={handleInputChange}
-                              placeholder={value}/>
+                              placeholder={value} defaultValue={value}/>
                 </div>
                 <div className="study_tag">
                     <span>스터디 태그</span>

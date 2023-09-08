@@ -43,11 +43,11 @@ public class Study extends BaseEntity {
     private String onOff;      // 온/오프/무관
 
     @NotNull @Column(name = "activity_start")
-    @DateTimeFormat(pattern = "yyyy-MM-dd kk:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime activityStart;        // 활동 시작 기간
 
     @NotNull @Column(name = "activity_deadline")
-    @DateTimeFormat(pattern = "yyyy-MM-dd kk:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime activityDeadline;     // 활동 마감 기간
 
 
@@ -56,7 +56,7 @@ public class Study extends BaseEntity {
     private LocalDateTime recruitmentStart;
 
     @NotNull @Column(name = "recruitment_deadline")
-    @DateTimeFormat(pattern = "yyyy-MM-dd kk:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime recruitmentDeadline;
 
 //    @NotNull
@@ -75,7 +75,5 @@ public class Study extends BaseEntity {
     @NotNull
     @Column(name = "view_count")
     private int viewCount;
-
-
 
 }

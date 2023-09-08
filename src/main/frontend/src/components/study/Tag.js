@@ -16,8 +16,8 @@ const Tag = () => {
             /* 요소 불러오기, 만들기*/
             const $HashWrapOuter = document.querySelector('.tag_wrapper');
 
-            /* enter 키 코드 :13 */
-            if (e.keyCode === 13 && e.target.value.trim() !== '') {
+            /* enter 키 코드 :13 -> , 키 코드 : 188 */
+            if (e.keyCode === 188 && e.target.value.trim() !== '') {
                 console.log('Enter Key 입력됨!', e.target.value);
 
                 // 새로운 해시태그를 생성하고 추가합니다.
@@ -31,7 +31,7 @@ const Tag = () => {
                 // 해시태그 목록을 화면에 표시
                 const $HashWrapInner = document.createElement('div');
                 $HashWrapInner.className = 'HashWrapInner';
-                $HashWrapInner.innerHTML = newHashTag;
+                $HashWrapInner.innerHTML = newHashTag.replace(/,/, "");
 
                 // 클릭 이벤트 처리
                 $HashWrapInner.addEventListener('click', () => {

@@ -28,4 +28,7 @@ spring:
       matching-strategy: ant_path_matcher
 
 jwt:
-  secret: VlwEyVBsYt9V7zq57TejMnVUyzblYcfPQye08f7MGVA9XkHa # TODO 아무거나 작성 ex) asdfasdf!334###%%#
+  secret: nEqw6eB4U66i25hTrRr80fG54lP546sdd23154dsdetLrt # TODO 아무거나 작성 ex) nEqw6eB4U66i25hTrRr80fG54lPetLrt
+
+file :
+  profileImagePath : C:/stard/
