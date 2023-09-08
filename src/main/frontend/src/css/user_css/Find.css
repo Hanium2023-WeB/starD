@@ -1,13 +1,13 @@
 .findwrap{
     display: flex;
-    flex-direction: column;
     justify-content: center;
 }
-.container{
+.container_findwrap{
     display: flex;
     flex-direction: column;
     width: 50%;
     justify-content: center;
+
 }
 
 .container_find {

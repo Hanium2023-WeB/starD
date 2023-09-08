@@ -74,10 +74,8 @@ const InputSubSign =()=>{
                     </div>
                 <div className="next_btn">
                     <button id="next" onClick={onClickNextBtn}>다음</button>
-                    <Link to ={"/signup"} style={{
-                        textDecoration: "none",
-                        color: "inherit",
-                    }}><button id="next" onClick={onClickSkipBtn}>건너뛰기</button></Link>
+
+                    <button id="next" onClick={onClickSkipBtn}>건너뛰기</button>
                 </div>
             </div>
             </div>
