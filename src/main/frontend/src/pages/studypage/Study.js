@@ -17,8 +17,8 @@ const Study = () => {
     const [showStudyInsert, setShowStudyInsert] = useState(false);
 
     // 각 스터디 리스트 항목의 스크랩 상태를 저장하는 배열
-    const [scrapStates, setScrapStates] = useState(studies.scrap);
-    const [likeStates, setLikeStates] = useState(studies.like);
+    const [scrapStates, setScrapStates] = useState(false);
+    const [likeStates, setLikeStates] = useState(false);
 
 
     let [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -69,18 +69,31 @@ const Study = () => {
     };
 
     // 각 스터디 리스트 항목의 스크랩 상태를 토글하는 함수
+    // const toggleScrap = (index) => {
+    //     setScrapStates(!scrapStates)
+    //     studies[index].scrap = scrapStates;
+    //     console.log("sss", studies);
+    //     console.log(index);
+    // };
     const toggleScrap = (index) => {
-        setScrapStates(!scrapStates)
-        studies[index].scrap = scrapStates;
-        console.log("sss", studies);
-        console.log(index);
+        setStudies((prevStudies) => {
+            const newStudies = [...prevStudies];
+            newStudies[index] = { ...newStudies[index], scrap: !newStudies[index].scrap };
+            return newStudies;
+        });
     };
-
+    // const toggleLike = (index) => {
+    //     setLikeStates(!likeStates)
+    //     studies[index].like = likeStates;
+    //     console.log("sss", studies);
+    //     console.log(index);
+    // };
     const toggleLike = (index) => {
-        setLikeStates(!likeStates)
-        studies[index].like = likeStates;
-        console.log("sss", studies);
-        console.log(index);
+        setStudies((prevStudies) => {
+            const newStudies = [...prevStudies];
+            newStudies[index] = { ...newStudies[index], like: !newStudies[index].like };
+            return newStudies;
+        });
     };
 
     const searchItems = [

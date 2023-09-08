@@ -81,7 +81,7 @@ const Home = () => {
     // TODO 태그 (로그인 전)
     useEffect(() => {
         axios.post("",{
-           data: tag
+            data: tag
         }).then((res)=>{
             console.log("태그 전송");
             console.log(res.data);
@@ -101,9 +101,9 @@ const Home = () => {
     };
 
     const handleontag =(e)=>{
-    console.log(e.target.value);
-    setIsTag(e.target.value);
-    //해당 태그가 있는 스터디 리스트 링크로 넘어갈 수 있도록
+        console.log(e.target.value);
+        setIsTag(e.target.value);
+        //해당 태그가 있는 스터디 리스트 링크로 넘어갈 수 있도록
     }
     return (
         <div className="main_wrap">
@@ -157,14 +157,14 @@ const Home = () => {
                     <div className="tag_wrap">
                         <p>We_B의 요즘 뜨는 태그</p>
                         <div className="Tags">
-                        {tags.map((item)=>{
-                            return(
-                                <div className={"tagname_wrap"}>
-                                    <button id={"tagbtn"} value={item.tagname} onClick={handleontag}>{item.tagname}</button>
-                                </div>
-                            )
-                        })
-                        }
+                            {tags.map((item)=>{
+                                return(
+                                    <div className={"tagname_wrap"}>
+                                        <button id={"tagbtn"} value={item.tagname} onClick={handleontag}>{item.tagname}</button>
+                                    </div>
+                                )
+                            })
+                            }
                         </div>
                     </div>
                 </div>

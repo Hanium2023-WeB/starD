@@ -25,17 +25,19 @@ const MyOpenStudy = ({ sideheader }) => {
 		}
 	}, []);
 	const toggleScrap = (index) => {
-		setScrapStates(!scrapStates)
-		studies[index].scrap = scrapStates;
-		console.log("sss", studies);
-		console.log(index);
+		setStudies((prevStudies) => {
+			const newStudies = [...prevStudies];
+			newStudies[index] = { ...newStudies[index], scrap: !newStudies[index].scrap };
+			return newStudies;
+		});
 	};
 
 	const toggleLike = (index) => {
-		setLikeStates(!likeStates)
-		studies[index].like = likeStates;
-		console.log("sss", studies);
-		console.log(index);
+		setStudies((prevStudies) => {
+			const newStudies = [...prevStudies];
+			newStudies[index] = { ...newStudies[index], like: !newStudies[index].like };
+			return newStudies;
+		});
 	};
 
 	const mypartistudylist = () => {

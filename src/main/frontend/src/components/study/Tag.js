@@ -9,6 +9,7 @@ const Tag = ({onTagChange, tags}) => {
     const [hashArr, setHashArr] = useState([]);
     let newHashTag = "";
 
+    //해시태그 변경상태관리함수
     const onChangeHashtag = (e) => {
         setHashtag(e.target.value);
     }
