@@ -42,14 +42,14 @@ const Study = () => {
     };
 
     const handleMoveToStudyInsert = (e) => {
-        if(accessToken && isLoggedInUserId) {
+        // if(accessToken && isLoggedInUserId) {    // TODO 주석 제거 필요
             e.preventDefault();
             setShowStudyInsert(!showStudyInsert);
-        }
-        else{
-            alert("로그인 해주세요");
-            navigate("/login");
-        }
+        // }
+        // else{
+        //     alert("로그인 해주세요");
+        //     navigate("/login");
+        // }
 
     };
 
