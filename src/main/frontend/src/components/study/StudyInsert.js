@@ -29,6 +29,29 @@ const StudyInsert = ({updateStudies}) => {
         created_date: new Date(),
     });
 
+    const tagoptions = [
+        { value: "웹 개발", name: "웹 개발" },
+        { value: "앱 개발", name: "앱 개발" },
+        { value: "머신러닝", name: "머신러닝" },
+        { value: "데이터 분석", name: "데이터 분석" },
+        { value: "게임 개발", name: "게임 개발" },
+        { value: "블록체인", name: "블록체인" },
+        { value: "네트워크 보안", name: "네트워크 보안" },
+        { value: "클라우드 컴퓨팅", name: "클라우드 컴퓨팅" },
+        { value: "인공지능", name: "인공지능" },
+        { value: "사이버 보안", name: "사이버 보안" },
+        { value: "소프트웨어 테스트", name: "소프트웨어 테스트" },
+        { value: "로봇공학", name: "로봇공학" },
+        { value: "사물인터넷 (IoT)", name: "사물인터넷 (IoT)" },
+        { value: "데이터베이스 관리", name: "데이터베이스 관리" },
+        { value: "UI/UX 디자인", name: "UI/UX 디자인" },
+        { value: "프로젝트 관리", name: "프로젝트 관리" },
+        { value: "빅데이터", name: "빅데이터" },
+        { value: "컴퓨터 그래픽스", name: "컴퓨터 그래픽스" },
+        { value: "자동화", name: "자동화" },
+        { value: "블로그 운영", name: "블로그 운영" },
+    ];
+
     const handleInputChange = (e) => {
         setFormData({
             ...formData,
@@ -91,7 +114,7 @@ const StudyInsert = ({updateStudies}) => {
 
         if (
             formData.title.trim() === '' ||
-            formData.field.trim() === '' ||
+            formData.field.trim() === null ||
             formData.number.trim() === '' ||
             formData.deadline.trim() === '' ||
             formData.startDate.trim() === '' ||
@@ -174,8 +197,13 @@ const StudyInsert = ({updateStudies}) => {
                     <div className="right">
                         <div>
                             <span>분야</span>
-                            <input type="text" name="field" value={formData.field} onChange={handleInputChange}
-                                   className="inputbox" placeholder="사용할 태그를 입력해주세요"/>
+                            {/*<input type="text" name="field" value={formData.field} onChange={handleInputChange}*/}
+                            {/*       className="inputbox" placeholder="사용할 태그를 입력해주세요"/>*/}
+                            <select name="field">
+                                {tagoptions.map((interest) =>
+                                    <option value={interest.value} onChange={handleInputChange}>{interest.name}</option>
+                                )}
+                            </select>
                         </div>
                         <div>
                             <span className="onoff_title">진행 방식</span>
