@@ -1,4 +1,15 @@
 const StudyInfo = ({ study, handleEditClick, handleStudyDelete }) => {
+    const showregion = () => {
+        if (study.onoff === "offline" || study.onoff === "both") {
+            return (
+            <li>
+                <span>지역</span>
+                <span>{study.sido} </span>
+                <span>{study.gugun}</span>
+            </li>
+            )
+        }
+    }
     return (
         <>
             <div className="study_header">
@@ -21,6 +32,10 @@ const StudyInfo = ({ study, handleEditClick, handleStudyDelete }) => {
                         <span>{study.field}</span>
                     </li>
                     <li>
+                        <span>스터디 태그</span>
+                        <span>{study.tag}</span>
+                    </li>
+                    <li>
                         <span>모집 중</span>
                         <span>{study.number}</span>
                     </li>
@@ -28,6 +43,7 @@ const StudyInfo = ({ study, handleEditClick, handleStudyDelete }) => {
                         <span>진행 방식</span>
                         <span>{study.onoff}</span>
                     </li>
+                    {showregion()}
                     <li>
                         <span>모집 마감일</span>
                         <span>{study.deadline}</span>

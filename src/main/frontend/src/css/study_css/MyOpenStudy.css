@@ -83,8 +83,8 @@ html {
 	border: 1px solid gray;
 	border-radius: 40px;
 	/*display: flex;*/
-	flex-direction: column;
-	justify-content: space-between;
+	/*flex-direction: column;*/
+	/*justify-content: space-between;*/
 }
 .study_list .list:nth-of-type(3n) {
 	margin-right: 0;

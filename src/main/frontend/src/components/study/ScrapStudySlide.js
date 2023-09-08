@@ -6,7 +6,7 @@ import "../../css/study_css/MyParticipateStudy.css";
 import "../../css/mypage_css/Mypage_Scrap.css";
 
 const ScrapStudySlide = ({ study, slide }) => {
-  const { tag, author, day, title, last, created_date, id} = study;
+    const {title, field, author, number, onoff,sido, gugun, deadline, startDate, endDate, description, tag, created_date, id} = study;
   return (
     <li
       className="list_detail"
@@ -16,13 +16,7 @@ const ScrapStudySlide = ({ study, slide }) => {
         transition: "0.5s ease",
       }}
     >
-      <Link
-          to={`/studydetail/${id}`}
-          style={{
-            textDecoration: "none",
-            color: "inherit",
-          }}
-      >
+
       <div className="list_header">
         <div className="list_sub_header">
           <div className="list_day">{id}일간의 우주여행</div>
@@ -32,12 +26,19 @@ const ScrapStudySlide = ({ study, slide }) => {
           <FontAwesomeIcon icon={faStar} />
         </div>
       </div>
-      <div className="list_deadline">마감일 | {created_date}</div>
-      <div className="list_title">{title}</div>
-      <div className="list_tag">{tag}</div>
-      <div className="list_onoff">{tag}</div>
-      <div className="stroke"></div>
-      <div className="list_founder">{author}</div>
+        <Link
+            to={`/studydetail/${id}`}
+            style={{
+                textDecoration: "none",
+                color: "inherit",
+            }}
+        >
+          <div className="list_deadline">마감일 | {deadline}</div>
+          <div className="list_title">{title}</div>
+          <div className="list_tag" style={{marginRight:"inherit"}}>{field}</div>
+          <div className="list_onoff" style={{marginRight:"inherit"}}>{onoff}</div>
+          <div className="stroke"></div>
+          <div className="list_founder">{author}</div>
       </Link>
     </li>
   );

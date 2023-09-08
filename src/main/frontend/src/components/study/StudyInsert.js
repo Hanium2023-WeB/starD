@@ -79,9 +79,12 @@ const StudyInsert = ({updateStudies, onClose}) => {
         const {title, field, author, number, onoff,sido, gugun, deadline, startDate, endDate, description, tag, created_date} = study;
         console.log("study::::::::::: " , tag);
         const selectedField = document.querySelector('select[name="field"]').value;
-        const selectedSido = document.querySelector('select[name="sido1"]').value;
-        const selectedGugun = document.querySelector('select[name="gugun1"]').value;
-
+        let selectedSido = "";
+        let selectedGugun = "";
+        if (onoff === "offline" || onoff === "both") {
+            selectedSido = document.querySelector('select[name="sido1"]').value;
+            selectedGugun = document.querySelector('select[name="gugun1"]').value;
+        }
         const newData = {
             title,
             field: selectedField,
