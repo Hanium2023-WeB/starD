@@ -14,6 +14,7 @@ const StudyInsert = ({updateStudies}) => {
     const [selectedOption, setSelectedOption] = useState(null);
     const [studies, setStudies] = useState([]);
     const value = "*스터디 주제: \n*스터디 목표: \n*예상 스터디 일정(횟수): \n*예상 커리큘럼 간략히: \n*스터디 소개와 개설 이유: \n*스터디 관련 주의사항: ";
+    const [tags, setTags] = useState([]);
     const [formData, setFormData] = useState({
         title: "",
         field: "",
@@ -48,6 +49,7 @@ const StudyInsert = ({updateStudies}) => {
 
     const onInsertStudy = useCallback((study) => {
         const {title, field, author, number, onoff, deadline, startDate, endDate, description, tag, created_date} = study;
+        console.log("study::::::::::: " , tag);
         const newData = {
             title,
             field,
@@ -63,6 +65,7 @@ const StudyInsert = ({updateStudies}) => {
             id: dataId,
         };
         console.log("id : " + newData.id);
+        console.log("tag : " + newData.tag);
         setStudies((prevStudies) => [...prevStudies, newData]);
         const updatedStudies = [...studies, newData];
         localStorage.setItem("studies", JSON.stringify(updatedStudies));
@@ -71,10 +74,8 @@ const StudyInsert = ({updateStudies}) => {
         setDataId((prevDataId) => prevDataId + 1);
     }, [studies, dataId]);
 
-    const handleKeyPress = (e) => {
-        if (e.key === "Enter") {
-            // e.preventDefault(); // 엔터 키 이벤트를 기본 동작으로 전파하지 않도록 방지
-        }
+    const handleTagChange = (selectedTag) => {
+        setTags((prevTags) => [...prevTags, selectedTag]);
     };
 
     useEffect(() => {
@@ -108,27 +109,33 @@ const StudyInsert = ({updateStudies}) => {
             return; // 창이 넘어가지 않도록 중단
         }
 
-        onInsertStudy(formData);
-        setFormData({
-            title: "",
-            field: "",
-            author: "",
-            number: "",
-            onoff: "",
-            deadline: "",
-            startDate: "",
-            endDate: "",
-            tag:"",
-            description: "",
-            created_date: new Date(),
-        });
+        const tagsString = tags.toString();
+        const studyWithTags = {
+            ...formData,
+            tag: tagsString.replace(/,/, "") // Tag 컴포넌트에서 전달된 태그를 사용
+        };
+
+        onInsertStudy(studyWithTags);
+        // setFormData({
+        //     title: "",
+        //     field: "",
+        //     author: "",
+        //     number: "",
+        //     onoff: "",
+        //     deadline: "",
+        //     startDate: "",
+        //     endDate: "",
+        //     tag:"",
+        //     description: "",
+        //     created_date: new Date(),
+        // });
         //JSON.stringify(formData) 이렇게 안해주고 그냥 formData만 넘겨주게 되면 Object Object 가 뜸
         console.log(`formData: ${JSON.stringify(formData)}`)
         // console.log(`studies: ${JSON.stringify(studies)}`)
         //myopenstudy에 navigate로 데이터 넘기기
         e.preventDefault();
         navigate("/myopenstudy", {state: formData});
-    }, [formData, navigate]);
+    }, [formData, navigate, tags, onInsertStudy]);
 
     // e.preventDefault();
     // // 여기서 formData를 사용하여 데이터 처리하거나 API 호출 등을 수행합니다.
@@ -148,7 +155,7 @@ const StudyInsert = ({updateStudies}) => {
                         </div>
                         <div>
                             <span>모집 인원</span>
-                            <input type="text" name="number" value={formData.number} onChange={handleInputChange}
+                            <input type="number" name="number" value={formData.number} onChange={handleInputChange}
                                    className="inputbox" placeholder="모집 인원을 입력해주세요"/>
                         </div>
                         <div>
@@ -196,7 +203,7 @@ const StudyInsert = ({updateStudies}) => {
                 </div>
                 <div className="study_tag">
                     <span>스터디 태그</span>
-                    <Tag/>
+                    <Tag onTagChange={handleTagChange} tags={tags}/>
                 </div>
                 <div className="btn">
                     <input type="submit" value="모집하기" className="recruit_btn"/>

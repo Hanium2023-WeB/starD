@@ -9,6 +9,7 @@ import LikeButton from "../../components/repeat_etc/LikeButton";
 
 import "../../css/study_css/MyOpenStudy.css";
 import "../../css/study_css/StudyDetail.css";
+import SearchBar from "../../SearchBar";
 
 const Study = () => {
     const navigate = useNavigate();
@@ -74,6 +75,14 @@ const Study = () => {
         setLikeStates(newLikeStates);
     };
 
+    const searchItems = [
+        "back-end",
+        "front-end",
+        "cloud",
+        "aws",
+        "framework"
+    ]
+
     return (
         <div>
             <Header showSideCenter={true} />
@@ -87,6 +96,7 @@ const Study = () => {
                         </button>
                     )}
                 </div>
+                <SearchBar searchItems={searchItems}/>
                 <div className="study">
                     {showStudyInsert && (
                         <StudyInsert
