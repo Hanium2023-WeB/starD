@@ -115,6 +115,7 @@ public class StudyController {
 
     @PostMapping       // [C] 스터디 게시글 생성
     public Study createStudy(@RequestBody StudyDto studyDto) {
+        System.out.println(studyDto);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return studyService.createStudy(studyDto, authentication);
     }

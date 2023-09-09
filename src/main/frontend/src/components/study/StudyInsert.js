@@ -7,18 +7,19 @@ import StudyRegion from "./StudyRegion";
 import Tag from "./Tag";
 import axios from "axios";
 
-
-//스터디 추가(updateStudies함수와 onClose함수를 study.js에서 받아옴
 const StudyInsert = ({updateStudies, onClose}) => {
 
     const [dataId, setDataId] = useState(0);
     const navigate = useNavigate();
 
-    const [showSelect, setShowSelect] = useState(false);
+    const [showSelect, setShowSelect] = useState(false); //온 오프 선택 지역 컴포넌트 호출 여부 관리 상태
     const [selectedOption, setSelectedOption] = useState(null);
     const [studies, setStudies] = useState([]);
     const value = "*스터디 주제: \n*스터디 목표: \n*예상 스터디 일정(횟수): \n*예상 커리큘럼 간략히: \n*스터디 소개와 개설 이유: \n*스터디 관련 주의사항: ";
-    const [tags, setTags] = useState([]); //태그상태
+    const [tags, setTags] = useState([]);
+    const [city, setCity]= useState("");
+    const[district, setDistrict] = useState("");
+    const [current, setCurrent] = useState("Recruiting");
     //폼 데이터
     const [formData, setFormData] = useState({
         title: "",
@@ -34,10 +35,12 @@ const StudyInsert = ({updateStudies, onClose}) => {
         description: "",
         tag: "",
         created_date: new Date(),
+        current:current,
         scrap: false,
         like: false,
-    });
 
+    });
+//관심분야 옵션들
     const tagoptions = [
         { value: "웹 개발", name: "웹 개발" },
         { value: "앱 개발", name: "앱 개발" },
@@ -61,14 +64,32 @@ const StudyInsert = ({updateStudies, onClose}) => {
         { value: "블로그 운영", name: "블로그 운영" },
     ];
 
+    //입력데이터 상태관리
     const handleInputChange = (e) => {
         setFormData({
             ...formData,
             [e.target.name]: e.target.value,
         })
     };
+    //시,도 추가
+    const handleRegionCityChange = (newCity) => {
+        setCity(newCity);
+        setFormData({
+       ...formData,
+            sido : newCity,
+      })
+  };
+    //구,군 추가
+    const handleRegionDistrictChange = (newDistrict) => {
+        setDistrict(newDistrict);
+        setFormData({
+            ...formData,
+            gugun : newDistrict,
+        })
+    };
 
 
+//on off 선택 라디오 버튼
     const handleRadioChange = (e) => {
         const selectedValue = e.target.value;
         setSelectedOption(selectedValue);
@@ -80,7 +101,7 @@ const StudyInsert = ({updateStudies, onClose}) => {
     }
 
     const onInsertStudy = useCallback((study) => {
-        const {title, field, author, number, onoff,sido, gugun, deadline, startDate, endDate, description, tag, created_date} = study;
+        const {title, field, author, number, onoff,sido, gugun, deadline, startDate, endDate, description, tag, created_date, current} = study;
         console.log("study::::::::::: " , tag);
         const selectedField = document.querySelector('select[name="field"]').value;
 
@@ -106,6 +127,7 @@ const StudyInsert = ({updateStudies, onClose}) => {
             description,
             tag,
             created_date,
+            current:current,
             id: dataId,
             scrap: false,
             like: false,
@@ -129,12 +151,8 @@ const StudyInsert = ({updateStudies, onClose}) => {
     const handleTagChange = (selectedTag) => {
         setTags(selectedTag); // 변경된 부분: 태그 정보를 배열로 변환하여 설정
     };
-    // const onRegionChange=(selectedRegion)=>{
-    //     setRegion(selectedRegion);
-    // }
 
 
-    //여기서 한번 콘솔 찍어보자 dataId가 뭘 의미하는지
     useEffect(() => {
         const storedStudies = JSON.parse(localStorage.getItem("studies") || "[]");
         setStudies(storedStudies);
@@ -168,7 +186,7 @@ const StudyInsert = ({updateStudies, onClose}) => {
 
         // const tagsArray = tags.map((tag) => tag.trim());
         // const tagsJson = JSON.stringify(tagsArray);
-//태그 받아오고 나서 합친 함수같음 >> 가장 최신 버전으로 업데이트 되는듯
+
         const studyWithTags = {
             ...formData,
             tag: tags.join(','), // 변경된 부분: 태그 정보를 쉼표로 구분된 문자열로 저장
@@ -193,6 +211,7 @@ const StudyInsert = ({updateStudies, onClose}) => {
                 activityDeadline:studyWithTags.endDate,
                 content: studyWithTags.description,
                 tags: studyWithTags.tag,
+                current: studyWithTags.current,
                 // scrap: studies.scrap,
                 // like:studies.like,
             },
@@ -226,6 +245,7 @@ const StudyInsert = ({updateStudies, onClose}) => {
     // console.log('Form data submitted:', formData);
     // navigate("/myopenstudy", {state: formData});
 
+    //스터디 개설 폼
     const studyinsertform = () => {
         return (
             <form className="study_open_form" onSubmit={handleSubmit}>
@@ -259,7 +279,7 @@ const StudyInsert = ({updateStudies, onClose}) => {
                             <span>분야</span>
                             {/*<input type="text" name="field" value={formData.field} onChange={handleInputChange}*/}
                             {/*       className="inputbox" placeholder="사용할 태그를 입력해주세요"/>*/}
-                            <select name="field">
+                            <select name="field" value={formData.field}>
                                 {tagoptions.map((interest) =>
                                     <option value={interest.value} onChange={handleInputChange}>{interest.name}</option>
                                 )}
@@ -272,7 +292,7 @@ const StudyInsert = ({updateStudies, onClose}) => {
                                 <input type="radio" value="offline" name="onoff" onChange={handleRadioChange}/>오프라인
                                 <input type="radio" value="both" name="onoff" onChange={handleRadioChange}/>무관
                                 {showSelect && (
-                                    <StudyRegion />
+                                    <StudyRegion formData={formData} city={formData?.sido} district={formData?.gugun}  handleRegionCityChange={handleRegionCityChange} handleRegionDistrictChange={handleRegionDistrictChange} />
                                 )}
                             </div>
                         </div>
