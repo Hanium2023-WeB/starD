@@ -23,20 +23,22 @@ public class ToDoController {
 
     /* 사용자 TO DO 조회 (전체) */
     @GetMapping("/all")
-    public List<Assignee> getAllToDoListByMember(Authentication authentication) {
-        return todoService.getAllToDoListByMember(authentication);
+    public List<Assignee> getAllToDoListByMember(@RequestParam int year, @RequestParam int month,
+                                                 Authentication authentication) {
+        return todoService.getAllToDoListByMember(year, month, authentication);
     }
 
     /* 사용자 TO DO 조회 (스터디별) */
     @GetMapping("/user/{studyId}")
-    public List<Assignee> getToDoListByMemberAndStudy(@PathVariable Long studyId, Authentication authentication) {
-        return todoService.getToDoListByMemberAndStudy(authentication, studyId);
+    public List<Assignee> getToDoListByMemberAndStudy(@PathVariable Long studyId, @RequestParam int year,
+                                                      @RequestParam int month, Authentication authentication) {
+        return todoService.getToDoListByMemberAndStudy(studyId, year, month, authentication);
     }
 
     /* 스터디 내 모든 TO DO 조회 */
     @GetMapping("/{studyId}")
-    public List<ToDo> getAllToDoListByStudy(@PathVariable Long studyId) {
-        return todoService.getAllToDoListByStudy(studyId);
+    public List<ToDo> getAllToDoListByStudy(@PathVariable Long studyId, @RequestParam int year, @RequestParam int month) {
+        return todoService.getAllToDoListByStudy(studyId, year, month);
     }
 
 
@@ -44,7 +46,7 @@ public class ToDoController {
     @PostMapping
     public ToDo registerTodo(@RequestParam Long studyId, @RequestBody ToDo toDo,
                              @RequestParam String assigneeStr, Authentication authentication) {
-        // TODO 권한 체크?
+        // TODO : 권한 확인 (스터디원인지)
 
         return todoService.registerTodo(studyId, toDo, assigneeStr);
     }
@@ -53,7 +55,7 @@ public class ToDoController {
     @PostMapping("/{toDoId}")
     public ToDo updateTodo(@PathVariable Long toDoId, @RequestBody ToDo updateToDo,
                            @RequestParam String assigneeStr, Authentication authentication) {
-        // TODO 권한 확인 (스터디원인지)
+        // TODO : 권한 확인 (스터디원인지)
 
         return todoService.updateTodo(toDoId, updateToDo, assigneeStr);
     }
@@ -61,7 +63,7 @@ public class ToDoController {
     /* TO DO 삭제 */
     @DeleteMapping("/{toDoId}")
     public boolean deleteTodo(@PathVariable Long toDoId, Authentication authentication) {
-        // TODO 권한 확인 (스터디원인지)
+        // TODO : 권한 확인 (스터디원인지)
 
         return todoService.deleteTodo(toDoId);
     }

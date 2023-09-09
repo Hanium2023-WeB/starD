@@ -13,6 +13,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -53,31 +55,38 @@ public class TodoService {
     }
 
     /* 사용자 TO DO 조회 (전체) */
-    public List<Assignee> getAllToDoListByMember(Authentication authentication) {
+    public List<Assignee> getAllToDoListByMember(int year, int month, Authentication authentication) {
         Member member = memberService.find(authentication.getName());
 
-        // TODO 월 단위??
+        // 월 단위로 검색
+        LocalDateTime start = LocalDateTime.of(year, month, 1, 0, 0, 0);
+        LocalDateTime end = LocalDateTime.of(year, month, YearMonth.of(year, month).lengthOfMonth(),
+                23, 59, 59);
 
-        return assigneeRepository.findAllByMember(member);
+        return assigneeRepository.findAllByMemberAndToDoDueDateBetween(member, start, end);
     }
 
     /* 사용자 TO DO 조회 (스터디별) */
-    public List<Assignee> getToDoListByMemberAndStudy(Authentication authentication, Long studyId) {
+    public List<Assignee> getToDoListByMemberAndStudy(Long studyId, int year, int month, Authentication authentication) {
         Member member = memberService.find(authentication.getName());
         Study study = studyService.findById(studyId);
 
-        // TODO 월 단위??
+        LocalDateTime start = LocalDateTime.of(year, month, 1, 0, 0, 0);
+        LocalDateTime end = LocalDateTime.of(year, month, YearMonth.of(year, month).lengthOfMonth(),
+                23, 59, 59);
 
-        return assigneeRepository.findAllByMemberAndToDoStudy(member, study);
+        return assigneeRepository.findAllByMemberAndToDoStudyAndToDoDueDateBetween(member, study, start, end);
     }
 
     /* 스터디 내 모든 TO DO 조회 */
-    public List<ToDo> getAllToDoListByStudy(Long studyId) {
+    public List<ToDo> getAllToDoListByStudy(Long studyId, int year, int month) {
         Study study = studyService.findById(studyId);
 
-        // TODO 월 단위??
+        LocalDateTime start = LocalDateTime.of(year, month, 1, 0, 0, 0);
+        LocalDateTime end = LocalDateTime.of(year, month, YearMonth.of(year, month).lengthOfMonth(),
+                23, 59, 59);
 
-        List<ToDo> toDoList = todoRepository.findAllByStudy(study);
+        List<ToDo> toDoList = todoRepository.findAllByStudyAndDueDateBetween(study, start, end);
 
         for (ToDo t : toDoList) {
             List<Assignee> assignees = getAssignee(t.getId());
