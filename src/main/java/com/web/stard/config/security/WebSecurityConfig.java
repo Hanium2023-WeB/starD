@@ -53,7 +53,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             "/checkDuplicateID",
             "/signup",
             "/imageTest",
-            "/user/mypage/profile"
+            "/user/mypage/profile",
 
     };
 
