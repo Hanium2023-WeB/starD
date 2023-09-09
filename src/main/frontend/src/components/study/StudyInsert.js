@@ -7,6 +7,8 @@ import StudyRegion from "./StudyRegion";
 import Tag from "./Tag";
 import axios from "axios";
 
+
+//스터디 추가(updateStudies함수와 onClose함수를 study.js에서 받아옴
 const StudyInsert = ({updateStudies, onClose}) => {
     const [dataId, setDataId] = useState(0);
     const navigate = useNavigate();
@@ -15,7 +17,8 @@ const StudyInsert = ({updateStudies, onClose}) => {
     const [selectedOption, setSelectedOption] = useState(null);
     const [studies, setStudies] = useState([]);
     const value = "*스터디 주제: \n*스터디 목표: \n*예상 스터디 일정(횟수): \n*예상 커리큘럼 간략히: \n*스터디 소개와 개설 이유: \n*스터디 관련 주의사항: ";
-    const [tags, setTags] = useState([]);
+    const [tags, setTags] = useState([]); //태그상태
+    //폼 데이터
     const [formData, setFormData] = useState({
         title: "",
         field: "",
@@ -57,12 +60,17 @@ const StudyInsert = ({updateStudies, onClose}) => {
         { value: "블로그 운영", name: "블로그 운영" },
     ];
 
+
     const handleInputChange = (e) => {
         setFormData({
             ...formData,
             [e.target.name]: e.target.value,
         })
+        console.log("handleDate: ", formData);
     };
+    const handleClickInterest = (e)=>{
+        console.log("interest: ",e.target.value);
+    }
 
 
     const handleRadioChange = (e) => {
@@ -74,7 +82,7 @@ const StudyInsert = ({updateStudies, onClose}) => {
         })
         setShowSelect(selectedValue === "offline" || selectedValue === "both");
     }
-
+//스터디 추가 함수
     const onInsertStudy = useCallback((study) => {
         const {title, field, author, number, onoff,sido, gugun, deadline, startDate, endDate, description, tag, created_date} = study;
         console.log("study::::::::::: " , tag);
@@ -125,6 +133,7 @@ const StudyInsert = ({updateStudies, onClose}) => {
     // }
 
 
+    //여기서 한번 콘솔 찍어보자 dataId가 뭘 의미하는지
     useEffect(() => {
         const storedStudies = JSON.parse(localStorage.getItem("studies") || "[]");
         setStudies(storedStudies);
@@ -158,13 +167,15 @@ const StudyInsert = ({updateStudies, onClose}) => {
 
         // const tagsArray = tags.map((tag) => tag.trim());
         // const tagsJson = JSON.stringify(tagsArray);
-
+//태그 받아오고 나서 합친 함수같음 >> 가장 최신 버전으로 업데이트 되는듯
         const studyWithTags = {
             ...formData,
             tag: tags.join(','), // 변경된 부분: 태그 정보를 쉼표로 구분된 문자열로 저장
         };
-
+        console.log("studyWithTags:",studyWithTags);
         onInsertStudy(studyWithTags);
+
+//이거는 어디에 쓰이는지 있어도 없어도 그만인지
         setFormData({
             title: "",
             field: "",
@@ -260,9 +271,9 @@ const StudyInsert = ({updateStudies, onClose}) => {
                             <span>분야</span>
                             {/*<input type="text" name="field" value={formData.field} onChange={handleInputChange}*/}
                             {/*       className="inputbox" placeholder="사용할 태그를 입력해주세요"/>*/}
-                            <select name="field">
+                            <select name="field" onChange={handleInputChange} value={formData.field}>
                                 {tagoptions.map((interest) =>
-                                    <option value={interest.value} onChange={handleInputChange}>{interest.name}</option>
+                                    <option name={interest.name} value={interest.value}>{interest.value}</option>
                                 )}
                             </select>
                         </div>

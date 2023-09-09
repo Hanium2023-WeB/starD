@@ -65,7 +65,10 @@ const MyOpenStudy = ({ sideheader }) => {
 									<div className="list_day">
 										{d.id}일간의 우주여행
 									</div>
-									<div className="list_status">진행중</div>
+									{d.current==="Recruiting"?(
+										<div className="list_status">모집중</div>
+									):(<div className="list_status">진행중</div>)}
+
 								</div>
 								<div className="list_btn">
 									<div className="list_like">

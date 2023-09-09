@@ -69,7 +69,7 @@ export function RegionSelectBOX (){
         saveSelectedGugunVal("");
     }
     function  saveSelectedGugunVal(selectedGugun){
-        localStorage.setItem("selectedGugun", selectedGugun);
+        localStorage.setItem("selectedRegionGugun", selectedGugun);
     }
     function loadSelectedValues() {
         const selectedSido = localStorage.getItem("selectedSido");

@@ -116,9 +116,9 @@ const Home = () => {
             {isLogin && user ?
                 <div className="dashboard">
                     <div className="dashboard_detail">
-                        대시보드 넣을 자리 width:650?
+                        참여하고있는 스터디 보여주기
                         <br/>
-                        할 일의 완료 정도에 따라서 대시보드의 화면이 바뀜
+                     클릭 시 팀블로그로 넘어가도록
                     </div>
                     <div className="dashboard_todo">
 
