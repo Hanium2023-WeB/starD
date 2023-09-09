@@ -8,6 +8,7 @@ import Tag from "./Tag";
 import axios from "axios";
 
 const StudyInsert = ({updateStudies, onClose}) => {
+
     const [dataId, setDataId] = useState(0);
     const navigate = useNavigate();
 
@@ -79,6 +80,7 @@ const StudyInsert = ({updateStudies, onClose}) => {
         const {title, field, author, number, onoff,sido, gugun, deadline, startDate, endDate, description, tag, created_date} = study;
         console.log("study::::::::::: " , tag);
         const selectedField = document.querySelector('select[name="field"]').value;
+
         let selectedSido="";
         let selectedGugun = "";
         if(showSelect) {
@@ -86,6 +88,7 @@ const StudyInsert = ({updateStudies, onClose}) => {
             const selectedSido = document.querySelector('select[name="sido1"]').value;
             const selectedGugun = document.querySelector('select[name="gugun1"]').value;
         }
+
         const newData = {
             title,
             field: selectedField,
@@ -115,6 +118,9 @@ const StudyInsert = ({updateStudies, onClose}) => {
         updateStudies(updatedStudies);
 
         setDataId((prevDataId) => prevDataId + 1);
+
+        return newData;
+
     }, [studies, dataId]);
 
     const handleTagChange = (selectedTag) => {
@@ -164,44 +170,32 @@ const StudyInsert = ({updateStudies, onClose}) => {
             tag: tags.join(','), // 변경된 부분: 태그 정보를 쉼표로 구분된 문자열로 저장
         };
 
-        onInsertStudy(studyWithTags);
-        setFormData({
-            title: "",
-            field: "",
-            author: "",
-            number: "",
-            onoff: "",
-            sido:"",
-            gugun:"",
-            deadline: "",
-            startDate: "",
-            endDate: "",
-            tag: "",
-            description: "",
-            created_date: new Date(),
-            scrap: false,
-            like: false,
-        });
+        setFormData(onInsertStudy(studyWithTags));
+        console.log(`formData: ${JSON.stringify(formData)}`)
+
+        const accessToken = localStorage.getItem('accessToken');
+
         //TODO 스터디 개설 서버 전송 (스크랩, 공감 제외)
-        const response = axios.post("url",
+        const response = axios.post("http://localhost:8080/api/v2/studies",
             {
-                title:studies.title,
-                field:studies.field,
-                author:"",
-                number: studies.number,
-                onoff:studies.onoff,
-                sido:studies.sido,
-                gugun:studies.gugun,
-                deadline: studies.deadline,
-                startDate: studies.startDate,
-                endDate:studies.endDate,
-                description: studies.description,
-                tag: studies.tag,
-                created_date: studies.created_date,
+                title:studyWithTags.title,
+                field:studyWithTags.field,
+                capacity: studyWithTags.number,
+                onOff:studyWithTags.onoff,
+                city:studyWithTags.sido,
+                district:studyWithTags.gugun,
+                recruitmentDeadline: studyWithTags.deadline,
+                activityStart: studyWithTags.startDate,
+                activityDeadline:studyWithTags.endDate,
+                content: studyWithTags.description,
+                tags: studyWithTags.tag,
                 // scrap: studies.scrap,
                 // like:studies.like,
-
-            })
+            },
+            {withCredentials: true,
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`
+                }})
             .then((res)=>{
                 console.log("전송 성공");
                 console.log(res.data);
@@ -213,12 +207,13 @@ const StudyInsert = ({updateStudies, onClose}) => {
             })
 
         //JSON.stringify(formData) 이렇게 안해주고 그냥 formData만 넘겨주게 되면 Object Object 가 뜸
-        console.log("Dsdssd",response);
-        console.log(`formData: ${JSON.stringify(formData)}`)
+        console.log("response : ",response);
+        // console.log(`formData: ${JSON.stringify(formData)}`)
         // console.log(`studies: ${JSON.stringify(studies)}`)
         //myopenstudy에 navigate로 데이터 넘기기
+
         e.preventDefault();
-        navigate("/myopenstudy", {state: formData});
+        navigate("/myopenstudy", {state: formData});     // TODO 주석 제거
     }, [formData, navigate, tags, onInsertStudy]);
 
     // e.preventDefault();

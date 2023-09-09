@@ -7,6 +7,7 @@ import com.web.stard.service.StudyService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,6 +18,14 @@ import java.util.List;
 public class StudyController {
 
     private final StudyService studyService;
+
+
+    @PostMapping("/test")
+    public void test (@RequestBody StudyDto studyDto) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println("test 컨트롤러 진입 : " + authentication.getPrincipal());
+        System.out.println(studyDto);
+    }
 
 //    @GetMapping     // [R] 스터디 게시글 전체 조회
 //    public Page<ScrapStudySlide> getStudies(@RequestParam(value = "page", defaultValue = "1", required = false) int page) {
@@ -105,9 +114,11 @@ public class StudyController {
     }
 
     @PostMapping       // [C] 스터디 게시글 생성
-    public Study createStudy(StudyDto studyDto, Authentication authentication){
+    public Study createStudy(@RequestBody StudyDto studyDto) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return studyService.createStudy(studyDto, authentication);
     }
+
 
     @DeleteMapping("/{id}")      // [D] 스터디 게시글 삭제
     public void deleteStudy(@PathVariable long id, Authentication authentication){

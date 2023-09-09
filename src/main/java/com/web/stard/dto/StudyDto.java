@@ -35,8 +35,7 @@ public class StudyDto implements Serializable {
     @NotNull
     private int capacity;
 
-    @NotNull
-    private String recruiter;
+    private String field; // 분야
 
     private String city;    // 시
 
@@ -48,30 +47,27 @@ public class StudyDto implements Serializable {
     private String onOff;      // 온/오프/무관
 
     @NotNull
-    @DateTimeFormat(pattern = "yyyy-MM-dd kk:mm:ss")
-    private LocalDateTime activityStart;        // 활동 시작 기간
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate activityStart;        // 활동 시작 기간
 
     @NotNull
-    @DateTimeFormat(pattern = "yyyy-MM-dd kk:mm:ss")
-    private LocalDateTime activityDeadline;     // 활동 마감 기간
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate activityDeadline;     // 활동 마감 기간
 
 //    @NotNull
 //    @DateTimeFormat(pattern = "yyyy-MM-dd")
 //    private LocalDate recruitment_start;
 
     @NotNull
-    @DateTimeFormat(pattern = "yyyy-MM-dd kk:mm:ss")
-    private LocalDateTime recruitmentDeadline;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate recruitmentDeadline;
 
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    private RecruitStatus recruitStatus;  // 스터디 모집 현황 (모집 중, 모집 완료)
-
-    @Enumerated(EnumType.STRING)
-    private ProgressStatus progressStatus;  // 스터디 진행 상황 (진행 중, 진행 완료, 중단 등)
-
-    @NotNull
-    private int view_count;
-
+//    @Enumerated(EnumType.STRING)
+//    private RecruitStatus recruitStatus;  // 스터디 모집 현황 (모집 중, 모집 완료)
+//
+//    @Enumerated(EnumType.STRING)
+//    private ProgressStatus progressStatus;  // 스터디 진행 상황 (진행 중, 진행 완료, 중단 등)
+//
+//    private int view_count;
 
 }

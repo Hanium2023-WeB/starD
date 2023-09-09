@@ -1,6 +1,7 @@
 package com.web.stard.service;
 
 
+import com.web.stard.domain.Member;
 import com.web.stard.domain.RecruitStatus;
 import com.web.stard.domain.Study;
 import com.web.stard.dto.StudyDto;
@@ -22,6 +23,7 @@ import java.util.Optional;
 public class StudyService {
 
     private StudyRepository studyRepository;
+    private MemberService memberService;
 
     public Study findById(Long id){
         Optional<Study> result = studyRepository.findById(id);
@@ -146,16 +148,15 @@ public class StudyService {
     @Transactional
     public Study createStudy(StudyDto studyDto, Authentication authentication){
 
-        // TODO 로그인된 사용자인지 확인할 코드 추가
-//        String userId = authentication.getName();  // TODO 로그인된 사용자의 닉네임 가져오기
-//        if(userId == null)
-//            return null;
+        String userId = authentication.getName();
+
+        Member member = memberService.find(userId);
 
         Study result = Study.builder()
                 .title(studyDto.getTitle())
                 .content(studyDto.getContent())
                 .capacity(studyDto.getCapacity())
-                .recruiter(studyDto.getRecruiter())     // TODO 로그인된 사용자의 닉네임 setter
+                .recruiter(member)
                 .city(studyDto.getCity())
                 .district(studyDto.getDistrict())
                 .tags(studyDto.getTags())
@@ -164,8 +165,8 @@ public class StudyService {
                 .activityDeadline(studyDto.getActivityDeadline())
                 .recruitmentDeadline(studyDto.getRecruitmentDeadline())
                 .viewCount(0)
-                .progressStatus(studyDto.getProgressStatus())
-                .recruitStatus(studyDto.getRecruitStatus())
+                .progressStatus(null)
+                .recruitStatus(RecruitStatus.valueOf("RECRUITING"))
                 .build();
 
         studyRepository.save(result);
@@ -201,7 +202,7 @@ public class StudyService {
         result.setActivityStart(studyDto.getActivityStart());
         result.setActivityDeadline(studyDto.getActivityDeadline());
         result.setRecruitmentDeadline(studyDto.getRecruitmentDeadline());
-        result.setRecruitStatus(studyDto.getRecruitStatus());
+//        result.setRecruitStatus(studyDto.getRecruitStatus());
 
         return result;
     }
