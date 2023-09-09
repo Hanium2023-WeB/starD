@@ -82,9 +82,9 @@ html {
 	padding: 30px;
 	border: 1px solid gray;
 	border-radius: 40px;
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
+	/*display: flex;*/
+	/*flex-direction: column;*/
+	/*justify-content: space-between;*/
 }
 .study_list .list:nth-of-type(3n) {
 	margin-right: 0;
@@ -110,7 +110,16 @@ html {
 	padding: 7px 10px;
 	border-radius: 50px;
 }
+.study_list .list_btn{
+	display: flex;
+}
 .study_list .list_like {
+	font-size: 17px;
+	color: #fff700;
+	cursor: pointer;
+	margin-right: 10px;
+}
+.study_list .list_scrap {
 	font-size: 17px;
 	color: #fff700;
 	cursor: pointer;

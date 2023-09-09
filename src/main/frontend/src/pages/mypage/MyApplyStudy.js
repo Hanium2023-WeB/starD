@@ -11,11 +11,15 @@ const MyApplyStudy = ({ sideheader }) => {
 
     useEffect(() => {
         const storedStudies = localStorage.getItem("studies");
-        if (storedStudies) {
+        if (storedStudies){
             const parsedStudies = JSON.parse(storedStudies);
             const applyStudies = parsedStudies.filter(study => study.reason);
             setStudies(applyStudies);
         }
+        console.log(studies);
+        let ApplyStudies=[];
+        ApplyStudies = localStorage.setItem("ApplyStudies", JSON.stringify(studies));
+        console.log(ApplyStudies);
     }, []);
 
     const myapplystudylist = () => {
@@ -45,7 +49,7 @@ const MyApplyStudy = ({ sideheader }) => {
                                 마감일 | {d.deadline}
                             </div>
                             <div className="list_title">{d.title}</div>
-                            <div className="list_tag">{d.tag}</div>
+                            <div className="list_tag">{d.field}</div>
                             <div className="list_onoff">{d.onoff}</div>
                             <div className="stroke"></div>
                             <div className="list_founder">{d.author}</div>

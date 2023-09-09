@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import RealEstate from "../info/RealEstate";
+import StudyRegion from "./StudyRegion";
 
 const StudyEdit = ({study, onUpdateStudy, onCancel}) => {
     const [updatedStudy, setUpdatedStudy] = useState(study);
@@ -61,8 +62,9 @@ const StudyEdit = ({study, onUpdateStudy, onCancel}) => {
                             <div className="onoff">
                                 <input type="radio" value="online" name="onoff" onChange={handleRadioChange}/>온라인
                                 <input type="radio" value="offline" name="onoff" onChange={handleRadioChange}/>오프라인
+                                <input type="radio" value="offline" name="onoff" onChange={handleRadioChange}/>무관
                                 {showSelect && (
-                                    <RealEstate/>
+                                    <StudyRegion/>
                                 )}
                             </div>
                         </div>

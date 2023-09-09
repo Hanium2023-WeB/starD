@@ -2,10 +2,12 @@ import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import Header from "../../components/repeat_etc/Header";
 import "../../css/study_css/StudyDetail.css";
+import "../../css/comment_css/Comment.css";
 
 import StudyInfo from "../../components/study/StudyInfo";
 import StudyEdit from "../../components/study/StudyEdit";
 import Backarrow from "../../components/repeat_etc/Backarrow";
+import Comment from "../../components/comment/Comment";
 
 const StudyDetail = ({ sideheader }) => {
 	const { id } = useParams();
@@ -84,7 +86,7 @@ const StudyDetail = ({ sideheader }) => {
 								<StudyInfo study={study} handleEditClick={handleEditClick} handleStudyDelete={handleStudyDelete}/>
 								<div className="study_intro">
 									<div>스터디 소개</div>
-									<div>{study.description}</div>
+									<div dangerouslySetInnerHTML={{ __html: study.description.replace(/\n/g, "<br>") }} />
 								</div>
 								{isApply && (
 									<div className="study_apply_reason">
@@ -107,6 +109,9 @@ const StudyDetail = ({ sideheader }) => {
 						))}
 					</div>
 				)}
+			</div>
+			<div className="comment_container">
+				<Comment />
 			</div>
 		</div>
 	);

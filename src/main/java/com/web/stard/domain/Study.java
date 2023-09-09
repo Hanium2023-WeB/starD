@@ -31,7 +31,9 @@ public class Study extends BaseEntity {
     private int capacity;
 
     @NotNull
-    private String recruiter;
+    @OneToOne
+    @JoinColumn(name = "member_id")
+    private Member recruiter;
 
     private String city;    // 시
 
@@ -43,12 +45,12 @@ public class Study extends BaseEntity {
     private String onOff;      // 온/오프/무관
 
     @NotNull @Column(name = "activity_start")
-    @DateTimeFormat(pattern = "yyyy-MM-dd kk:mm:ss")
-    private LocalDateTime activityStart;        // 활동 시작 기간
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate activityStart;        // 활동 시작 기간
 
     @NotNull @Column(name = "activity_deadline")
-    @DateTimeFormat(pattern = "yyyy-MM-dd kk:mm:ss")
-    private LocalDateTime activityDeadline;     // 활동 마감 기간
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate activityDeadline;     // 활동 마감 기간
 
 
     @CreatedDate
@@ -56,8 +58,8 @@ public class Study extends BaseEntity {
     private LocalDateTime recruitmentStart;
 
     @NotNull @Column(name = "recruitment_deadline")
-    @DateTimeFormat(pattern = "yyyy-MM-dd kk:mm:ss")
-    private LocalDateTime recruitmentDeadline;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate recruitmentDeadline;
 
 //    @NotNull
 //    @Enumerated(EnumType.STRING)
@@ -75,7 +77,5 @@ public class Study extends BaseEntity {
     @NotNull
     @Column(name = "view_count")
     private int viewCount;
-
-
 
 }

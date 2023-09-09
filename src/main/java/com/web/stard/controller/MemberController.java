@@ -1,7 +1,9 @@
 package com.web.stard.controller;
 
 import com.web.stard.domain.Member;
+import com.web.stard.domain.Profile;
 import com.web.stard.service.MemberService;
+import com.web.stard.service.ProfileService;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class MemberController {
 
+    private final ProfileService profileService;
     private final MemberService memberService;
     private final PasswordEncoder passwordEncoder;
 
@@ -60,6 +63,10 @@ public class MemberController {
             System.out.println("유효하지 않은 이메일 주소입니다: " + member.getEmail());
             return "redirect:/signup";
         }
+
+        // 회원 가입 시, 해당 사용자의 Profile 자동 생성
+        Profile profile = profileService.createProfile();
+        member.setProfile(profile);
 
         memberService.saveMember(member);
         return "redirect:/";

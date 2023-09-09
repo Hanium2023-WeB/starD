@@ -22,6 +22,8 @@ import Study from "./pages/studypage/Study";
 import StudyInsert from "./components/study/StudyInsert";
 import MyApplyStudy from "./pages/mypage/MyApplyStudy";
 import Header from "./components/repeat_etc/Header";
+import InputSubSign from "./pages/userpage/InputSubSign";
+import FindID from "./pages/userpage/FindID";
 
 
 function App() {
@@ -56,12 +58,16 @@ function App() {
                         element={<Login/>}
                     />
                     <Route
-                        path="/signup"
+                        path="/subinfo/signup"
                         element={<Signup />}
                     />
                     <Route
                         path="/logout"
                         element={<Logout/>}
+                    />
+                    <Route
+                        path="/login/findeID"
+                        element={<FindID/>}
                     />
                     <Route
                         path="/mypage"
@@ -118,7 +124,12 @@ function App() {
                             <StudyInsert/>
                         }
                     />
-
+                    <Route
+                        path="/subinfo"
+                        element={
+                        <InputSubSign/>
+                        }
+                        />
                 </Routes>
                 <Footer/>
 

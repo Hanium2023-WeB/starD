@@ -52,6 +52,10 @@ dependencies {
 
 	// junit
 	testImplementation 'junit:junit:4.12'
+
+	// Image
+	implementation 'commons-fileupload:commons-fileupload:1.4'
+	implementation 'commons-io:commons-io:2.11.0'
 }
 
 tasks.named('test') {

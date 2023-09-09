@@ -109,7 +109,8 @@ html {
 	width: 130px;
 	font-weight: bold;
 }
-.study_info li > span:nth-of-type(2) {
+.study_info li > span:nth-of-type(2),
+.study_info li > span:nth-of-type(3) {
 	color: #898989;
 }
 .study_intro{
@@ -148,3 +149,6 @@ html {
 	cursor: pointer;
 }
 
+.scrap_img, .like_img{
+	width:20px;
+}

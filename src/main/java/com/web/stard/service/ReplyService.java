@@ -72,7 +72,7 @@ public class ReplyService {
         return replyRepository.save(reply);
     }
 
-    // Study 댓글 생성
+    // ScrapStudySlide 댓글 생성
     public Reply createStudyReply(Long studyId, String replyContent, Authentication authentication) {
         String userId = authentication.getName();
         Member replier = memberService.find(userId);
@@ -88,7 +88,7 @@ public class ReplyService {
         return replyRepository.save(reply);
     }
 
-    // 댓글 수정 (Post, Study 공통)
+    // 댓글 수정 (Post, ScrapStudySlide 공통)
     public Reply updateReply(Long replyId, String replyContent, Authentication authentication) {
         String userId = authentication.getName();
         Member replier = memberService.find(userId);
@@ -101,7 +101,7 @@ public class ReplyService {
         return replyRepository.save(reply);
     }
 
-    // 댓글 삭제 (Post, Study 공통)
+    // 댓글 삭제 (Post, ScrapStudySlide 공통)
     public void deleteReply(Long replyId, Authentication authentication) {
         String userId = authentication.getName();
         Member replier = memberService.find(userId);

@@ -1,47 +1,61 @@
-import React, { useState, useEffect } from "react";
+import React, {useEffect, useState} from "react";
 import edit from "../../css/mypage_css/edit.css";
 import axios from "axios";
-const EditInterest=()=>{
+const EditInterest=({mem})=>{
     const tagoptions = [
-        { value: "IT기획", name: "IT기획" },
-        { value: "프론트", name: "프론트" },
-        { value: "백엔드", name: "백엔드" },
-        { value: "클라우드", name: "클라우드" },
-        { value: "IT기", name: "IT기획" },
-        { value: "프론", name: "프론트" },
-        { value: "백엔", name: "백엔드" },
-        { value: "클라우", name: "클라우드" },
-        { value: "IT", name: "IT기획" },
-        { value: "프", name: "프론트" },
-        { value: "백", name: "백엔드" },
-        { value: "클라", name: "클라우드" },
-        { value: "I", name: "IT기획" },
-        { value: "프드", name: "프론트" },
-        { value: "백드", name: "백엔드" },
-        { value: "클드", name: "클라우드" },
-        { value: "I획", name: "IT기획" },
-        { value: "트", name: "프론트" },
-        { value: "백으드", name: "백엔드" },
-        { value: "클우드", name: "클라우드" },
-      ];
+        { value: "웹 개발", name: "웹 개발" },
+        { value: "앱 개발", name: "앱 개발" },
+        { value: "머신러닝", name: "머신러닝" },
+        { value: "데이터 분석", name: "데이터 분석" },
+        { value: "게임 개발", name: "게임 개발" },
+        { value: "블록체인", name: "블록체인" },
+        { value: "네트워크 보안", name: "네트워크 보안" },
+        { value: "클라우드 컴퓨팅", name: "클라우드 컴퓨팅" },
+        { value: "인공지능", name: "인공지능" },
+        { value: "사이버 보안", name: "사이버 보안" },
+        { value: "소프트웨어 테스트", name: "소프트웨어 테스트" },
+        { value: "로봇공학", name: "로봇공학" },
+        { value: "사물인터넷 (IoT)", name: "사물인터넷 (IoT)" },
+        { value: "데이터베이스 관리", name: "데이터베이스 관리" },
+        { value: "UI/UX 디자인", name: "UI/UX 디자인" },
+        { value: "프로젝트 관리", name: "프로젝트 관리" },
+        { value: "빅데이터", name: "빅데이터" },
+        { value: "컴퓨터 그래픽스", name: "컴퓨터 그래픽스" },
+        { value: "자동화", name: "자동화" },
+        { value: "블로그 운영", name: "블로그 운영" },
+    ];
 
-      const [tags, setTags] = useState([]);
+    const [tags, setTags] = useState(()=>{
+            const storedTags=localStorage.getItem('tags');
+            return storedTags ? storedTags.split(",") : [];
+        });
 
-      const Tagoption = (props) => {
-    
-        const handletagChange = (value) => {
-          if (tags.includes(value)) {
-            setTags(tags.filter((tag) => tag !== value));
-          } else {
-            if (tags.length < 3) { //최대 3개까지만 선택 가능하게
-              setTags([...tags, value]);
-            }else{
-                alert("관심분야는 최대 3개까지 입니다.");
-            }
-          }
-        };
+    const Tagoption = (props) => {
+
+                const handletagChange = (value) => {
+                if (tags.includes(value)) {
+                    setTags(tags.filter((tag) => tag !== value));
+                } else {
+                    if (tags.length < 3) { //최대 3개까지만 선택 가능하게
+                        setTags([...tags, value]);
+
+                    }
+                    else{
+                        alert("관심분야는 최대 3개까지 입니다.");
+                    }
+                }
+                };
+
+
+
+
         console.log(tags)
 
+//          useEffect(() => {
+//              mem.tags = tags;
+//              localStorage.setItem('tags', tags);
+//          }, [tags])
+//          ;
         return (
           <div className="tags">
             {props.editoptions.map((editoption) => (
@@ -49,11 +63,11 @@ const EditInterest=()=>{
                 id="tag"
                 name="TAG"
                 onClick={() => handletagChange(editoption.value)}
-            value={editoption.value}
-            style={{
-              backgroundColor: tags.includes(editoption.value)
-                ? "lightpink"
-                : "white",
+                value={editoption.value}
+                style={{
+                  backgroundColor: tags.includes(editoption.value)
+                    ? "lightpink"
+                    : "white",
             }}
                 value={editoption.value}
               >
@@ -113,15 +127,13 @@ const handleSaveTag = async () => {
 
 
 return(
-    <div className="sub_container" id="interested">
-    <div className="change_interest">
+  <div>
       <div id="title">
         관심분야<span id="sub_title">(최대 3개까지 선택 가능)</span>
       </div>
       <Tagoption editoptions={tagoptions} value="" />
 
       <button id="save" onClick={handleSaveTag}>저장하기</button>
-    </div>
   </div>
 );
 
