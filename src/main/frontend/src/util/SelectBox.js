@@ -3,7 +3,7 @@ import edit from "../css/mypage_css/edit.css";
 
 import $ from 'jquery';
 
-export function selectBOX ({mem}){
+export function selectBOX (mem){
 
     //mem을 받아서 거주지를 선택하면 상태 업데이트
 
