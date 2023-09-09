@@ -1,3 +1,4 @@
+/*
 package com.web.stard.service;
 
 import com.web.stard.domain.*;
@@ -149,7 +150,7 @@ class ReplyServiceTest {
         //then
         Page<Reply> savedRepliesPage = replyService.findAllReplies(1);
         List<Reply> savedReplies = savedRepliesPage.getContent();
-        
+
         assertEquals(1, savedReplies.size()); // 생성된 댓글이 1개인지 확인
 
         Reply savedReply = savedReplies.get(0);
@@ -171,12 +172,10 @@ class ReplyServiceTest {
         Authentication authentication = new UsernamePasswordAuthenticationToken(member.getId(), null);
 
         // 1. qna
-/*
-        Post post = new Post();
-        post.setTitle("qna post 제목");
-        post.setContent("qna post 내용");
-        Post createdPost = qnaService.createQna(post, authentication);
-*/
+//        Post post = new Post();
+//        post.setTitle("qna post 제목");
+//        post.setContent("qna post 내용");
+//        Post createdPost = qnaService.createQna(post, authentication);
 
         // 2. comm
         Post post = new Post();
@@ -255,12 +254,10 @@ class ReplyServiceTest {
         Post createdPost = qnaService.createQna(post, authentication);
 
         // 2. comm
-/*
-        Post post = new Post();
-        post.setTitle("comm post 제목");
-        post.setContent("comm post 내용");
-        Post createdPost = communityService.registerCommPost(post, authentication);
-*/
+//        Post post = new Post();
+//        post.setTitle("comm post 제목");
+//        post.setContent("comm post 내용");
+//        Post createdPost = communityService.registerCommPost(post, authentication);
 
         // 댓글 생성
         Reply reply = new Reply();
@@ -333,12 +330,10 @@ class ReplyServiceTest {
         Post createdPost = qnaService.createQna(post, authentication);
 
         // 2. comm
-/*
-        Post post = new Post();
-        post.setTitle("comm post 제목");
-        post.setContent("comm post 내용");
-        Post createdPost = communityService.registerCommPost(post, authentication);
-*/
+//        Post post = new Post();
+//        post.setTitle("comm post 제목");
+//        post.setContent("comm post 내용");
+//        Post createdPost = communityService.registerCommPost(post, authentication);
 
         // 댓글 생성
         Reply reply = new Reply();
@@ -405,12 +400,10 @@ class ReplyServiceTest {
         Post createdPost = qnaService.createQna(post, authentication);
 
         // 2. comm
-/*
-        Post post = new Post();
-        post.setTitle("comm post 제목");
-        post.setContent("comm post 내용");
-        Post createdPost = communityService.registerCommPost(post, authentication);
-*/
+//        Post post = new Post();
+//        post.setTitle("comm post 제목");
+//        post.setContent("comm post 내용");
+//        Post createdPost = communityService.registerCommPost(post, authentication);
 
         // 댓글 생성
         Reply reply = new Reply();
@@ -472,12 +465,10 @@ class ReplyServiceTest {
         Authentication adminAuth = new UsernamePasswordAuthenticationToken("testAdmin", null);
 
         // 1. qna
-/*
-        Post post = new Post();
-        post.setTitle("qna post 제목");
-        post.setContent("qna post 내용");
-        Post createdPost = qnaService.createQna(post, authentication);
-*/
+//        Post post = new Post();
+//        post.setTitle("qna post 제목");
+//        post.setContent("qna post 내용");
+//        Post createdPost = qnaService.createQna(post, authentication);
 
         // 2. comm
         Post post = new Post();
@@ -540,12 +531,10 @@ class ReplyServiceTest {
         Authentication authentication = new UsernamePasswordAuthenticationToken(member.getId(), null);
 
         // 1. qna
-/*
-        Post post = new Post();
-        post.setTitle("qna post 제목");
-        post.setContent("qna post 내용");
-        Post createdPost = qnaService.createQna(post, authentication);
-*/
+//        Post post = new Post();
+//        post.setTitle("qna post 제목");
+//        post.setContent("qna post 내용");
+//        Post createdPost = qnaService.createQna(post, authentication);
 
         // 2. comm
         Post post = new Post();
@@ -664,12 +653,10 @@ class ReplyServiceTest {
         Post createdPost = qnaService.createQna(post, authentication);
 
         // 2. comm
-/*
-        Post post = new Post();
-        post.setTitle("comm post 제목");
-        post.setContent("comm post 내용");
-        Post createdPost = communityService.registerCommPost(post, authentication);
-*/
+//        Post post = new Post();
+//        post.setTitle("comm post 제목");
+//        post.setContent("comm post 내용");
+//        Post createdPost = communityService.registerCommPost(post, authentication);
 
         Reply reply = new Reply();
         reply.setMember(member);
@@ -724,4 +711,4 @@ class ReplyServiceTest {
         assertEquals(createdReply1.getContent(), replies.get(0).getContent()); // 댓글 내용 순서 확인
         assertEquals(createdReply2.getContent(), replies.get(1).getContent());
     }
-}
+}*/

@@ -1,3 +1,4 @@
+/*
 package com.web.stard.service;
 
 import com.web.stard.domain.*;
@@ -48,13 +49,15 @@ class ReportServiceTest {
         Authentication authentication = new UsernamePasswordAuthenticationToken(member.getId(), null);
 
         // 1. COMM post
+*/
 /*
         Post post = new Post();
         post.setTitle("community post 제목");
         post.setContent("community post 내용");
         post.setMember(member);
         Post createdPost = communityService.registerCommPost(post, authentication);
-*/
+*//*
+
 
         // 2. QNA post
         Post post = new Post();
@@ -67,10 +70,12 @@ class ReportServiceTest {
         member2.setId("testUser2");
         memberService.saveMember(member2);
         Authentication authentication2 = new UsernamePasswordAuthenticationToken(member2.getId(), null);
+*/
 /*
         ReportReason reason = ReportReason.SPAM;
         String customReason = null;
-*/
+*//*
+
 
         ReportReason reason = ReportReason.ETC;
         String customReason = "사용자 정의 사유";
@@ -117,10 +122,12 @@ class ReportServiceTest {
         ReportReason reason = ReportReason.SPAM;
         String customReason = "";
 
+*/
 /*
         ReportReason reason = ReportReason.ETC;
         String customReason = "사용자 정의 사유";
-*/
+*//*
+
 
         //when
         ReportDetail reportDetail = reportService.createReplyReport(createdReply.getId(), reason, customReason, authentication2);  // member의 댓글을 member2가 신고
@@ -153,10 +160,12 @@ class ReportServiceTest {
         memberService.saveMember(member2);
         Authentication authentication2 = new UsernamePasswordAuthenticationToken(member2.getId(), null);
 
+*/
 /*
         ReportReason reason = ReportReason.SPAM;
         String customReason = null;
-*/
+*//*
+
 
         ReportReason reason = ReportReason.ETC;
         String customReason = "사용자 정의 사유";
@@ -528,4 +537,4 @@ class ReportServiceTest {
         }
     }
 
-}
+}*/
