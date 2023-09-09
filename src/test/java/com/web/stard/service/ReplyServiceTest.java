@@ -135,8 +135,8 @@ class ReplyServiceTest {
         Authentication authentication2 = new UsernamePasswordAuthenticationToken(member2.getId(), null);
 
         StudyDto studyDto = new StudyDto("study 제목", "study 내용", 5, member.getId(),
-                null, null, null, "online", LocalDateTime.now().plusDays(7), LocalDateTime.now().plusDays(14),
-                LocalDateTime.now(),LocalDateTime.now().plusDays(7), "모집중", 0);
+                null, null, null, "online", LocalDateTime.now().plusDays(7),
+                LocalDateTime.now(),LocalDateTime.now().plusDays(7), RecruitStatus.RECRUITING, ProgressStatus.BEFORE_PROCEEDING, 0);
         Study createdStudy = studyService.createStudy(studyDto, authentication);
 
         Reply reply = new Reply();
@@ -212,8 +212,8 @@ class ReplyServiceTest {
         Authentication authentication = new UsernamePasswordAuthenticationToken(member.getId(), null);
 
         StudyDto studyDto = new StudyDto("study 제목", "study 내용", 5, member.getId(),
-                null, null, null, "online", LocalDateTime.now().plusDays(7), LocalDateTime.now().plusDays(14),
-                LocalDateTime.now(),LocalDateTime.now().plusDays(7), "모집중", 0);
+                null, null, null, "online", LocalDateTime.now().plusDays(7),
+                LocalDateTime.now(),LocalDateTime.now().plusDays(7), RecruitStatus.RECRUITING, ProgressStatus.BEFORE_PROCEEDING, 0);
         Study createdStudy = studyService.createStudy(studyDto, authentication);
 
         // 댓글 생성
@@ -295,8 +295,8 @@ class ReplyServiceTest {
         Authentication authentication2 = new UsernamePasswordAuthenticationToken(member2.getId(), null);
 
         StudyDto studyDto = new StudyDto("study 제목", "study 내용", 5, member.getId(),
-                null, null, null, "online", LocalDateTime.now().plusDays(7), LocalDateTime.now().plusDays(14),
-                LocalDateTime.now(),LocalDateTime.now().plusDays(7), "모집중", 0);
+                null, null, null, "online", LocalDateTime.now().plusDays(7),
+                LocalDateTime.now(),LocalDateTime.now().plusDays(7), RecruitStatus.RECRUITING, ProgressStatus.BEFORE_PROCEEDING, 0);
         Study createdStudy = studyService.createStudy(studyDto, authentication);
 
         // 댓글 생성
@@ -365,8 +365,8 @@ class ReplyServiceTest {
         Authentication authentication = new UsernamePasswordAuthenticationToken(member.getId(), null);
 
         StudyDto studyDto = new StudyDto("study 제목", "study 내용", 5, member.getId(),
-                null, null, null, "online", LocalDateTime.now().plusDays(7), LocalDateTime.now().plusDays(14),
-                LocalDateTime.now(),LocalDateTime.now().plusDays(7), "모집중", 0);
+                null, null, null, "online", LocalDateTime.now().plusDays(7),
+                LocalDateTime.now(),LocalDateTime.now().plusDays(7), RecruitStatus.RECRUITING, ProgressStatus.BEFORE_PROCEEDING, 0);
         Study createdStudy = studyService.createStudy(studyDto, authentication);
 
         // 댓글 생성
@@ -442,8 +442,8 @@ class ReplyServiceTest {
         Authentication authentication2 = new UsernamePasswordAuthenticationToken(member2.getId(), null);
 
         StudyDto studyDto = new StudyDto("study 제목", "study 내용", 5, member.getId(),
-                null, null, null, "online", LocalDateTime.now().plusDays(7), LocalDateTime.now().plusDays(14),
-                LocalDateTime.now(),LocalDateTime.now().plusDays(7), "모집중", 0);
+                null, null, null, "online", LocalDateTime.now().plusDays(7),
+                LocalDateTime.now(),LocalDateTime.now().plusDays(7), RecruitStatus.RECRUITING, ProgressStatus.BEFORE_PROCEEDING, 0);
         Study createdStudy = studyService.createStudy(studyDto, authentication);
 
         // 댓글 생성
@@ -511,8 +511,8 @@ class ReplyServiceTest {
         Authentication adminAuth = new UsernamePasswordAuthenticationToken("testAdmin", null);
 
         StudyDto studyDto = new StudyDto("study 제목", "study 내용", 5, member.getId(),
-                null, null, null, "online", LocalDateTime.now().plusDays(7), LocalDateTime.now().plusDays(14),
-                LocalDateTime.now(),LocalDateTime.now().plusDays(7), "모집중", 0);
+                null, null, null, "online", LocalDateTime.now().plusDays(7),
+                LocalDateTime.now(),LocalDateTime.now().plusDays(7), RecruitStatus.RECRUITING, ProgressStatus.BEFORE_PROCEEDING, 0);
         Study createdStudy = studyService.createStudy(studyDto, authentication);
 
         // 댓글 생성
@@ -582,8 +582,8 @@ class ReplyServiceTest {
         Authentication authentication = new UsernamePasswordAuthenticationToken(member.getId(), null);
 
         StudyDto studyDto = new StudyDto("study 제목", "study 내용", 5, member.getId(),
-                null, null, null, "online", LocalDateTime.now().plusDays(7), LocalDateTime.now().plusDays(14),
-                LocalDateTime.now(),LocalDateTime.now().plusDays(7), "모집중", 0);
+                null, null, null, "online", LocalDateTime.now().plusDays(7),
+                LocalDateTime.now(),LocalDateTime.now().plusDays(7), RecruitStatus.RECRUITING, ProgressStatus.BEFORE_PROCEEDING, 0);
         Study createdStudy = studyService.createStudy(studyDto, authentication);
 
         // 댓글 생성
@@ -626,8 +626,8 @@ class ReplyServiceTest {
         Post createdPost2 = qnaService.createQna(post2, authentication);
 
         StudyDto studyDto = new StudyDto("study 제목", "study 내용", 5, member.getId(),
-                null, null, null, "online", LocalDateTime.now().plusDays(7), LocalDateTime.now().plusDays(14),
-                LocalDateTime.now(),LocalDateTime.now().plusDays(7), "모집중", 0);
+                null, null, null, "online", LocalDateTime.now().plusDays(7),
+                LocalDateTime.now(),LocalDateTime.now().plusDays(7), RecruitStatus.RECRUITING, ProgressStatus.BEFORE_PROCEEDING, 0);
         Study createdStudy = studyService.createStudy(studyDto, authentication);
 
         // 댓글 생성
@@ -701,8 +701,8 @@ class ReplyServiceTest {
         Authentication authentication = new UsernamePasswordAuthenticationToken(member.getId(), null);
 
         StudyDto studyDto = new StudyDto("study 제목", "study 내용", 5, member.getId(),
-                null, null, null, "online", LocalDateTime.now().plusDays(7), LocalDateTime.now().plusDays(14),
-                LocalDateTime.now(),LocalDateTime.now().plusDays(7), "모집중", 0);
+                null, null, null, "online", LocalDateTime.now().plusDays(7),
+                LocalDateTime.now(),LocalDateTime.now().plusDays(7), RecruitStatus.RECRUITING, ProgressStatus.BEFORE_PROCEEDING, 0);
         Study createdStudy = studyService.createStudy(studyDto, authentication);
 
         // 댓글 생성
