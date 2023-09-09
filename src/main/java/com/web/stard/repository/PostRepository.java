@@ -1,5 +1,6 @@
 package com.web.stard.repository;
 
+import com.web.stard.domain.Member;
 import com.web.stard.domain.Post;
 import com.web.stard.domain.PostType;
 import org.springframework.data.domain.Pageable;
@@ -17,4 +18,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     /* 타입 별 게시글 세부 조회 */
     Optional<Post> findByIdAndType(Long id, PostType type);
+
+    List<Post> findAllByMember(Member member);
 }

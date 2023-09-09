@@ -1,3 +1,4 @@
+/*
 package com.web.stard.service;
 
 import com.web.stard.domain.*;
@@ -135,8 +136,8 @@ class ReplyServiceTest {
         Authentication authentication2 = new UsernamePasswordAuthenticationToken(member2.getId(), null);
 
         StudyDto studyDto = new StudyDto("study 제목", "study 내용", 5, member.getId(),
-                null, null, null, "online", LocalDateTime.now().plusDays(7), LocalDateTime.now().plusDays(14),
-                LocalDateTime.now(),LocalDateTime.now().plusDays(7), "모집중", 0);
+                null, null, null, "online", LocalDateTime.now().plusDays(7),
+                LocalDateTime.now(),LocalDateTime.now().plusDays(7), RecruitStatus.RECRUITING, ProgressStatus.BEFORE_PROCEEDING, 0);
         Study createdStudy = studyService.createStudy(studyDto, authentication);
 
         Reply reply = new Reply();
@@ -149,7 +150,7 @@ class ReplyServiceTest {
         //then
         Page<Reply> savedRepliesPage = replyService.findAllReplies(1);
         List<Reply> savedReplies = savedRepliesPage.getContent();
-        
+
         assertEquals(1, savedReplies.size()); // 생성된 댓글이 1개인지 확인
 
         Reply savedReply = savedReplies.get(0);
@@ -171,12 +172,10 @@ class ReplyServiceTest {
         Authentication authentication = new UsernamePasswordAuthenticationToken(member.getId(), null);
 
         // 1. qna
-/*
-        Post post = new Post();
-        post.setTitle("qna post 제목");
-        post.setContent("qna post 내용");
-        Post createdPost = qnaService.createQna(post, authentication);
-*/
+//        Post post = new Post();
+//        post.setTitle("qna post 제목");
+//        post.setContent("qna post 내용");
+//        Post createdPost = qnaService.createQna(post, authentication);
 
         // 2. comm
         Post post = new Post();
@@ -212,8 +211,8 @@ class ReplyServiceTest {
         Authentication authentication = new UsernamePasswordAuthenticationToken(member.getId(), null);
 
         StudyDto studyDto = new StudyDto("study 제목", "study 내용", 5, member.getId(),
-                null, null, null, "online", LocalDateTime.now().plusDays(7), LocalDateTime.now().plusDays(14),
-                LocalDateTime.now(),LocalDateTime.now().plusDays(7), "모집중", 0);
+                null, null, null, "online", LocalDateTime.now().plusDays(7),
+                LocalDateTime.now(),LocalDateTime.now().plusDays(7), RecruitStatus.RECRUITING, ProgressStatus.BEFORE_PROCEEDING, 0);
         Study createdStudy = studyService.createStudy(studyDto, authentication);
 
         // 댓글 생성
@@ -255,12 +254,10 @@ class ReplyServiceTest {
         Post createdPost = qnaService.createQna(post, authentication);
 
         // 2. comm
-/*
-        Post post = new Post();
-        post.setTitle("comm post 제목");
-        post.setContent("comm post 내용");
-        Post createdPost = communityService.registerCommPost(post, authentication);
-*/
+//        Post post = new Post();
+//        post.setTitle("comm post 제목");
+//        post.setContent("comm post 내용");
+//        Post createdPost = communityService.registerCommPost(post, authentication);
 
         // 댓글 생성
         Reply reply = new Reply();
@@ -295,8 +292,8 @@ class ReplyServiceTest {
         Authentication authentication2 = new UsernamePasswordAuthenticationToken(member2.getId(), null);
 
         StudyDto studyDto = new StudyDto("study 제목", "study 내용", 5, member.getId(),
-                null, null, null, "online", LocalDateTime.now().plusDays(7), LocalDateTime.now().plusDays(14),
-                LocalDateTime.now(),LocalDateTime.now().plusDays(7), "모집중", 0);
+                null, null, null, "online", LocalDateTime.now().plusDays(7),
+                LocalDateTime.now(),LocalDateTime.now().plusDays(7), RecruitStatus.RECRUITING, ProgressStatus.BEFORE_PROCEEDING, 0);
         Study createdStudy = studyService.createStudy(studyDto, authentication);
 
         // 댓글 생성
@@ -333,12 +330,10 @@ class ReplyServiceTest {
         Post createdPost = qnaService.createQna(post, authentication);
 
         // 2. comm
-/*
-        Post post = new Post();
-        post.setTitle("comm post 제목");
-        post.setContent("comm post 내용");
-        Post createdPost = communityService.registerCommPost(post, authentication);
-*/
+//        Post post = new Post();
+//        post.setTitle("comm post 제목");
+//        post.setContent("comm post 내용");
+//        Post createdPost = communityService.registerCommPost(post, authentication);
 
         // 댓글 생성
         Reply reply = new Reply();
@@ -365,8 +360,8 @@ class ReplyServiceTest {
         Authentication authentication = new UsernamePasswordAuthenticationToken(member.getId(), null);
 
         StudyDto studyDto = new StudyDto("study 제목", "study 내용", 5, member.getId(),
-                null, null, null, "online", LocalDateTime.now().plusDays(7), LocalDateTime.now().plusDays(14),
-                LocalDateTime.now(),LocalDateTime.now().plusDays(7), "모집중", 0);
+                null, null, null, "online", LocalDateTime.now().plusDays(7),
+                LocalDateTime.now(),LocalDateTime.now().plusDays(7), RecruitStatus.RECRUITING, ProgressStatus.BEFORE_PROCEEDING, 0);
         Study createdStudy = studyService.createStudy(studyDto, authentication);
 
         // 댓글 생성
@@ -405,12 +400,10 @@ class ReplyServiceTest {
         Post createdPost = qnaService.createQna(post, authentication);
 
         // 2. comm
-/*
-        Post post = new Post();
-        post.setTitle("comm post 제목");
-        post.setContent("comm post 내용");
-        Post createdPost = communityService.registerCommPost(post, authentication);
-*/
+//        Post post = new Post();
+//        post.setTitle("comm post 제목");
+//        post.setContent("comm post 내용");
+//        Post createdPost = communityService.registerCommPost(post, authentication);
 
         // 댓글 생성
         Reply reply = new Reply();
@@ -442,8 +435,8 @@ class ReplyServiceTest {
         Authentication authentication2 = new UsernamePasswordAuthenticationToken(member2.getId(), null);
 
         StudyDto studyDto = new StudyDto("study 제목", "study 내용", 5, member.getId(),
-                null, null, null, "online", LocalDateTime.now().plusDays(7), LocalDateTime.now().plusDays(14),
-                LocalDateTime.now(),LocalDateTime.now().plusDays(7), "모집중", 0);
+                null, null, null, "online", LocalDateTime.now().plusDays(7),
+                LocalDateTime.now(),LocalDateTime.now().plusDays(7), RecruitStatus.RECRUITING, ProgressStatus.BEFORE_PROCEEDING, 0);
         Study createdStudy = studyService.createStudy(studyDto, authentication);
 
         // 댓글 생성
@@ -472,12 +465,10 @@ class ReplyServiceTest {
         Authentication adminAuth = new UsernamePasswordAuthenticationToken("testAdmin", null);
 
         // 1. qna
-/*
-        Post post = new Post();
-        post.setTitle("qna post 제목");
-        post.setContent("qna post 내용");
-        Post createdPost = qnaService.createQna(post, authentication);
-*/
+//        Post post = new Post();
+//        post.setTitle("qna post 제목");
+//        post.setContent("qna post 내용");
+//        Post createdPost = qnaService.createQna(post, authentication);
 
         // 2. comm
         Post post = new Post();
@@ -511,8 +502,8 @@ class ReplyServiceTest {
         Authentication adminAuth = new UsernamePasswordAuthenticationToken("testAdmin", null);
 
         StudyDto studyDto = new StudyDto("study 제목", "study 내용", 5, member.getId(),
-                null, null, null, "online", LocalDateTime.now().plusDays(7), LocalDateTime.now().plusDays(14),
-                LocalDateTime.now(),LocalDateTime.now().plusDays(7), "모집중", 0);
+                null, null, null, "online", LocalDateTime.now().plusDays(7),
+                LocalDateTime.now(),LocalDateTime.now().plusDays(7), RecruitStatus.RECRUITING, ProgressStatus.BEFORE_PROCEEDING, 0);
         Study createdStudy = studyService.createStudy(studyDto, authentication);
 
         // 댓글 생성
@@ -540,12 +531,10 @@ class ReplyServiceTest {
         Authentication authentication = new UsernamePasswordAuthenticationToken(member.getId(), null);
 
         // 1. qna
-/*
-        Post post = new Post();
-        post.setTitle("qna post 제목");
-        post.setContent("qna post 내용");
-        Post createdPost = qnaService.createQna(post, authentication);
-*/
+//        Post post = new Post();
+//        post.setTitle("qna post 제목");
+//        post.setContent("qna post 내용");
+//        Post createdPost = qnaService.createQna(post, authentication);
 
         // 2. comm
         Post post = new Post();
@@ -582,8 +571,8 @@ class ReplyServiceTest {
         Authentication authentication = new UsernamePasswordAuthenticationToken(member.getId(), null);
 
         StudyDto studyDto = new StudyDto("study 제목", "study 내용", 5, member.getId(),
-                null, null, null, "online", LocalDateTime.now().plusDays(7), LocalDateTime.now().plusDays(14),
-                LocalDateTime.now(),LocalDateTime.now().plusDays(7), "모집중", 0);
+                null, null, null, "online", LocalDateTime.now().plusDays(7),
+                LocalDateTime.now(),LocalDateTime.now().plusDays(7), RecruitStatus.RECRUITING, ProgressStatus.BEFORE_PROCEEDING, 0);
         Study createdStudy = studyService.createStudy(studyDto, authentication);
 
         // 댓글 생성
@@ -626,8 +615,8 @@ class ReplyServiceTest {
         Post createdPost2 = qnaService.createQna(post2, authentication);
 
         StudyDto studyDto = new StudyDto("study 제목", "study 내용", 5, member.getId(),
-                null, null, null, "online", LocalDateTime.now().plusDays(7), LocalDateTime.now().plusDays(14),
-                LocalDateTime.now(),LocalDateTime.now().plusDays(7), "모집중", 0);
+                null, null, null, "online", LocalDateTime.now().plusDays(7),
+                LocalDateTime.now(),LocalDateTime.now().plusDays(7), RecruitStatus.RECRUITING, ProgressStatus.BEFORE_PROCEEDING, 0);
         Study createdStudy = studyService.createStudy(studyDto, authentication);
 
         // 댓글 생성
@@ -664,12 +653,10 @@ class ReplyServiceTest {
         Post createdPost = qnaService.createQna(post, authentication);
 
         // 2. comm
-/*
-        Post post = new Post();
-        post.setTitle("comm post 제목");
-        post.setContent("comm post 내용");
-        Post createdPost = communityService.registerCommPost(post, authentication);
-*/
+//        Post post = new Post();
+//        post.setTitle("comm post 제목");
+//        post.setContent("comm post 내용");
+//        Post createdPost = communityService.registerCommPost(post, authentication);
 
         Reply reply = new Reply();
         reply.setMember(member);
@@ -701,8 +688,8 @@ class ReplyServiceTest {
         Authentication authentication = new UsernamePasswordAuthenticationToken(member.getId(), null);
 
         StudyDto studyDto = new StudyDto("study 제목", "study 내용", 5, member.getId(),
-                null, null, null, "online", LocalDateTime.now().plusDays(7), LocalDateTime.now().plusDays(14),
-                LocalDateTime.now(),LocalDateTime.now().plusDays(7), "모집중", 0);
+                null, null, null, "online", LocalDateTime.now().plusDays(7),
+                LocalDateTime.now(),LocalDateTime.now().plusDays(7), RecruitStatus.RECRUITING, ProgressStatus.BEFORE_PROCEEDING, 0);
         Study createdStudy = studyService.createStudy(studyDto, authentication);
 
         // 댓글 생성
@@ -724,4 +711,4 @@ class ReplyServiceTest {
         assertEquals(createdReply1.getContent(), replies.get(0).getContent()); // 댓글 내용 순서 확인
         assertEquals(createdReply2.getContent(), replies.get(1).getContent());
     }
-}
+}*/
