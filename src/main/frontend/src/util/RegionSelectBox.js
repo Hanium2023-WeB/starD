@@ -2,8 +2,9 @@
 import edit from "../css/mypage_css/edit.css";
 
 import $ from 'jquery';
+import {useState} from "react";
 //스터디 지역 선택 컴포넌트(진행방식 온/오프)
-export function RegionSelectBOX (){
+export function RegionSelectBOX ({formData,city,district,handleRegionCityChange,handleRegionDistrictChange}){
 
     // if (selectBOX.initialized) {
     //     // 이미 초기화되었을 경우, 중복 호출 방지
@@ -35,6 +36,7 @@ export function RegionSelectBOX (){
     const $RegiongugunSelect = $("#gugun1");
 
 
+     // 시,도 / 구,군 초기화
     function initializeSidoSelect() {
         let gugunList = [];
         for (const sido in areas) {
@@ -44,15 +46,16 @@ export function RegionSelectBOX (){
             }
         }
         if ( $RegionsidoSelect === null) {
-            $RegiongugunSelect.append("<option value='' selected>구/군 선택</option>");
+            $RegiongugunSelect.append("<option  value='' selected>구/군 선택</option>");
         } else {
-            $RegiongugunSelect.append("<option value=''>구/군 선택</option>");
+            $RegiongugunSelect.append("<option  value=''>구/군 선택</option>");
             for (const gugun of gugunList) {
 
-                $RegiongugunSelect.append(`<option value="${gugun}">${gugun}</option>`);
+                $RegiongugunSelect.append(`<option  value="${gugun}">${gugun}</option>`);
             }
         }
     }
+    //선택한 시,도에 따른 구, 군 설정
     function updateGugunSelect(selectedSido) {
         const gugunList = areas[selectedSido];
         $RegiongugunSelect.empty();
@@ -61,15 +64,23 @@ export function RegionSelectBOX (){
             }
 
         for (const gugun of gugunList) {
-            $RegiongugunSelect.append(`<option value="${gugun}">${gugun}</option>`);
+            $RegiongugunSelect.append(`<option   value="${gugun}">${gugun}</option>`);
         }
     }
+    //선택한 시,도 값 저장
     function saveSelectedSidoVal(selectedSido) {
         localStorage.setItem("selectedRegionsido", selectedSido);
+         city = selectedSido;
+
         saveSelectedGugunVal("");
+        handleRegionCityChange(city);
     }
+
+    //선택한 구,군 값 저장
     function  saveSelectedGugunVal(selectedGugun){
-        localStorage.setItem("selectedGugun", selectedGugun);
+        localStorage.setItem("selectedRegionGugun", selectedGugun);
+         district = selectedGugun;
+        handleRegionDistrictChange(district);
     }
     function loadSelectedValues() {
         const selectedSido = localStorage.getItem("selectedSido");

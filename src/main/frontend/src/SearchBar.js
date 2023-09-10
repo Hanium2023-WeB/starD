@@ -1,12 +1,13 @@
 import { Link } from "react-router-dom";
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import searchicon from "./images/search.png";
+import axios from "axios";
 
 
 const SearchBar = (props) => {
 	const items = props.searchItems;
 	const [search, setSearch] = useState("");
-	const [selectsearch ,setSelectSearch] =useState();
+	const [selectsearch ,setSelectSearch] =useState("");
 
 	const onChange = (e) => {
 		setSearch(e.target.value);
@@ -20,6 +21,26 @@ const SearchBar = (props) => {
 	const filterProducts = items.filter((item) => {
 		return item.includes(search);
 	});
+	//TODO 검색바
+	// useEffect(() => {
+	// 	try {
+	// 	const response = axios.post("URL", {
+	// 		state: {
+	// 			search:search,
+	// 			selectsearch:selectsearch,
+	// 		}
+	// 	});
+	//
+	// 	// if (response.status === 200) {
+	// 	// 	console.log("검색 성공");
+	// 	// 	window.location.href = "/";
+	// 	// } else {
+	// 	// 	console.error("검색 실패");
+	// 	// }
+	// } catch (error) {
+	// 	console.error("Error:", error);}
+	//
+	// }, []);
 
 	return (
 		<div className="Home_wrap">

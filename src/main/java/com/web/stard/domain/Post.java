@@ -4,6 +4,7 @@ import com.sun.istack.NotNull;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table
@@ -29,5 +30,4 @@ public class Post extends BaseEntity {
 
     @NotNull @Column(name = "view_count")
     private int viewCount;
-
 }
