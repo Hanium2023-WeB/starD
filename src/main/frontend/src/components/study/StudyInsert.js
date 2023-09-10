@@ -235,7 +235,8 @@ const StudyInsert = ({updateStudies, onClose}) => {
         //myopenstudy에 navigate로 데이터 넘기기
 
         e.preventDefault();
-        navigate("/myopenstudy", {state: formData});
+        // navigate("/myopenstudy", {state: formData});
+        navigate("/");
     }, [formData, navigate, tags, onInsertStudy]);
 
     // e.preventDefault();
@@ -278,9 +279,9 @@ const StudyInsert = ({updateStudies, onClose}) => {
                             <span>분야</span>
                             {/*<input type="text" name="field" value={formData.field} onChange={handleInputChange}*/}
                             {/*       className="inputbox" placeholder="사용할 태그를 입력해주세요"/>*/}
-                            <select name="field" value={formData.field}>
+                            <select name="field" value={formData.field} onChange={handleInputChange}>
                                 {tagoptions.map((interest) =>
-                                    <option value={interest.value} onChange={handleInputChange}>{interest.name}</option>
+                                    <option value={interest.value} >{interest.name}</option>
                                 )}
                             </select>
                         </div>

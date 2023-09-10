@@ -10,6 +10,7 @@ import LikeButton from "../../components/repeat_etc/LikeButton";
 import ScrapButton from "../../components/repeat_etc/ScrapButton";
 import Paging from "../../components/repeat_etc/Paging";
 import Pagination from "../../css/study_css/Pagination.css";
+import axios from "axios";
 
 const MyOpenStudy = ({ sideheader }) => {
 	// const dataId = useRef(1);
@@ -25,6 +26,9 @@ const MyOpenStudy = ({ sideheader }) => {
 
 	useEffect(() => {
 		if (studiesChanged) {
+			// const response = axios.post("url",{state:
+			//
+			// })
 			localStorage.setItem("studies", JSON.stringify(studies));
 			localStorage.setItem("ScrapStudies", JSON.stringify(scrapStates));
 			localStorage.setItem("LikeStates", JSON.stringify(likeStates));
