@@ -280,9 +280,9 @@ const StudyInsert = ({updateStudies, onClose}) => {
                             <span>분야</span>
                             {/*<input type="text" name="field" value={formData.field} onChange={handleInputChange}*/}
                             {/*       className="inputbox" placeholder="사용할 태그를 입력해주세요"/>*/}
-                            <select name="field" value={formData.field}>
+                            <select name="field" value={formData.field} onChange={handleInputChange}>
                                 {tagoptions.map((interest) =>
-                                    <option value={interest.value} onChange={handleInputChange}>{interest.name}</option>
+                                    <option value={interest.value} >{interest.name}</option>
                                 )}
                             </select>
                         </div>
