@@ -59,6 +59,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
             // 전체 스터디 게시글 조회 허용 O
             "/api/v2/studies/all",
+            "/api/v2/studies/all-count",
 
     };
 

@@ -40,6 +40,8 @@ public class Study extends BaseEntity {
 
     private String district;    // 구
 
+    private String field; // 분야
+
     private String tags;    // 태그 들
 
     @NotNull @Column(name = "on_off")
@@ -78,8 +80,8 @@ public class Study extends BaseEntity {
     @Column(name = "view_count")
     private int viewCount;
 
-    @OneToMany
-    @JoinColumn(name = "")
-    private List<Applicant> applicants;
+//    @OneToMany
+//    @JoinColumn(name = "")
+//    private List<Applicant> applicants;
 
 }

@@ -30,6 +30,7 @@ public class StudyController {
         return studyService.findAllByOrderByRecruitStatus(page);
     }
 
+
     @GetMapping("/{id}")    // [R] 스터디 게시글 세부 조회
     public Study getStudy(@PathVariable Long id){
         return studyService.findById(id);
