@@ -122,10 +122,11 @@ const Study = () => {
     ]
 
     //페이징관련 코드
+    const [page, setPage] = useState(1);
     const [count, setCount]=useState(0);
     const [itemsPerPage, setItemsPerPage]= useState(9);
-    const handlePageChange = ({itemsPerPage,totalItemsCount}) => {
-        // setPage(page);
+    const handlePageChange = ({page,itemsPerPage,totalItemsCount}) => {
+        setPage(page);
         setItemsPerPage(itemsPerPage); //한페이지 당 아이템 개수
         setCount(totalItemsCount); //전체 아이템 개수
     };
@@ -186,7 +187,7 @@ const Study = () => {
                 </div>
             </div>
             <div className={"paging"}>
-                <Paging totalItemCount={count} itemsPerPage={itemsPerPage} handlePageChange={handlePageChange}/>
+                <Paging page={page} totalItemCount={count} itemsPerPage={itemsPerPage} handlePageChange={handlePageChange}/>
             </div>
         </div>
     );
