@@ -5,6 +5,7 @@ import Pagination from "react-js-pagination";
 const Paging = ({page,totalItemCount,itemsPerPage,handlePageChange}) => {
     // const [page, setPage] = useState(1);
 
+
     return (
         <Pagination
             activePage={page} // 현재 페이지

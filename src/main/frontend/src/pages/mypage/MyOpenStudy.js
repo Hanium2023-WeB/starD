@@ -10,6 +10,7 @@ import LikeButton from "../../components/repeat_etc/LikeButton";
 import ScrapButton from "../../components/repeat_etc/ScrapButton";
 import Paging from "../../components/repeat_etc/Paging";
 import Pagination from "../../css/study_css/Pagination.css";
+import axios from "axios";
 
 const MyOpenStudy = ({ sideheader }) => {
 	// const dataId = useRef(1);
@@ -23,8 +24,32 @@ const MyOpenStudy = ({ sideheader }) => {
 	const studyState = location.state;
 	const [studiesChanged, setStudiesChanged] = useState(false);
 
+	const accessToken = localStorage.getItem('accessToken');
+	//TODO MyOpenStudy 서버 전달
 	useEffect(() => {
 		if (studiesChanged) {
+			const response = axios.post("url", {
+					"study": studies,
+					"scrap": scrapStates,
+					"like": likeStates,
+				},
+				{
+					withCredentials: true,
+					headers: {
+						'Authorization': `Bearer ${accessToken}`
+					}
+				})
+				.then((res) => {
+					console.log("전송 성공");
+					console.log(res.data);
+					//성공하면
+					// navigate("/myopenstudy", {state: formData});
+
+				}).catch((error) => {
+					console.log('전송 실패', error);
+				})
+			console.log("response : ", response);
+
 			localStorage.setItem("studies", JSON.stringify(studies));
 			localStorage.setItem("ScrapStudies", JSON.stringify(scrapStates));
 			localStorage.setItem("LikeStates", JSON.stringify(likeStates));
@@ -33,12 +58,22 @@ const MyOpenStudy = ({ sideheader }) => {
 		}
 	}, [studiesChanged, studies, scrapStates, likeStates]);
 
-
+//TODO MyOpenStudy 데이터 받아오기
 	useEffect(() => {
-		const storedStudies = localStorage.getItem("studies");
-		if (storedStudies) {
-			setStudies(JSON.parse(storedStudies));
-		}
+		const storedStudies = axios.get("url")
+			.then((res) => {
+				console.log("전송 성공");
+				console.log(res.data);
+				setStudies(res.data.content);
+				console.log(res.data.content);
+
+				setStudies(JSON.parse(storedStudies));
+			})
+			.catch((error) => {
+				console.error("데이터 가져오기 실패:", error);
+			});
+		// const storedStudies = localStorage.getItem("studies");
+
 	}, []);
 	const toggleScrap = (index) => {
 		setStudies((prevStudies) => {

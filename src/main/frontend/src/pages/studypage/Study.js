@@ -190,7 +190,7 @@ const Study = () => {
                 </div>
             </div>
             <div className={"paging"}>
-                <Paging page={page} totalItemCount={count} itemsPerPage={itemsPerPage} handlePageChange={handlePageChange}/>
+                <Paging  page={page} totalItemCount={count} itemsPerPage={itemsPerPage} handlePageChange={handlePageChange}/>
             </div>
         </div>
     );
