@@ -20,19 +20,12 @@ public class StudyController {
     private final StudyService studyService;
 
 
-    @PostMapping("/test")
-    public void test (@RequestBody StudyDto studyDto) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println("test 컨트롤러 진입 : " + authentication.getPrincipal());
-        System.out.println(studyDto);
-    }
-
 //    @GetMapping     // [R] 스터디 게시글 전체 조회
 //    public Page<ScrapStudySlide> getStudies(@RequestParam(value = "page", defaultValue = "1", required = false) int page) {
 //        return studyService.findAll(page);
 //    }
 
-    @GetMapping     // [R] 스터디 게시글 전체 조회 ( 모집 중 / 모집 완료 순으로)
+    @GetMapping("/all")     // [R] 스터디 게시글 전체 조회 ( 모집 중 / 모집 완료 순으로)
     public Page<Study> getAllStudies(@RequestParam(value = "page", defaultValue = "1", required = false) int page) {
         return studyService.findAllByOrderByRecruitStatus(page);
     }

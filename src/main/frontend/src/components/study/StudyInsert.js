@@ -213,7 +213,7 @@ const StudyInsert = ({updateStudies, onClose}) => {
         //myopenstudy에 navigate로 데이터 넘기기
 
         e.preventDefault();
-        navigate("/myopenstudy", {state: formData});     // TODO 주석 제거
+        navigate("/myopenstudy", {state: formData});
     }, [formData, navigate, tags, onInsertStudy]);
 
     // e.preventDefault();

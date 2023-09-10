@@ -52,8 +52,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             "/checkDuplicateNickname",
             "/checkDuplicateID",
             "/signup",
+
             "/imageTest",
+
             "/user/mypage/profile",
+
+            // 전체 스터디 게시글 조회 허용 O
+            "/api/v2/studies/all",
 
     };
 
