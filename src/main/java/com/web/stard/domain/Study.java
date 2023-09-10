@@ -8,6 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -39,6 +40,8 @@ public class Study extends BaseEntity {
 
     private String district;    // 구
 
+    private String field; // 분야
+
     private String tags;    // 태그 들
 
     @NotNull @Column(name = "on_off")
@@ -51,7 +54,6 @@ public class Study extends BaseEntity {
     @NotNull @Column(name = "activity_deadline")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate activityDeadline;     // 활동 마감 기간
-
 
     @CreatedDate
     @Column(name = "recruitment_start", updatable = false)
@@ -77,5 +79,9 @@ public class Study extends BaseEntity {
     @NotNull
     @Column(name = "view_count")
     private int viewCount;
+
+//    @OneToMany
+//    @JoinColumn(name = "")
+//    private List<Applicant> applicants;
 
 }

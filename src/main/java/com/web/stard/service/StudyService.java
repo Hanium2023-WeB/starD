@@ -47,7 +47,7 @@ public class StudyService {
     public Page<Study> findAllByOrderByRecruitStatus(int page){
 
         Sort sort = Sort.by(new Sort.Order(Sort.Direction.DESC, "createdAt"));
-        Pageable pageable = PageRequest.of(page-1, 10, sort);
+        Pageable pageable = PageRequest.of(page-1, 9, sort);
 
         Page<Study> studies = studyRepository.findAllByOrderByRecruitStatus(pageable);
 
@@ -205,5 +205,9 @@ public class StudyService {
 //        result.setRecruitStatus(studyDto.getRecruitStatus());
 
         return result;
+    }
+
+    public Long count() {
+        return studyRepository.count();
     }
 }
