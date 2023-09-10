@@ -23,7 +23,7 @@ const StudyInsert = ({updateStudies, onClose}) => {
     //폼 데이터
     const [formData, setFormData] = useState({
         title: "",
-        field: "",
+        field: "웹 개발",
         author: "",
         number: "",
         onoff: "",
@@ -72,6 +72,16 @@ const StudyInsert = ({updateStudies, onClose}) => {
             [name]: value,
         });
     };
+
+    // const handleFieldChange = (e) => {
+    //     const selectedValue = e.target.value;
+    //     const newValue = selectedValue !== "" ? selectedValue : tagoptions[0].value;
+    //
+    //     setFormData({
+    //         ...formData,
+    //         [e.target.name]: newValue,
+    //     });
+    // };
     //시,도 추가
     const handleRegionCityChange = (newCity) => {
         setCity(newCity);
@@ -281,8 +291,8 @@ const StudyInsert = ({updateStudies, onClose}) => {
                             {/*<input type="text" name="field" value={formData.field} onChange={handleInputChange}*/}
                             {/*       className="inputbox" placeholder="사용할 태그를 입력해주세요"/>*/}
                             <select name="field" value={formData.field} onChange={handleInputChange}>
-                                {tagoptions.map((interest) =>
-                                    <option value={interest.value} >{interest.name}</option>
+                                {tagoptions.map((interest,idx) =>
+                                    <option key={idx} value={interest.value} >{interest.name}</option>
                                 )}
                             </select>
                         </div>
