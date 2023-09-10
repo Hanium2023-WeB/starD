@@ -7,6 +7,9 @@ import InputEstates from "../../css/user_css/InputEstates.css";
 import EditInterest from "../../components/info/EditInterest";
 import axios from "axios";
 
+// 이전 페이지에서 넘어온 아이디 읽어오기
+const memberId = localStorage.getItem("memberId");
+console.log("회원 아이디: ", memberId);
 
 const InputSubSign =()=>{
     //거주지와 관심분야 선택한 사람 관리
@@ -15,6 +18,8 @@ const InputSubSign =()=>{
 
     const [mem, setMem] = useState(
         {city:"",district:"", tags: []});
+
+    // 다음 버튼
     const onClickNextBtn =()=>{
         navigate("/subinfo/signup",{state: {
             mem
@@ -31,6 +36,8 @@ const InputSubSign =()=>{
     useEffect(() => {
         console.log("member상태", mem);
     }, []);
+
+    // 건너뛰기 버튼
     const onClickSkipBtn=()=>{
             //건너뛰기 버튼 눌렀을때
             //입력을 안 하겠다는 의미이므로 기존 데이터 모두 초기화
