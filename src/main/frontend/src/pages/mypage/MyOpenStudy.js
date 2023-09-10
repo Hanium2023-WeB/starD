@@ -8,12 +8,16 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import LikeButton from "../../components/repeat_etc/LikeButton";
 import ScrapButton from "../../components/repeat_etc/ScrapButton";
+import Paging from "../../components/repeat_etc/Paging";
+import Pagination from "../../css/study_css/Pagination.css";
 
 const MyOpenStudy = ({ sideheader }) => {
 	// const dataId = useRef(1);
 	const [studies, setStudies] = useState([]);
 	const [scrapStates, setScrapStates] = useState(studies.scrap);
 	const [likeStates, setLikeStates] = useState(studies.like);
+
+
 
 	const location = useLocation();
 	const studyState = location.state;
@@ -114,6 +118,10 @@ const MyOpenStudy = ({ sideheader }) => {
 						{mypartistudylist()}
 					</div>
 				</div>
+
+			</div>
+			<div className={"paging"}>
+				<Paging/>
 			</div>
 		</div>
 	);
