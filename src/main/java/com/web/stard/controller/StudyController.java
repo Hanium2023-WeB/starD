@@ -123,4 +123,6 @@ public class StudyController {
     public Study updateStudy(@PathVariable long id, @RequestBody StudyDto studyDto, Authentication authentication){
         return studyService.updateStudy(id, studyDto, authentication);
     }
+
+
 }

@@ -1,10 +1,11 @@
 package com.web.stard.domain;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "Study_Member")
-public class StudyMember {
+public class StudyMember {      // 스터디 참여자
 
     @Id
     private long id;
@@ -25,6 +26,5 @@ public class StudyMember {
 
     @Column(name = "recruiter_allow")
     private boolean recruiterAllow;
-
 
 }
