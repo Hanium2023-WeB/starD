@@ -35,8 +35,7 @@ export function RegionSelectBOX ({formData,city,district,handleRegionCityChange,
     const $RegionsidoSelect = $("#sido1");
     const $RegiongugunSelect = $("#gugun1");
 
-    // const [sido, setSido] = useState("");
-    // const [gugun, setGugun] = useState("");
+
      // 시,도 / 구,군 초기화
     function initializeSidoSelect() {
         let gugunList = [];
@@ -72,8 +71,7 @@ export function RegionSelectBOX ({formData,city,district,handleRegionCityChange,
     function saveSelectedSidoVal(selectedSido) {
         localStorage.setItem("selectedRegionsido", selectedSido);
          city = selectedSido;
-        // setSido(selectedSido);
-        // console.log("선택한 시도 : ", city);
+
         saveSelectedGugunVal("");
         handleRegionCityChange(city);
     }

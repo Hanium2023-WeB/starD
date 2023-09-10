@@ -12,6 +12,7 @@ import "../../css/study_css/StudyDetail.css";
 import SearchBar from "../../SearchBar";
 import axios from "axios";
 import StudyListItem from "../../components/study/StudyListItem";
+import Paging from "../../components/repeat_etc/Paging";
 
 const Study = () => {
     const navigate = useNavigate();
@@ -120,6 +121,37 @@ const Study = () => {
         "framework"
     ]
 
+    //페이징관련 코드
+    const [count, setCount]=useState(0);
+    const [itemsPerPage, setItemsPerPage]= useState(9);
+    const handlePageChange = ({itemsPerPage,totalItemsCount}) => {
+        // setPage(page);
+        setItemsPerPage(itemsPerPage); //한페이지 당 아이템 개수
+        setCount(totalItemsCount); //전체 아이템 개수
+    };
+
+
+    //TODO 전체 리스트 값 가져오기
+    //여기서 백엔드에게 데이터 요청
+    const response = axios.get("http://localhost:8080/api/v2/studies/all")
+        .then((res)=>{
+            console.log("전송 성공");
+            console.log(res.data);
+            //데이터를 받아오면 전체 아이템 개수를 Paging.js에게 Props으로 넘길 예정,
+            // 서버에서 받아온 스터디 리스트를 setStudies를 통해 업데이트
+            setStudies(res.data.studies);
+            // 서버에서 받아온 페이지 정보를 setPageInfo를 통해 업데이트합니다.
+            handlePageChange({
+                itemsPerPage: res.data.itemsPerPage, //페이지 당 아이템 수
+                totalItemsCount: res.data.totalItemsCount, //전체 아이템 수
+            });
+
+        }).catch((error)=>{
+            console.log('전송 실패', error);
+        })
+
+
+
     return (
         <div>
             <Header showSideCenter={true}/>
@@ -152,6 +184,9 @@ const Study = () => {
                     )}
                     {!showStudyInsert && studies.length === 0 && <h3>스터디 리스트가 비었습니다.</h3>}
                 </div>
+            </div>
+            <div className={"paging"}>
+                <Paging totalItemCount={count} itemsPerPage={itemsPerPage} handlePageChange={handlePageChange}/>
             </div>
         </div>
     );

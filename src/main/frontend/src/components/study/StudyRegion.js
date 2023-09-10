@@ -9,15 +9,9 @@ function StudyRegion ({formData, city, district, handleRegionCityChange ,handleR
     useEffect(() => {
         // 시/도/군/구 selectBOX 생성함수를 컴포넌트가 로드 되자마자 실행해준다.
         RegionSelectBOX({formData, city , district, handleRegionCityChange,handleRegionDistrictChange });
-        // console.log("city", city);
-        // console.log("district", district);
+
     }, [formData, city, district, handleRegionCityChange, handleRegionDistrictChange]);
-    // useEffect(() => {
-    //     // 시/도/군/구 selectBOX 생성함수를 컴포넌트가 로드 되자마자 실행해준다.
-    //     console.log("city: ", city);
-    //     console.log("district: ", district);
-    //
-    // }, []);
+
 
     return (
         <div className="Study_Region">
