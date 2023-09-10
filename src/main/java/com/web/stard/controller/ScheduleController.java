@@ -3,6 +3,7 @@ package com.web.stard.controller;
 import com.web.stard.domain.*;
 import com.web.stard.service.MemberService;
 import com.web.stard.service.ScheduleService;
+import com.web.stard.service.StudyService;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,6 +20,7 @@ public class ScheduleController {
 
     private final MemberService memberService;
     private final ScheduleService scheduleService;
+    private final StudyService studyService;
 
     /* 사용자 일정 조회 (전체) */
     @GetMapping("/all")
@@ -36,7 +38,10 @@ public class ScheduleController {
     @PostMapping
     public Schedule registerSchedule(@RequestParam Long studyId, @RequestBody Schedule schedule,
                                      Authentication authentication) {
-        // TODO : 일정 권한 확인 (스터디원인지)
+        // TODO : 권한 확인 (스터디원인지) -> 동작 확인 필요
+        if (!studyService.checkStudyMember(studyId, authentication.getName())) {
+            return null;
+        }
 
         return scheduleService.registerSchedule(studyId, schedule);
     }
@@ -45,7 +50,10 @@ public class ScheduleController {
     @PostMapping("/{scheduleId}")
     public Schedule updateSchedule(@PathVariable Long scheduleId, @RequestParam String title,
                                    Authentication authentication) {
-        // TODO : 일정 권한 확인 (스터디원인지)
+        // TODO : 권한 확인 (스터디원인지) -> 동작 확인 필요
+        if (!scheduleService.checkStudyMemberBySchedule(scheduleId, authentication.getName())) {
+            return null;
+        }
 
         return scheduleService.updateSchedule(scheduleId, title);
     }
@@ -53,7 +61,10 @@ public class ScheduleController {
     /* 일정 삭제 */
     @DeleteMapping("/{scheduleId}")
     public boolean deleteSchedule(@PathVariable Long scheduleId, Authentication authentication) {
-        // TODO : 일정 권한 확인 (스터디원인지)
+        // TODO : 권한 확인 (스터디원인지) -> 동작 확인 필요
+        if (!scheduleService.checkStudyMemberBySchedule(scheduleId, authentication.getName())) {
+            return false;
+        }
 
         return scheduleService.deleteSchedule(scheduleId);
     }

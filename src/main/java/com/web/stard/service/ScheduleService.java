@@ -2,6 +2,7 @@ package com.web.stard.service;
 
 import com.web.stard.domain.*;
 import com.web.stard.repository.ScheduleRepository;
+import com.web.stard.repository.StudyMemberRepository;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.YearMonth;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,6 +24,7 @@ public class ScheduleService {
     MemberService memberService;
 
     ScheduleRepository scheduleRepository;
+    StudyMemberRepository studyMemberRepository;
 
     /* 일정 조회 (하나) */
     public Schedule getSchedule(Long id) {
@@ -36,19 +39,18 @@ public class ScheduleService {
     public List<Schedule> getAllScheduleListByMember(int year, int month, Authentication authentication) {
         Member member = memberService.find(authentication.getName());
 
-        // 월 단위로 검색
-        LocalDateTime start = LocalDateTime.of(year, month, 1, 0, 0, 0);
-        LocalDateTime end = LocalDateTime.of(year, month, YearMonth.of(year, month).lengthOfMonth(),
-                23, 59, 59);
+        // TODO : 사용자가 참여중인 스터디의 모든 일정 가져오기 -> 동작 확인 필요
+        List<StudyMember> studies = studyMemberRepository.findByMember(member);
+        List<Schedule> schedules = new ArrayList<>();
+        for (StudyMember sm : studies) {
+            List<Schedule> scheduleList = getScheduleListByStudy(sm.getStudy().getId(), year, month);
+            schedules.addAll(scheduleList);
+        }
 
-        // TODO : 사용자가 참여중인 스터디의 모든 일정 가져오기
-        // 아직 스터디 참여자 개발 전이라 추후 수정
-
-
-        return null;
+        return schedules;
     }
 
-    /* 사용자 일정 조회 (스터디별 : 필요할진 모르겠는데 혹시 몰라서) */
+    /* 사용자 일정 조회 (스터디별) */
     public List<Schedule> getScheduleListByStudy(Long studyId, int year, int month) {
         Study study = studyService.findById(studyId);
 
@@ -90,5 +92,11 @@ public class ScheduleService {
         if (getSchedule(scheduleId) == null) { // 삭제됨
             return true;
         } return false;
+    }
+
+    /* 스터디원인지 확인 */
+    public boolean checkStudyMemberBySchedule(Long scheduleId, String id) {
+        Schedule schedule = getSchedule(scheduleId);
+        return studyService.checkStudyMember(schedule.getStudy().getId(), id);
     }
 }

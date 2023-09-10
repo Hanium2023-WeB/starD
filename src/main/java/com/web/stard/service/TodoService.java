@@ -196,4 +196,10 @@ public class TodoService {
 
         return assignee;
     }
+
+    /* 스터디원인지 확인 */
+    public boolean checkStudyMemberByToDo(Long toDoId, String id) {
+        ToDo toDo = getToDo(toDoId);
+        return studyService.checkStudyMember(toDo.getStudy().getId(), id);
+    }
 }
