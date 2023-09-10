@@ -8,20 +8,13 @@ import java.util.List;
 
 @Entity
 @Table
-@ToString
+@Builder
 @NoArgsConstructor(force = true)
 @AllArgsConstructor
-@Getter
-@Setter
-@Builder
-public class Reply  extends BaseEntity {
+@Getter @Setter
+public class Report {
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
-    @NotNull
-    @ManyToOne
-    @JoinColumn(name = "member_id")
-    private Member member;
 
     @ManyToOne
     @JoinColumn(name = "post_id")
@@ -31,9 +24,12 @@ public class Reply  extends BaseEntity {
     @JoinColumn(name = "study_id")
     private Study study;
 
-    @NotNull
-    private String content;
+    @ManyToOne
+    @JoinColumn(name = "reply_id")
+    private Reply reply;
 
+    @NotNull
+    @Column(name = "table_type")
     @Enumerated(EnumType.STRING)
-    private PostType type; // [COMM, QNA, STUDY]
+    private PostType tableType;    // [COMM, QNA, STUDY, REPLY]
 }
