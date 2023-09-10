@@ -181,7 +181,7 @@ const Study = () => {
                         <div className="content_container">
                             <div className="study_list">
                                 {studies.map((d, index) => (
-                                    <StudyListItem studies={studies} toggleLike={toggleLike} toggleScrap={toggleScrap} d={d} index={index}/>
+                                    <StudyListItem studies={studies[index]} toggleLike={toggleLike} toggleScrap={toggleScrap} d={d} index={index}/>
                                 ))}
                             </div>
                         </div>

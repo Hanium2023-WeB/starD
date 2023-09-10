@@ -21,8 +21,10 @@ function checkRecruitStatus(recruitStatus) {
 
 const StudyListItem = ({studies, toggleLike, toggleScrap, d, index}) => {
 
+    console.log(d);
     const daysDifference = calculateDateDifference(d.activityStart, d.activityDeadline);
     const recruitStatus = checkRecruitStatus(d.recruitStatus);
+
     return (
         <div className="list" key={d.id}>
             <div className="list_header">
@@ -34,12 +36,12 @@ const StudyListItem = ({studies, toggleLike, toggleScrap, d, index}) => {
                 </div>
                 <div className="list_btn">
                     <div className="list_like">
-                        <LikeButton like={studies[index].like}
+                        <LikeButton like={d.like}
                                     onClick={() => toggleLike(index)}/>
                     </div>
                     <div className="list_scrap">
                         {/* 스크랩 버튼을 클릭하면 해당 스터디 리스트 항목의 스크랩 상태를 토글 */}
-                        <ScrapButton scrap={studies[index].scrap}
+                        <ScrapButton scrap={d.scrap}
                                      onClick={() => toggleScrap(index)}/>
                     </div>
                 </div>
@@ -58,7 +60,7 @@ const StudyListItem = ({studies, toggleLike, toggleScrap, d, index}) => {
                 <div className="list_tag">{d.tags}</div>
                 <div className="list_onoff">{d.onOff}</div>
                 <div className="stroke"></div>
-                <div className="list_founder">{d.recruiter.nickname}</div>
+                <div className="list_founder">{d.recruiter.id}</div>
             </Link>
         </div>
     )
