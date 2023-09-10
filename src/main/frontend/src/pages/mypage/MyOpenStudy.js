@@ -49,7 +49,7 @@ const MyOpenStudy = ({ sideheader }) => {
 					console.log('전송 실패', error);
 				})
 			console.log("response : ", response);
-			e.preventDefault();
+			// e.preventDefault();
 
 			localStorage.setItem("studies", JSON.stringify(studies));
 			localStorage.setItem("ScrapStudies", JSON.stringify(scrapStates));
