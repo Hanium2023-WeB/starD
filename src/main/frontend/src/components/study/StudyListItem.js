@@ -21,12 +21,13 @@ function checkRecruitStatus(recruitStatus) {
 
 const StudyListItem = ({studies, toggleLike, toggleScrap, d, index}) => {
 
-    console.log(d);
-    const daysDifference = calculateDateDifference(d.activityStart, d.activityDeadline);
-    const recruitStatus = checkRecruitStatus(d.recruitStatus);
+    console.log("studies : ", studies);
+    console.log("d : ", d);
+    const daysDifference = calculateDateDifference(studies.activityStart, studies.activityDeadline);
+    const recruitStatus = checkRecruitStatus(studies.recruitStatus);
 
     return (
-        <div className="list" key={d.id}>
+        <div className="list" key={studies.id}>
             <div className="list_header">
                 <div className="list_sub_header">
                     <div className="list_day">
@@ -36,31 +37,31 @@ const StudyListItem = ({studies, toggleLike, toggleScrap, d, index}) => {
                 </div>
                 <div className="list_btn">
                     <div className="list_like">
-                        <LikeButton like={d.like}
+                        <LikeButton like={studies.like}
                                     onClick={() => toggleLike(index)}/>
                     </div>
                     <div className="list_scrap">
                         {/* 스크랩 버튼을 클릭하면 해당 스터디 리스트 항목의 스크랩 상태를 토글 */}
-                        <ScrapButton scrap={d.scrap}
+                        <ScrapButton scrap={studies.scrap}
                                      onClick={() => toggleScrap(index)}/>
                     </div>
                 </div>
             </div>
             <Link
-                to={`/studydetail/${d.id}`}
+                to={`/studydetail/${studies.id}`}
                 style={{
                     textDecoration: "none",
                     color: "inherit",
                 }}
             >
                 <div className="list_deadline">
-                    마감일 | {d.recruitmentDeadline}
+                    마감일 | {studies.recruitmentDeadline}
                 </div>
-                <div className="list_title">{d.title}</div>
-                <div className="list_tag">{d.tags}</div>
-                <div className="list_onoff">{d.onOff}</div>
+                <div className="list_title">{studies.title}</div>
+                <div className="list_tag">{studies.tags}</div>
+                <div className="list_onoff">{studies.onOff}</div>
                 <div className="stroke"></div>
-                <div className="list_founder">{d.recruiter.id}</div>
+                <div className="list_founder">{studies.recruiter.id}</div>
             </Link>
         </div>
     )

@@ -166,6 +166,7 @@ public class StudyService {
                 .recruitmentDeadline(studyDto.getRecruitmentDeadline())
                 .viewCount(0)
                 .progressStatus(null)
+                .field(studyDto.getField())
                 .recruitStatus(RecruitStatus.valueOf("RECRUITING"))
                 .build();
 
