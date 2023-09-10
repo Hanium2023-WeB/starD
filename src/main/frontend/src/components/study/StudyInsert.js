@@ -211,7 +211,6 @@ const StudyInsert = ({updateStudies, onClose}) => {
                 activityDeadline:studyWithTags.endDate,
                 content: studyWithTags.description,
                 tags: studyWithTags.tag,
-                current: studyWithTags.current,
                 // scrap: studies.scrap,
                 // like:studies.like,
             },
