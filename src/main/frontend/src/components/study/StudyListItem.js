@@ -61,7 +61,7 @@ const StudyListItem = ({studies, toggleLike, toggleScrap, d, index}) => {
                 <div className="list_tag">{studies.tags}</div>
                 <div className="list_onoff">{studies.onOff}</div>
                 <div className="stroke"></div>
-                <div className="list_founder">{studies.recruiter.id}</div>
+                <div className="list_founder">{studies.recruiter.nickname}</div>
             </Link>
         </div>
     )

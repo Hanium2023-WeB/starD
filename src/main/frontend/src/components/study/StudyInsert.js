@@ -66,10 +66,11 @@ const StudyInsert = ({updateStudies, onClose}) => {
 
     //입력데이터 상태관리
     const handleInputChange = (e) => {
+        const { name, value } = e.target;
         setFormData({
             ...formData,
-            [e.target.name]: e.target.value,
-        })
+            [name]: value,
+        });
     };
     //시,도 추가
     const handleRegionCityChange = (newCity) => {
@@ -235,7 +236,8 @@ const StudyInsert = ({updateStudies, onClose}) => {
         //myopenstudy에 navigate로 데이터 넘기기
 
         e.preventDefault();
-        navigate("/myopenstudy", {state: formData});
+        // navigate("/myopenstudy", {state: formData});
+        navigate("/");
     }, [formData, navigate, tags, onInsertStudy]);
 
     // e.preventDefault();
@@ -306,7 +308,7 @@ const StudyInsert = ({updateStudies, onClose}) => {
                 <div className="study_open_detail">
                     <span>상세 내용</span>
                     <textarea value={formData.description} name="description" onChange={handleInputChange}
-                              placeholder={value}/>
+                              placeholder={value} defaultValue={value}/>
                 </div>
                 <div className="study_tag">
                     <span>스터디 태그</span>
