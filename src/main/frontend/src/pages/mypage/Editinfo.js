@@ -207,9 +207,14 @@ const Editinfo = ({sideheader}) => {
             return;
         }
 
+        const accessToken = localStorage.getItem('accessToken');
+
         axios.post("http://localhost:8080/user/mypage/update/nickname", null, {
             params: {nickname: nickname},
-            withCredentials: true
+            withCredentials: true,
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
         })
             .then(response => {
                 if (response.status === 200) {
@@ -238,9 +243,14 @@ const Editinfo = ({sideheader}) => {
             return;
         }
 
+        const accessToken = localStorage.getItem('accessToken');
+
         axios.post("http://localhost:8080/user/mypage/update/email", null, {
             params: {email: email},
-            withCredentials: true
+            withCredentials: true,
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
         })
             .then(response => {
                 if (response.status === 200) {
@@ -268,9 +278,14 @@ const Editinfo = ({sideheader}) => {
             return;
         }
 
+        const accessToken = localStorage.getItem('accessToken');
+
         axios.post("http://localhost:8080/user/mypage/update/password", null, {
             params: {password: password, newPassword: newPassword},
-            withCredentials: true
+            withCredentials: true,
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
         })
             .then(response => {
                 if (response.status === 200) {
@@ -302,9 +317,14 @@ const Editinfo = ({sideheader}) => {
             return;
         }
 
+        const accessToken = localStorage.getItem('accessToken');
+
         axios.post("http://localhost:8080/user/mypage/update/phone", null, {
             params: {phone: phone},
-            withCredentials: true
+            withCredentials: true,
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
         })
             .then(response => {
                 if (response.status === 200) {
@@ -333,9 +353,14 @@ const Editinfo = ({sideheader}) => {
             return;
         }
 
+        const accessToken = localStorage.getItem('accessToken');
+
         axios.post("http://localhost:8080/user/mypage/update/address", null, {
             params: {city: city, district: district},
-            withCredentials: true
+            withCredentials: true,
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
         })
             .then(response => {
                 if (response.status === 200) {

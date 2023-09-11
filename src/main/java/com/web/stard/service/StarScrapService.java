@@ -5,9 +5,11 @@ import com.web.stard.repository.StarScrapRepository;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -300,5 +302,39 @@ public class StarScrapService {
         if (scrap == null) {
             return true;
         } return false;
+    }
+
+
+
+    public List<Boolean> getStudyPageStar(int page, Authentication authentication) {
+        Page<Study> studies = studyService.findAllByOrderByRecruitStatus(page);
+        Member member = memberService.find(authentication.getName());
+        List<Boolean> stars = new ArrayList<>();
+
+        for (Study study : studies.getContent()) {
+            if (existsStudyStar(member, study) == null) {
+                stars.add(false);
+            } else {
+                stars.add(true);
+            }
+        }
+
+        return stars;
+    }
+
+    public List<Boolean> getStudyPageScrap(int page, Authentication authentication) {
+        Page<Study> studies = studyService.findAllByOrderByRecruitStatus(page);
+        Member member = memberService.find(authentication.getName());
+        List<Boolean> scraps = new ArrayList<>();
+
+        for (Study study : studies.getContent()) {
+            if (existsStudyScrap(member, study) == null) {
+                scraps.add(false);
+            } else {
+                scraps.add(true);
+            }
+        }
+
+        return scraps;
     }
 }
