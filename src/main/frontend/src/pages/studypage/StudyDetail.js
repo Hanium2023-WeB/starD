@@ -8,8 +8,14 @@ import StudyInfo from "../../components/study/StudyInfo";
 import StudyEdit from "../../components/study/StudyEdit";
 import Backarrow from "../../components/repeat_etc/Backarrow";
 import Comment from "../../components/comment/Comment";
+import {useLocation} from "react-router-dom";
+import axios from "axios";
 
 const StudyDetail = ({ sideheader }) => {
+
+	const location = useLocation();
+		const Studyitem = location.state;
+
 	const { id } = useParams();
 	console.log(id);
 
@@ -65,6 +71,43 @@ const StudyDetail = ({ sideheader }) => {
 		}
 	}, [studyDetail]);
 
+	const accessToken = localStorage.getItem('accessToken');
+	useEffect(()=>{
+		console.log("Studyitem",Studyitem);
+		const response = axios.post("url", {
+			activityDeadline: Studyitem.activityDeadline,
+			activityStart:Studyitem.activityStart,
+			capacity:Studyitem.capacity,
+			city:Studyitem.city,
+			content:Studyitem.content,
+			createdAt:Studyitem.createdAt,
+			district:Studyitem.district,
+			field:Studyitem.field,
+			id:Studyitem.id,
+			onOff:Studyitem.onoff,
+			progressStatus:Studyitem.progressStatus,
+			recruitStatus:Studyitem.recruitStatus,
+		},{
+			withCredentials: true,
+			headers: {
+				'Authorization': `Bearer ${accessToken}`
+			}
+		})
+			.then((res) => {
+				console.log("전송 성공");
+				console.log(res.data);
+				//성공하면
+				// navigate("/myopenstudy", {state: formData});
+
+			}).catch((error) => {
+				console.log('전송 실패', error);
+			})
+		console.log("response : ", response);
+
+
+	},[Studyitem]);
+
+
 	return (
 		<div>
 			<Header showSideCenter={true}/>
@@ -86,7 +129,10 @@ const StudyDetail = ({ sideheader }) => {
 								<StudyInfo study={study} handleEditClick={handleEditClick} handleStudyDelete={handleStudyDelete}/>
 								<div className="study_intro">
 									<div>스터디 소개</div>
-									<div dangerouslySetInnerHTML={{ __html: study.description.replace(/\n/g, "<br>") }} />
+									{study && (
+										<div dangerouslySetInnerHTML={{ __html: study.description.replace(/\n/g, "<br>") }} />
+									)}
+									{/*<div dangerouslySetInnerHTML={{ __html: study.description.replace(/\n/g, "<br>") }} />*/}
 								</div>
 								{isApply && (
 									<div className="study_apply_reason">

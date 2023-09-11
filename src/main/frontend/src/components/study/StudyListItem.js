@@ -1,7 +1,9 @@
 import LikeButton from "../repeat_etc/LikeButton";
 import ScrapButton from "../repeat_etc/ScrapButton";
-import {Link} from "react-router-dom";
-import React from "react";
+import {Link,useNavigate} from "react-router-dom";
+import React, {useEffect} from "react";
+
+import axios from "axios";
 
 function calculateDateDifference(startDate, endDate) {
     const start = new Date(startDate);
@@ -23,8 +25,50 @@ const StudyListItem = ({studies, toggleLike, toggleScrap, d, index}) => {
 
     console.log("studies : ", studies);
     console.log("d : ", d);
+
     const daysDifference = calculateDateDifference(studies.activityStart, studies.activityDeadline);
     const recruitStatus = checkRecruitStatus(studies.recruitStatus);
+    const navigate = useNavigate();
+    //TODO ListItem 조회
+    // const accessToken = localStorage.getItem('accessToken');
+    // useEffect(()=>{
+    //     console.log(d);
+    //    const response = axios.post("url", {
+    //        activityDeadline: d.activityDeadline,
+    //        activityStart:d.activityStart,
+    //        capacity:d.capacity,
+    //        city:d.city,
+    //        content:d.content,
+    //        createdAt:d.createdAt,
+    //        district:d.district,
+    //        field:d.field,
+    //        id:d.id,
+    //        onOff:d.onoff,
+    //        progressStatus:d.progressStatus,
+    //        recruitStatus:d.recruitStatus,
+    //    },{
+    //         withCredentials: true,
+    //             headers: {
+    //             'Authorization': `Bearer ${accessToken}`
+    //         }
+    //     })
+    // .then((res) => {
+    //         console.log("전송 성공");
+    //         console.log(res.data);
+    //         //성공하면
+    //         // navigate("/myopenstudy", {state: formData});
+    //
+    //     }).catch((error) => {
+    //         console.log('전송 실패', error);
+    //     })
+    //     console.log("response : ", response);
+    //
+    //
+    // },[d]);
+
+    const GoNextDetailPage = ()=>{
+        navigate("/studydetail/{d.id}", {state: studies})
+    }
 
     return (
         <div className="list" key={studies.id}>
@@ -47,22 +91,23 @@ const StudyListItem = ({studies, toggleLike, toggleScrap, d, index}) => {
                     </div>
                 </div>
             </div>
-            <Link
-                to={`/studydetail/${studies.id}`}
-                style={{
-                    textDecoration: "none",
-                    color: "inherit",
-                }}
-            >
+            {/*navigate("/studydetail/{d.id}", {state: formData})*/}
+            {/*<Link*/}
+            {/*    to={`/studydetail/${studies.id}`}*/}
+            {/*    style={{*/}
+            {/*        textDecoration: "none",*/}
+            {/*        color: "inherit",*/}
+            {/*    }}*/}
+            {/*>*/}
                 <div className="list_deadline">
                     마감일 | {studies.recruitmentDeadline}
                 </div>
-                <div className="list_title">{studies.title}</div>
-                <div className="list_tag">{studies.tags}</div>
-                <div className="list_onoff">{studies.onOff}</div>
-                <div className="stroke"></div>
-                <div className="list_founder">{d.recruiter.nickname}</div>
-            </Link>
+                <div className="list_title" onClick={GoNextDetailPage}>{studies.title}</div>
+                <div className="list_tag" onClick={GoNextDetailPage}>{studies.tags}</div>
+                <div className="list_onoff" onClick={GoNextDetailPage}>{studies.onOff}</div>
+                <div className="stroke" ></div>
+                <div className="list_founder" >{d.recruiter.nickname}</div>
+            {/*</Link>*/}
         </div>
     )
 }

@@ -13,7 +13,7 @@ html {
 .main_container {
 	width: 85%;
 	max-width: 900px;
-	
+
 }
 .category {
 	background-color: #395b64;
@@ -105,11 +105,11 @@ p {
 .todo .tag p{
 	font-size: 13px;
 	font-weight: bold;
-	
+
 }
 .todo #detail{
 	font-size: 12px;
-} 
+}
 #today{
 	font-size: 14px;
 }
@@ -130,7 +130,7 @@ p {
 } */
 .checked{
 	color: #adb5bd;
-    text-decoration: line-through;
+	text-decoration: line-through;
 }
 #todotext{
 	position: relative;

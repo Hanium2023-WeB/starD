@@ -27,6 +27,7 @@ public class StudyController {
 
     @GetMapping("/all")     // [R] 스터디 게시글 전체 조회 ( 모집 중 / 모집 완료 순으로)
     public Page<Study> getAllStudies(@RequestParam(value = "page", defaultValue = "1", required = false) int page) {
+        System.out.println("진입 O");
         return studyService.findAllByOrderByRecruitStatus(page);
     }
 
@@ -123,6 +124,18 @@ public class StudyController {
     @PutMapping("/{id}")     // [U] 스터디 게시글 수정
     public Study updateStudy(@PathVariable long id, @RequestBody StudyDto studyDto, Authentication authentication){
         return studyService.updateStudy(id, studyDto, authentication);
+    }
+
+    @PostMapping("/{id}/apply")       // [C] 스터디 지원 신청
+    public Study createApplicant(@PathVariable long id, @RequestParam String apply_reason) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return studyService.createApplicant(id, apply_reason, authentication);
+    }
+
+    @PostMapping("/{id}/select")       // [C] 스터디 참여자 선택
+    public Study createParticipant(@PathVariable long id) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return studyService.createParticipant(id, authentication);
     }
 
 

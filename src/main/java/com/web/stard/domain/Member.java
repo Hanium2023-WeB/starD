@@ -59,14 +59,6 @@ public class Member implements UserDetails {
             name = "Member_Report_Count")
     private int reportCount; // 개인 누적 신고수
 
-//    @OneToMany
-//    @JoinColumn(name = "applicant_id")
-//    private List<Applicant> applicants; // 스터디 신청
-//
-//    @OneToMany
-//    @JoinColumn(name = "study_member_id")
-//    private List<StudyMember> studyMembers; // 스터디 참여
-
 
     @Builder
     public Member(String id, String name, String email, String password, String phone, String nickname) {

@@ -1,23 +1,28 @@
 package com.web.stard.domain;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
+@Builder
+@Setter @Getter
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "Study_Member")
-@Getter @Setter
 public class StudyMember {      // 스터디 참여자
 
     @Id
     private long id;
 
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
 
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "study_id")
     private Study study;

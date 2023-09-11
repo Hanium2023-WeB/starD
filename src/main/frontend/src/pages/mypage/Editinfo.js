@@ -13,36 +13,8 @@ import Backarrow from "../../components/repeat_etc/Backarrow.js";
 import EditInterest from "../../components/info/EditInterest.js";
 import Header from "../../components/repeat_etc/Header";
 
-const options = [
-    {value: "+82", name: "대한민국"},
-    {value: "+81", name: "일본"},
-    {value: "+1", name: "미국,캐나다"},
-    {value: "+49", name: "독일"},
-    {value: "+61", name: "오스트레일리아"},
-    {value: "+233", name: "가나"},
-    {value: "+241", name: "가봉"},
-];
 
 
-const SelectBox = (props) => { //전화번호 나라 선택 
-    const handleChange = (e) => {
-        // event handler
-        console.log(e.target.value);
-    };
-    return (
-        <select onChange={handleChange}>
-            {props.options.map((option) => (
-                <option
-                    key={option.value}
-                    value={option.value}
-                    defaultValue={props.defaultValue}
-                >
-                    <span>{option.value} {option.name}</span>
-                </option>
-            ))}
-        </select>
-    );
-};
 
 const Editinfo = ({sideheader}) => {
     const [state, setState] = useState({
@@ -486,9 +458,6 @@ const Editinfo = ({sideheader}) => {
                                 onChange={handleEditChange}
                                 placeholder={"전화번호를 입력해주세요."}
                             ></input>
-                            <div className="select_country">
-                                <SelectBox options={options} defaultValue="       "/>
-                            </div>
 
                             <button id="save" onClick={handleSavePhone}>저장하기</button>
                         </div>

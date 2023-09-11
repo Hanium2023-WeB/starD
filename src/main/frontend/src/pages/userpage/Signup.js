@@ -207,12 +207,14 @@ const Signup = () => {
                 console.log("회원가입 성공");
 
                 // 회원 아이디를 로컬 스토리지에 저장하거나 다른 페이지로 전달할 수 있음
-                const memberId = response.data;
+                const newMember = response.data;
+                const memberId = newMember.id;
                 localStorage.setItem("memberId", memberId);
+                console.log("반환된 아이디: ", memberId);
 
-                //window.location.href = "/";
                 window.location.href = "/subinfo?memberId=${memberId}";
             } else {
+                alert("회원가입에 실패하였습니다.");
                 console.error("회원가입 실패");
             }
         } catch (error) {
