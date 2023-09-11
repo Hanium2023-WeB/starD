@@ -1,10 +1,14 @@
 package com.web.stard.domain;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
 @Table(name = "Study_Member")
+@Getter @Setter
 public class StudyMember {      // 스터디 참여자
 
     @Id

@@ -79,8 +79,13 @@ const EditInterest=({mem})=>{
       };
 
     useEffect(() => {
+        const accessToken = localStorage.getItem('accessToken');
+
         axios.get("http://localhost:8080/user/mypage/update/interests", {
-            withCredentials: true
+            withCredentials: true,
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
         })
             .then(response => {
                 const serverInterests = response.data;

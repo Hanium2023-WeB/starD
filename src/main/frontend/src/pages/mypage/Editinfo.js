@@ -69,8 +69,13 @@ const Editinfo = ({sideheader}) => {
     };
 
     useEffect(() => {
+        const accessToken = localStorage.getItem('accessToken');
+
         axios.get("http://localhost:8080/user/mypage/update", {
-            withCredentials: true
+            withCredentials: true,
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
         })
             .then(response => {
                 const member = response.data;
@@ -126,9 +131,14 @@ const Editinfo = ({sideheader}) => {
             return;
         }
 
+        const accessToken = localStorage.getItem('accessToken');
+
         axios.post("http://localhost:8080/user/mypage/check/nickname", null, {
             params: {nickname: nickname},
-            withCredentials: true
+            withCredentials: true,
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
         })
             .then(response => {
                 const isDuplicate = response.data;

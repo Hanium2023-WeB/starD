@@ -3,6 +3,7 @@ package com.web.stard.controller;
 import com.web.stard.domain.Assignee;
 import com.web.stard.domain.ToDo;
 import com.web.stard.service.MemberService;
+import com.web.stard.service.StudyService;
 import com.web.stard.service.TodoService;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,6 +21,7 @@ public class ToDoController {
 
     private final MemberService memberService;
     private final TodoService todoService;
+    private final StudyService studyService;
 
     /* 사용자 TO DO 조회 (전체) */
     @GetMapping("/all")
@@ -46,7 +48,10 @@ public class ToDoController {
     @PostMapping
     public ToDo registerTodo(@RequestParam Long studyId, @RequestBody ToDo toDo,
                              @RequestParam String assigneeStr, Authentication authentication) {
-        // TODO : 권한 확인 (스터디원인지)
+        // TODO : 권한 확인 (스터디원인지) -> 동작 확인 필요
+        if (!studyService.checkStudyMember(studyId, authentication.getName())) {
+            return null;
+        }
 
         return todoService.registerTodo(studyId, toDo, assigneeStr);
     }
@@ -55,7 +60,10 @@ public class ToDoController {
     @PostMapping("/{toDoId}")
     public ToDo updateTodo(@PathVariable Long toDoId, @RequestBody ToDo updateToDo,
                            @RequestParam String assigneeStr, Authentication authentication) {
-        // TODO : 권한 확인 (스터디원인지)
+        // TODO : 권한 확인 (스터디원인지) -> 동작 확인 필요
+        if (!todoService.checkStudyMemberByToDo(toDoId, authentication.getName())) {
+            return null;
+        }
 
         return todoService.updateTodo(toDoId, updateToDo, assigneeStr);
     }
@@ -63,7 +71,10 @@ public class ToDoController {
     /* TO DO 삭제 */
     @DeleteMapping("/{toDoId}")
     public boolean deleteTodo(@PathVariable Long toDoId, Authentication authentication) {
-        // TODO : 권한 확인 (스터디원인지)
+        // TODO : 권한 확인 (스터디원인지) -> 동작 확인 필요
+        if (!todoService.checkStudyMemberByToDo(toDoId, authentication.getName())) {
+            return false;
+        }
 
         return todoService.deleteTodo(toDoId);
     }

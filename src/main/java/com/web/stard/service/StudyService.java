@@ -5,6 +5,7 @@ import com.web.stard.domain.Member;
 import com.web.stard.domain.RecruitStatus;
 import com.web.stard.domain.Study;
 import com.web.stard.dto.StudyDto;
+import com.web.stard.repository.StudyMemberRepository;
 import com.web.stard.repository.StudyRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -24,6 +25,7 @@ public class StudyService {
 
     private StudyRepository studyRepository;
     private MemberService memberService;
+    private StudyMemberRepository studyMemberRepository;
 
     public Study findById(Long id){
         Optional<Study> result = studyRepository.findById(id);
@@ -210,5 +212,13 @@ public class StudyService {
 
     public Long count() {
         return studyRepository.count();
+    }
+
+    /* 해당 회원이 스터디원인지 확인 */
+    public boolean checkStudyMember(Long studyId, String id) {
+        Study study = findById(studyId);
+        Member member = memberService.find(id);
+
+        return studyMemberRepository.existsByStudyAndMember(study, member);
     }
 }

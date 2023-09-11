@@ -1,5 +1,6 @@
 package com.web.stard.service;
 
+import com.web.stard.domain.Interest;
 import com.web.stard.domain.Member;
 import com.web.stard.domain.Profile;
 import com.web.stard.domain.Role;
@@ -10,14 +11,20 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Getter
 @Setter
+@Transactional
 @AllArgsConstructor
 public class SignUpService {
 
     private final MemberRepository memberRepository;
+    private final MemberService memberService;
     private final ProfileService profileService;
     private final InterestRepository interestRepository;
     private final PasswordEncoder passwordEncoder;
@@ -79,6 +86,30 @@ public class SignUpService {
         member.setProfile(profile);
 
         return memberRepository.save(member);
+    }
+
+    // 거주지, 관심분야 저장
+    public void saveAddressAndInterest(String id, String city, String district, String[] interests) {
+        Member member = memberService.find(id);
+
+        // 거주지
+        member.setCity(city);
+        member.setDistrict(district);
+        memberRepository.save(member);
+
+        // 관심분야
+        if (interests[0].equals("")) {
+            return;
+        }
+
+        List<Interest> interestList = new ArrayList<>();
+        for (String s : interests) {
+            Interest interest = new Interest();
+            interest.setMember(member);
+            interest.setField(s);
+            interestList.add(interest);
+        }
+        interestRepository.saveAll(interestList);
     }
 
 }
