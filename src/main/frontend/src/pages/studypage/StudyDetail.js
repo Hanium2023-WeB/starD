@@ -86,7 +86,10 @@ const StudyDetail = ({ sideheader }) => {
 								<StudyInfo study={study} handleEditClick={handleEditClick} handleStudyDelete={handleStudyDelete}/>
 								<div className="study_intro">
 									<div>스터디 소개</div>
-									<div dangerouslySetInnerHTML={{ __html: study.description.replace(/\n/g, "<br>") }} />
+									{study && (
+										<div dangerouslySetInnerHTML={{ __html: study.description.replace(/\n/g, "<br>") }} />
+									)}
+									{/*<div dangerouslySetInnerHTML={{ __html: study.description.replace(/\n/g, "<br>") }} />*/}
 								</div>
 								{isApply && (
 									<div className="study_apply_reason">

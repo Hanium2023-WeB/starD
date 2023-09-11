@@ -202,6 +202,8 @@ const StudyInsert = ({updateStudies, onClose}) => {
             ...formData,
             tag: tags.join(','), // 변경된 부분: 태그 정보를 쉼표로 구분된 문자열로 저장
         };
+        //TODO 프론트 작업을 위해 잠시 추가
+        localStorage.setItem("studyWithTags", JSON.stringify(studyWithTags));
 
         setFormData(onInsertStudy(studyWithTags));
         console.log(`formData: ${JSON.stringify(formData)}`)

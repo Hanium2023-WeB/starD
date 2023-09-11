@@ -27,7 +27,7 @@ const Signup = () => {
     const inputphone = useRef();
     const inputemail = useRef();
 
-///변수명 변경
+    ///변수명 변경
     const [state, setState] = useState({
         id: "",
         password: "",
@@ -60,20 +60,13 @@ const Signup = () => {
             // onTermToggle();
             setCheckImg(!CheckImg);
         },);
+
     //이용약관에 이미 체크가 되어있는데 또 이용약관을 보러 클릭했을 시
     const onCheckImgs = useCallback(
         () => {
             // onTermToggle();
             setCheckImg(true);
         },);
-
-    //동의하기 버튼 클릭 시
-    const handlecheckContent = useCallback(() => {
-        if (!termToggle) {
-            alert("이용약관을 동의해주세요");
-            return;
-        }
-    });
 
     const onChange = (e) => {
         setState({
@@ -163,7 +156,6 @@ const Signup = () => {
             return;
         }
 
-
         // 비밀번호 정규식 검증
         if (!isPassword(state.password)) {
             inputPW.current.focus();
@@ -190,6 +182,12 @@ const Signup = () => {
             return;
         }
 
+        // 약관 동의 여부 확인
+        if (!CheckImg) {
+            alert("이용약관을 동의해주세요");
+            return;
+        }
+
         //TODO 희망사항: 회원가입했던 정보를 개인정보 수정페이지에 (닉네임, 이메일,전화번호)placeholder로 설정
         try {
             const response = await axios.post("http://localhost:8080/signup", {
@@ -205,9 +203,18 @@ const Signup = () => {
             });
 
             if (response.status === 200) {
+                alert("회원가입이 완료되었습니다.");
                 console.log("회원가입 성공");
-                window.location.href = "/";
+
+                // 회원 아이디를 로컬 스토리지에 저장하거나 다른 페이지로 전달할 수 있음
+                const newMember = response.data;
+                const memberId = newMember.id;
+                localStorage.setItem("memberId", memberId);
+                console.log("반환된 아이디: ", memberId);
+
+                window.location.href = "/subinfo?memberId=${memberId}";
             } else {
+                alert("회원가입에 실패하였습니다.");
                 console.error("회원가입 실패");
             }
         } catch (error) {
@@ -233,7 +240,7 @@ const Signup = () => {
             });
 
             // 서버로부터 받은 응답 확인
-            const isDuplicate = response.data.duplicate;
+            const isDuplicate = response.data;
 
             console.log("handleCheckDuplicateID 함수 호출");
             console.log("isDuplicate 상태:", isDuplicate);
@@ -268,7 +275,7 @@ const Signup = () => {
             });
 
             // 서버로부터 받은 응답 확인
-            const isDuplicate = response.data.duplicate;
+            const isDuplicate = response.data;
 
             console.log("handleCheckDuplicateNickname 함수 호출");
             console.log("isDuplicate 상태:", isDuplicate);
@@ -394,7 +401,7 @@ const Signup = () => {
                         }} CheckImg={CheckImg} onCheckImgs={onCheckImgs} />}
                     </div>
                     <div className="signbtn">
-                        <button type="submit" onClick={handlecheckContent}>가입하기</button>
+                        <button type="submit">가입하기</button>
                     </div>
                 </form>
             </div>

@@ -142,6 +142,7 @@ const Study = () => {
                 // 데이터를 받아오면 전체 아이템 개수를 Paging.js에게 Props으로 넘길 예정,
                 // 서버에서 받아온 스터디 리스트를 setStudies를 통해 업데이트
                 setStudies(res.data.content);
+                localStorage.setItem("studies", JSON.stringify(studies));
                 console.log(res.data.content);
                 // 서버에서 받아온 페이지 정보를 setPageInfo를 통해 업데이트합니다.
                 handlePageChange({
