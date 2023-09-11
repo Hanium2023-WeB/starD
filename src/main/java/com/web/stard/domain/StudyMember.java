@@ -1,6 +1,7 @@
 package com.web.stard.domain;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
@@ -10,10 +11,12 @@ public class StudyMember {      // 스터디 참여자
     @Id
     private long id;
 
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
 
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "study_id")
     private Study study;

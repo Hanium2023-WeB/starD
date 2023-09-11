@@ -42,7 +42,7 @@ public class Study extends BaseEntity {
 
     private String field; // 분야
 
-    private String tags;    // 태그 들
+    private String tags;    // 태그들
 
     @NotNull @Column(name = "on_off")
     private String onOff;      // 온/오프/무관
@@ -80,8 +80,12 @@ public class Study extends BaseEntity {
     @Column(name = "view_count")
     private int viewCount;
 
-//    @OneToMany
-//    @JoinColumn(name = "")
-//    private List<Applicant> applicants;
+    @OneToMany
+    @JoinColumn(name = "study_applicant_id")
+    private List<Applicant> applicants;
+
+    @OneToMany
+    @JoinColumn(name = "study_study_member_id")
+    private List<StudyMember> studyMembers;
 
 }
