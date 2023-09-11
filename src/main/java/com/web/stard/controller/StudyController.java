@@ -27,13 +27,13 @@ public class StudyController {
 
     @GetMapping("/all")     // [R] 스터디 게시글 전체 조회 ( 모집 중 / 모집 완료 순으로)
     public Page<Study> getAllStudies(@RequestParam(value = "page", defaultValue = "1", required = false) int page) {
-        System.out.println("진입 O");
         return studyService.findAllByOrderByRecruitStatus(page);
     }
 
 
     @GetMapping("/{id}")    // [R] 스터디 게시글 세부 조회
     public Study getStudy(@PathVariable Long id){
+        System.out.println("세부 조회");
         return studyService.findById(id);
     }
 
@@ -41,6 +41,7 @@ public class StudyController {
 
     @GetMapping("/search-by-title")     // [R] 키워드(제목)로 스터디 게시글 검색
     public Page<Study> getStudiesByTitle(@RequestParam("keyword") String keyword, @RequestParam(value = "page", defaultValue = "1", required = false) int page) {
+        System.out.println("진입 1 : " + keyword);
         return studyService.findByTitleContainingOrderByRecruitStatus(keyword, page);
     }
 
