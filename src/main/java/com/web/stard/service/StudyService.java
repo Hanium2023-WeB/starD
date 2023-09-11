@@ -37,6 +37,7 @@ public class StudyService {
 
     }
 
+    @Transactional
     public Page<Study> findAll(int page) {
 
         Sort sort = Sort.by(new Sort.Order(Sort.Direction.DESC, "createdAt"));
@@ -216,6 +217,7 @@ public class StudyService {
     }
 
 
+    @Transactional
     public Study createApplicant(long id, String apply_reason, Authentication authentication) {
 
         // TODO 스터디 개설자는 자동으로 신청자 테이블에 저장?
@@ -237,6 +239,7 @@ public class StudyService {
         return null;
     }
 
+    @Transactional
     public Study createParticipant(long id, Authentication authentication) {
         // TODO 스터디 참여자 생성 코드 작성
         String userId = authentication.getName();

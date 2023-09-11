@@ -80,12 +80,5 @@ public class Study extends BaseEntity {
     @Column(name = "view_count")
     private int viewCount;
 
-    @OneToMany
-    @JoinColumn(name = "study_applicant_id")
-    private List<Applicant> applicants;
-
-    @OneToMany
-    @JoinColumn(name = "study_study_member_id")
-    private List<StudyMember> studyMembers;
 
 }

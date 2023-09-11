@@ -27,6 +27,7 @@ public class StudyController {
 
     @GetMapping("/all")     // [R] 스터디 게시글 전체 조회 ( 모집 중 / 모집 완료 순으로)
     public Page<Study> getAllStudies(@RequestParam(value = "page", defaultValue = "1", required = false) int page) {
+        System.out.println("진입 O");
         return studyService.findAllByOrderByRecruitStatus(page);
     }
 
