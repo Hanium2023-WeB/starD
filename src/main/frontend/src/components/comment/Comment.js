@@ -44,37 +44,18 @@ const Comment = () => {
     const setRepliesFun = (replies) => {
         setReplies(replies);
     }
-    const addComment = (newComment, commentType) => {
-        const commentWithInfo = {
-            id: nextId.current++,
-            content: newComment,
-            author: userNickname,
-            created_at: new Date().toLocaleString(),
-            isEditing:false,
-        }
-        let url;
-            if (commentType === 'post') {
-                url = '/api/comments/post';
-            } else if (commentType === 'study') {
-                url = '/api/comments/study';
-            } else {
-                // 다른 종류의 댓글 생성 로직을 추가할 수 있습니다.
+
+    // TODO 스터디 게시글 아이디 가져올 수 있어야 서버에 저장 가능 (StudyDetail.js에서 받아와야?)
+    const addComment = (newComment) => {
+            const commentWithInfo = {
+                id: nextId.current++,
+                content: newComment,
+                author: userNickname,
+                created_at: new Date().toLocaleString(),
+                isEditing:false,
             }
-
-            // 서버에 댓글 추가 요청을 보냅니다.
-            axios
-                .post(url, commentWithInfo)
-                .then((response) => {
-                    // 서버로부터 받은 응답에서 새로 등록된 댓글 정보를 가져옵니다.
-                    const newCommentData = response.data;
-
-                    // 댓글 목록을 업데이트합니다.
-                    setComments([...comments, newCommentData]);
-                })
-                .catch((error) => {
-                    console.error("댓글 추가 중 에러 발생:", error);
-                });
-    };
+            setComments([...comments, commentWithInfo]);
+        };
 
     const handleEditClick = (index) => {
         const updatedComments = [...comments];
