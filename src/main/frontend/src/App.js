@@ -5,6 +5,7 @@ import React, {useState, useRef, useEffect,useMemo, lazy, Suspense} from "react"
 import {BrowserRouter, Routes, Route} from "react-router-dom";
 
 
+
 import Home from "./pages/Home";
 import Login from "./pages/userpage/Login";
 import Logout from "./pages/userpage/Logout";
@@ -24,6 +25,8 @@ import MyApplyStudy from "./pages/mypage/MyApplyStudy";
 import Header from "./components/repeat_etc/Header";
 import InputSubSign from "./pages/userpage/InputSubSign";
 import FindID from "./pages/userpage/FindID";
+import SearchBar from "./SearchBar";
+import SearchResult from "./pages/studypage/SearchResult";
 
 
 function App() {
@@ -130,7 +133,16 @@ function App() {
                         <InputSubSign/>
                         }
                         />
+                    <Route
+                        path="/search"
+                        element={
+                            <SearchResult/>
+                        }
+                    />
+                    <Route path="/" exact component={Home} />
+                    <Route path="/search" component={SearchResult} />
                 </Routes>
+
                 <Footer/>
 
             </div>
