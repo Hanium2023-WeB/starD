@@ -1,15 +1,15 @@
 import {useState} from "react";
-
+import "../../css/study_css/StudyDetail.css";
 const StudyApplyList = () => {
     // const [applyList, setApplyList] = useState([]);
     return (
-        <table>
+        <table className="study_apply_list">
             <th>신청자 이름</th>
             <th>지원동기 및 각오</th>
             <th>상태</th>
             {/*{applyList.map((d, index) => (*/}
                 <tr>
-                    <td></td>
+                    <td>김솜솜</td>
                     <td>
                         <button>보기</button>
                     </td>
