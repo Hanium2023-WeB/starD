@@ -111,9 +111,14 @@ const handleSaveTag = async () => {
 //    const encodedTags = tags.map(tag => encodeURIComponent(tag));
     const interests = tags.join(",");
 
+    const accessToken = localStorage.getItem('accessToken');
+
     axios.post("http://localhost:8080/user/mypage/update/interest", null, {
         params: { interestList: interests },
-        withCredentials: true
+        withCredentials: true,
+        headers: {
+            'Authorization': `Bearer ${accessToken}`
+        }
     })
         .then(response => {
             if (response.status === 200) {

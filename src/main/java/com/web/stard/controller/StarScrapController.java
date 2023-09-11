@@ -89,4 +89,17 @@ public class StarScrapController {
 
 
 
+    /* 스터디 페이지의 공감 여부 조회 */
+    @GetMapping("/study/stars")
+    public List<Boolean> getStudyPageStar(@RequestParam(value = "page", defaultValue = "1", required = false) int page,
+                                          Authentication authentication) {
+        return starScrapService.getStudyPageStar(page, authentication);
+    }
+
+    /* 스터디 페이지의 스크랩 여부 조회 */
+    @GetMapping("/study/scraps")
+    public List<Boolean> getStudyPageScrap(@RequestParam(value = "page", defaultValue = "1", required = false) int page,
+                                           Authentication authentication) {
+        return starScrapService.getStudyPageScrap(page, authentication);
+    }
 }

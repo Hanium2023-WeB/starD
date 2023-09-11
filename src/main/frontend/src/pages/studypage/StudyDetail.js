@@ -71,6 +71,7 @@ const StudyDetail = ({ sideheader }) => {
 		}
 	}, [studyDetail]);
 
+/*
 	const accessToken = localStorage.getItem('accessToken');
 	useEffect(()=>{
 		console.log("Studyitem",Studyitem);
@@ -107,6 +108,7 @@ const StudyDetail = ({ sideheader }) => {
 
 	},[Studyitem]);
 
+*/
 
 	return (
 		<div>

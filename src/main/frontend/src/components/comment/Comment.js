@@ -1,10 +1,37 @@
 import CommentForm from "./CommentForm";
-import {useRef, useState} from "react";
+import {useRef, useState, useEffect} from "react";
 import CommentList from "./CommentList";
 import CommentEdit from "./CommentEdit";
 import ReplyForm from "./ReplyForm";
+import axios from "axios";
 
 const Comment = () => {
+    const accessToken = localStorage.getItem('accessToken');
+
+    const [userNickname, setUserNickname] = useState("");
+
+    useEffect(() => {
+              // 사용자 아이디를 서버로 전송
+              axios
+                .get("http://localhost:8080/member/find-nickname", {
+                withCredentials: true,
+                headers: {
+                     'Authorization': `Bearer ${accessToken}`
+                }
+                })
+
+                .then((response) => {
+                  // 서버에서 회원 객체를 받아와 닉네임 저장
+                  const member = response.data;
+                  setUserNickname(member.nickname);
+
+                })
+                .catch((error) => {
+                  console.error("서버에서 닉네임을 가져오는 중 에러 발생:", error);
+                });
+    }, []);
+    console.log("닉네임가져온거: ", userNickname);
+
     const [comments, setComments] = useState([]);
     const [editingComment, setEditingComment] = useState(null); // 수정 중인 댓글 상태 추가
 
@@ -17,15 +44,36 @@ const Comment = () => {
     const setRepliesFun = (replies) => {
         setReplies(replies);
     }
-    const addComment = (newComment) => {
+    const addComment = (newComment, commentType) => {
         const commentWithInfo = {
             id: nextId.current++,
             content: newComment,
-            author: "닉네임",
+            author: userNickname,
             created_at: new Date().toLocaleString(),
             isEditing:false,
         }
-        setComments([...comments, commentWithInfo]);
+        let url;
+            if (commentType === 'post') {
+                url = '/api/comments/post';
+            } else if (commentType === 'study') {
+                url = '/api/comments/study';
+            } else {
+                // 다른 종류의 댓글 생성 로직을 추가할 수 있습니다.
+            }
+
+            // 서버에 댓글 추가 요청을 보냅니다.
+            axios
+                .post(url, commentWithInfo)
+                .then((response) => {
+                    // 서버로부터 받은 응답에서 새로 등록된 댓글 정보를 가져옵니다.
+                    const newCommentData = response.data;
+
+                    // 댓글 목록을 업데이트합니다.
+                    setComments([...comments, newCommentData]);
+                })
+                .catch((error) => {
+                    console.error("댓글 추가 중 에러 발생:", error);
+                });
     };
 
     const handleEditClick = (index) => {
@@ -72,7 +120,7 @@ const Comment = () => {
         const newReply = {
             id: nextId.current++, // 다음 ID 부여
             content: replyContent,
-            author: "닉네임", // 작성자 이름 또는 정보 설정
+            author: userNickname, // 작성자 이름 또는 정보 설정
             created_at: new Date().toLocaleString(),
             isEditing: false,
         };
