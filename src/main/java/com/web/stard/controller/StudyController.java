@@ -125,5 +125,17 @@ public class StudyController {
         return studyService.updateStudy(id, studyDto, authentication);
     }
 
+    @PostMapping("/{id}/apply")       // [C] 스터디 지원 신청
+    public Study createApplicant(@PathVariable long id, @RequestParam String apply_reason) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return studyService.createApplicant(id, apply_reason, authentication);
+    }
+
+    @PostMapping("/{id}/select")       // [C] 스터디 참여자 선택
+    public Study createParticipant(@PathVariable long id) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return studyService.createParticipant(id, authentication);
+    }
+
 
 }

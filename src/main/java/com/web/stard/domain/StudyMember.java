@@ -1,10 +1,16 @@
 package com.web.stard.domain;
 
+import lombok.*;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
+@Builder
+@Setter @Getter
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "Study_Member")
 public class StudyMember {      // 스터디 참여자
 

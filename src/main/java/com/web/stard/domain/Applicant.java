@@ -1,5 +1,6 @@
 package com.web.stard.domain;
 
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
@@ -8,6 +9,11 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
+@Builder
+@Table
+@Setter @Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Applicant {        // 스터디 신청자
 
     @Id
