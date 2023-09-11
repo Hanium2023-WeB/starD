@@ -55,4 +55,24 @@ public class MemberController {
         return memberService.findId(email, phone);
     }
 
+    // 거주지, 관심분야 저장
+    @PostMapping("/signup/option-data")
+    public ResponseEntity<String> saveAddressAndInterest(@RequestBody Map<String, Object> requestData) {
+        String id = (String) requestData.get("id");
+        String city = (String) requestData.get("city");
+        String district = (String) requestData.get("district");
+        String interestList = (String) requestData.get("interestList");
+
+        // 쉼표로 구분된 문자열을 배열로 분할
+        String[] interestsArray = interestList.split(",");
+
+        try {
+            signUpService.saveAddressAndInterest(id, city, district, interestsArray);
+            return ResponseEntity.ok("거주지, 관심분야가 저장되었습니다.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("거주지, 관심분야 저장 중 오류가 발생했습니다.");
+        }
+    }
+
 }
