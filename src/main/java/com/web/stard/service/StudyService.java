@@ -7,8 +7,10 @@ import com.web.stard.domain.RecruitStatus;
 import com.web.stard.domain.Study;
 import com.web.stard.dto.StudyDto;
 import com.web.stard.repository.ApplicantRepository;
+import com.web.stard.repository.StudyMemberRepository;
 import com.web.stard.repository.StudyRepository;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -24,9 +26,10 @@ import java.util.Optional;
 @AllArgsConstructor
 public class StudyService {
 
-    private StudyRepository studyRepository;
-    private MemberService memberService;
-    private ApplicantRepository applicantRepository;
+    private final StudyRepository studyRepository;
+    private final MemberService memberService;
+    private final ApplicantRepository applicantRepository;
+    private final StudyMemberRepository studyMemberRepository;
 
     public Study findById(Long id) {
         Optional<Study> result = studyRepository.findById(id);
@@ -253,4 +256,13 @@ public class StudyService {
 
         return null;
     }
+
+    /* 해당 회원이 스터디원인지 확인 */
+    public boolean checkStudyMember(Long studyId, String id) {
+        Study study = findById(studyId);
+        Member member = memberService.find(id);
+
+        return studyMemberRepository.existsByStudyAndMember(study, member);
+    }
+
 }
