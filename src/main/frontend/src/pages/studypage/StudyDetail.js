@@ -25,6 +25,7 @@ const StudyDetail = ({sideheader}) => {
     const [studyDetail, setStudyDetail] = useState([]);// 스터디 상세 정보를 상태로 관리
     const [isApply, setIsApply] = useState(false);
     const accessToken = localStorage.getItem('accessToken');
+    const isLoggedInUserId = localStorage.getItem('isLoggedInUserId');
 
     useEffect(() => {
         // 백엔드 REST API 호출 코드
@@ -36,6 +37,10 @@ const StudyDetail = ({sideheader}) => {
         }).then((res) => {
             console.log("전송 성공 : ", res.data);
             setStudyItem(res.data);
+
+            if (res.data.recruiter.id === isLoggedInUserId ) {
+                console.log("자기 자신의 글");
+            }
         })
             .catch((error) => {
                 alert("로그인 해 주세요.");
