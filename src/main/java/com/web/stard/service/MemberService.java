@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -125,5 +126,11 @@ public class MemberService {
 
     public Member findId(String email, String phone) {
         return memberRepository.findByEmailAndPhone(email, phone);
+    }
+
+
+    // authentication으로 닉네임 찾기
+    public Member findNickNameByAuthentication(Authentication authentication) {
+        return memberRepository.findNicknameById(authentication.getName());
     }
 }

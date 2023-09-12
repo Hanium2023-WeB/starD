@@ -40,26 +40,26 @@ const SearchBar = (props) => {
 		return item.includes(search);
 	});
 
-	//TODO 검색바
-	// useEffect(() => {
-	// 	try {
-	// 	const response = axios.post("URL", {
-	// 		state: {
-	// 			search:search,
-	// 			selectsearch:selectsearch,
-	// 		}
-	// 	});
-	//
-	// 	// if (response.status === 200) {
-	// 	// 	console.log("검색 성공");
-	// 	// 	window.location.href = "/";
-	// 	// } else {
-	// 	// 	console.error("검색 실패");
-	// 	// }
-	// } catch (error) {
-	// 	console.error("Error:", error);}
-	//
-	// }, []);
+	// TODO 스터디 검색
+	useEffect(() => {
+		try {
+			if (selectOption === "제목") {
+				axios.get("http://localhost:8080/api/v2/studies/search-by-title",
+					{params: {
+							keyword: search}})
+					.then((res)=>{
+						console.log("전송 성공");
+						console.log(res.data);
+
+					}).catch((error)=>{
+						console.log('전송 실패', error);
+					})
+			}
+		} catch (error) {
+			console.error("Error:", error);
+		}
+	}, [search, selectOption]);
+
 
 	//url 동적으로 바꾸기 선택한 옵션과 검색내용이 url안으로 들어갑니다
 	const searchItem = (item)=>{

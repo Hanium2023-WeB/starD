@@ -7,6 +7,13 @@ const CommentForm = ({addComment}) => {
     },[]);
     const handleSubmit = (e) => {
         e.preventDefault();
+
+        // 댓글 내용이 유효한지 확인
+        if (value.trim() === "") {
+            alert("댓글 내용을 입력해주세요.");
+            return;
+        }
+
         addComment(value);
         setValue("");
     }
