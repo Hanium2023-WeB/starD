@@ -3,6 +3,7 @@ import Category from "../../components/repeat_etc/Category.js";
 import ScheduleCalender from "../../components/schedule/ScheduleCalender.js";
 import Backarrow from "../../components/repeat_etc/Backarrow.js";
 import AddSchedule from "../../components/schedule/AddSchedule.js";
+import Header from "../../components/repeat_etc/Header";
 import axios from "axios";
 
 const Schedule = ({sideheader}) => {
@@ -294,7 +295,7 @@ const Schedule = ({sideheader}) => {
 
     return (
         <div>
-            {sideheader}
+           <Header showSideCenter={true}/>
             <Backarrow subname={"스터디 모임 일정"}/>
             <div className="container">
                 <div className="main_container">

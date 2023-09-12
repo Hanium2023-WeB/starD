@@ -7,6 +7,7 @@ import com.web.stard.service.StudyService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,18 +19,21 @@ public class StudyController {
 
     private final StudyService studyService;
 
+
 //    @GetMapping     // [R] 스터디 게시글 전체 조회
-//    public Page<Study> getStudies(@RequestParam(value = "page", defaultValue = "1", required = false) int page) {
+//    public Page<ScrapStudySlide> getStudies(@RequestParam(value = "page", defaultValue = "1", required = false) int page) {
 //        return studyService.findAll(page);
 //    }
 
-    @GetMapping     // [R] 스터디 게시글 전체 조회 ( 모집 중 / 모집 완료 순으로)
+    @GetMapping("/all")     // [R] 스터디 게시글 전체 조회 ( 모집 중 / 모집 완료 순으로)
     public Page<Study> getAllStudies(@RequestParam(value = "page", defaultValue = "1", required = false) int page) {
         return studyService.findAllByOrderByRecruitStatus(page);
     }
 
+
     @GetMapping("/{id}")    // [R] 스터디 게시글 세부 조회
     public Study getStudy(@PathVariable Long id){
+        System.out.println("세부 조회");
         return studyService.findById(id);
     }
 
@@ -37,6 +41,7 @@ public class StudyController {
 
     @GetMapping("/search-by-title")     // [R] 키워드(제목)로 스터디 게시글 검색
     public Page<Study> getStudiesByTitle(@RequestParam("keyword") String keyword, @RequestParam(value = "page", defaultValue = "1", required = false) int page) {
+        System.out.println("진입 1 : " + keyword);
         return studyService.findByTitleContainingOrderByRecruitStatus(keyword, page);
     }
 
@@ -105,9 +110,12 @@ public class StudyController {
     }
 
     @PostMapping       // [C] 스터디 게시글 생성
-    public Study createStudy(StudyDto studyDto, Authentication authentication){
+    public Study createStudy(@RequestBody StudyDto studyDto) {
+        System.out.println(studyDto);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return studyService.createStudy(studyDto, authentication);
     }
+
 
     @DeleteMapping("/{id}")      // [D] 스터디 게시글 삭제
     public void deleteStudy(@PathVariable long id, Authentication authentication){
@@ -118,4 +126,18 @@ public class StudyController {
     public Study updateStudy(@PathVariable long id, @RequestBody StudyDto studyDto, Authentication authentication){
         return studyService.updateStudy(id, studyDto, authentication);
     }
+
+    @PostMapping("/{id}/apply")       // [C] 스터디 지원 신청
+    public Study createApplicant(@PathVariable long id, @RequestParam String apply_reason) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return studyService.createApplicant(id, apply_reason, authentication);
+    }
+
+    @PostMapping("/{id}/select")       // [C] 스터디 참여자 선택
+    public Study createParticipant(@PathVariable long id) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return studyService.createParticipant(id, authentication);
+    }
+
+
 }

@@ -26,7 +26,7 @@ html {
 	flex-direction: column;
 	margin-right: 50px;
 	height: fit-content;
-	color: gray;
+	color: #99a3af;
 	width: 120px;
 	border-radius: 10px;
 	padding: 15px;
@@ -80,11 +80,11 @@ html {
 	margin-right: 20px;
 	margin-bottom: 20px;
 	padding: 30px;
-	border: 1px solid gray;
+	border: 1px solid #99a3af;
 	border-radius: 40px;
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
+	/*display: flex;*/
+	/*flex-direction: column;*/
+	/*justify-content: space-between;*/
 }
 .study_list .list:nth-of-type(3n) {
 	margin-right: 0;
@@ -110,7 +110,16 @@ html {
 	padding: 7px 10px;
 	border-radius: 50px;
 }
+.study_list .list_btn{
+	display: flex;
+}
 .study_list .list_like {
+	font-size: 17px;
+	color: #fff700;
+	cursor: pointer;
+	margin-right: 10px;
+}
+.study_list .list_scrap {
 	font-size: 17px;
 	color: #fff700;
 	cursor: pointer;
@@ -140,4 +149,12 @@ html {
 }
 .study_list .stroke {
 	border-bottom: 1px solid #c6c6c6;
+}
+
+
+.paging{
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	margin-bottom: 20px;
 }

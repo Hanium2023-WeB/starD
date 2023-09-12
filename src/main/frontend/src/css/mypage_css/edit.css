@@ -28,6 +28,8 @@ svg{
 .change_nicname,.change_estate, .change_email,
 .change_interest, .change_pw , .change_phone , .signout{
     width: 100%;
+    height: fit-content;
+    padding-bottom: 20px;
     border-radius: 10px;
     border: lightgray solid 1px;
 

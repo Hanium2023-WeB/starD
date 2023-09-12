@@ -13,6 +13,7 @@ import cn from "classnames";
 import checkbox from "../../images/check.png";
 import uncheckbox from "../../images/unchecked.png";
 import Schedule from "../mypage/Schedule.js";
+import Header from "../../components/repeat_etc/Header";
 
 //https://jsonplaceholder.typicode.com/comments
 
@@ -74,7 +75,7 @@ const Mypage = ({ sideheader }) => {
 
         // Extract study values from todaySchedule object
         const studyValues = Object.keys(todaySchedule);
-        console.log("Study Values:", studyValues);
+        console.log("ScrapStudySlide Values:", studyValues);
 
         for (const studyKey in todaySchedule) {
           console.log(`Study: ${studyKey}`);
@@ -139,7 +140,7 @@ const Mypage = ({ sideheader }) => {
   }, []);
   return (
     <div>
-      {sideheader}
+     <Header showSideCenter={true}/>
       <div className="container">
         <Category />
         <div className="main_container">

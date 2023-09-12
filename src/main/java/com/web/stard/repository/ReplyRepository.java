@@ -1,5 +1,6 @@
 package com.web.stard.repository;
 
+import com.web.stard.domain.Member;
 import com.web.stard.domain.PostType;
 import com.web.stard.domain.Reply;
 import org.springframework.data.domain.Page;
@@ -19,4 +20,5 @@ public interface ReplyRepository extends JpaRepository<Reply, Long> {
     /* study 게시글 아이디 별 댓글 전체 조회 (생성일 순) */
     List<Reply> findAllByStudyIdOrderByCreatedAtAsc(Long studyId);
 
+    List<Reply> findAllByMember(Member member);
 }

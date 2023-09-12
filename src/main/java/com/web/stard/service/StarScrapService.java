@@ -5,9 +5,11 @@ import com.web.stard.repository.StarScrapRepository;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -95,7 +97,7 @@ public class StarScrapService {
 
 
 
-    /* Study Star 여부 확인 */
+    /* ScrapStudySlide Star 여부 확인 */
     public StarScrap existsStudyStar(Member member, Study study) {
         Optional<StarScrap> star = starScrapRepository.findByMemberAndStudyAndTypeAndPostType(member, study,ActType.STAR, PostType.STUDY);
 
@@ -104,7 +106,7 @@ public class StarScrapService {
         } return null;
     }
 
-    /* 공감한 Study List 조회 */
+    /* 공감한 ScrapStudySlide List 조회 */
     public List<StarScrap> allStudyStarList(Authentication authentication) {
         Member member = memberService.find(authentication.getName());
         return starScrapRepository.findAllByMemberAndTypeAndPostType(member,ActType.STAR, PostType.STUDY);
@@ -119,7 +121,7 @@ public class StarScrapService {
         return allStarList.size();
     }
 
-    /* Study 공감 추가 */
+    /* ScrapStudySlide 공감 추가 */
     public StarScrap addStudyStar(Long id, Authentication authentication) {
         Study study = studyService.findById(id);
         Member member = memberService.find(authentication.getName());
@@ -147,7 +149,7 @@ public class StarScrapService {
         return star;
     }
 
-    /* Study 공감 삭제 */
+    /* ScrapStudySlide 공감 삭제 */
     public boolean deleteStudyStar(Long id, Authentication authentication) {
         Study study = studyService.findById(id);
         Member member = memberService.find(authentication.getName());
@@ -237,7 +239,7 @@ public class StarScrapService {
 
 
 
-    /* Study Scrap 여부 확인 */
+    /* ScrapStudySlide Scrap 여부 확인 */
     public StarScrap existsStudyScrap(Member member, Study study) {
         Optional<StarScrap> scrap = starScrapRepository.findByMemberAndStudyAndTypeAndPostType(member, study, ActType.SCRAP, PostType.STUDY);
 
@@ -246,7 +248,7 @@ public class StarScrapService {
         } return null;
     }
 
-    /* 스크랩한 Study List 조회 */
+    /* 스크랩한 ScrapStudySlide List 조회 */
     public List<StarScrap> allStudyScrapList(Authentication authentication) {
         Member member = memberService.find(authentication.getName());
         return starScrapRepository.findAllByMemberAndTypeAndPostType(member, ActType.SCRAP, PostType.STUDY);
@@ -261,7 +263,7 @@ public class StarScrapService {
         return allScrapList.size();
     }
 
-    /* Study Scrap 추가 */
+    /* ScrapStudySlide Scrap 추가 */
     public StarScrap addStudyScrap(Long id, Authentication authentication) {
         Study study = studyService.findById(id);
         Member member = memberService.find(authentication.getName());
@@ -284,7 +286,7 @@ public class StarScrapService {
         return scrap;
     }
 
-    /* Study Scrap 삭제 */
+    /* ScrapStudySlide Scrap 삭제 */
     public boolean deleteStudyScrap(Long id, Authentication authentication) {
         Study study = studyService.findById(id);
         Member member = memberService.find(authentication.getName());
@@ -300,5 +302,39 @@ public class StarScrapService {
         if (scrap == null) {
             return true;
         } return false;
+    }
+
+
+
+    public List<Boolean> getStudyPageStar(int page, Authentication authentication) {
+        Page<Study> studies = studyService.findAllByOrderByRecruitStatus(page);
+        Member member = memberService.find(authentication.getName());
+        List<Boolean> stars = new ArrayList<>();
+
+        for (Study study : studies.getContent()) {
+            if (existsStudyStar(member, study) == null) {
+                stars.add(false);
+            } else {
+                stars.add(true);
+            }
+        }
+
+        return stars;
+    }
+
+    public List<Boolean> getStudyPageScrap(int page, Authentication authentication) {
+        Page<Study> studies = studyService.findAllByOrderByRecruitStatus(page);
+        Member member = memberService.find(authentication.getName());
+        List<Boolean> scraps = new ArrayList<>();
+
+        for (Study study : studies.getContent()) {
+            if (existsStudyScrap(member, study) == null) {
+                scraps.add(false);
+            } else {
+                scraps.add(true);
+            }
+        }
+
+        return scraps;
     }
 }

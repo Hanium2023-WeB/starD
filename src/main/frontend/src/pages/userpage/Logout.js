@@ -1,6 +1,7 @@
 import axios from "axios";
 import {useNavigate} from 'react-router-dom';
 import {useState} from "react";
+import Header from "../../components/repeat_etc/Header";
 
 const Logout = ({sideheader}) => {
     const navigate = useNavigate(); // useNavigate 훅을 사용하여 navigate 함수를 가져옴
@@ -35,6 +36,11 @@ const Logout = ({sideheader}) => {
                 console.log("로그아웃 성공");
                 localStorage.removeItem('accessToken');
                 localStorage.removeItem('isLoggedInUserId');
+                localStorage.removeItem('todos');
+                localStorage.removeItem('ApplyStudies');
+                localStorage.removeItem('selectedSido');
+                localStorage.removeItem('selectedGugun');
+                localStorage.removeItem('tags');
 
                 navigate("/");
             } else {
@@ -67,7 +73,7 @@ const Logout = ({sideheader}) => {
 
     return (
         <div>
-            {sideheader}
+            <Header showSideCenter={true}/>
             <h2>Logout</h2>
             <p>이곳은 로그아웃 페이지입니다.</p>
             <button onClick={handleLogout}>로그아웃</button>

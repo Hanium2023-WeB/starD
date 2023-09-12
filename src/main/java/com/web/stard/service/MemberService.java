@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,19 +35,6 @@ public class MemberService {
         if(result.isPresent())
             return result.get();
         return null;
-    }
-
-    // 회원 정보 저장
-    public void saveMember(Member member) {
-        // 회원가입 시 기본적으로 'USER' 권한을 부여
-        member.setRoles(Role.USER);
-
-        memberRepository.save(member);
-    }
-
-    // 중복 회원 검증
-    public boolean checkDuplicateMember(String id) {
-        return memberRepository.existsById(id);
     }
 
     /* 비밀번호 확인 */
@@ -138,5 +126,11 @@ public class MemberService {
 
     public Member findId(String email, String phone) {
         return memberRepository.findByEmailAndPhone(email, phone);
+    }
+
+
+    // authentication으로 닉네임 찾기
+    public Member findNickNameByAuthentication(Authentication authentication) {
+        return memberRepository.findNicknameById(authentication.getName());
     }
 }

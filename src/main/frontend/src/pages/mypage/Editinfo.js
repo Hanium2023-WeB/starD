@@ -11,38 +11,10 @@ import RealEstate from "../../components/info/RealEstate.js";
 import {isEmail, isPassword} from "../../util/check.js";
 import Backarrow from "../../components/repeat_etc/Backarrow.js";
 import EditInterest from "../../components/info/EditInterest.js";
+import Header from "../../components/repeat_etc/Header";
 
 
-const options = [
-    {value: "+82", name: "대한민국"},
-    {value: "+81", name: "일본"},
-    {value: "+1", name: "미국,캐나다"},
-    {value: "+49", name: "독일"},
-    {value: "+61", name: "오스트레일리아"},
-    {value: "+233", name: "가나"},
-    {value: "+241", name: "가봉"},
-];
 
-
-const SelectBox = (props) => { //전화번호 나라 선택 
-    const handleChange = (e) => {
-        // event handler
-        console.log(e.target.value);
-    };
-    return (
-        <select onChange={handleChange}>
-            {props.options.map((option) => (
-                <option
-                    key={option.value}
-                    value={option.value}
-                    defaultValue={props.defaultValue}
-                >
-                    <span>{option.value} {option.name}</span>
-                </option>
-            ))}
-        </select>
-    );
-};
 
 const Editinfo = ({sideheader}) => {
     const [state, setState] = useState({
@@ -55,9 +27,15 @@ const Editinfo = ({sideheader}) => {
         isValidEmail: false,
     });
 
-    const [mem, setMem] = useState(null);
+    const [mem, setMem] = useState({city:"", district:""});
     const [isNicknameDuplicate, setIsNicknameDuplicate] = useState(true); // nickname 중복 여부 상태 변수
 
+    useEffect(()=>{
+        const city = localStorage.getItem("selectedSido");
+        const district = localStorage.getItem("selectedGugun");
+        const estate = {city:city, district:district};
+        setMem(estate);
+    },[]);
     // //서버에 닉네임 중복확인 요청 함수
     // const checkDuplicateNicname=()=>{
     //   let body={
@@ -91,8 +69,13 @@ const Editinfo = ({sideheader}) => {
     };
 
     useEffect(() => {
+        const accessToken = localStorage.getItem('accessToken');
+
         axios.get("http://localhost:8080/user/mypage/update", {
-            withCredentials: true
+            withCredentials: true,
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
         })
             .then(response => {
                 const member = response.data;
@@ -148,9 +131,14 @@ const Editinfo = ({sideheader}) => {
             return;
         }
 
+        const accessToken = localStorage.getItem('accessToken');
+
         axios.post("http://localhost:8080/user/mypage/check/nickname", null, {
             params: {nickname: nickname},
-            withCredentials: true
+            withCredentials: true,
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
         })
             .then(response => {
                 const isDuplicate = response.data;
@@ -191,9 +179,14 @@ const Editinfo = ({sideheader}) => {
             return;
         }
 
+        const accessToken = localStorage.getItem('accessToken');
+
         axios.post("http://localhost:8080/user/mypage/update/nickname", null, {
             params: {nickname: nickname},
-            withCredentials: true
+            withCredentials: true,
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
         })
             .then(response => {
                 if (response.status === 200) {
@@ -222,9 +215,14 @@ const Editinfo = ({sideheader}) => {
             return;
         }
 
+        const accessToken = localStorage.getItem('accessToken');
+
         axios.post("http://localhost:8080/user/mypage/update/email", null, {
             params: {email: email},
-            withCredentials: true
+            withCredentials: true,
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
         })
             .then(response => {
                 if (response.status === 200) {
@@ -252,9 +250,14 @@ const Editinfo = ({sideheader}) => {
             return;
         }
 
+        const accessToken = localStorage.getItem('accessToken');
+
         axios.post("http://localhost:8080/user/mypage/update/password", null, {
             params: {password: password, newPassword: newPassword},
-            withCredentials: true
+            withCredentials: true,
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
         })
             .then(response => {
                 if (response.status === 200) {
@@ -286,9 +289,14 @@ const Editinfo = ({sideheader}) => {
             return;
         }
 
+        const accessToken = localStorage.getItem('accessToken');
+
         axios.post("http://localhost:8080/user/mypage/update/phone", null, {
             params: {phone: phone},
-            withCredentials: true
+            withCredentials: true,
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
         })
             .then(response => {
                 if (response.status === 200) {
@@ -307,8 +315,8 @@ const Editinfo = ({sideheader}) => {
 
     const handleSaveAddress = async () => {
         // 선택한 거주지 정보 가져오기
-        const city = document.getElementById("sido1").value;
-        const district = document.getElementById("gugun1").value;
+        const city = document.getElementById("sido1").value; //시/도
+        const district = document.getElementById("gugun1").value; //구/군
 
         console.log("city : " + city + ", district : " + district);
 
@@ -317,9 +325,14 @@ const Editinfo = ({sideheader}) => {
             return;
         }
 
+        const accessToken = localStorage.getItem('accessToken');
+
         axios.post("http://localhost:8080/user/mypage/update/address", null, {
             params: {city: city, district: district},
-            withCredentials: true
+            withCredentials: true,
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
         })
             .then(response => {
                 if (response.status === 200) {
@@ -338,11 +351,12 @@ const Editinfo = ({sideheader}) => {
 
     return (
         <div>
-            {sideheader}
+            <Header showSideCenter={true}/>
             <Backarrow/>
             <div className="container">
                 <Category/>
                 <div className="main_container" id="edit_main">
+                    <h2>개인정보 수정페이지</h2>
                     <div className="sub_container">
                         <div className="change_nicname">
                             <div id="title">닉네임</div>
@@ -365,6 +379,7 @@ const Editinfo = ({sideheader}) => {
                             <div id="title">거주지</div>
                             <div id="checkestate">
                                 {mem && <RealEstate mem={mem}/>}
+                                {/*<RealEstate/>*/}
                             </div>
 
                             <button id="save" onClick={handleSaveAddress}>저장하기</button>
@@ -392,7 +407,13 @@ const Editinfo = ({sideheader}) => {
                             <button id="save" onClick={handleSaveEmail}>저장하기</button>
                         </div>
                     </div>
-                    <EditInterest/>
+                    <div className="sub_container" id="interested">
+                        <div className="change_interest">
+
+                    <EditInterest mem = {mem}/>
+                    <button id="save">저장하기</button>
+                        </div>
+                    </div>
                     <div className="sub_container" id="password">
                         <div className="change_pw">
                             <div id="title">
@@ -435,11 +456,8 @@ const Editinfo = ({sideheader}) => {
                                 name={"phone"}
                                 value={state.phone}
                                 onChange={handleEditChange}
-                                placeholder="전화번호를 입력해주세요."
+                                placeholder={"전화번호를 입력해주세요."}
                             ></input>
-                            <div className="select_country">
-                                <SelectBox options={options} defaultValue="       "/>
-                            </div>
 
                             <button id="save" onClick={handleSavePhone}>저장하기</button>
                         </div>
