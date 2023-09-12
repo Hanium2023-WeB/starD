@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import {useParams, Link} from "react-router-dom";
+import {useParams, Link, useNavigate} from "react-router-dom";
 import Header from "../../components/repeat_etc/Header";
 import "../../css/study_css/StudyDetail.css";
 import "../../css/comment_css/Comment.css";
@@ -16,6 +16,7 @@ const StudyDetail = ({sideheader}) => {
     const location = useLocation();
     const studyId = location.state;     // StudyListItem.js 파일에서 스터디 id 값을 get
     const [studyItem, setStudyItem] = useState();
+    const navigate = useNavigate();
 
     const {id} = useParams();
 
@@ -37,6 +38,9 @@ const StudyDetail = ({sideheader}) => {
             setStudyItem(res.data);
         })
             .catch((error) => {
+                alert("로그인 해 주세요.");
+                navigate('/login');
+
                 console.error("데이터 가져오기 실패:", error);
             });
     }, []); // 빈 종속성 배열을 사용하여 컴포넌트가 처음 렌더링될 때만 실행
