@@ -29,7 +29,6 @@ const StudyListItem = ({studies, toggleLike, toggleScrap, d, index}) => {
     const daysDifference = calculateDateDifference(studies.activityStart, studies.activityDeadline);
     const recruitStatus = checkRecruitStatus(studies.recruitStatus);
     const navigate = useNavigate();
-
     //TODO ListItem 조회
     // const accessToken = localStorage.getItem('accessToken');
     // useEffect(()=>{
@@ -68,8 +67,7 @@ const StudyListItem = ({studies, toggleLike, toggleScrap, d, index}) => {
     // },[d]);
 
     const GoNextDetailPage = ()=>{
-        console.log(d.id);
-        navigate(`/studydetail/${d.id}`, {state: studies.id})
+        navigate("/studydetail/{d.id}", {state: studies})
     }
 
     return (
@@ -101,14 +99,14 @@ const StudyListItem = ({studies, toggleLike, toggleScrap, d, index}) => {
             {/*        color: "inherit",*/}
             {/*    }}*/}
             {/*>*/}
-            <div className="list_deadline">
-                마감일 | {studies.recruitmentDeadline}
-            </div>
-            <div className="list_title" onClick={GoNextDetailPage}>{studies.title}</div>
-            <div className="list_tag" onClick={GoNextDetailPage}>{studies.tags}</div>
-            <div className="list_onoff" onClick={GoNextDetailPage}>{studies.onOff}</div>
-            <div className="stroke" ></div>
-            <div className="list_founder" >{d.recruiter.nickname}</div>
+                <div className="list_deadline">
+                    마감일 | {studies.recruitmentDeadline}
+                </div>
+                <div className="list_title" onClick={GoNextDetailPage}>{studies.title}</div>
+                <div className="list_tag" onClick={GoNextDetailPage}>{studies.tags}</div>
+                <div className="list_onoff" onClick={GoNextDetailPage}>{studies.onOff}</div>
+                <div className="stroke" ></div>
+                <div className="list_founder" >{d.recruiter.nickname}</div>
             {/*</Link>*/}
         </div>
     )
