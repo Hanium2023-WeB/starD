@@ -57,7 +57,7 @@ const Home = ({sideheader}) => {
   };
 
   return (
-    <div class="main_wrap">
+    <div className="main_wrap">
     {sideheader}
     <div className="subground">
     <SearchBar searchItems={searchItems}/>
