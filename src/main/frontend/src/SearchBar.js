@@ -72,51 +72,51 @@ const SearchBar = (props) => {
 	return (
 
 		<div className="Home_wrap">
-		<div className="select_search">
+			<div className="select_search">
 				<select id="sub" value={selectOption} onChange={onHandleselect}>
 					<option value="제목">제목</option>
 					<option value="내용">내용</option>
 					<option value="주제">작성자</option>
-					</select>
-				</div>
+				</select>
+			</div>
 
-		<div className="searchbar">
-			<div className="searchinput">
-			<input
-				type="text"
-				value={search}
-				onChange={onChange}
-				onKeyDown={handleKeyDown}
-				placeholder={"원하는 스터디를 검색해보세요"}
-			/>
-			<img src ={searchicon} width="20px"/>
-			</div>
-			<div className="showfilter">
-				{search !== "" && filterProducts.length === 0 ? (
-					<p>해당 키워드를 가진 스터디가 없습니다.</p>
-				) : null}
-				{search !== "" && filterProducts.length > 0 ? (
-					<ul>
-						{filterProducts.map((item) => {
-							return (
-								<li key={item} onClick={()=>searchItem(item)}>
-									{/*<Link*/}
-									{/*	to={`/${item}`}*/}
-									{/*	style={{*/}
-									{/*		textDecoration: "none",*/}
-									{/*		color: "inherit",*/}
-									{/*	}}*/}
-									{/*	state={{item:item}}*/}
-									{/*>*/}
+			<div className="searchbar">
+				<div className="searchinput">
+					<input
+						type="text"
+						value={search}
+						onChange={onChange}
+						onKeyDown={handleKeyDown}
+						placeholder={"원하는 스터디를 검색해보세요"}
+					/>
+					<img src ={searchicon} width="20px"/>
+				</div>
+				<div className="showfilter">
+					{search !== "" && filterProducts.length === 0 ? (
+						<p>해당 키워드를 가진 스터디가 없습니다.</p>
+					) : null}
+					{search !== "" && filterProducts.length > 0 ? (
+						<ul>
+							{filterProducts.map((item) => {
+								return (
+									<li key={item} onClick={()=>searchItem(item)}>
+										{/*<Link*/}
+										{/*	to={`/${item}`}*/}
+										{/*	style={{*/}
+										{/*		textDecoration: "none",*/}
+										{/*		color: "inherit",*/}
+										{/*	}}*/}
+										{/*	state={{item:item}}*/}
+										{/*>*/}
 										{item}
-									{/*</Link>*/}
-								</li>
-							);
-						})}
-					</ul>
-				) : null}
+										{/*</Link>*/}
+									</li>
+								);
+							})}
+						</ul>
+					) : null}
+				</div>
 			</div>
-		</div>
 
 		</div>
 	);
