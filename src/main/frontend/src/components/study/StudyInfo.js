@@ -1,6 +1,6 @@
 const StudyInfo = ({ study, handleEditClick, handleStudyDelete }) => {
     const showregion = () => {
-        if (study.onoff === "offline" || study.onoff === "both") {
+        if (study.onOff === "offline" || study.onOff === "both") {
             return (
             <li>
                 <span>지역</span>

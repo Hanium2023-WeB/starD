@@ -82,6 +82,7 @@ html {
 	padding: 30px;
 	border: 1px solid #99a3af;
 	border-radius: 40px;
+	cursor: pointer;
 	/*display: flex;*/
 	/*flex-direction: column;*/
 	/*justify-content: space-between;*/
