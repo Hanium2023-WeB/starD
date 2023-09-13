@@ -94,13 +94,6 @@ const StudyDetail = ({sideheader}) => {
     }
 
     // useEffect(() => {
-    //     const storedStudies = localStorage.getItem("studies");
-    //     if (storedStudies) {
-    //         setStudies(JSON.parse(storedStudies));
-    //     }
-    // }, []);
-    //
-    // useEffect(() => {
     //     const filteredStudyDetail = studies.filter(study => study.id == Number(id));
     //     setStudyDetail(filteredStudyDetail); //해당 페이지의 스터디 상세 정보 랜더링에 사용
     // }, [studies, id]);
@@ -147,23 +140,23 @@ const StudyDetail = ({sideheader}) => {
                                         />
                                     )}
                                 </div>
-                                {/*{isApply && (*/}
-                                {/*    <div className="study_apply_reason">*/}
-                                {/*        <div>나의 지원동기 및 각오</div>*/}
-                                {/*        <div>{studyItem.reason}</div>*/}
-                                {/*    </div>*/}
-                                {/*)}*/}
-                                {/*<div className="btn">*/}
-                                {/*    <Link*/}
-                                {/*        to={`/studyapplyform/${studyItem.id}`}*/}
-                                {/*        style={{*/}
-                                {/*            textDecoration: "none",*/}
-                                {/*            color: "inherit",*/}
-                                {/*        }}*/}
-                                {/*    >*/}
-                                {/*        <button className="apply_btn">탑승하기</button>*/}
-                                {/*    </Link>*/}
-                                {/*</div>*/}
+                                {isApply && (
+                                    <div className="study_apply_reason">
+                                        <div>나의 지원동기 및 각오</div>
+                                        <div>{studyItem.reason}</div>
+                                    </div>
+                                )}
+                                <div className="btn">
+                                    <Link
+                                        to={`/studyapplyform/${studyItem.id}`}
+                                        style={{
+                                            textDecoration: "none",
+                                            color: "inherit",
+                                        }}
+                                    >
+                                        <button className="apply_btn">탑승하기</button>
+                                    </Link>
+                                </div>
                             </div>
                         )}
                     </div>
