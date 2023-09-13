@@ -1,6 +1,7 @@
 package com.web.stard.controller;
 
 import com.web.stard.domain.StarScrap;
+import com.web.stard.domain.Study;
 import com.web.stard.service.StarScrapService;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -56,7 +57,7 @@ public class StarScrapController {
 
     /* Post(community) 스크랩한 게시글 전체 조회 */
     @GetMapping("/scrap/post")
-    public List<StarScrap> allPostScrapList(Authentication authentication) {
+    public List<Study> allPostScrapList(Authentication authentication) {
         return starScrapService.allPostScrapList(authentication);
     }
 
@@ -76,7 +77,7 @@ public class StarScrapController {
 
     /* ScrapStudySlide 스크랩한 게시글 전체 조회 */
     @GetMapping("/scrap/study")
-    public List<StarScrap> allStudyScrapList(Authentication authentication) {
+    public List<Study> allStudyScrapList(Authentication authentication) {
         return starScrapService.allStudyScrapList(authentication);
     }
 
@@ -112,5 +113,11 @@ public class StarScrapController {
     public List<Boolean> getStudyPageScrap(@RequestParam(value = "page", defaultValue = "1", required = false) int page,
                                            Authentication authentication) {
         return starScrapService.getStudyPageScrap(page, authentication);
+    }
+
+    /* 스크랩한 스터디의 공감 여부 조회 */
+    @GetMapping("/study/stars/scraps")
+    public List<Boolean> getStudyPageStarByScrap(Authentication authentication) {
+        return starScrapService.getStudyPageStarByScrap(authentication);
     }
 }
