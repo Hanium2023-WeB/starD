@@ -48,16 +48,20 @@ const Login = () => {
             .then((res) => {
                 console.log('전송 성공');
                 console.log(res.data);
-                
-                const accessToken = res.data.data.accessToken;
 
-                // 로그인 성공 시 localstorage에 accessToken, 사용자 Id 값 저장
-                localStorage.setItem('accessToken', accessToken);
-                localStorage.setItem('isLoggedInUserId', state.ID);
+                if (res.data.state === 400) {
+                    alert("입력값을 확인해주세요. \n로그인 실패");
+                }
+                else {
+                    const accessToken = res.data.data.accessToken;
 
-                // 로그인 성공 시 메인 페이지로 리다이렉트
-                navigate('/'); // useNavigate를 사용하여 페이지를 이동
+                    // 로그인 성공 시 localstorage에 accessToken, 사용자 Id 값 저장
+                    localStorage.setItem('accessToken', accessToken);
+                    localStorage.setItem('isLoggedInUserId', state.ID);
 
+                    // 로그인 성공 시 메인 페이지로 리다이렉트
+                    navigate('/'); // useNavigate를 사용하여 페이지를 이동
+                }
             })
             .catch(error => {
                 console.log('전송 실패', error);

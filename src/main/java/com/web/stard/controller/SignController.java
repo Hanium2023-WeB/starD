@@ -60,7 +60,6 @@ public class SignController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(MemberRequestDto.Login login) {
-        System.out.println("login() 컨트롤러 진입 1 : " + login.getMemberId() + login.getPassword());
         return signService.login(login);
     }
 
