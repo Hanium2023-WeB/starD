@@ -50,8 +50,6 @@ public class SignService {
         }
 
         Member member = memberRepository.findById(login.getMemberId()).get();
-        System.out.println(member.getAuthorities());
-
 
         // 1. Login ID/PW 를 기반으로 Authentication 객체 생성
         // 이때 authentication 는 인증 여부를 확인하는 authenticated 값이 false
