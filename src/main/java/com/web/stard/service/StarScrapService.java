@@ -121,6 +121,17 @@ public class StarScrapService {
         return allStarList.size();
     }
 
+    /* study 공감 여부 */
+    public Boolean getStudyStar(Long id, Authentication authentication) {
+        Study study = studyService.findById(id);
+        Member member = memberService.find(authentication.getName());
+
+        StarScrap star = existsStudyStar(member, study);
+        if (star != null) {
+            return true;
+        } return false;
+    }
+
     /* ScrapStudySlide 공감 추가 */
     public StarScrap addStudyStar(Long id, Authentication authentication) {
         Study study = studyService.findById(id);
@@ -261,6 +272,17 @@ public class StarScrapService {
         List<StarScrap> allScrapList = starScrapRepository.findAllByStudyAndTypeAndTableType(study, ActType.SCRAP, PostType.STUDY);
 
         return allScrapList.size();
+    }
+
+    /* study 스크랩 여부 */
+    public Boolean getStudyScrap(Long id, Authentication authentication) {
+        Study study = studyService.findById(id);
+        Member member = memberService.find(authentication.getName());
+
+        StarScrap scrap = existsStudyScrap(member, study);
+        if (scrap != null) {
+            return true;
+        } return false;
     }
 
     /* ScrapStudySlide Scrap 추가 */

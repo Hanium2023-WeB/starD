@@ -33,6 +33,11 @@ public class StarScrapController {
     }
 
 
+    /* 특정 스터디 공감 여부 */
+    @GetMapping("/star/study/{id}")
+    public Boolean getStudyStar(@PathVariable Long id, Authentication authentication) {
+        return starScrapService.getStudyStar(id, authentication);
+    }
 
     /* ScrapStudySlide 공감 추가 */
     @PostMapping("/star/study/{id}")
@@ -73,6 +78,12 @@ public class StarScrapController {
     @GetMapping("/scrap/study")
     public List<StarScrap> allStudyScrapList(Authentication authentication) {
         return starScrapService.allStudyScrapList(authentication);
+    }
+
+    /* 특정 스터디 스크랩 여부 */
+    @GetMapping("/scrap/study/{id}")
+    public Boolean getStudyScrap(@PathVariable Long id, Authentication authentication) {
+        return starScrapService.getStudyScrap(id, authentication);
     }
 
     /* ScrapStudySlide 스크랩 추가 */

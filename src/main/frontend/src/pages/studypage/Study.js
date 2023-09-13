@@ -17,11 +17,14 @@ import Paging from "../../components/repeat_etc/Paging";
 const Study = () => {
     const navigate = useNavigate();
     const [studies, setStudies] = useState([]);
+    const [scrapStates, setScrapStates] = useState([]);
+    const [likeStates, setLikeStates] = useState([]);
+
     const [showStudyInsert, setShowStudyInsert] = useState(false);
 
     // 각 스터디 리스트 항목의 스크랩 상태를 저장하는 배열
-    const [scrapStates, setScrapStates] = useState(false);
-    const [likeStates, setLikeStates] = useState(false);
+//    const [scrapStates, setScrapStates] = useState(false);
+//    const [likeStates, setLikeStates] = useState(false);
 
     const [studiesChanged, setStudiesChanged] = useState(false);
     let [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -45,22 +48,35 @@ const Study = () => {
     }, [studiesChanged, studies, scrapStates, likeStates]);
 
     //TODO 스크랩, 공감 서버 전송
-    // useEffect(() => {
-    //     const response = axios.post("url",
-    //         {
-    //             scrap: studies.scrap,
-    //             like:studies.like,
-    //         })
-    //         .then((res)=>{
-    //             console.log("전송 성공");
-    //             console.log(res.data);
-    //
-    //
-    //         }).catch((error)=>{
-    //             console.log('전송 실패', error);
-    //         })
-    //
-    // }, [scrapStates, likeStates]);
+    useEffect(() => {
+        if (accessToken && isLoggedInUserId) {
+            axios.get("http://localhost:8080/study/stars", { // 공감
+                withCredentials: true,
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`
+                }
+            })
+                .then(response => {
+                    setLikeStates(response.data);
+                })
+                .catch(error => {
+                    console.log("공감 불러오기 실패", error);
+                });
+
+            axios.get("http://localhost:8080/study/scraps", { // 스크랩
+                withCredentials: true,
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`
+                }
+            })
+                .then(response => {
+                    setScrapStates(response.data);
+                })
+                .catch(error => {
+                    console.log("스크랩 불러오기 실패", error);
+                });
+        }
+    }, []);
 
 
     useEffect(() => {
@@ -96,6 +112,11 @@ const Study = () => {
     // 각 스터디 리스트 항목의 스크랩 상태를 토글하는 함수
 
     const toggleScrap = (index, studyId) => {
+        if (!(accessToken && isLoggedInUserId)) {
+            alert("로그인 해주세요");
+            navigate("/login");
+        }
+
         setStudies((prevStudies) => {
             const newStudies = [...prevStudies];
             if (newStudies[index].scrap) { // true -> 활성화되어 있는 상태 -> 취소해야 함
@@ -136,6 +157,11 @@ const Study = () => {
     };
 
     const toggleLike = (index, studyId) => {
+        if (!(accessToken && isLoggedInUserId)) {
+            alert("로그인 해주세요");
+            navigate("/login");
+        }
+
         setStudies((prevStudies) => {
             const newStudies = [...prevStudies];
             if (newStudies[index].like) { // true -> 활성화되어 있는 상태 -> 취소해야 함
@@ -203,9 +229,18 @@ const Study = () => {
                 console.log(res.data);
                 // 데이터를 받아오면 전체 아이템 개수를 Paging.js에게 Props으로 넘길 예정,
                 // 서버에서 받아온 스터디 리스트를 setStudies를 통해 업데이트
-                setStudies(res.data.content);
+                const studyList = res.data.content;
+
+                const updateStudies = res.data.content.map((study, index) => {
+                    study.like = likeStates[index];
+                    study.scrap = scrapStates[index];
+
+                    return study;
+                });
+
+                setStudies(updateStudies);
                 localStorage.setItem("studies", JSON.stringify(studies));
-                console.log(res.data.content);
+                console.log(updateStudies);
                 // 서버에서 받아온 페이지 정보를 setPageInfo를 통해 업데이트합니다.
                 handlePageChange({
                     itemsPerPage: res.data.pageable.pageSize, // 페이지 당 아이템 수
@@ -215,7 +250,7 @@ const Study = () => {
             .catch((error) => {
                 console.error("데이터 가져오기 실패:", error);
             });
-    }, []); // 의존성 배열 비워두기
+    }, [likeStates, scrapStates]);
 
 
 
