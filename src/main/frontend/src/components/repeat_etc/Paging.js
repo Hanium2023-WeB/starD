@@ -2,9 +2,12 @@
 import {useState} from "react";
 // import Pagination from "./Pagination";
 import Pagination from "react-js-pagination";
-const Paging = ({page,totalItemCount,itemsPerPage,handlePageChange}) => {
-    // const [page, setPage] = useState(1);
-
+const Paging = ({page,totalItemCount,itemsPerPage}) => {
+     const [currentpage, setCurrentPage] = useState(page);
+    const handlePageChange = () => {
+        setCurrentPage(page); // Update the page state with the selected page number
+        // You can also perform any other actions you need here.
+    }
 
     return (
         <Pagination

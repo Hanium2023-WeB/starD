@@ -187,11 +187,11 @@ const Study = () => {
     const [page, setPage] = useState(1);
     const [count, setCount]=useState(0);
     const [itemsPerPage, setItemsPerPage]= useState(9);
-    const handlePageChange = ({page,itemsPerPage,totalItemsCount}) => {
-        setPage(page);
-        setItemsPerPage(itemsPerPage); //한페이지 당 아이템 개수
-        setCount(totalItemsCount); //전체 아이템 개수
-    };
+    // const handlePageChange = ({page,itemsPerPage,totalItemsCount}) => {
+    //     setPage(page);
+    //     setItemsPerPage(itemsPerPage); //한페이지 당 아이템 개수
+    //     setCount(totalItemsCount); //전체 아이템 개수
+    // };
 
 
     useEffect(() => {
@@ -260,7 +260,7 @@ const Study = () => {
             </div>
             <div className={"paging"}>
                 {!showStudyInsert && (
-                    <Paging  page={page} totalItemCount={count} itemsPerPage={itemsPerPage} handlePageChange={handlePageChange}/>
+                    <Paging  page={page} totalItemCount={count} itemsPerPage={itemsPerPage}/>
                 )}
             </div>
         </div>

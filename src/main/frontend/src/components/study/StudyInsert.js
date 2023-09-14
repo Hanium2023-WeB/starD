@@ -21,7 +21,7 @@ const StudyInsert = ({updateStudies, onClose, study}) => {
     const[district, setDistrict] = useState("");
     const[tag, setTag] = useState("");
     const [current, setCurrent] = useState("Recruiting");
-    const [mycreatestudy, setMyCreateStudy] = useState([]);
+
     //폼 데이터
     const [formData, setFormData] = useState({
         title: "",
@@ -264,6 +264,11 @@ const StudyInsert = ({updateStudies, onClose, study}) => {
             .then((res)=>{
                 console.log("전송 성공");
                 console.log(res.data);
+
+                // setMyCreateStudy({
+                //     ...prevStudy,
+                //     formData
+                // })
                 //성공하면
                  navigate("/myopenstudy", {state: studyWithTags});
 
