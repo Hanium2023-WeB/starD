@@ -8,6 +8,7 @@ import checkbox from "../images/check.png";
 import uncheckbox from "../images/unchecked.png";
 import {Link} from "react-router-dom";
 import Header from "../components/repeat_etc/Header";
+import LOGO from "../images/Logo.png";
 
 const searchItems = [
     "back-end",
@@ -110,6 +111,9 @@ const Home = () => {
             {/*{sideheader}*/}
             <Header showSideCenter={true}/>
             <div className="subground">
+                <div className="LOGO">
+                    <img src={LOGO} alt="LOGO" width="80px"/>
+                </div>
                 <SearchBar searchItems={searchItems}/>
             </div>
             {/*로그인 했을 때 안했을 때 화면 바꾸기*/}
@@ -155,7 +159,7 @@ const Home = () => {
                 </div>
                 : <div className="nouser_wrap">
                     <div className="tag_wrap">
-                        <p>We_B의 요즘 뜨는 태그</p>
+                        <p>STAR_D의 요즘 뜨는 태그</p>
                         <div className="Tags">
                             {tags.map((item) => {
                                 return (

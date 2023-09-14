@@ -25,6 +25,12 @@ const Login = () => {
         // console.log(e.target.value); // PW
     };
 
+    //엔터키 눌렀을 때
+    const handleKeyDown = (event) => {
+        if (event.keyCode === 13) { // 엔터 키의 키 코드는 13입니다.
+            handleSubmit();
+        }
+    };
     const handleSubmit = () => {
 
         if (state.ID.length < 3) {      // TODO 아이디 및 비밀번호 입력값 최소 길이 수정 필요
@@ -82,6 +88,7 @@ const Login = () => {
                 <div className="login_info">
                     <p>로그인</p>
                 </div>
+
                 <div className="input_info">
                     <div className="subinfo">아이디</div>
                     <div className="input_bottom">
@@ -91,6 +98,7 @@ const Login = () => {
                             placeholder="아이디를 입력해주세요"
                             value={state.ID}
                             onChange={onChange}
+                            // onKeyDown={handleKeyDown}
                         />
                     </div>
 
@@ -103,6 +111,7 @@ const Login = () => {
                             type={"password"}
                             value={state.PW}
                             onChange={onChange}
+                            onKeyDown={handleKeyDown}
                         />
                     </div>
                     <div className="loginbtn">

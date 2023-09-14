@@ -9,10 +9,12 @@ html {
     flex-direction: column;
     justify-content: center;
     position: relative;
+    bottom: 50px;
 }
 .study_detail_container h1 {
     font-size: 27px;
     text-align: center;
+    color: white;
 }
 .study_detail_container .arrow_left {
     text-align: left;
@@ -20,10 +22,16 @@ html {
     color: #898989;
     cursor: pointer;
 }
-
-.study_open_form {
-    margin-top: 50px;
+.interest{
+    width: fit-content;
+    margin-left: 40px;
 }
+#inter{
+    margin-right: 10px;
+}
+/*.study_open_form {*/
+/*    margin-top: 50px;*/
+/*}*/
 .study_open_form > div:nth-of-type(1){
     display: flex;
     justify-content: center;

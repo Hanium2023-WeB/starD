@@ -127,6 +127,10 @@ em {
     position: relative;
     top: 3px;
     cursor: pointer;
+    width: 150px;
+}
+#term{
+    width: 150px;
 }
 .check_term_of_service > span > img{
     cursor: pointer;

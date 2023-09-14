@@ -61,7 +61,16 @@ const Signup = () => {
     const onCheckImg = useCallback(
         () => {
             // onTermToggle();
-            setCheckImg(!CheckImg);
+
+            if(CheckImg === false){
+                alert("이용약관을 확인해주세요.");
+                setTermToggle(true);
+                return;
+            }else{
+                setCheckImg(!CheckImg);
+            }
+
+
         },);
 
     //이용약관에 이미 체크가 되어있는데 또 이용약관을 보러 클릭했을 시
@@ -398,14 +407,14 @@ const Signup = () => {
                             </div>
                         </div>
 
-                        <div className="subinfo">휴대폰 번호<span className="require_info">*</span></div>
+                        <div className="subinfo">휴대폰<span className="require_info">*</span></div>
                         <div className="signup_phone input_bottom">
                             <input
                                 ref={inputphone}
                                 name={"phone"}
                                 value={state.phone}
                                 onChange={handleEditPhoneChange}
-                                placeholder="전화번호를 입력해주세요."
+                                placeholder="휴대폰 번호를 입력해주세요."
                             />
                             {state.phone !== "" ? (
                                 state.isValidPhone ? (
@@ -438,7 +447,9 @@ const Signup = () => {
                         {CheckImg ? <span><img src={checkbox} width="20px" onClick={onCheckImg}/>
                             <p onClick={onTermToggle}>이용약관</p></span>
                             : <span><img src={uncheckbox} width="20px" onClick={onCheckImg}/>
-                                <p onClick={onTermToggle}>이용약관</p></span>}
+                                <p onClick={onTermToggle}>이용약관
+                                    <span id={"term"} style={{color: "red", width:"150px"}}>(필수)</span></p>
+                                </span>}
 
                         {termToggle && <Terms_of_service onClose={() => {
                             setTermToggle(false);
