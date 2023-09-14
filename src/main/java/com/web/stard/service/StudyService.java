@@ -1,10 +1,7 @@
 package com.web.stard.service;
 
 
-import com.web.stard.domain.Applicant;
-import com.web.stard.domain.Member;
-import com.web.stard.domain.RecruitStatus;
-import com.web.stard.domain.Study;
+import com.web.stard.domain.*;
 import com.web.stard.dto.StudyDto;
 import com.web.stard.repository.ApplicantRepository;
 import com.web.stard.repository.StudyMemberRepository;
@@ -175,6 +172,7 @@ public class StudyService {
                 .progressStatus(null)
                 .field(studyDto.getField())
                 .recruitStatus(RecruitStatus.valueOf("RECRUITING"))
+                .type(PostType.STUDY)
                 .build();
 
         studyRepository.save(result);

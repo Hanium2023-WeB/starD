@@ -29,6 +29,7 @@ const StudyListItem = ({studies, toggleLike, toggleScrap, d, index}) => {
     const daysDifference = calculateDateDifference(studies.activityStart, studies.activityDeadline);
     const recruitStatus = checkRecruitStatus(studies.recruitStatus);
     const navigate = useNavigate();
+
     //TODO ListItem 조회
     // const accessToken = localStorage.getItem('accessToken');
     // useEffect(()=>{
@@ -67,6 +68,8 @@ const StudyListItem = ({studies, toggleLike, toggleScrap, d, index}) => {
     // },[d]);
 
     const GoNextDetailPage = ()=>{
+        console.log(d.id);
+        navigate(`/studydetail/${d.id}`, {state: studies.id})
         navigate("/studydetail/{d.id}", {state: studies})
     }
 
@@ -82,12 +85,12 @@ const StudyListItem = ({studies, toggleLike, toggleScrap, d, index}) => {
                 <div className="list_btn">
                     <div className="list_like">
                         <LikeButton like={studies.like}
-                                    onClick={() => toggleLike(index)}/>
+                                    onClick={() => toggleLike(index, studies.id)}/>
                     </div>
                     <div className="list_scrap">
                         {/* 스크랩 버튼을 클릭하면 해당 스터디 리스트 항목의 스크랩 상태를 토글 */}
                         <ScrapButton scrap={studies.scrap}
-                                     onClick={() => toggleScrap(index)}/>
+                                     onClick={() => toggleScrap(index, studies.id)}/>
                     </div>
                 </div>
             </div>
@@ -99,14 +102,14 @@ const StudyListItem = ({studies, toggleLike, toggleScrap, d, index}) => {
             {/*        color: "inherit",*/}
             {/*    }}*/}
             {/*>*/}
-                <div className="list_deadline">
-                    마감일 | {studies.recruitmentDeadline}
-                </div>
-                <div className="list_title" onClick={GoNextDetailPage}>{studies.title}</div>
-                <div className="list_tag" onClick={GoNextDetailPage}>{studies.tags}</div>
-                <div className="list_onoff" onClick={GoNextDetailPage}>{studies.onOff}</div>
-                <div className="stroke" ></div>
-                <div className="list_founder" >{d.recruiter.nickname}</div>
+            <div className="list_deadline">
+                마감일 | {studies.recruitmentDeadline}
+            </div>
+            <div className="list_title" onClick={GoNextDetailPage}>{studies.title}</div>
+            <div className="list_tag" onClick={GoNextDetailPage}>{studies.tags}</div>
+            <div className="list_onoff" onClick={GoNextDetailPage}>{studies.onOff}</div>
+            <div className="stroke" ></div>
+            <div className="list_founder" >{d.recruiter.nickname}</div>
             {/*</Link>*/}
         </div>
     )

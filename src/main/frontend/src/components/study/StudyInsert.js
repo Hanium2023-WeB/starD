@@ -288,17 +288,19 @@ const StudyInsert = ({updateStudies, onClose}) => {
                         </div>
                     </div>
                     <div className="right">
-                        <div className={"interest"}>
+                        <div className={"interest"} style={{marginRight:"10px"}}>
                             <span id={"inter"} >분야</span>
                             {/*<input type="text" name="field" value={formData.field} onChange={handleInputChange}*/}
                             {/*       className="inputbox" placeholder="사용할 태그를 입력해주세요"/>*/}
-                            <select name="field" value={formData.field} onChange={handleInputChange}>
-                                {tagoptions.map((interest,idx) =>
-                                    <option key={idx} value={interest.value} >{interest.name}</option>
-                                )}
-                            </select>
+                            <span className="field_wrapper">
+                                <select name="field" value={formData.field} onChange={handleInputChange}>
+                                    {tagoptions.map((interest,idx) =>
+                                        <option key={idx} value={interest.value} >{interest.name}</option>
+                                    )}
+                                </select>
+                            </span>
                         </div>
-                        <div>
+                        <div style={{marginRight:"10px"}}>
                             <span className="onoff_title">진행 방식</span>
                             <div className="onoff">
                                 <input type="radio" value="online" name="onoff" onChange={handleRadioChange}/>온라인

@@ -95,18 +95,80 @@ const Study = () => {
 
     // 각 스터디 리스트 항목의 스크랩 상태를 토글하는 함수
 
-    const toggleScrap = (index) => {
+    const toggleScrap = (index, studyId) => {
         setStudies((prevStudies) => {
             const newStudies = [...prevStudies];
+            if (newStudies[index].scrap) { // true -> 활성화되어 있는 상태 -> 취소해야 함
+                axios.delete(`http://localhost:8080/scrap/study/${studyId}`, {
+                    params: { id: studyId },
+                    withCredentials: true,
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`
+                    }
+                })
+                    .then(response => {
+                        console.log("스크랩 취소 성공 " + response.data);
+                    })
+                    .catch(error => {
+                        console.error("Error:", error);
+                        console.log("스크랩 취소 실패");
+                    });
+            } else {
+                axios.post(`http://localhost:8080/scrap/study/${studyId}`, null, {
+                    params: { id: studyId },
+                    withCredentials: true,
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`
+                    }
+                })
+                    .then(response => {
+                        console.log("스크랩 성공");
+                    })
+                    .catch(error => {
+                        console.error("Error:", error);
+                        console.log("스크랩 실패");
+                    });
+            }
             newStudies[index] = { ...newStudies[index], scrap: !newStudies[index].scrap };
             setStudiesChanged(true); // Mark studies as changed
             return newStudies;
         });
     };
 
-    const toggleLike = (index) => {
+    const toggleLike = (index, studyId) => {
         setStudies((prevStudies) => {
             const newStudies = [...prevStudies];
+            if (newStudies[index].like) { // true -> 활성화되어 있는 상태 -> 취소해야 함
+                axios.delete(`http://localhost:8080/star/study/${studyId}`, {
+                    params: { id: studyId },
+                    withCredentials: true,
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`
+                    }
+                })
+                    .then(response => {
+                        console.log("공감 취소 성공 " + response.data);
+                    })
+                    .catch(error => {
+                        console.error("Error:", error);
+                        console.log("공감 취소 실패");
+                    });
+            } else {
+                axios.post(`http://localhost:8080/star/study/${studyId}`, null, {
+                    params: { id: studyId },
+                    withCredentials: true,
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`
+                    }
+                })
+                    .then(response => {
+                        console.log("공감 성공");
+                    })
+                    .catch(error => {
+                        console.error("Error:", error);
+                        console.log("공감 실패");
+                    });
+            }
             newStudies[index] = { ...newStudies[index], like: !newStudies[index].like };
             setStudiesChanged(true); // Mark studies as changed
             return newStudies;

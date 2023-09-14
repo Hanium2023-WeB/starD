@@ -3,7 +3,7 @@ html {
 } /*10px*/
 
 .study_detail_container {
-    width: 60%;
+    width: 70%;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
@@ -69,13 +69,20 @@ html {
     font-size: 15px;
     margin-left: 20px;
 }
-.study_open_form .right input[name="onoff"]{
+.study_open_form .right input[name="onoff"],
+.study_open_form .right input[name="onOff"]{
     width:auto;
     height:auto;
     background: none;
     box-shadow: none;
     margin-left: 0;
     position: inherit;
+}
+.study_open_form .right .field_wrapper{
+    width:300px;
+    display: inline-block;
+    text-align: left;
+    margin-left:20px;
 }
 .select_estate{
     display: inherit;

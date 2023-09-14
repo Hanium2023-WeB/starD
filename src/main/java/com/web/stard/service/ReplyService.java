@@ -3,6 +3,7 @@ package com.web.stard.service;
 import com.web.stard.domain.*;
 import com.web.stard.repository.PostRepository;
 import com.web.stard.repository.ReplyRepository;
+import com.web.stard.repository.StudyRepository;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -30,6 +31,7 @@ public class ReplyService {
     PostRepository postRepository;
     ReplyRepository replyRepository;
     StudyService studyService;
+    StudyRepository studyRepository;
 
     // 댓글이 존재하는지 확인
     private Reply getExistingReply(Long replyId) {
@@ -139,6 +141,24 @@ public class ReplyService {
     // study 게시글 아이디 별 댓글 조회 (생성일 순)
     public List<Reply> findAllRepliesByStudyIdOrderByCreatedAtAsc(Long studyId) {
         return replyRepository.findAllByStudyIdOrderByCreatedAtAsc(studyId);
+    }
+
+    // 댓글 작성하려는 게시글 타입 조회
+    public PostType findPostTypeById(Long id) {
+        // Post 조회
+        Optional<Post> postOptional = postRepository.findById(id);
+        // 해당 id가 post, study에 모두 존재하는 경우 구별하기 위해 고유한 필드값(notnull) 확인
+        if (postOptional.isPresent() && postOptional.get().getCategory() != null) {
+            return postOptional.get().getType();
+        }
+
+        // Study 조회
+        Optional<Study> studyOptional = studyRepository.findById(id);
+        if (studyOptional.isPresent() && studyOptional.get().getOnOff() != null) {
+            return studyOptional.get().getType();
+        }
+
+        return null;
     }
 
 }
