@@ -93,18 +93,18 @@ const StudyDetail = ({sideheader}) => {
         }
     }
 
-    useEffect(() => {
-        const filteredStudyDetail = studies.filter(study => study.id == Number(id));
-        setStudyDetail(filteredStudyDetail); //해당 페이지의 스터디 상세 정보 랜더링에 사용
-    }, [studies, id]);
-
-    useEffect(() => {
-        if (studyDetail.length > 0 && studyDetail[0].reason) {
-            setIsApply(true);
-        } else {
-            setIsApply(false);
-        }
-    }, [studyDetail]);
+    // useEffect(() => {
+    //     const filteredStudyDetail = studies.filter(study => study.id == Number(id));
+    //     setStudyDetail(filteredStudyDetail); //해당 페이지의 스터디 상세 정보 랜더링에 사용
+    // }, [studies, id]);
+    //
+    // useEffect(() => {
+    //     if (studyDetail.length > 0 && studyDetail[0].reason) {
+    //         setIsApply(true);
+    //     } else {
+    //         setIsApply(false);
+    //     }
+    // }, [studyDetail]);
 
 
     return (
@@ -116,13 +116,11 @@ const StudyDetail = ({sideheader}) => {
                     <Backarrow/>
                 </div>
                 {editing ? (
-                        <div className="study">
                     <StudyEdit
-                        study={studyItem}
+                        study={studyDetail[0]}
                         onUpdateStudy={handleStudyUpdate}
                         onCancel={handleCancelEdit}
                     />
-                        </div>
                 ) : (
                     <div className="study_detail">
                         {studyItem && (
