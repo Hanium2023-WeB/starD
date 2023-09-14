@@ -76,9 +76,10 @@ const Slide = ({ state }) => {
         }
     }, [studiesChanged, scrapStudies, scrapStates, likeStates]);
 
-    const toggleScrap = (index, studyId) => {
+    const toggleScrap = (index) => {
         setScrapStudies((prevStudies) => {
             const newStudies = [...prevStudies];
+            const studyId = newStudies[index].id;
             if (newStudies[index].scrap) { // true -> 활성화되어 있는 상태 -> 취소해야 함
                 axios.delete(`http://localhost:8080/scrap/study/${studyId}`, {
                     params: { id: studyId },
@@ -116,9 +117,10 @@ const Slide = ({ state }) => {
         });
     };
 
-    const toggleLike = (index, studyId) => {
+    const toggleLike = (index) => {
         setScrapStudies((prevStudies) => {
             const newStudies = [...prevStudies];
+            const studyId = newStudies[index].id;
             if (newStudies[index].like) { // true -> 활성화되어 있는 상태 -> 취소해야 함
                 axios.delete(`http://localhost:8080/star/study/${studyId}`, {
                     params: { id: studyId },

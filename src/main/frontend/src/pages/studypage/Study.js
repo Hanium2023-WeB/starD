@@ -111,7 +111,7 @@ const Study = () => {
 
     // 각 스터디 리스트 항목의 스크랩 상태를 토글하는 함수
 
-    const toggleScrap = (index, studyId) => {
+    const toggleScrap = (index) => {
         if (!(accessToken && isLoggedInUserId)) {
             alert("로그인 해주세요");
             navigate("/login");
@@ -119,6 +119,7 @@ const Study = () => {
 
         setStudies((prevStudies) => {
             const newStudies = [...prevStudies];
+            const studyId = newStudies[index].id;
             if (newStudies[index].scrap) { // true -> 활성화되어 있는 상태 -> 취소해야 함
                 axios.delete(`http://localhost:8080/scrap/study/${studyId}`, {
                     params: { id: studyId },
@@ -156,7 +157,7 @@ const Study = () => {
         });
     };
 
-    const toggleLike = (index, studyId) => {
+    const toggleLike = (index) => {
         if (!(accessToken && isLoggedInUserId)) {
             alert("로그인 해주세요");
             navigate("/login");
@@ -164,6 +165,7 @@ const Study = () => {
 
         setStudies((prevStudies) => {
             const newStudies = [...prevStudies];
+            const studyId = newStudies[index].id;
             if (newStudies[index].like) { // true -> 활성화되어 있는 상태 -> 취소해야 함
                 axios.delete(`http://localhost:8080/star/study/${studyId}`, {
                     params: { id: studyId },
