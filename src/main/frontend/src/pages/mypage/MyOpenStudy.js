@@ -14,14 +14,15 @@ import axios from "axios";
 
 const MyOpenStudy = ({ sideheader }) => {
 	// const dataId = useRef(1);
+	const location = useLocation();
+	const studyState = location.state;
 	const [studies, setStudies] = useState([]);
 	const [scrapStates, setScrapStates] = useState(studies.scrap);
 	const [likeStates, setLikeStates] = useState(studies.like);
 
 
 
-	const location = useLocation();
-	const studyState = location.state;
+
 	const [studiesChanged, setStudiesChanged] = useState(false);
 
 	const accessToken = localStorage.getItem('accessToken');

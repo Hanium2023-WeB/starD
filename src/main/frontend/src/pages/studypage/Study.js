@@ -238,6 +238,7 @@ const Study = () => {
                         <StudyInsert
                             updateStudies={updateStudies}
                             onClose={handleStudyInsertClose}
+                            study ={studies}
                         />
                     )}
                     {!showStudyInsert && (
@@ -258,7 +259,9 @@ const Study = () => {
                 </div>
             </div>
             <div className={"paging"}>
-                <Paging  page={page} totalItemCount={count} itemsPerPage={itemsPerPage} handlePageChange={handlePageChange}/>
+                {!showStudyInsert && (
+                    <Paging  page={page} totalItemCount={count} itemsPerPage={itemsPerPage} handlePageChange={handlePageChange}/>
+                )}
             </div>
         </div>
     );

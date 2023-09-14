@@ -108,7 +108,7 @@ const StudyListItem = ({studies, toggleLike, toggleScrap, d, index}) => {
             <div className="list_tag" onClick={GoNextDetailPage}>{studies.tags}</div>
             <div className="list_onoff" onClick={GoNextDetailPage}>{studies.onOff}</div>
             <div className="stroke" ></div>
-            <div className="list_founder" >{d.recruiter.nickname}</div>
+            <div className="list_founder" >{studies.recruiter?.nickname}</div>
             {/*</Link>*/}
         </div>
     )
