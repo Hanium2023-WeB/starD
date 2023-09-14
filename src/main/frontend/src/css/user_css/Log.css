@@ -41,7 +41,7 @@
 	bottom: 45px;
 	font-size: 2.2em;
 	color: #395b64;
-	font-family: "Yeon Sung", cursive;
+	font-family: "Nanum Pen Script", cursive;
 }
 .input_info {
 	display: flex;
@@ -91,9 +91,10 @@
 
 .subinfo {
 	display: flex;
-	flex-direction: column;
+	flex-direction: row;
 	position: relative;
 	bottom: 10px;
+	margin-top: 10px;
 	margin-bottom: 10px;
 	font-size: 14px;
 }
@@ -116,12 +117,17 @@
 	border-style: none;
 	cursor: pointer;
 }
+#signup_nicname_btn[disabled] {
+	background-color: #767678; /* Set a different background color for disabled state */
+	cursor: not-allowed; /* Change cursor to not-allowed */
+}
 .inputpw, .inputemail{
 	margin-bottom: 10px;
 }
-.inputpw > input, .inputemail > input{
+.signup_id > input, .inputpw > input, .inputemail > input{
 	margin-bottom: 0px;
 }
+
 p{
 	margin-top: 0;
 }

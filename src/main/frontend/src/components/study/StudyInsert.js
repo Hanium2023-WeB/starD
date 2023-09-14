@@ -288,8 +288,8 @@ const StudyInsert = ({updateStudies, onClose}) => {
                         </div>
                     </div>
                     <div className="right">
-                        <div>
-                            <span>분야</span>
+                        <div className={"interest"}>
+                            <span id={"inter"} >분야</span>
                             {/*<input type="text" name="field" value={formData.field} onChange={handleInputChange}*/}
                             {/*       className="inputbox" placeholder="사용할 태그를 입력해주세요"/>*/}
                             <select name="field" value={formData.field} onChange={handleInputChange}>
