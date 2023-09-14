@@ -94,7 +94,8 @@ const Comment = () => {
         // 서버에서 받은 댓글 목록을 상태에 저장
         const commentsWithIds = response.data.map((comment) => ({
           ...comment,
-          id: comment.id, // 서버에서 받은 댓글 객체에 아이디를 추가
+          id: comment.id, // 서버에서 받은 댓글 객체에 아이디를 저장
+          author: comment.member.nickname, // 작성자의 닉네임 저장
         }));
         setComments(commentsWithIds);
         setLoading(false); // 로딩 상태 해제
@@ -206,12 +207,10 @@ const Comment = () => {
         <h2>댓글</h2>
         <CommentForm addComment={addComment} />
         <CommentList
-          comments={comments.map((comment) => ({
-            ...comment,
-            author: userNickname,
-          }))}
+          comments={comments}
           onEditClick={handleEditClick}
           onRemoveClick={handleRemoveClick}
+          userNickname={userNickname}
         />
       </div>
       {editingComment && (
