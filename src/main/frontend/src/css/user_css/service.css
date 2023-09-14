@@ -117,6 +117,8 @@ em {
     justify-content: center;
     align-items: center;
     margin: 20px 0;
+    position: relative;
+    left: 40px;
 }
 .check_term_of_service > span{
     display: flex;
