@@ -14,11 +14,14 @@ import axios from "axios";
 const StudyDetail = ({sideheader}) => {
 
     const location = useLocation();
-    const studyId = location.state;     // StudyListItem.js 파일에서 스터디 id 값을 get
+    let studyId = location.state;     // StudyListItem.js 파일에서 스터디 id 값을 get
+    console.log("studyId : ", studyId);
+
     const [studyItem, setStudyItem] = useState();
     const navigate = useNavigate();
 
     const {id} = useParams();
+    console.log("studyId : ", id);
 
     const [studies, setStudies] = useState([]);
     const [editing, setEditing] = useState(false);
@@ -28,7 +31,13 @@ const StudyDetail = ({sideheader}) => {
     const isLoggedInUserId = localStorage.getItem('isLoggedInUserId');
     const [applyReason, setApplyReason] = useState([]);
 
+
     useEffect(() => {
+
+        if (studyId === null) {
+            studyId = id;
+        }
+
         // 백엔드 REST API 호출 코드
         axios.get(`http://localhost:8080/api/v2/studies/${studyId}`, {
             withCredentials: true,

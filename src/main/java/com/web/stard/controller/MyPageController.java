@@ -1,9 +1,6 @@
 package com.web.stard.controller;
 
-import com.web.stard.domain.Interest;
-import com.web.stard.domain.Member;
-import com.web.stard.domain.Profile;
-import com.web.stard.domain.Study;
+import com.web.stard.domain.*;
 import com.web.stard.dto.ProfileDto;
 import com.web.stard.service.MemberService;
 import com.web.stard.service.ProfileService;
@@ -245,14 +242,14 @@ public class MyPageController {
 
     // [R] 스터디 신청 내역
     @GetMapping("/apply-study")
-    public Page<Study> findApplyHistory(@RequestParam(value = "page", defaultValue = "1", required = false) int page, Authentication authentication) {
-        return studyService.findByRecruiter(authentication, page);
+    public Page<Applicant> findApplyHistory(@RequestParam(value = "page", defaultValue = "1", required = false) int page, Authentication authentication) {
+        System.out.println("스터디 신청 내역 함수 진입");
+        return studyService.findByMember(authentication, page);
     }
 
     // [R] 스터디 개설 내역
     @GetMapping("/open-study")
     public Page<Study> findOpenHistory(@RequestParam(value = "page", defaultValue = "1", required = false) int page, Authentication authentication) {
-        System.out.println("스터디 개설 내역 함수 진입");
         return studyService.findByRecruiter(authentication, page);
     }
 

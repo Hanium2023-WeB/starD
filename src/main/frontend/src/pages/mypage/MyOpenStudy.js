@@ -69,7 +69,7 @@ const MyOpenStudy = ({sideheader}) => {
         axios.get("http://localhost:8080/user/mypage/open-study", {
             params: {
                 page: page,
-            },withCredentials: true,
+            }, withCredentials: true,
             headers: {
                 'Authorization': `Bearer ${accessToken}`
             }
