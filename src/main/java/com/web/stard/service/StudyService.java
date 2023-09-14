@@ -258,11 +258,31 @@ public class StudyService {
     }
 
     /* 해당 회원이 스터디원인지 확인 */
-    public boolean checkStudyMember(Long studyId, String id) {
+    public boolean checkStudyMember(long studyId, String id) {
         Study study = findById(studyId);
         Member member = memberService.find(id);
 
         return studyMemberRepository.existsByStudyAndMember(study, member);
     }
 
+    public boolean isApplicant(long id, Authentication authentication) {
+
+        String userId = authentication.getName();
+
+        Study study = findById(id);
+        Member member = memberService.find(userId);
+
+        return applicantRepository.existsByMemberAndStudy(member, study);
+    }
+
+    public Applicant findByMemberAndStudy(long id, Authentication authentication) {
+        String userId = authentication.getName();
+
+        Study study = findById(id);
+        Member member = memberService.find(userId);
+
+        if (applicantRepository.existsByMemberAndStudy(member, study))
+            return  applicantRepository.findByMemberAndStudy(member, study);
+        return null;
+    }
 }

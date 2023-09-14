@@ -3,6 +3,8 @@ import RealEstate from "../info/RealEstate";
 import StudyRegion from "./StudyRegion";
 
 const StudyEdit = ({study, onUpdateStudy, onCancel}) => {
+
+    console.log("StudyEdit :", study);
     const [updatedStudy, setUpdatedStudy] = useState(study);
 
     const [showSelect, setShowSelect] = useState(false);
@@ -42,19 +44,19 @@ const StudyEdit = ({study, onUpdateStudy, onCancel}) => {
                         </div>
                         <div>
                             <span>모집 인원</span>
-                            <input type="text" name="number" value={updatedStudy.number} onChange={handleInputChange}
+                            <input type="text" name="number" value={updatedStudy.capacity} onChange={handleInputChange}
                                    className="inputbox"/>
                         </div>
                         <div>
                             <span>모집 마감일</span>
-                            <input type="date" name="deadline" value={updatedStudy.deadline} onChange={handleInputChange}
+                            <input type="date" name="deadline" value={updatedStudy.recruitmentDeadline} onChange={handleInputChange}
                                    className="inputbox"/>
                         </div>
                     </div>
                     <div className="right">
                         <div>
                             <span>분야</span>
-                            <input type="text" name="tag" value={updatedStudy.tag} onChange={handleInputChange}
+                            <input type="text" name="tag" value={updatedStudy.tags} onChange={handleInputChange}
                                    className="inputbox"/>
                         </div>
                         <div>
@@ -79,7 +81,7 @@ const StudyEdit = ({study, onUpdateStudy, onCancel}) => {
                 <div className="study_open_detail">
                     <span>상세 내용</span>
                     <textarea name="description" onChange={handleInputChange}
-                              defaultValue={updatedStudy.description}/>
+                              defaultValue={updatedStudy.content}/>
                 </div>
                 <div className="btn">
                     <button onClick={handleUpdateClick} className="recruit_btn">저장</button>

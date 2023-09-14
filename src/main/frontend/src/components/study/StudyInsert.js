@@ -214,16 +214,16 @@ const StudyInsert = ({updateStudies, onClose}) => {
         const response = axios.post("http://localhost:8080/api/v2/studies",
             {
                 title:studyWithTags.title,
-                field:studyWithTags.field,
-                capacity: studyWithTags.number,
-                onOff:studyWithTags.onoff,
-                city:studyWithTags.sido,
-                district:studyWithTags.gugun,
-                recruitmentDeadline: studyWithTags.deadline,
-                activityStart: studyWithTags.startDate,
-                activityDeadline:studyWithTags.endDate,
-                content: studyWithTags.description,
-                tags: studyWithTags.tag,
+                field:studyWithTags.field,  // 분야
+                capacity: studyWithTags.number, // 모집 인원
+                onOff:studyWithTags.onoff,  // 온/온라인/무관
+                city:studyWithTags.sido,    // 시
+                district:studyWithTags.gugun,   // 구
+                recruitmentDeadline: studyWithTags.deadline,    // 모집 마감
+                activityStart: studyWithTags.startDate, // 활동 시작
+                activityDeadline:studyWithTags.endDate, // 활동 마감
+                content: studyWithTags.description, // 내용
+                tags: studyWithTags.tag,    // 태그
                 // scrap: studies.scrap,
                 // like:studies.like,
             },
@@ -232,8 +232,8 @@ const StudyInsert = ({updateStudies, onClose}) => {
                     'Authorization': `Bearer ${accessToken}`
                 }})
             .then((res)=>{
-                console.log("전송 성공");
-                console.log(res.data);
+                // console.log("전송 성공");
+                // console.log(res.data);
                 //성공하면
                 // navigate("/myopenstudy", {state: formData});
 

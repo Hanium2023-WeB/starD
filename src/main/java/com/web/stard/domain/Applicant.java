@@ -2,6 +2,7 @@ package com.web.stard.domain;
 
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -14,9 +15,11 @@ import java.util.List;
 @Setter @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class Applicant {        // 스터디 신청자
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
     @NotNull

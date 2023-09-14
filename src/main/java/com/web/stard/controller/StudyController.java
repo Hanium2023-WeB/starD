@@ -1,16 +1,19 @@
 package com.web.stard.controller;
 
+import com.web.stard.domain.Applicant;
 import com.web.stard.domain.RecruitStatus;
 import com.web.stard.domain.Study;
 import com.web.stard.dto.StudyDto;
 import com.web.stard.service.StudyService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @AllArgsConstructor
@@ -129,8 +132,21 @@ public class StudyController {
 
     @PostMapping("/{id}/apply")       // [C] 스터디 지원 신청
     public Study createApplicant(@PathVariable long id, @RequestParam String apply_reason) {
+        System.out.println("스터디 지원 : " + id + "지원 동기 : " + apply_reason );
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return studyService.createApplicant(id, apply_reason, authentication);
+    }
+
+    @GetMapping("/{id}/apply")       // [C] 스터디 지원 신청 확인 여부
+    public boolean isApplicant(@PathVariable long id) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return studyService.isApplicant(id, authentication);
+    }
+
+    @GetMapping("/{id}/apply-reason")       // [C] 스터디 지원 신청 확인 여부 및 applicant return
+    public Applicant findApplicant(@PathVariable long id) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return studyService.findByMemberAndStudy(id, authentication);
     }
 
     @PostMapping("/{id}/select")       // [C] 스터디 참여자 선택

@@ -1,4 +1,5 @@
 const StudyInfo = ({ study, handleEditClick, handleStudyDelete }) => {
+    console.log("study:", study);
     const showregion = () => {
         if (study.onoff === "offline" || study.onoff === "both") {
             return (

@@ -26,6 +26,7 @@ const StudyDetail = ({sideheader}) => {
     const [isApply, setIsApply] = useState(false);
     const accessToken = localStorage.getItem('accessToken');
     const isLoggedInUserId = localStorage.getItem('isLoggedInUserId');
+    const [applyReason, setApplyReason] = useState([]);
 
     useEffect(() => {
         // 백엔드 REST API 호출 코드
@@ -35,35 +36,37 @@ const StudyDetail = ({sideheader}) => {
                 'Authorization': `Bearer ${accessToken}`
             }
         }).then((res) => {
-            console.log("전송 성공 : ", res.data);
+            // console.log("전송 성공 : ", res.data);
             setStudyItem(res.data);
-
-            if (res.data.recruiter.id === isLoggedInUserId ) {
+            if (res.data.recruiter.id === isLoggedInUserId) {
                 console.log("자기 자신의 글");
             }
         })
             .catch((error) => {
                 alert("로그인 해 주세요.");
                 navigate('/login');
-
-                console.error("데이터 가져오기 실패:", error);
+                console.error("스터디 세부 데이터 가져오기 실패:", error);
             });
-    }, []); // 빈 종속성 배열을 사용하여 컴포넌트가 처음 렌더링될 때만 실행
 
-
-    // axios.get(`http://localhost:8080/api/v2/studies/${studyId}`, {
-    //     withCredentials: true,
-    //     headers: {
-    //         'Authorization': `Bearer ${accessToken}`
-    //     }
-    // }).then((res) => {
-    //     console.log("전송 성공 : ", res.data);
-    //     setStudyItem(res.data.content);
-    // })
-    //     .catch((error) => {
-    //         console.error("데이터 가져오기 실패:", error);
-    //     });
-
+        // 백엔드 REST API 호출 코드
+        axios.get(`http://localhost:8080/api/v2/studies/${studyId}/apply-reason`, {
+            withCredentials: true,
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
+        }).then((res) => {
+            // console.log("스터디 지원 여부 데이터 전송 성공 : ", res.data);
+            const result = res.data;
+            if (result.length !== 0 ) {   // 지원했으면 true
+                console.log("지원 O");
+                setIsApply(true);
+                setApplyReason(res.data.applyReason);
+            }
+        })
+            .catch((error) => {
+                console.error("스터디 지원 여부 데이터 가져오기 실패:", error);
+            });
+    }, [id]); // 빈 종속성 배열을 사용하여 컴포넌트가 처음 렌더링될 때만 실행
 
 
     const handleEditClick = () => {
@@ -105,7 +108,7 @@ const StudyDetail = ({sideheader}) => {
     //         setIsApply(false);
     //     }
     // }, [studyDetail]);
-
+    console.log("isApply3 : ", isApply);
 
     return (
         <div>
@@ -117,7 +120,7 @@ const StudyDetail = ({sideheader}) => {
                 </div>
                 {editing ? (
                     <StudyEdit
-                        study={studyDetail[0]}
+                        study={studyItem}
                         onUpdateStudy={handleStudyUpdate}
                         onCancel={handleCancelEdit}
                     />
@@ -140,23 +143,25 @@ const StudyDetail = ({sideheader}) => {
                                         />
                                     )}
                                 </div>
-                                {isApply && (
+                                {isApply === true && applyReason && (
                                     <div className="study_apply_reason">
                                         <div>나의 지원동기 및 각오</div>
-                                        <div>{studyItem.reason}</div>
+                                        <div>{applyReason}</div>
                                     </div>
                                 )}
-                                <div className="btn">
-                                    <Link
-                                        to={`/studyapplyform/${studyItem.id}`}
-                                        style={{
-                                            textDecoration: "none",
-                                            color: "inherit",
-                                        }}
-                                    >
-                                        <button className="apply_btn">탑승하기</button>
-                                    </Link>
-                                </div>
+                                {isApply === false && (
+                                    <div className="btn">
+                                        <Link
+                                            to={`/studyapplyform/${studyItem.id}`}
+                                            style={{
+                                                textDecoration: "none",
+                                                color: "inherit",
+                                            }}
+                                        >
+                                            <button className="apply_btn">탑승하기</button>
+                                        </Link>
+                                    </div>
+                                )}
                             </div>
                         )}
                     </div>
