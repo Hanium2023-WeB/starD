@@ -15,6 +15,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Getter
 @Setter
@@ -27,26 +28,38 @@ public class ReplyController {
 
     // Post(Community, Qna) 댓글 생성
     @PostMapping("/post")
-    public Reply createPostReply(@RequestParam Long targetId, @RequestParam String replyContent, Authentication authentication) {
-        return replyService.createPostReply(targetId, replyContent, authentication);
+    public Reply createPostReply(@RequestBody Map<String, Object> requestPayload, Authentication authentication) {
+        Integer targetId = (Integer) requestPayload.get("targetId");
+        String replyContent = (String) requestPayload.get("replyContent");
+
+        Long targetIdLong = targetId != null ? targetId.longValue() : null;
+
+        return replyService.createPostReply(targetIdLong, replyContent, authentication);
     }
 
-    // ScrapStudySlide 댓글 생성
+    // Study 댓글 생성
     @PostMapping("/study")
-    public Reply createStudyReply(@RequestParam Long targetId, @RequestParam String replyContent, Authentication authentication) {
-        return replyService.createStudyReply(targetId, replyContent, authentication);
+    public Reply createStudyReply(@RequestBody Map<String, Object> requestPayload, Authentication authentication) {
+        // Request Body에서 필요한 데이터 추출
+        Integer targetId = (Integer) requestPayload.get("targetId"); // Integer로 변경
+        String replyContent = (String) requestPayload.get("replyContent");
+
+        Long targetIdLong = targetId != null ? targetId.longValue() : null; // Integer를 Long으로 변환
+
+        return replyService.createStudyReply(targetIdLong, replyContent, authentication);
     }
 
-    // 댓글 수정 (Post, ScrapStudySlide 공통)
-    @PostMapping("/{id}")
-    public Reply updateReply(@PathVariable Long replyId, @RequestParam String replyContent, Authentication authentication) {
-        return replyService.updateReply(replyId, replyContent, authentication);
+    // 댓글 수정 (Post, Study 공통)
+    @PostMapping("/{commentId}")
+    public Reply updateReply(@PathVariable Long commentId, @RequestBody Map<String, String> requestMap, Authentication authentication) {
+        String replyContent = requestMap.get("replyContent");
+        return replyService.updateReply(commentId, replyContent, authentication);
     }
 
-    // 댓글 삭제 (Post, ScrapStudySlide 공통)
-    @DeleteMapping("/{id}")
-    public void deleteReply(@PathVariable Long replyId, Authentication authentication) {
-        replyService.deleteReply(replyId, authentication);
+    // 댓글 삭제 (Post, Study 공통)
+    @DeleteMapping("/{commentId}")
+    public void deleteReply(@PathVariable Long commentId, Authentication authentication) {
+        replyService.deleteReply(commentId, authentication);
     }
 
     // 댓글 조회
@@ -62,15 +75,15 @@ public class ReplyController {
     }
 
     // post 게시글 아이디 별 댓글 조회 (생성일 순)
-    @GetMapping("/post/{postId}")
-    public List<Reply> findAllRepliesByPostId(@PathVariable Long postId) {
-        return replyService.findAllRepliesByPostIdOrderByCreatedAtAsc(postId);
+    @GetMapping("/post/{targetId}")
+    public List<Reply> findAllRepliesByPostId(@PathVariable Long targetId) {
+        return replyService.findAllRepliesByPostIdOrderByCreatedAtAsc(targetId);
     }
 
     // study 게시글 아이디 별 댓글 조회 (생성일 순)
-    @GetMapping("/study/{studyId}")
-    public List<Reply> findAllRepliesByStudyId(@PathVariable Long studyId) {
-        return replyService.findAllRepliesByStudyIdOrderByCreatedAtAsc(studyId);
+    @GetMapping("/study/{targetId}")
+    public List<Reply> findAllRepliesByStudyId(@PathVariable Long targetId) {
+        return replyService.findAllRepliesByStudyIdOrderByCreatedAtAsc(targetId);
     }
 
     // 댓글 작성하려는 게시글의 타입 조회
