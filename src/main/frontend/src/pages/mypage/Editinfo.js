@@ -421,6 +421,7 @@ const Editinfo = ({sideheader}) => {
                                 {/* <span id="sub_title">(현재 비밀번호를 입력해주세요)</span> */}
                             </div>
                             <input
+                                type="password"
                                 id="content"
                                 name={"password"}
                                 value={state.password}
@@ -428,6 +429,7 @@ const Editinfo = ({sideheader}) => {
                                 placeholder="현재 비밀번호를 입력하세요."
                             ></input>
                             <input
+                                type="password"
                                 id="content"
                                 name={"newPassword"}
                                 value={state.newPassword}
@@ -435,6 +437,7 @@ const Editinfo = ({sideheader}) => {
                                 placeholder="새로운 비밀번호를 입력하세요."
                             ></input>
                             <input
+                                type="password"
                                 id="content"
                                 name={"checkNewPw"}
                                 value={state.checkNewPw}

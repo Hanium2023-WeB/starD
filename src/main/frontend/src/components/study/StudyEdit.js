@@ -126,7 +126,7 @@ const StudyEdit = ({study, onUpdateStudy, onCancel}) => {
                                 <input type="radio" value="offline" name="onOff" onChange={handleRadioChange} checked={updatedStudy.onOff === "offline" || selectedOption === "offline"}/>오프라인
                                 <input type="radio" value="both" name="onOff" onChange={handleRadioChange} checked={updatedStudy.onOff === "both" || selectedOption === "both"}/>무관
                                 {showSelect && (
-                                    <StudyRegion formData={updatedStudy} city={updatedStudy?.sido} district={updatedStudy?.gugun}  handleRegionCityChange={handleRegionCityChange} handleRegionDistrictChange={handleRegionDistrictChange} />
+                                    <StudyRegion formData={updatedStudy} city={updatedStudy?.city} district={updatedStudy?.district}  handleRegionCityChange={handleRegionCityChange} handleRegionDistrictChange={handleRegionDistrictChange} />
                                 )}
                             </div>
                         </div>

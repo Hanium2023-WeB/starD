@@ -116,15 +116,11 @@ em {
 {   display: flex;
     justify-content: center;
     align-items: center;
-    position: relative;
-    bottom: 40px;
-    left: 10px;
-    margin-bottom: 10px;
+    margin: 20px 0;
 }
 .check_term_of_service > span{
     display: flex;
     flex-direction: row;
-    width: 100px;
 }
 .check_term_of_service > span > p{
   margin-bottom: 0px;

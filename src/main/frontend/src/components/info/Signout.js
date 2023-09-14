@@ -54,7 +54,7 @@ const Signout = () => {
 <li>6. 현재 비밀번호를 입력하고 탈퇴하기를 누르시면 위 내용에 동의하는 것으로 간주됩니다.</li>
               </ul>
               <div id="checkpw">
-                <input id="signout_pw" placeholder="현재 비밀번호를 입력해주세요"></input>
+                <input type="password" id="signout_pw" placeholder="현재 비밀번호를 입력해주세요"></input>
                 <button id ="signout_btn">탈퇴하기</button>
               </div>
              
