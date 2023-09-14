@@ -30,6 +30,7 @@ const StudyDetail = ({sideheader}) => {
     const accessToken = localStorage.getItem('accessToken');
     const isLoggedInUserId = localStorage.getItem('isLoggedInUserId');
     const [applyReason, setApplyReason] = useState([]);
+    const [isRecruiter, setIsRecruiter] = useState(false);
 
 
     useEffect(() => {
@@ -49,6 +50,7 @@ const StudyDetail = ({sideheader}) => {
             setStudyItem(res.data);
             if (res.data.recruiter.id === isLoggedInUserId) {
                 console.log("자기 자신의 글");
+                setIsRecruiter(true);
             }
         })
             .catch((error) => {
@@ -158,7 +160,7 @@ const StudyDetail = ({sideheader}) => {
                                         <div>{applyReason}</div>
                                     </div>
                                 )}
-                                {isApply === false && (
+                                {isApply === false && isRecruiter === false && (
                                     <div className="btn">
                                         <Link
                                             to={`/studyapplyform/${studyItem.id}`}
