@@ -95,81 +95,19 @@ const Study = () => {
 
     // 각 스터디 리스트 항목의 스크랩 상태를 토글하는 함수
 
-    const toggleScrap = (index, studyId) => {
+    const toggleScrap = (index) => {
         setStudies((prevStudies) => {
             const newStudies = [...prevStudies];
-            if (newStudies[index].scrap) { // true -> 활성화되어 있는 상태 -> 취소해야 함
-                axios.delete(`http://localhost:8080/scrap/study/${studyId}`, {
-                    params: { id: studyId },
-                    withCredentials: true,
-                    headers: {
-                        'Authorization': `Bearer ${accessToken}`
-                    }
-                })
-                    .then(response => {
-                        console.log("스크랩 취소 성공 " + response.data);
-                    })
-                    .catch(error => {
-                        console.error("Error:", error);
-                        console.log("스크랩 취소 실패");
-                    });
-            } else {
-                axios.post(`http://localhost:8080/scrap/study/${studyId}`, null, {
-                    params: { id: studyId },
-                    withCredentials: true,
-                    headers: {
-                        'Authorization': `Bearer ${accessToken}`
-                    }
-                })
-                    .then(response => {
-                        console.log("스크랩 성공");
-                    })
-                    .catch(error => {
-                        console.error("Error:", error);
-                        console.log("스크랩 실패");
-                    });
-            }
-            newStudies[index] = { ...newStudies[index], scrap: !newStudies[index].scrap };
+            newStudies[index] = {...newStudies[index], scrap: !newStudies[index].scrap};
             setStudiesChanged(true); // Mark studies as changed
             return newStudies;
         });
     };
 
-    const toggleLike = (index, studyId) => {
+    const toggleLike = (index) => {
         setStudies((prevStudies) => {
             const newStudies = [...prevStudies];
-            if (newStudies[index].like) { // true -> 활성화되어 있는 상태 -> 취소해야 함
-                axios.delete(`http://localhost:8080/star/study/${studyId}`, {
-                    params: { id: studyId },
-                    withCredentials: true,
-                    headers: {
-                        'Authorization': `Bearer ${accessToken}`
-                    }
-                })
-                    .then(response => {
-                        console.log("공감 취소 성공 " + response.data);
-                    })
-                    .catch(error => {
-                        console.error("Error:", error);
-                        console.log("공감 취소 실패");
-                    });
-            } else {
-                axios.post(`http://localhost:8080/star/study/${studyId}`, null, {
-                    params: { id: studyId },
-                    withCredentials: true,
-                    headers: {
-                        'Authorization': `Bearer ${accessToken}`
-                    }
-                })
-                    .then(response => {
-                        console.log("공감 성공");
-                    })
-                    .catch(error => {
-                        console.error("Error:", error);
-                        console.log("공감 실패");
-                    });
-            }
-            newStudies[index] = { ...newStudies[index], like: !newStudies[index].like };
+            newStudies[index] = {...newStudies[index], like: !newStudies[index].like};
             setStudiesChanged(true); // Mark studies as changed
             return newStudies;
         });
@@ -185,13 +123,32 @@ const Study = () => {
 
     //페이징관련 코드
     const [page, setPage] = useState(1);
-    const [count, setCount]=useState(0);
-    const [itemsPerPage, setItemsPerPage]= useState(9);
-    // const handlePageChange = ({page,itemsPerPage,totalItemsCount}) => {
-    //     setPage(page);
-    //     setItemsPerPage(itemsPerPage); //한페이지 당 아이템 개수
-    //     setCount(totalItemsCount); //전체 아이템 개수
-    // };
+    const [count, setCount] = useState(0);
+    const [itemsPerPage, setItemsPerPage] = useState(9);
+    const handlePageChange = ({page, itemsPerPage, totalItemsCount}) => {
+        setPage(page);
+
+        // 백엔드에 데이터를 요청합니다.
+        axios.get("http://localhost:8080/api/v2/studies/all", {
+            params: {
+                page: page,
+            },
+        })
+            .then((res) => {
+                // 데이터를 받아온 후 스터디 리스트를 업데이트합니다.
+                setStudies(res.data.content);
+
+                // 페이지 정보를 업데이트합니다.
+                setItemsPerPage(res.data.pageable.pageSize);
+                setCount(res.data.totalElements);
+            })
+            .catch((error) => {
+                console.error("데이터 가져오기 실패:", error);
+            });
+
+        setItemsPerPage(itemsPerPage); //한페이지 당 아이템 개수
+        setCount(totalItemsCount); //전체 아이템 개수
+    };
 
 
     useEffect(() => {
@@ -199,13 +156,15 @@ const Study = () => {
         // 여기서 백엔드에게 데이터 요청
         axios.get("http://localhost:8080/api/v2/studies/all")
             .then((res) => {
-                console.log("전송 성공");
-                console.log(res.data);
+                // console.log("전송 성공");
+                // console.log(res.data);
                 // 데이터를 받아오면 전체 아이템 개수를 Paging.js에게 Props으로 넘길 예정,
                 // 서버에서 받아온 스터디 리스트를 setStudies를 통해 업데이트
                 setStudies(res.data.content);
-                localStorage.setItem("studies", JSON.stringify(studies));
-                console.log(res.data.content);
+
+                // localStorage.setItem("studies", JSON.stringify(studies));
+                // console.log(res.data.content);
+
                 // 서버에서 받아온 페이지 정보를 setPageInfo를 통해 업데이트합니다.
                 handlePageChange({
                     itemsPerPage: res.data.pageable.pageSize, // 페이지 당 아이템 수
@@ -218,8 +177,7 @@ const Study = () => {
     }, []); // 의존성 배열 비워두기
 
 
-
-        return (
+    return (
         <div className={"main_wrap"} id={"study"}>
             <Header showSideCenter={true}/>
             <div className="study_detail_container" style={{width: "70%"}}>
@@ -249,7 +207,8 @@ const Study = () => {
 
                             <div className="study_list">
                                 {studies.map((d, index) => (
-                                    <StudyListItem studies={d} toggleLike={toggleLike} toggleScrap={toggleScrap} d={d} index={index} key={d.id}/>
+                                    <StudyListItem studies={d} toggleLike={toggleLike} toggleScrap={toggleScrap} d={d}
+                                                   index={index} key={d.id}/>
                                 ))}
                             </div>
                         </div>
@@ -259,6 +218,8 @@ const Study = () => {
                 </div>
             </div>
             <div className={"paging"}>
+                <Paging page={page} totalItemCount={count} itemsPerPage={itemsPerPage}
+                        handlePageChange={handlePageChange}/>
                 {!showStudyInsert && (
                     <Paging  page={page} totalItemCount={count} itemsPerPage={itemsPerPage}/>
                 )}

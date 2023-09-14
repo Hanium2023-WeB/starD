@@ -3,6 +3,8 @@ import RealEstate from "../info/RealEstate";
 import StudyRegion from "./StudyRegion";
 
 const StudyEdit = ({study, onUpdateStudy, onCancel}) => {
+
+    console.log("StudyEdit :", study);
     const [updatedStudy, setUpdatedStudy] = useState(study);
 
     const [showSelect, setShowSelect] = useState(false);
@@ -94,7 +96,7 @@ const StudyEdit = ({study, onUpdateStudy, onCancel}) => {
                         </div>
                         <div>
                             <span>모집 인원</span>
-                            <input type="number" name="capacity" value={updatedStudy.capacity} onChange={handleInputChange}
+                            <input type="text" name="number" value={updatedStudy.capacity} onChange={handleInputChange}
                                    className="inputbox"/>
                         </div>
                         <div>
@@ -104,13 +106,15 @@ const StudyEdit = ({study, onUpdateStudy, onCancel}) => {
                         </div>
                         <div>
                             <span>모집 마감일</span>
-                            <input type="date" name="recruitmentDeadline" value={updatedStudy.recruitmentDeadline} onChange={handleInputChange}
+                            <input type="date" name="deadline" value={updatedStudy.recruitmentDeadline} onChange={handleInputChange}
                                    className="inputbox"/>
                         </div>
                     </div>
                     <div className="right">
                         <div style={{marginRight:"10px"}}>
                             <span>분야</span>
+                            <input type="text" name="tag" value={updatedStudy.tags} onChange={handleInputChange}
+                                   className="inputbox"/>
                             <span className="field_wrapper">
                                 <select name="field" value={updatedStudy.field} onChange={handleInputChange}>
                                     {tagoptions.map((interest,idx) =>
@@ -140,6 +144,8 @@ const StudyEdit = ({study, onUpdateStudy, onCancel}) => {
                 </div>
                 <div className="study_open_detail">
                     <span>상세 내용</span>
+                    <textarea name="description" onChange={handleInputChange}
+                              defaultValue={updatedStudy.content}/>
                     <textarea name="content" onChange={handleInputChange}
                               value={updatedStudy.content}/>
                 </div>

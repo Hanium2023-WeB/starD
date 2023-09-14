@@ -7,21 +7,19 @@ import StudyRegion from "./StudyRegion";
 import Tag from "./Tag";
 import axios from "axios";
 
-const StudyInsert = ({updateStudies, onClose, study}) => {
+const StudyInsert = ({updateStudies, onClose}) => {
 
     const [dataId, setDataId] = useState(0);
     const navigate = useNavigate();
 
     const [showSelect, setShowSelect] = useState(false); //온 오프 선택 지역 컴포넌트 호출 여부 관리 상태
     const [selectedOption, setSelectedOption] = useState(null);
-    const [studies, setStudies] = useState(study);
+    const [studies, setStudies] = useState([]);
     const value = "*스터디 주제: \n*스터디 목표: \n*예상 스터디 일정(횟수): \n*예상 커리큘럼 간략히: \n*스터디 소개와 개설 이유: \n*스터디 관련 주의사항: ";
     const [tags, setTags] = useState([]);
     const [city, setCity]= useState("");
     const[district, setDistrict] = useState("");
-    const[tag, setTag] = useState("");
     const [current, setCurrent] = useState("Recruiting");
-
     //폼 데이터
     const [formData, setFormData] = useState({
         title: "",
@@ -65,9 +63,7 @@ const StudyInsert = ({updateStudies, onClose, study}) => {
         { value: "자동화", name: "자동화" },
         { value: "블로그 운영", name: "블로그 운영" },
     ];
-    useEffect(() => {
-        console.log("기존 스터디",studies);
-    }, []);
+
     //입력데이터 상태관리
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -75,7 +71,6 @@ const StudyInsert = ({updateStudies, onClose, study}) => {
             ...formData,
             [name]: value,
         });
-        console.log("formdata_name:", formData);
     };
 
     // const handleFieldChange = (e) => {
@@ -89,16 +84,12 @@ const StudyInsert = ({updateStudies, onClose, study}) => {
     // };
     //시,도 추가
     const handleRegionCityChange = (newCity) => {
-            setCity(newCity);
-            setFormData({
-                ...formData,
-                sido : newCity,
-            })
-            console.log("formdata_sido:", formData);
+        setCity(newCity);
+        setFormData({
+       ...formData,
+            sido : newCity,
+      })
   };
-    useEffect(() => {
-        handleRegionCityChange(city);
-    }, [city]);
     //구,군 추가
     const handleRegionDistrictChange = (newDistrict) => {
         setDistrict(newDistrict);
@@ -106,11 +97,7 @@ const StudyInsert = ({updateStudies, onClose, study}) => {
             ...formData,
             gugun : newDistrict,
         })
-         console.log("formdata_gugun:", formData);
     };
-    useEffect(() => {
-        handleRegionDistrictChange(district);
-    }, [district]);
 
 
 //on off 선택 라디오 버튼
@@ -172,31 +159,17 @@ const StudyInsert = ({updateStudies, onClose, study}) => {
 
     }, [studies, dataId]);
 
-
-
-
     const handleTagChange = (selectedTag) => {
-        setTags(selectedTag);
-        // setFormData( {
-        //     // 변경된 부분: 태그 정보를 쉼표로 구분된 문자열로 저장); // 변경된 부분: 태그 정보를 배열로 변환하여 설정
-        //     ...formData,
-        //     tag: tags.join(','),
-        // }
-    // );
+        setTags(selectedTag); // 변경된 부분: 태그 정보를 배열로 변환하여 설정
     };
-    useEffect(() => {
-        handleTagChange(tag);
-    }, [tag]);
 
 
     useEffect(() => {
-        //애초에 studies값이 []임
-        // const storedStudies = JSON.parse(localStorage.getItem("studies") || "[]");
-        setStudies(study);
-        // dataId 값을 로컬 스토리지에서 가져와서 설정 ->음....
-        const lastDataId = studies.length > 0 ? studies[studies.length - 1].id : 0;
+        const storedStudies = JSON.parse(localStorage.getItem("studies") || "[]");
+        setStudies(storedStudies);
+        // dataId 값을 로컬 스토리지에서 가져와서 설정
+        const lastDataId = storedStudies.length > 0 ? storedStudies[storedStudies.length - 1].id : 0;
         setDataId(lastDataId + 1);
-        console.log("dataid:", lastDataId);
     }, []);
 
     //제출 함수
@@ -230,12 +203,10 @@ const StudyInsert = ({updateStudies, onClose, study}) => {
             ...formData,
             tag: tags.join(','), // 변경된 부분: 태그 정보를 쉼표로 구분된 문자열로 저장
         };
-
-        console.log("form:", formData);
         //TODO 프론트 작업을 위해 잠시 추가
-        localStorage.setItem("studyWithTags", JSON.stringify(formData));
+        localStorage.setItem("studyWithTags", JSON.stringify(studyWithTags));
 
-        setFormData(onInsertStudy(formData));
+        setFormData(onInsertStudy(studyWithTags));
         console.log(`formData: ${JSON.stringify(formData)}`)
 
         const accessToken = localStorage.getItem('accessToken');
@@ -244,16 +215,16 @@ const StudyInsert = ({updateStudies, onClose, study}) => {
         const response = axios.post("http://localhost:8080/api/v2/studies",
             {
                 title:studyWithTags.title,
-                field:studyWithTags.field,
-                capacity: studyWithTags.number,
-                onOff:studyWithTags.onoff,
-                city:studyWithTags.sido,
-                district:studyWithTags.gugun,
-                recruitmentDeadline: studyWithTags.deadline,
-                activityStart: studyWithTags.startDate,
-                activityDeadline:studyWithTags.endDate,
-                content: studyWithTags.description,
-                tags: studyWithTags.tag,
+                field:studyWithTags.field,  // 분야
+                capacity: studyWithTags.number, // 모집 인원
+                onOff:studyWithTags.onoff,  // 온/온라인/무관
+                city:studyWithTags.sido,    // 시
+                district:studyWithTags.gugun,   // 구
+                recruitmentDeadline: studyWithTags.deadline,    // 모집 마감
+                activityStart: studyWithTags.startDate, // 활동 시작
+                activityDeadline:studyWithTags.endDate, // 활동 마감
+                content: studyWithTags.description, // 내용
+                tags: studyWithTags.tag,    // 태그
                 // scrap: studies.scrap,
                 // like:studies.like,
             },
@@ -262,15 +233,10 @@ const StudyInsert = ({updateStudies, onClose, study}) => {
                     'Authorization': `Bearer ${accessToken}`
                 }})
             .then((res)=>{
-                console.log("전송 성공");
-                console.log(res.data);
-
-                // setMyCreateStudy({
-                //     ...prevStudy,
-                //     formData
-                // })
+                // console.log("전송 성공");
+                // console.log(res.data);
                 //성공하면
-                 navigate("/myopenstudy", {state: studyWithTags});
+                // navigate("/myopenstudy", {state: formData});
 
             }).catch((error)=>{
                 console.log('전송 실패', error);
@@ -283,8 +249,8 @@ const StudyInsert = ({updateStudies, onClose, study}) => {
         //myopenstudy에 navigate로 데이터 넘기기
 
         e.preventDefault();
-         navigate("/myopenstudy", {state: formData});
-        // navigate("/");
+        // navigate("/myopenstudy", {state: formData});
+        navigate("/");
     }, [formData, navigate, tags, onInsertStudy]);
 
     // e.preventDefault();

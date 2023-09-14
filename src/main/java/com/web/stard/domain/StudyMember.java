@@ -15,6 +15,7 @@ import java.util.List;
 public class StudyMember {      // 스터디 참여자
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
     @NotNull

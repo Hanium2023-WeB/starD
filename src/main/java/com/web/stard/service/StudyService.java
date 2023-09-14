@@ -48,6 +48,34 @@ public class StudyService {
         return studies;
     }
 
+    @Transactional
+    public Page<Study> findByRecruiter(Authentication authentication, int page) {
+
+        String userId = authentication.getName();
+        Member member = memberService.find(userId);
+
+        Sort sort = Sort.by(new Sort.Order(Sort.Direction.DESC, "createdAt"));
+        Pageable pageable = PageRequest.of(page - 1, 9, sort);
+
+        Page<Study> studies = studyRepository.findByRecruiter(member, pageable);
+
+        return studies;
+    }
+
+    @Transactional
+    public Page<Applicant> findByMember(Authentication authentication, int page) {
+
+        String userId = authentication.getName();
+        Member member = memberService.find(userId);
+
+        Sort sort = Sort.by(new Sort.Order(Sort.Direction.DESC, "id"));
+        Pageable pageable = PageRequest.of(page - 1, 9, sort);
+
+        Page<Applicant> applicants = applicantRepository.findByMember(member, pageable);
+
+        return applicants;
+    }
+
     public Page<Study> findAllByOrderByRecruitStatus(int page) {
 
         Sort sort = Sort.by(new Sort.Order(Sort.Direction.DESC, "createdAt"));
@@ -256,11 +284,31 @@ public class StudyService {
     }
 
     /* 해당 회원이 스터디원인지 확인 */
-    public boolean checkStudyMember(Long studyId, String id) {
+    public boolean checkStudyMember(long studyId, String id) {
         Study study = findById(studyId);
         Member member = memberService.find(id);
 
         return studyMemberRepository.existsByStudyAndMember(study, member);
     }
 
+    public boolean isApplicant(long id, Authentication authentication) {
+
+        String userId = authentication.getName();
+
+        Study study = findById(id);
+        Member member = memberService.find(userId);
+
+        return applicantRepository.existsByMemberAndStudy(member, study);
+    }
+
+    public Applicant findByMemberAndStudy(long id, Authentication authentication) {
+        String userId = authentication.getName();
+
+        Study study = findById(id);
+        Member member = memberService.find(userId);
+
+        if (applicantRepository.existsByMemberAndStudy(member, study))
+            return  applicantRepository.findByMemberAndStudy(member, study);
+        return null;
+    }
 }
