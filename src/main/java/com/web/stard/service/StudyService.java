@@ -51,6 +51,20 @@ public class StudyService {
         return studies;
     }
 
+    @Transactional
+    public Page<Study> findByRecruiter(Authentication authentication, int page) {
+
+        String userId = authentication.getName();
+        Member member = memberService.find(userId);
+
+        Sort sort = Sort.by(new Sort.Order(Sort.Direction.DESC, "createdAt"));
+        Pageable pageable = PageRequest.of(page - 1, 9, sort);
+
+        Page<Study> studies = studyRepository.findByRecruiter(member, pageable);
+
+        return studies;
+    }
+
     public Page<Study> findAllByOrderByRecruitStatus(int page) {
 
         Sort sort = Sort.by(new Sort.Order(Sort.Direction.DESC, "createdAt"));

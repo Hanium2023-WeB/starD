@@ -3,14 +3,17 @@ package com.web.stard.controller;
 import com.web.stard.domain.Interest;
 import com.web.stard.domain.Member;
 import com.web.stard.domain.Profile;
+import com.web.stard.domain.Study;
 import com.web.stard.dto.ProfileDto;
 import com.web.stard.service.MemberService;
 import com.web.stard.service.ProfileService;
+import com.web.stard.service.StudyService;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -33,6 +36,7 @@ public class MyPageController {
     private final PasswordEncoder passwordEncoder;
 
     private final ProfileService profileService;
+    private final StudyService studyService;
 
     /* 정보 반환 */
     @GetMapping("/update")
@@ -237,6 +241,19 @@ public class MyPageController {
     @PutMapping("/credibility")
     public Profile updateCredibility(Authentication authentication) {
         return profileService.updateCredibility(authentication.getName());
+    }
+
+    // [R] 스터디 신청 내역
+    @GetMapping("/apply-study")
+    public Page<Study> findApplyHistory(@RequestParam(value = "page", defaultValue = "1", required = false) int page, Authentication authentication) {
+        return studyService.findByRecruiter(authentication, page);
+    }
+
+    // [R] 스터디 개설 내역
+    @GetMapping("/open-study")
+    public Page<Study> findOpenHistory(@RequestParam(value = "page", defaultValue = "1", required = false) int page, Authentication authentication) {
+        System.out.println("스터디 개설 내역 함수 진입");
+        return studyService.findByRecruiter(authentication, page);
     }
 
 

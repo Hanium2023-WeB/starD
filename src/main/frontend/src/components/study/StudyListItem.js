@@ -23,8 +23,8 @@ function checkRecruitStatus(recruitStatus) {
 
 const StudyListItem = ({studies, toggleLike, toggleScrap, d, index}) => {
 
-    console.log("studies : ", studies);
-    console.log("d : ", d);
+    // console.log("studies : ", studies);
+    // console.log("d : ", d);
 
     const daysDifference = calculateDateDifference(studies.activityStart, studies.activityDeadline);
     const recruitStatus = checkRecruitStatus(studies.recruitStatus);
@@ -68,7 +68,7 @@ const StudyListItem = ({studies, toggleLike, toggleScrap, d, index}) => {
     // },[d]);
 
     const GoNextDetailPage = ()=>{
-        console.log(d.id);
+        // console.log(d.id);
         navigate(`/studydetail/${d.id}`, {state: studies.id})
     }
 
