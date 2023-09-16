@@ -1,20 +1,12 @@
 import React, {useState, useEffect} from "react";
 import axios from "axios";
-import {useNavigate} from 'react-router-dom';
 import Category from "../../components/repeat_etc/Category";
-import { ReactComponent as Arrow } from "../../images/Arrow.svg";
-import edit from "../../css/mypage_css/edit.css";
-import arrowdown from "../../images/arrowdown.png";
-import arrowup from "../../images/arrowup.png";
 import Signout from "../../components/info/Signout.js";
 import RealEstate from "../../components/info/RealEstate.js";
 import {isEmail, isPassword} from "../../util/check.js";
 import Backarrow from "../../components/repeat_etc/Backarrow.js";
 import EditInterest from "../../components/info/EditInterest.js";
 import Header from "../../components/repeat_etc/Header";
-
-
-
 
 const Editinfo = ({sideheader}) => {
     const [state, setState] = useState({
@@ -243,10 +235,16 @@ const Editinfo = ({sideheader}) => {
         // 입력한 비밀번호 가져오기
         const password = state.password;
         const newPassword = state.newPassword;
+        const checkNewPw = state.checkNewPw;
 
         // 입력 값이 없는 경우 요청을 보내지 않음
         if (!password || !newPassword) {
             alert("비밀번호를 입력해 주세요.");
+            return;
+        }
+
+        if (newPassword !== checkNewPw) {
+            alert("비밀번호가 일치하지 않습니다.");
             return;
         }
 
@@ -357,6 +355,39 @@ const Editinfo = ({sideheader}) => {
                 <Category/>
                 <div className="main_container" id="edit_main">
                     <h2>개인정보 수정페이지</h2>
+                    <div className="sub_container" id="password">
+                        <div className="change_pw">
+                            <div id="title">
+                                비밀번호
+                                {/* <span id="sub_title">(현재 비밀번호를 입력해주세요)</span> */}
+                            </div>
+                            <input
+                                type="password"
+                                id="content"
+                                name={"password"}
+                                value={state.password}
+                                onChange={handleEditChange}
+                                placeholder="현재 비밀번호를 입력하세요."
+                            ></input>
+                            <input
+                                type="password"
+                                id="content"
+                                name={"newPassword"}
+                                value={state.newPassword}
+                                onChange={handleEditChange}
+                                placeholder="새로운 비밀번호를 입력하세요."
+                            ></input>
+                            <input
+                                type="password"
+                                id="content"
+                                name={"checkNewPw"}
+                                value={state.checkNewPw}
+                                onChange={handleEditChange}
+                                placeholder="비밀번호 확인"
+                            ></input>
+                            <button id="save" onClick={handleSavePassword}>저장하기</button>
+                        </div>
+                    </div>
                     <div className="sub_container">
                         <div className="change_nicname">
                             <div id="title">닉네임</div>
@@ -374,15 +405,22 @@ const Editinfo = ({sideheader}) => {
                             <button id="save" onClick={handleSaveNickname}>저장하기</button>
                         </div>
                     </div>
-                    <div className="sub_container">
-                        <div className="change_estate">
-                            <div id="title">거주지</div>
-                            <div id="checkestate">
-                                {mem && <RealEstate mem={mem}/>}
-                                {/*<RealEstate/>*/}
+                    <div className="sub_container" id="phone_number">
+                        <div className="change_phone">
+                            <div id="title">
+                                전화번호
+                                <span id="sub_title">(-없이 전화번호만 입력)</span>
                             </div>
 
-                            <button id="save" onClick={handleSaveAddress}>저장하기</button>
+                            <input
+                                id="content"
+                                name={"phone"}
+                                value={state.phone}
+                                onChange={handleEditChange}
+                                placeholder={"전화번호를 입력해주세요."}
+                            ></input>
+
+                            <button id="save" onClick={handleSavePhone}>저장하기</button>
                         </div>
                     </div>
                     <div className="sub_container" id="c_email">
@@ -407,59 +445,21 @@ const Editinfo = ({sideheader}) => {
                             <button id="save" onClick={handleSaveEmail}>저장하기</button>
                         </div>
                     </div>
+                    <div className="sub_container">
+                        <div className="change_estate">
+                            <div id="title" style={{padding:"0"}}>거주지</div>
+                            <div id="checkestate">
+                                {mem && <RealEstate mem={mem}/>}
+                                {/*<RealEstate/>*/}
+                            </div>
+
+                            <button id="save" onClick={handleSaveAddress}>저장하기</button>
+                        </div>
+                    </div>
                     <div className="sub_container" id="interested">
                         <div className="change_interest">
-
-                    <EditInterest mem = {mem}/>
-                    <button id="save">저장하기</button>
-                        </div>
-                    </div>
-                    <div className="sub_container" id="password">
-                        <div className="change_pw">
-                            <div id="title">
-                                비밀번호
-                                {/* <span id="sub_title">(현재 비밀번호를 입력해주세요)</span> */}
-                            </div>
-                            <input
-                                id="content"
-                                name={"password"}
-                                value={state.password}
-                                onChange={handleEditChange}
-                                placeholder="현재 비밀번호를 입력하세요."
-                            ></input>
-                            <input
-                                id="content"
-                                name={"newPassword"}
-                                value={state.newPassword}
-                                onChange={handleEditChange}
-                                placeholder="새로운 비밀번호를 입력하세요."
-                            ></input>
-                            <input
-                                id="content"
-                                name={"checkNewPw"}
-                                value={state.checkNewPw}
-                                onChange={handleEditChange}
-                                placeholder="비밀번호 확인"
-                            ></input>
-                            <button id="save" onClick={handleSavePassword}>저장하기</button>
-                        </div>
-                    </div>
-                    <div className="sub_container" id="phone_number">
-                        <div className="change_phone">
-                            <div id="title">
-                                전화번호
-                                <span id="sub_title">(-없이 전화번호만 입력)</span>
-                            </div>
-
-                            <input
-                                id="content"
-                                name={"phone"}
-                                value={state.phone}
-                                onChange={handleEditChange}
-                                placeholder={"전화번호를 입력해주세요."}
-                            ></input>
-
-                            <button id="save" onClick={handleSavePhone}>저장하기</button>
+                            <EditInterest mem = {mem}/>
+                            {/*<button id="save">저장하기</button>*/}
                         </div>
                     </div>
                     <Signout/>

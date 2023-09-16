@@ -1,6 +1,6 @@
 import LogoButton from "../../components/repeat_etc/LogoButton";
 import React, {useState, useRef, useEffect, useCallback} from "react";
-import {isEmail, isPassword} from "../../util/check.js";
+import {isEmail, isPassword, isPhone} from "../../util/check.js";
 import "../../css/user_css/Log.css";
 import Header from "../../components/repeat_etc/Header";
 import {useLocation} from 'react-router-dom';
@@ -26,6 +26,8 @@ const Signup = () => {
     const inputNicname = useRef();
     const inputphone = useRef();
     const inputemail = useRef();
+    const IDRef = useRef();
+    const nicknameRef = useRef();
 
     ///변수명 변경
     const [state, setState] = useState({
@@ -37,6 +39,7 @@ const Signup = () => {
         email: "",
         isValidEmail: false,
         isValidPassword: false,
+        isValidPhone:false,
         city: locations.city,
         district: locations.district,
         tags: locations.tags,
@@ -105,6 +108,16 @@ const Signup = () => {
             ...prevState,
             password: PW,
             isValidPassword: isPassword(PW), // 비밀번호 유효성 검사
+        }));
+    };
+
+    const handleEditPhoneChange = (e) => {
+        const phone = e.target.value;
+
+        setState((prevState) => ({
+            ...prevState,
+            phone: phone,
+            isValidPhone: isPhone(phone), // 비밀번호 유효성 검사
         }));
     };
 
@@ -212,8 +225,7 @@ const Signup = () => {
             });
 
             if (response.status === 200) {
-                alert("회원가입이 완료되었습니다.");
-                console.log("회원가입 성공");
+                console.log("회원가입(STEP1) 성공");
 
                 // 회원 아이디를 로컬 스토리지에 저장하거나 다른 페이지로 전달할 수 있음
                 const newMember = response.data;
@@ -242,6 +254,11 @@ const Signup = () => {
             return;
         }
 
+        // 이전 메시지 삭제
+        if (IDRef.current) {
+            IDRef.current.remove();
+        }
+
         try {
             // 서버에 아이디 중복 검증 요청 보내기
             const response = await axios.get("http://localhost:8080/checkDuplicateID", {
@@ -256,11 +273,16 @@ const Signup = () => {
 
             setIsIdDuplicate(isDuplicate);
 
-            if (isDuplicate) {
-                alert("이미 존재하는 아이디입니다.");
-            } else {
-                alert("사용 가능한 아이디입니다.");
-            }
+            const message = document.createElement("p");
+            message.textContent = isDuplicate ? "이미 존재하는 아이디입니다." : "사용 가능한 아이디입니다.";
+            message.style.display = "block"; // 줄 바꿈을 하도록 설정
+            message.style.color = isDuplicate ? "red" : "blue"; // 적절한 스타일 지정
+
+            inputID.current.parentNode.parentNode.appendChild(message);
+
+            // 새 메시지를 관리하기 위해 messageRef 업데이트
+            IDRef.current = message;
+
         } catch (error) {
             console.error("Error:", error);
         }
@@ -277,6 +299,11 @@ const Signup = () => {
             return;
         }
 
+        // 이전 메시지 삭제
+        if (nicknameRef.current){
+            nicknameRef.current.remove();
+        }
+
         try {
             // 서버에 닉네임 중복 검증 요청 보내기
             const response = await axios.get("http://localhost:8080/checkDuplicateNickname", {
@@ -291,11 +318,15 @@ const Signup = () => {
 
             setIsNicknameDuplicate(isDuplicate);
 
-            if (isDuplicate) {
-                alert("이미 존재하는 닉네임입니다.");
-            } else {
-                alert("사용 가능한 닉네임입니다.");
-            }
+            const message = document.createElement("p");
+            message.textContent = isDuplicate ? "이미 존재하는 닉네임입니다." : "사용 가능한 닉네임입니다.";
+            message.style.display = "block"; // 줄 바꿈을 하도록 설정
+            message.style.color = isDuplicate ? "red" : "blue"; // 적절한 스타일 지정
+
+            inputNicname.current.parentNode.parentNode.appendChild(message);
+
+            // 새 메시지를 관리하기 위해 messageRef 업데이트
+            nicknameRef.current = message;
         } catch (error) {
             console.error("Error:", error);
         }
@@ -307,30 +338,29 @@ const Signup = () => {
 
             <div className="containers" id="sign">
                 <div className="login_info">
-                    <p>회원가입</p>
+                    <p>회원가입 <span style={{color:"red"}}>(STEP 1)</span></p>
                 </div>
                 <form onSubmit={handleSubmit}>
-                    <div className="input_info">
-                        <div className="subinfo">
-                            <span>아이디</span><span style={{color: "red"}}>(필수)</span>
-                        </div>
-                        <div className="signup_id">
-                            <input
-                                ref={inputID}
-                                name={"id"} // Member 클래스의 필드 이름과 일치해야 함
-                                value={state.id} // state에서 사용하는 이름도 Member 클래스의 필드 이름과 일치해야 함
-                                onChange={onChange}
-                                placeholder="아이디를 입력해주세요."
-                            />
-                            <button id="signup_nicname_btn" type="button" onClick={handleCheckDuplicateID}>
-                                중복확인
-                            </button>
+                    <div className="input_info" style={{left:"25px"}}>
+                        <div className="subinfo">아이디<span className="require_info">*</span></div>
+                        <div className="signup_id input_bottom">
+                            <div style={{display:"flex"}}>
+                                <input
+                                    ref={inputID}
+                                    name={"id"} // Member 클래스의 필드 이름과 일치해야 함
+                                    value={state.id} // state에서 사용하는 이름도 Member 클래스의 필드 이름과 일치해야 함
+                                    onChange={onChange}
+                                    placeholder="아이디를 입력해주세요."
+                                    style={{marginBottom:"0"}}
+                                />
+                                <button id="signup_nicname_btn" type="button" onClick={handleCheckDuplicateID}>
+                                    중복확인
+                                </button>
+                            </div>
                         </div>
 
-
-                        <div className="subinfo">
-                            <span>비밀번호</span><span style={{color: "red"}}>(필수)</span></div>
-                        <div className="inputpw">
+                        <div className="subinfo">비밀번호<span className="require_info">*</span></div>
+                        <div className="inputpw input_bottom">
                             <input
                                 ref={inputPW}
                                 name={"password"}
@@ -349,10 +379,8 @@ const Signup = () => {
                         </div>
 
                         {/* 이름 추가 */}
-                        <div className="subinfo">
-                            <span>이름</span><span style={{color: "red"}}>(필수)</span>
-                        </div>
-                        <div>
+                        <div className="subinfo">이름<span className="require_info">*</span></div>
+                        <div className="signup_name input_bottom">
                             <input
                                 ref={inputName}
                                 name={"name"}
@@ -362,38 +390,41 @@ const Signup = () => {
                             />
                         </div>
 
-                        <div className="subinfo">
-                            <span>닉네임</span><span style={{color: "red"}}>(필수)</span>
-                        </div>
-                        <div className="signup_nicname">
-                            <input
-                                ref={inputNicname}
-                                name={"nickname"}
-                                value={state.nickname}
-                                onChange={onChange}
-                                placeholder="닉네임을 입력해주세요."
-                            />
-                            <button id="signup_nicname_btn" type="button" onClick={handleCheckDuplicateNickname}>
-                                중복 확인
-                            </button>
+                        <div className="subinfo">닉네임<span className="require_info">*</span></div>
+                        <div className="signup_nicname input_bottom">
+                            <div style={{display:"flex"}}>
+                                <input
+                                    ref={inputNicname}
+                                    name={"nickname"}
+                                    value={state.nickname}
+                                    onChange={onChange}
+                                    placeholder="닉네임을 입력해주세요."
+                                />
+                                <button id="signup_nicname_btn" type="button" onClick={handleCheckDuplicateNickname}>
+                                    중복 확인
+                                </button>
+                            </div>
                         </div>
 
-                        <div className="subinfo">
-                            <span>휴대폰</span><span style={{color: "red"}}>(필수)</span>
-                        </div>
-                        <div>
+                        <div className="subinfo">휴대폰<span className="require_info">*</span></div>
+                        <div className="signup_phone input_bottom">
                             <input
                                 ref={inputphone}
                                 name={"phone"}
                                 value={state.phone}
-                                onChange={onChange}
+                                onChange={handleEditPhoneChange}
                                 placeholder="휴대폰 번호를 입력해주세요."
                             />
+                            {state.phone !== "" ? (
+                                state.isValidPhone ? (
+                                    <p style={{color: "blue"}}>유효한 핸드폰 번호입니다.</p>
+                                ) : (
+                                    <p style={{color: "red"}}>핸드폰 번호는 010으로 시작해서 총 11자리입니다.</p>
+                                )
+                            ) : null}
                         </div>
 
-                        <div className="subinfo">
-                            <span>이메일</span><span style={{color: "red"}}>(필수)</span>
-                        </div>
+                        <div className="subinfo">이메일<span className="require_info">*</span></div>
                         <div className="inputemail">
                             <input
                                 ref={inputemail}
@@ -424,7 +455,7 @@ const Signup = () => {
                         }} CheckImg={CheckImg} onCheckImgs={onCheckImgs} />}
                     </div>
                     <div className="signbtn">
-                        <button type="submit">가입하기</button>
+                        <button type="submit">다음</button>
                     </div>
                 </form>
             </div>

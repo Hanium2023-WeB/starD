@@ -31,23 +31,19 @@ const EditInterest=({mem})=>{
         });
 
     const Tagoption = (props) => {
+        const handletagChange = (value) => {
+            if (tags.includes(value)) {
+                setTags(tags.filter((tag) => tag !== value));
+            } else {
+                if (tags.length < 3) { //최대 3개까지만 선택 가능하게
+                    setTags([...tags, value]);
 
-                const handletagChange = (value) => {
-                if (tags.includes(value)) {
-                    setTags(tags.filter((tag) => tag !== value));
-                } else {
-                    if (tags.length < 3) { //최대 3개까지만 선택 가능하게
-                        setTags([...tags, value]);
-
-                    }
-                    else{
-                        alert("관심분야는 최대 3개까지 입니다.");
-                    }
                 }
-                };
-
-
-
+                else{
+                    alert("관심분야는 최대 3개까지 입니다.");
+                }
+            }
+        };
 
         console.log(tags)
 
@@ -65,10 +61,12 @@ const EditInterest=({mem})=>{
                 onClick={() => handletagChange(editoption.value)}
                 value={editoption.value}
                 style={{
-                  backgroundColor: tags.includes(editoption.value)
-                    ? "lightpink"
-                    : "white",
-            }}
+                    backgroundColor: tags.includes(editoption.value)
+                        ? "lightpink"
+                        : tags.length === 3
+                            ? "#dbdbdb"
+                            : "white",
+                }}
                 value={editoption.value}
               >
                 {editoption.value}

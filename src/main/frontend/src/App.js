@@ -28,6 +28,7 @@ import FindID from "./pages/userpage/FindID";
 import SearchBar from "./SearchBar";
 import SearchResult from "./pages/studypage/SearchResult";
 import StudyApplyList from "./pages/studypage/StudyApplyList";
+import TeamBlog from "./pages/studypage/TeamBlog";
 
 
 function App() {
@@ -138,6 +139,12 @@ function App() {
                         path="/search"
                         element={
                             <SearchResult/>
+                        }
+                    />
+                    <Route
+                        path="/teamblog"
+                        element={
+                            <TeamBlog/>
                         }
                     />
                     <Route path="/" exact component={Home} />

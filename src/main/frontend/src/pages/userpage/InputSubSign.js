@@ -37,7 +37,7 @@ const InputSubSign =()=>{
       })
         .then(response => {
           console.log(response.data);
-          alert("거주지, 관심분야 정보가 저장되었습니다.");
+          alert("회원가입이 완료되었습니다.");
           navigate("/");
         })
         .catch(error => {
@@ -74,20 +74,19 @@ const InputSubSign =()=>{
         });
 
         const Tagoption = (props) => {
+            const handletagChange = (value) => {
+                if (tags.includes(value)) {
+                    setTags(tags.filter((tag) => tag !== value));
+                } else {
+                    if (tags.length < 3) { //최대 3개까지만 선택 가능하게
+                        setTags([...tags, value]);
 
-               const handletagChange = (value) => {
-               if (tags.includes(value)) {
-                   setTags(tags.filter((tag) => tag !== value));
-               } else {
-               if (tags.length < 3) { //최대 3개까지만 선택 가능하게
-                   setTags([...tags, value]);
-
-               }
-               else{
-                   alert("관심분야는 최대 3개까지 입니다.");
-               }
-        }
-    };
+                    }
+                    else{
+                        alert("관심분야는 최대 3개까지 입니다.");
+                    }
+                }
+            };
 
     console.log(tags)
 
@@ -102,6 +101,8 @@ const InputSubSign =()=>{
              style={{
                backgroundColor: tags.includes(editoption.value)
                   ? "lightpink"
+                  : tags.length === 3
+                  ? "#dbdbdb"
                   : "white",
                }}
              value={editoption.value}
@@ -118,6 +119,9 @@ const InputSubSign =()=>{
             <Header showSideCenter={false}/>
             <div className="wrap">
             <div className="content">
+                <div className="login_info">
+                    <p>회원가입 <span style={{color:"red"}}>(STEP 2)</span></p>
+                </div>
                 <div className="subcontent">
                     <div className="change_estates" id="estates">
                         <div id="title">거주지</div>
@@ -128,14 +132,15 @@ const InputSubSign =()=>{
                     <div id="checkestates">
                         <div>
                               <div id="title">
-                                관심분야<span id="sub_title">(최대 3개까지 선택 가능)</span>
+                                관심분야<span id="sub_title" style={{fontSize:"15px"}}>(최대 3개까지 선택 가능)</span>
                               </div>
                               <Tagoption editoptions={tagoptions} value="" />
                         </div>
                     </div>
                     <div className="next_btn">
-                        <button id="next" onClick={onClickSaveBtn}>저장하기</button>
+                        <button id="next" onClick={()=>{navigate(-1)}}>이전</button>
                         <button id="next" onClick={onClickSkipBtn}>건너뛰기</button>
+                        <button id="next" onClick={onClickSaveBtn}>가입하기</button>
                     </div>
                 </div>
             </div>

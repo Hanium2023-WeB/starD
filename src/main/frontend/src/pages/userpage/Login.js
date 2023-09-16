@@ -91,7 +91,7 @@ const Login = () => {
 
                 <div className="input_info">
                     <div className="subinfo">아이디</div>
-                    <div>
+                    <div className="input_bottom">
                         <input
                             ref={inputID}
                             name={"ID"}

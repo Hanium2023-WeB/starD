@@ -58,12 +58,10 @@ html {
 .sub_container {
 	display: flex;
 	/* background-color:aliceblue; */
-	padding: 10px;
 	padding-left: 30px;
 	padding-right: 0;
 	border-radius: 15px;
 	width: 96%;
-	height: 250px;
 	overflow: hidden;
 }
 .reliability,
