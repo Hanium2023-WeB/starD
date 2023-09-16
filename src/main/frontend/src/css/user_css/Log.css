@@ -46,7 +46,6 @@
 	flex-direction: column;
 	justify-content: center;
 	position: relative;
-	left:25px;
 }
 .input_info .subinfo{
 	display: inline-block;

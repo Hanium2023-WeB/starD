@@ -225,8 +225,7 @@ const Signup = () => {
             });
 
             if (response.status === 200) {
-                alert("회원가입이 완료되었습니다.");
-                console.log("회원가입 성공");
+                console.log("회원가입(STEP1) 성공");
 
                 // 회원 아이디를 로컬 스토리지에 저장하거나 다른 페이지로 전달할 수 있음
                 const newMember = response.data;
@@ -342,7 +341,7 @@ const Signup = () => {
                     <p>회원가입 <span style={{color:"red"}}>(STEP 1)</span></p>
                 </div>
                 <form onSubmit={handleSubmit}>
-                    <div className="input_info">
+                    <div className="input_info" style={{left:"25px"}}>
                         <div className="subinfo">아이디<span className="require_info">*</span></div>
                         <div className="signup_id input_bottom">
                             <div style={{display:"flex"}}>

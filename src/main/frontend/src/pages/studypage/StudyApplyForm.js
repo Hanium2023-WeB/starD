@@ -8,7 +8,7 @@ import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import StudyInfo from "../../components/study/StudyInfo";
 import Backarrow from "../../components/repeat_etc/Backarrow";
 
-const StudyApplyForm = ({ sideheader }) => {
+const StudyApplyForm = () => {
     const { id } = useParams();
     const dataId = useRef(0);
     const contentRef = useRef();

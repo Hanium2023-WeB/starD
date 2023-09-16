@@ -164,8 +164,13 @@ const Header = ({ showSideCenter }) => {
 						>
 							<li>스터디</li>
 						</Link>
-
-						<li>커뮤니티</li>
+						{/* 임시로 팀블로그 연결 */}
+						<Link
+							to={"/teamblog"}
+							style={{textDecoration: "none", color: "inherit"}}
+						>
+							<li>커뮤니티</li>
+						</Link>
 						<li>공지사항</li>
 					</ul>
 				</nav>
