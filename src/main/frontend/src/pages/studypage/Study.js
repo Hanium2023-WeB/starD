@@ -178,7 +178,7 @@ const Study = () => {
 
 
     return (
-        <div>
+        <div className={"main_wrap"} id={"study"}>
             <Header showSideCenter={true}/>
             <div className="study_detail_container" style={{width: "70%"}}>
                 <h1>STAR TOUR STORY</h1>
@@ -190,16 +190,21 @@ const Study = () => {
                         </button>
                     )}
                 </div>
-                <SearchBar searchItems={searchItems}/>
+
                 <div className="study">
                     {showStudyInsert && (
                         <StudyInsert
                             updateStudies={updateStudies}
                             onClose={handleStudyInsertClose}
+                            study ={studies}
                         />
                     )}
                     {!showStudyInsert && (
+                        <div>
+                        <div>  <SearchBar searchItems={searchItems}/>
+                        </div>
                         <div className="content_container">
+
                             <div className="study_list">
                                 {studies.map((d, index) => (
                                     <StudyListItem studies={d} toggleLike={toggleLike} toggleScrap={toggleScrap} d={d}
@@ -207,13 +212,15 @@ const Study = () => {
                                 ))}
                             </div>
                         </div>
+                        </div>
                     )}
                     {!showStudyInsert && studies.length === 0 && <h3>스터디 리스트가 비었습니다.</h3>}
                 </div>
             </div>
             <div className={"paging"}>
-                <Paging page={page} totalItemCount={count} itemsPerPage={itemsPerPage}
-                        handlePageChange={handlePageChange}/>
+                {!showStudyInsert && (
+                    <Paging  page={page} totalItemCount={count} itemsPerPage={itemsPerPage}/>
+                )}
             </div>
         </div>
     );

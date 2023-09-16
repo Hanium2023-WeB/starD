@@ -1,6 +1,7 @@
 package com.web.stard.controller;
 
 import com.web.stard.domain.Post;
+import com.web.stard.domain.PostType;
 import com.web.stard.domain.Reply;
 import com.web.stard.service.ReplyService;
 import lombok.AllArgsConstructor;
@@ -26,14 +27,14 @@ public class ReplyController {
 
     // Post(Community, Qna) 댓글 생성
     @PostMapping("/post")
-    public Reply createPostReply(@RequestParam Long postId, @RequestParam String replyContent, Authentication authentication) {
-        return replyService.createPostReply(postId, replyContent, authentication);
+    public Reply createPostReply(@RequestParam Long targetId, @RequestParam String replyContent, Authentication authentication) {
+        return replyService.createPostReply(targetId, replyContent, authentication);
     }
 
     // ScrapStudySlide 댓글 생성
     @PostMapping("/study")
-    public Reply createStudyReply(@RequestParam Long studyId, @RequestParam String replyContent, Authentication authentication) {
-        return replyService.createStudyReply(studyId, replyContent, authentication);
+    public Reply createStudyReply(@RequestParam Long targetId, @RequestParam String replyContent, Authentication authentication) {
+        return replyService.createStudyReply(targetId, replyContent, authentication);
     }
 
     // 댓글 수정 (Post, ScrapStudySlide 공통)
@@ -70,6 +71,12 @@ public class ReplyController {
     @GetMapping("/study/{studyId}")
     public List<Reply> findAllRepliesByStudyId(@PathVariable Long studyId) {
         return replyService.findAllRepliesByStudyIdOrderByCreatedAtAsc(studyId);
+    }
+
+    // 댓글 작성하려는 게시글의 타입 조회
+    @GetMapping("/type/{targetId}")
+    public PostType findPostTypeById(@PathVariable Long targetId) {
+        return replyService.findPostTypeById(targetId);
     }
 
 }

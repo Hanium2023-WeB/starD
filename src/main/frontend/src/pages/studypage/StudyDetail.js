@@ -10,6 +10,7 @@ import Backarrow from "../../components/repeat_etc/Backarrow";
 import Comment from "../../components/comment/Comment";
 import {useLocation} from "react-router-dom";
 import axios from "axios";
+import StudyApplyList  from "../../pages/studypage/StudyApplyList";
 
 const StudyDetail = ({sideheader}) => {
 
@@ -170,6 +171,19 @@ const StudyDetail = ({sideheader}) => {
                                             }}
                                         >
                                             <button className="apply_btn">탑승하기</button>
+                                        </Link>
+                                    </div>
+                                )}
+                                {isApply === false && isRecruiter === true && (
+                                    <div className="btn">
+                                        <Link
+                                            to={`/StudyApplyList/${studyItem.id}`}
+                                            style={{
+                                                textDecoration: "none",
+                                                color: "inherit",
+                                            }}
+                                        >
+                                            <button className="apply_btn">신청자 조회</button>
                                         </Link>
                                     </div>
                                 )}

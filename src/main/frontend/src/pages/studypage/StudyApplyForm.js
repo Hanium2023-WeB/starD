@@ -23,6 +23,9 @@ const StudyApplyForm = ({sideheader}) => {
     // const studyDetail = studies.filter((study) => study.id === Number(id));
     const isLoggedInUserId = localStorage.getItem('isLoggedInUserId');
 
+    //신청한 사람들 상태 배열
+    const [ApplyMem,setApplyMem]= useState([]);
+
     useEffect(() => {
 
         // 백엔드 REST API 호출 코드
@@ -72,7 +75,6 @@ const StudyApplyForm = ({sideheader}) => {
         }).then((res) => {
             console.log("전송 성공 : ", res.data);
             setStudyDetail(res.data);
-
             navigate("/myapplystudy/");
         })
             .catch((error) => {
@@ -81,18 +83,6 @@ const StudyApplyForm = ({sideheader}) => {
                 console.error("데이터 가져오기 실패:", error);
             });
 
-
-        // const updatedStudies = studies.map(study => {
-        //     if (study.id === Number(id)) {
-        //         return {
-        //             ...study,
-        //             reason: content,
-        //         };
-        //     }
-        //     return study;
-        // });
-        // setStudies(updatedStudies);
-        // localStorage.setItem("studies", JSON.stringify(updatedStudies));
     };
 
     const studyinfo = () => {
@@ -122,8 +112,7 @@ const StudyApplyForm = ({sideheader}) => {
                         {/*>*/}
                         <button
                             className="apply_btn"
-                            onClick={handleSubmit}
-                        >
+                            onClick={handleSubmit}>
                             탑승하기
                         </button>
                         {/*</Link>*/}

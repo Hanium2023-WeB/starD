@@ -11,7 +11,7 @@ import axios from "axios";
 
 const MyApplyStudy = ({sideheader}) => {
 
-    const [studies, setStudies] = useState([]);
+    const [studies, setStudies] = useState([]); //내가 지원한 스터디 상태값
     const [studiesChanged, setStudiesChanged] = useState(false);
     const accessToken = localStorage.getItem('accessToken');
 
@@ -57,8 +57,9 @@ const MyApplyStudy = ({sideheader}) => {
         })
             .then((res) => {
                 console.log("전송 성공 : ", res.data);
-
                 setStudies(res.data.content);
+                //Todo 신청자 조회할 시 사용한 로컬스토리지 내가 지원한 스터디 데이터
+                localStorage.setItem("ApplyStudy",JSON.stringify(res.data.content));
 
                 handlePageChange({
                     itemsPerPage: res.data.pageable.pageSize, // 페이지 당 아이템 수
@@ -150,6 +151,8 @@ const MyApplyStudy = ({sideheader}) => {
                                 </div>
                             </div>
                         </div>
+                        {/*//studydetail에게는 id값만 줌 ->백엔드는 id값만 있으면 됨*/}
+                        {/*//프론트에서만 개발할때는 localStorage에 잠시 저장했다가 쓸 것.*/}
                         <Link
                             to={{
                                 pathname: `/studydetail/${d.study.id}`,

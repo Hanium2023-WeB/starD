@@ -1,7 +1,6 @@
 import React, {useState, useEffect, useRef, useCallback} from "react";
 import {Link, useLocation} from "react-router-dom";
 import Category from "../../components/repeat_etc/Category.js";
-
 import "../../css/study_css/MyOpenStudy.css";
 import Header from "../../components/repeat_etc/Header";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -13,7 +12,6 @@ import Pagination from "../../css/study_css/Pagination.css";
 import axios from "axios";
 
 const MyOpenStudy = ({sideheader}) => {
-
     const [studies, setStudies] = useState([]);
     const [scrapStates, setScrapStates] = useState(studies.scrap);
     const [likeStates, setLikeStates] = useState(studies.like);

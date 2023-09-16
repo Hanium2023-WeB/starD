@@ -1,0 +1,63 @@
+.applylist{
+    min-height: 400px;
+    margin-bottom: 10px;
+}
+.ListContent{
+    display: flex;
+    justify-content: center;
+}
+.study_apply_list {
+    border-collapse: collapse;
+    border: 1px solid #b2b2b2; /* 테두리 스타일 및 두께 설정 */
+    border-radius: 10px;
+    text-align: center;
+    width: 60%;
+}
+.study_apply_list th {
+    background: #dbdbdb;
+    font-size: 18px;
+    padding: 5px 0;
+}
+.study_apply_list th,
+.study_apply_list tr,
+.study_apply_list td {
+    border: 1px solid #b2b2b2;
+}
+.study_apply_list td {
+    padding: 10px 0;
+}
+.study_apply_list td button {
+    border-radius: 10px;
+    border: none;
+    background: #395b64;
+    color: #fff;
+    padding: 5px 20px;
+    text-shadow: none;
+    cursor: pointer;
+}
+
+/*지원동기 폼*/
+.background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 5;
+    background-color: rgba(0, 0, 0, 0.548);
+}
+.background .show_motive {
+    width: 40%;
+    height: fit-content;
+    position: absolute;
+    top: 20%;
+    left: 30%;
+    padding: 20px;
+    background-color: white;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+

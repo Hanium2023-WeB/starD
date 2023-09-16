@@ -80,5 +80,7 @@ public class Study extends BaseEntity {
     @Column(name = "view_count")
     private int viewCount;
 
+    @Enumerated(EnumType.STRING)
+    private PostType type; // post 타입 [COMM, QNA, NOTICE, FAQ, STUDY, REPLY]
 
 }

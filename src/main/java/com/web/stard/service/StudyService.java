@@ -202,6 +202,7 @@ public class StudyService {
                 .progressStatus(null)
                 .field(studyDto.getField())
                 .recruitStatus(RecruitStatus.valueOf("RECRUITING"))
+                .type(PostType.STUDY)
                 .build();
 
         studyRepository.save(result);

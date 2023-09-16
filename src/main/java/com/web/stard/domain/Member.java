@@ -57,7 +57,7 @@ public class Member implements UserDetails {
     @NotNull
     @Column(table = "Member_Detail",
             name = "Member_Report_Count")
-    private int reportCount; // 개인 누적 신고수
+    private Integer reportCount; // 개인 누적 신고수
 
 
     @Builder

@@ -172,6 +172,7 @@ const StudyInsert = ({updateStudies, onClose}) => {
         setDataId(lastDataId + 1);
     }, []);
 
+    //제출 함수
     const handleSubmit = useCallback(e => {
         e.preventDefault(); // 기본 이벤트 방지
 
@@ -288,17 +289,19 @@ const StudyInsert = ({updateStudies, onClose}) => {
                         </div>
                     </div>
                     <div className="right">
-                        <div>
-                            <span>분야</span>
+                        <div className={"interest"} style={{marginRight:"10px"}}>
+                            <span id={"inter"} >분야</span>
                             {/*<input type="text" name="field" value={formData.field} onChange={handleInputChange}*/}
                             {/*       className="inputbox" placeholder="사용할 태그를 입력해주세요"/>*/}
-                            <select name="field" value={formData.field} onChange={handleInputChange}>
-                                {tagoptions.map((interest,idx) =>
-                                    <option key={idx} value={interest.value} >{interest.name}</option>
-                                )}
-                            </select>
+                            <span className="field_wrapper">
+                                <select name="field" value={formData.field} onChange={handleInputChange}>
+                                    {tagoptions.map((interest,idx) =>
+                                        <option key={idx} value={interest.value} >{interest.name}</option>
+                                    )}
+                                </select>
+                            </span>
                         </div>
-                        <div>
+                        <div style={{marginRight:"10px"}}>
                             <span className="onoff_title">진행 방식</span>
                             <div className="onoff">
                                 <input type="radio" value="online" name="onoff" onChange={handleRadioChange}/>온라인

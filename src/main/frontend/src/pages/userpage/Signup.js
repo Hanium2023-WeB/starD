@@ -58,7 +58,16 @@ const Signup = () => {
     const onCheckImg = useCallback(
         () => {
             // onTermToggle();
-            setCheckImg(!CheckImg);
+
+            if(CheckImg === false){
+                alert("이용약관을 확인해주세요.");
+                setTermToggle(true);
+                return;
+            }else{
+                setCheckImg(!CheckImg);
+            }
+
+
         },);
 
     //이용약관에 이미 체크가 되어있는데 또 이용약관을 보러 클릭했을 시
@@ -302,7 +311,9 @@ const Signup = () => {
                 </div>
                 <form onSubmit={handleSubmit}>
                     <div className="input_info">
-                        <div className="subinfo">아이디</div>
+                        <div className="subinfo">
+                            <span>아이디</span><span style={{color: "red"}}>(필수)</span>
+                        </div>
                         <div className="signup_id">
                             <input
                                 ref={inputID}
@@ -316,7 +327,9 @@ const Signup = () => {
                             </button>
                         </div>
 
-                        <div className="subinfo">비밀번호</div>
+
+                        <div className="subinfo">
+                            <span>비밀번호</span><span style={{color: "red"}}>(필수)</span></div>
                         <div className="inputpw">
                             <input
                                 ref={inputPW}
@@ -336,7 +349,9 @@ const Signup = () => {
                         </div>
 
                         {/* 이름 추가 */}
-                        <div className="subinfo">이름</div>
+                        <div className="subinfo">
+                            <span>이름</span><span style={{color: "red"}}>(필수)</span>
+                        </div>
                         <div>
                             <input
                                 ref={inputName}
@@ -347,7 +362,9 @@ const Signup = () => {
                             />
                         </div>
 
-                        <div className="subinfo">닉네임</div>
+                        <div className="subinfo">
+                            <span>닉네임</span><span style={{color: "red"}}>(필수)</span>
+                        </div>
                         <div className="signup_nicname">
                             <input
                                 ref={inputNicname}
@@ -361,18 +378,22 @@ const Signup = () => {
                             </button>
                         </div>
 
-                        <div className="subinfo">전화번호</div>
+                        <div className="subinfo">
+                            <span>휴대폰</span><span style={{color: "red"}}>(필수)</span>
+                        </div>
                         <div>
                             <input
                                 ref={inputphone}
                                 name={"phone"}
                                 value={state.phone}
                                 onChange={onChange}
-                                placeholder="전화번호를 입력해주세요."
+                                placeholder="휴대폰 번호를 입력해주세요."
                             />
                         </div>
 
-                        <div className="subinfo">이메일</div>
+                        <div className="subinfo">
+                            <span>이메일</span><span style={{color: "red"}}>(필수)</span>
+                        </div>
                         <div className="inputemail">
                             <input
                                 ref={inputemail}
@@ -394,7 +415,9 @@ const Signup = () => {
                         {CheckImg ? <span><img src={checkbox} width="20px" onClick={onCheckImg}/>
                             <p onClick={onTermToggle}>이용약관</p></span>
                             : <span><img src={uncheckbox} width="20px" onClick={onCheckImg}/>
-                                <p onClick={onTermToggle}>이용약관</p></span>}
+                                <p onClick={onTermToggle}>이용약관
+                                    <span id={"term"} style={{color: "red", width:"150px"}}>(필수)</span></p>
+                                </span>}
 
                         {termToggle && <Terms_of_service onClose={() => {
                             setTermToggle(false);

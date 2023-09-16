@@ -1,4 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@800&family=Nanum+Pen+Script&family=Tektur&family=Yeon+Sung&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
+
 body {
 	background-color: #f6f6f6;
 	display: flex;
@@ -15,55 +17,82 @@ body {
 	height: fit-content;
 }
 .subground {
-	background-color: #e7f6f2;
+	/*background-color: #e7f6f2;*/
+	/*background-color: #0d0d2a;*/
+	background-image: url("./images/aurora_background.jpg");
 	display: flex;
+	flex-direction: column;
 	justify-content: center;
-
 	min-height: 200px;
 	margin: 0 auto;
 	height: auto;
+	width: 96vw;
+	position: relative;
+	right: 20px;
+}
+.LOGO{
+	display: flex;
+	justify-content: center;
+	margin-top: 30px;
 }
 #root {
 	background-color: white;
 	box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+	overflow-x: hidden;
 }
 .App {
 	min-height: 100vh;
-	min-width: 90vw;
+	min-width: 100vw;
 	padding-left: 10px;
 	padding-right: 10px;
+
 }
 
 /* Header */
 header {
 	display: flex;
+	justify-content: center;
 	align-items: center;
+	padding: 10px;
+	width: 95vw;
+	margin: auto;
 }
 header > div {
 	display: flex;
 }
 header .head_text {
 	width: 50%;
-	font-size: 1em;
-	font-family: "Nanum Myeongjo", serif;
+	font-size: 1.5em;
+	font-family: "Nanum Pen Script", cursive;
 	justify-content: center;
 	white-space: nowrap;
+	color: #395B64;
 }
+/*.main_wrap > header .head_text{*/
+/*	color: white;*/
+/*}*/
 
 header .head_left {
-	width: 25%;
+	width: 20%;
 	justify-content: start;
-	font-family: "Yeon Sung", cursive;
-	font-size: 30px;
+	font-family: "Nanum Pen Script", cursive;
+	font-size: 35px;
 	font-weight: bold;
-	color: #395b64;
+	color: #395B64;
 	white-space: nowrap;
 }
+/*.main_wrap > header .head_left{*/
+/*	color: white;*/
+/*}*/
 header .head_right {
-	width: 25%;
+	width: 20%;
+	font-family: "Nanum Pen Script", cursive;
+	font-size: 1.5em;
 	justify-content: end;
 	white-space: nowrap;
+	color: #395B64;
 }
+
 /* 로고 */
 .logodiv {
 	display: flex;
@@ -105,12 +134,12 @@ nav {
 }
 .sidebar nav ul li {
 	padding: 20px;
-	font-size:16px;
+	font-size:30px;
 	cursor: pointer;
 }
 .headerbar nav ul li {
 	padding-left: 20px;
-	font-size: 16px;
+	font-size:30px;
 }
 
 /* 검색바 */
@@ -120,12 +149,12 @@ nav {
 	height: fit-content;
 	margin: 40px;
 	margin-bottom: 50px;
-	margin-top: 70px;
+	margin-top: 50px;
 }
 .select_search{
 	position: relative;
 	bottom: 9px;
-	}
+}
 #sub{
 	border: 1px solid #d9d9d9;
 	border-radius: 50px;
@@ -221,7 +250,7 @@ button#todo_more{
 	border: 1px solid lightpink;
 
 }
- /*로그인 안했을 때 태그 화면*/
+/*로그인 안했을 때 태그 화면*/
 .nouser_wrap{
 	width: 100%;
 	display: flex;
@@ -230,7 +259,7 @@ button#todo_more{
 	margin-top: 100px;
 	height: fit-content;
 	margin-bottom: 100px;
-	}
+}
 .tag_wrap{
 	width: 80%;
 	display: flex;
@@ -241,7 +270,8 @@ button#todo_more{
 	display: flex;
 	justify-content: center;
 	margin-bottom: 15px;
-	font-size: 20px;
+	font-size: 30px;
+	font-family: "Nanum Pen Script", cursive;
 }
 .Tags{
 	display: flex;
@@ -260,79 +290,80 @@ button#todo_more{
 	border-radius: 10px;
 	box-shadow: 0px 10px 10px 0px rgba(165, 201, 202, 0.15);
 }
- /* 푸터 */
- footer{
-    /* margin-left: 10px;
+/* 푸터 */
+footer{
+	/* margin-left: 10px;
   margin-right: 10px; */
-    background-color: #395b64;
-    color: #E7F6F2;
-    font-size: 14px;
-    font-family: 'Nanum Myeongjo', serif;
-    padding-bottom: 10px;
-  }
+	/*background-color: #395b64;*/
+	background-color: #0d0d2a;
+	color: #E7F6F2;
+	font-size: 14px;
+	font-family: 'Nanum Myeongjo', serif;
+	padding-bottom: 10px;
+}
 
 .info_ul, .subfooter_info ul, .info_etc{
-  margin-bottom: 35px;
-  display: flex;
-  justify-content: space-between;
-  padding-top: 50px;
-  padding-left: 80px;
-  padding-right: 80px;
-  padding-bottom: 10px;
+	margin-bottom: 35px;
+	display: flex;
+	justify-content: space-between;
+	padding-top: 50px;
+	padding-left: 80px;
+	padding-right: 80px;
+	padding-bottom: 10px;
 }
 
 .subfooter_info ul{
-  padding-top: 10px;
-  margin-bottom: 0px;
-  justify-content: start;
- 
+	padding-top: 10px;
+	margin-bottom: 0px;
+	justify-content: start;
+
 }
 .subfooter_info ul li{
 	color: white;
 }
 .info_etc{
-  padding-top: 10px;
-  margin-bottom: 10px;
+	padding-top: 10px;
+	margin-bottom: 10px;
 }
 .item{
-  margin-left: 10px;
-  margin-right: 10px;
+	margin-left: 10px;
+	margin-right: 10px;
 }
 .item_first{
-  margin-left: 0px;
-  margin-right: 10px;
+	margin-left: 0px;
+	margin-right: 10px;
 }
 .item_first li{
-  font-size: 20px;
-  position: relative;
-  bottom: 8px;
+	font-size: 20px;
+	position: relative;
+	bottom: 8px;
 }
 
 li span{
-  margin-bottom: 5px;
+	margin-bottom: 5px;
 }
 .item1{
-  margin-left: 10px;
-  margin-right: 10px;
+	margin-left: 10px;
+	margin-right: 10px;
 }
 
 footer li{
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  color: lightgray;
+	list-style: none;
+	display: flex;
+	flex-direction: column;
+	color: lightgray;
 
 }
 
 footer hr{
-  color: #E7F6F2;
-  margin-left: 80px;
-  margin-right: 80px;
+	color: #E7F6F2;
+	margin-left: 80px;
+	margin-right: 80px;
 }
 
 footer p {
-  font-weight: bolder;
-  font-size: medium;
+	font-weight: bolder;
+	font-size: medium;
 	margin-bottom: 10px;
 }
 @media (max-width: 1030px) {
@@ -342,7 +373,7 @@ footer p {
 }
 
 /* 투두리스트, 대시보드 세로로 배치하기 */
-@media (max-width: 750px) { 
+@media (max-width: 750px) {
 	.dashboard {
 		display: flex;
 		flex-direction: column;
@@ -391,7 +422,7 @@ footer p {
 		bottom: 60%;
 	}
 	.searchbar ul {
-		width: 220px;	
+		width: 220px;
 		display: flex;
 		flex-direction: column;
 		position: relative;
@@ -409,7 +440,7 @@ footer p {
 		font-size: 0.1vw;
 	}
 }
-	@media (min-width: 650px) {
+@media (min-width: 650px) {
 	.App {
 		width: 640px;
 	}
@@ -431,8 +462,8 @@ footer p {
 		min-height:fit-content;
 	}
 	.sidebar nav ul {
-	position: relative;
-	right: 23px;
+		position: relative;
+		right: 23px;
 	}
 
 	input {
@@ -451,7 +482,7 @@ footer p {
 	}
 	#todocontent ul{
 		padding: 10px;
-		
+
 	}
 	footer .footer_info> *{
 		display: none;
@@ -507,19 +538,19 @@ footer p {
 		flex-direction: column;
 		/* color: lightgray; */
 	}
-	
+
 	.smallwidth_sub span{
-			margin-top: 30px;
-			margin-right: 10px;
+		margin-top: 30px;
+		margin-right: 10px;
 	}
 }
-@media (max-width: 525px) { 
+@media (max-width: 525px) {
 	.sidebar nav ul {
 		position: relative;
 		right: 33px;
 	}
 	#sub {
-	position: relative;
-	bottom: 3px;
+		position: relative;
+		bottom: 3px;
 	}
 }
