@@ -154,34 +154,3 @@ html {
 }
 
 
-/* study_apply_list */
-.study_apply_list {
-	border-collapse: collapse;
-	border: 1px solid #b2b2b2; /* 테두리 스타일 및 두께 설정 */
-	border-radius: 10px;
-	text-align: center;
-	width: 100%;
-}
-.study_apply_list th {
-	background: #dbdbdb;
-	font-size: 18px;
-	padding: 5px 0;
-}
-.study_apply_list th,
-.study_apply_list tr,
-.study_apply_list td {
-	border: 1px solid #b2b2b2;
-}
-.study_apply_list td {
-	padding: 10px 0;
-}
-.study_apply_list td button {
-	border-radius: 10px;
-	border: none;
-	background: #395b64;
-	color: #fff;
-	padding: 5px 20px;
-	text-shadow: none;
-	cursor: pointer;
-}
-

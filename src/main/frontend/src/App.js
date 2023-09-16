@@ -27,6 +27,7 @@ import InputSubSign from "./pages/userpage/InputSubSign";
 import FindID from "./pages/userpage/FindID";
 import SearchBar from "./SearchBar";
 import SearchResult from "./pages/studypage/SearchResult";
+import StudyApplyList from "./pages/studypage/StudyApplyList";
 
 
 function App() {
@@ -141,6 +142,12 @@ function App() {
                     />
                     <Route path="/" exact component={Home} />
                     <Route path="/search" component={SearchResult} />
+                    <Route
+                        path={"/StudyApplyList/:id"}
+                        element={
+                        <StudyApplyList/>
+                        }
+                        />
                 </Routes>
 
                 <Footer/>
