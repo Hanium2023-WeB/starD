@@ -1,6 +1,11 @@
 @import url("https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@800&family=Nanum+Pen+Script&family=Tektur&family=Yeon+Sung&display=swap");
 @import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
-
+@font-face {
+	font-family: 'Pretendard-Regular';
+	src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+	font-weight: 400;
+	font-style: normal;
+}
 body {
 	background-color: #f6f6f6;
 	display: flex;
@@ -10,6 +15,7 @@ body {
 	font-family: "Tektur", cursive;
 	font-family: "Yeon Sung", cursive;
 	font-family: "Nanum Myeongjo", serif;
+
 	min-height: 100vh;
 	margin: 0px;
 }
@@ -19,7 +25,8 @@ body {
 .subground {
 	/*background-color: #e7f6f2;*/
 	/*background-color: #0d0d2a;*/
-	background-image: url("./images/aurora_background.jpg");
+	/*background-image: url("./images/aurora_background.jpg");*/
+	background-image: url("./images/blue-galaxy-wallpaper.jpg");
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -28,7 +35,7 @@ body {
 	height: auto;
 	width: 96vw;
 	position: relative;
-	right: 20px;
+	right: 10px;
 }
 .LOGO{
 	display: flex;
@@ -39,12 +46,15 @@ body {
 	background-color: white;
 	box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 	overflow-x: hidden;
+
 }
 .App {
 	min-height: 100vh;
 	min-width: 100vw;
-	padding-left: 10px;
+	/*padding-left: 10px;*/
 	padding-right: 10px;
+	/*background-color: #a5c9ca;*/
+
 
 }
 
@@ -56,14 +66,15 @@ header {
 	padding: 10px;
 	width: 95vw;
 	margin: auto;
+
 }
 header > div {
 	display: flex;
 }
 header .head_text {
 	width: 50%;
-	font-size: 1.5em;
-	font-family: "Nanum Pen Script", cursive;
+	font-size: 13px;
+	font-family: 'Pretendard-Regular';
 	justify-content: center;
 	white-space: nowrap;
 	color: #395B64;
@@ -76,17 +87,27 @@ header .head_left {
 	width: 20%;
 	justify-content: start;
 	font-family: "Nanum Pen Script", cursive;
-	font-size: 35px;
 	font-weight: bold;
 	color: #395B64;
 	white-space: nowrap;
+}
+.Header_logo{
+	display: flex;
+	flex-direction: row;
+	font-size: 45px;
+	position: relative;
+	top: 10px;
+}
+.Header_logo_img{
+	position: relative;
+	width: 70px;
 }
 /*.main_wrap > header .head_left{*/
 /*	color: white;*/
 /*}*/
 header .head_right {
 	width: 20%;
-	font-family: "Nanum Pen Script", cursive;
+	font-family: 'Pretendard-Regular';
 	font-size: 1.5em;
 	justify-content: end;
 	white-space: nowrap;
@@ -134,12 +155,12 @@ nav {
 }
 .sidebar nav ul li {
 	padding: 20px;
-	font-size:30px;
+	font-size:20px;
 	cursor: pointer;
 }
 .headerbar nav ul li {
 	padding-left: 20px;
-	font-size:30px;
+	font-size:20px;
 }
 
 /* 검색바 */
@@ -171,6 +192,7 @@ nav {
 	background: #fff;
 	color: black;
 	border-radius: 3%;
+	font-family: 'Pretendard-Regular';
 }
 .searchbar {
 	display: flex;
@@ -219,17 +241,22 @@ input::placeholder{
 	bottom: 3.5px;
 }
 .dashboard{
+	width: 100%;
 	display: flex;
 	flex-direction: row;
-	justify-content: space-between;
+	/*justify-content: space-between;*/
 	height: 350px;
 	margin-top: 10px;
+	margin-left: 10px;
+	margin-bottom: 30px;
 }
 .dashboard_todo{
 	width: 38%;
 	font-size: 20px;
 	border: 1px solid lightpink;
 	padding: 10px;
+	margin-left: 60px;
+	font-family: 'Pretendard-Regular';
 }
 .dashboard_todo #today{
 	display: flex;
@@ -246,8 +273,10 @@ button#todo_more{
 	margin-left: 9vw;
 }
 .dashboard_detail{
-	width: 58%;
+	width: 52.6%;
 	border: 1px solid lightpink;
+	margin-left: 10px;
+	font-family: 'Pretendard-Regular';
 
 }
 /*로그인 안했을 때 태그 화면*/
@@ -279,6 +308,7 @@ button#todo_more{
 	justify-content: space-between;
 	width: 100%;
 	margin-top: 30px;
+
 }
 
 #tagbtn{
@@ -289,30 +319,66 @@ button#todo_more{
 	border: 1px solid #A5C9CA ;
 	border-radius: 10px;
 	box-shadow: 0px 10px 10px 0px rgba(165, 201, 202, 0.15);
+	font-family: 'Pretendard-Regular';
 }
 /* 푸터 */
 footer{
 	/* margin-left: 10px;
-  margin-right: 10px; */
+  	margin-right: 10px; */
 	/*background-color: #395b64;*/
 	background-color: #0d0d2a;
 	color: #E7F6F2;
 	font-size: 14px;
-	font-family: 'Nanum Myeongjo', serif;
+	/*font-family: 'Nanum Myeongjo', serif;*/
+	font-family: 'Pretendard-Regular';
 	padding-bottom: 10px;
 }
-
+.footer_info{
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+.info_wrap{
+	width: 86%;
+	justify-content: center;
+	margin: 0 auto;
+}
+.info_content{
+	display: flex;
+	justify-content: center;
+}
 .info_ul, .subfooter_info ul, .info_etc{
+	width: 80%;
 	margin-bottom: 35px;
 	display: flex;
 	justify-content: space-between;
 	padding-top: 50px;
-	padding-left: 80px;
+	/*padding-left: 80px;*/
 	padding-right: 80px;
 	padding-bottom: 10px;
 }
+.info_ul{
+	padding-left: 0px;
+	padding-right: 0px;
+
+}
+
+
+.subfooter_info{
+	margin-top: 30px;
+}
+.info_second_wrap{
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+}
+.info_second_content{
+	width: 80%;
+
+}
 
 .subfooter_info ul{
+	width: 80%;
 	padding-top: 10px;
 	margin-bottom: 0px;
 	justify-content: start;
@@ -357,8 +423,9 @@ footer li{
 
 footer hr{
 	color: #E7F6F2;
-	margin-left: 80px;
-	margin-right: 80px;
+	width: 80%;
+	/*margin-left: 80px;*/
+	/*margin-right: 80px;*/
 }
 
 footer p {
@@ -442,7 +509,9 @@ footer p {
 }
 @media (min-width: 650px) {
 	.App {
-		width: 640px;
+		/*width: 640px;*/
+		min-height: 100vh;
+		min-width: 100vw;
 	}
 	input {
 		width: 400px;
@@ -487,13 +556,25 @@ footer p {
 	footer .footer_info> *{
 		display: none;
 	}
+	footer .smallwidth_footer_info_wrap{
+		margin-left: 10%;
+		margin-top: 10px;
+
+	}
 	footer .smallwidth_footer_info > *{
 		display: flex;
+
 	}
 	footer .smallwidth_sub > *{
 		display: flex;
+		width: fit-content;
+		margin-left: 25%;
 	}
+	/*.smallwidth_footer_info{*/
+	/*	margin: auto 0;*/
+	/*}*/
 	footer .smallwidth_footer_info p{
+		width: 80%;
 		display: flex;
 		justify-content: space-between;
 		padding: 10px;

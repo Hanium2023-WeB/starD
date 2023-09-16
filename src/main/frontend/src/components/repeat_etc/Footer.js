@@ -45,6 +45,8 @@ const Footer = () => {
 		<div>
 			<footer>
 				<div className="footer_info">
+					<div className={"info_wrap"}>
+						<div className={"info_content"}>
 					<ul className="info_ul">
 						<div className="item">
 							<p className="project_name">STAR D</p>
@@ -84,8 +86,11 @@ const Footer = () => {
 							</li>
 						</div>
 					</ul>
+						</div>
 					<hr />
 					<div className="subfooter_info">
+						<div className={"info_second_wrap"}>
+						<div className={"info_second_content"}>
 						<ul>
 							<div className="item_first">
 								<li>STAR D</li>
@@ -107,8 +112,13 @@ const Footer = () => {
 							60
 						</div>
 					</div>
+					</div>
+					</div>
 				</div>
+				</div>
+				<div className={"smallwidth_footer_info_wrap"}>
 				<div className="smallwidth_footer_info">
+
 					<p id="1" onClick={handlertoggle}>
 						STAR D <img src={arrow} width="15px" />
 					</p>
@@ -131,6 +141,7 @@ const Footer = () => {
 					)}
 					<hr />
 				</div>
+				<div className={"smallwidth_sub_wrap"}>
 				<div className="smallwidth_sub">
 					<span>개인정보처리방침 이용약관</span>
 					<p id="3" onClick={handlertoggle3}>
@@ -151,8 +162,12 @@ const Footer = () => {
 					)}
 					<span></span>
 				</div>
+				</div>
+				</div>
 			</footer>
+
 		</div>
+
 	);
 };
 

@@ -4,16 +4,18 @@
 }
 .team_blog .page_title{
     font-size: 30px;
-    margin-bottom: 40px;
     text-align: center;
+    font-family: 'Pretendard-Regular';
 }
 .team_blog .img_wrapper{
     position: relative;
     padding-bottom: 10px;
     border-bottom: 1px solid #dbdbdb;
+    height: 100px;
 }
 .team_blog .img_wrapper img {
     width: 100%;
+
 }
 .team_blog .team_info{
     position: absolute;
@@ -24,13 +26,15 @@
 }
 .team_blog .team_info .study_title{
     font-size: 23px;
-    color:#fff;
+    color:#000;
     margin:0 0 15px;
+    font-family: 'Pretendard-Regular';
 }
 .team_blog .team_info .study_duration{
     font-size: 18px;
     color:#000;
     margin:0;
+    font-family: 'Pretendard-Regular';
 }
 
 .team_blog .gnb_bg{

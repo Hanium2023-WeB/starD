@@ -1,6 +1,6 @@
 import Header from "../../components/repeat_etc/Header";
 import React from "react";
-import BgImg from "../../images/bgimg.png";
+import BgImg from "../../images/blue-galaxy-wallpaper.jpg";
 import Check from "../../images/unchecked.png";
 import "../../css/study_css/TeamBlog.css";
 
@@ -11,7 +11,7 @@ const TeamBlog = () => {
             <div className="team_blog">
                 <h1 className="page_title">STUDY TEAM BLOG</h1>
                 <div className="img_wrapper">
-                    <img src={BgImg}/>
+                    {/*<img src={BgImg}/>*/}
                     <div className="team_info">
                         <h2 className="study_title">[백엔드]더 쉽고 빠른 지식/정보 콘텐츠 요약 플랫폼</h2>
                         <h3 className="study_duration">2023. 09. 15 ~ 2023. 10. 14   30일간의 우주여행</h3>

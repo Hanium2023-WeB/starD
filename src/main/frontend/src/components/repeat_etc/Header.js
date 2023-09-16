@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {Link} from "react-router-dom";
+import LOGO from "../../images/Logo.png"
 
 const Header = ({ showSideCenter }) => {
 	//헤더 잡아놓기
@@ -137,7 +138,7 @@ const Header = ({ showSideCenter }) => {
 
 	const sideleft = () => {
 		return (
-			<div className="headerbar">
+			<div className="headerbar" title={"홈으로 가기"}>
 				<nav>
 					<ul>
 						<li>
@@ -145,7 +146,11 @@ const Header = ({ showSideCenter }) => {
 								to={"/"}
 								style={{textDecoration: "none", color: "inherit"}}
 							>
+								<div className={"Header_logo"}>
 								STAR D
+									<div className={"Header_logo_img"}>
+								<img src={LOGO} width={"60px"}/></div>
+								</div>
 							</Link>
 						</li>
 					</ul>

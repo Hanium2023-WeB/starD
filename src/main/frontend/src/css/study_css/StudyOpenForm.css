@@ -10,6 +10,7 @@ html {
     justify-content: center;
     position: relative;
     bottom: 50px;
+    /*font-family: 'Pretendard-Regular';*/
 }
 .study_detail_container h1 {
     font-size: 27px;
@@ -87,6 +88,7 @@ html {
 .select_estate{
     display: inherit;
     margin-bottom: 23px;
+
 }
 
 .study_open_detail{

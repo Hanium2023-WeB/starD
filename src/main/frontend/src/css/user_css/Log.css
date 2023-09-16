@@ -34,9 +34,9 @@
 	position: relative;
 }
 .login_info p {
-	font-size: 2.2em;
+	font-size: 1.7em;
 	color: #395b64;
-	font-family: "Nanum Pen Script", cursive;
+	font-family: 'Pretendard-Regular';
 }
 .containers form{
 	position: relative;
@@ -96,8 +96,8 @@
 	width: 250px;
 	height: 40px;
 	border-radius: 10px;
-	font-family: "Yeon Sung", cursive;
-	font-size: 20px;
+	font-family: 'Pretendard-Regular';
+	font-size: 15px;
 	/*position: relative;*/
 	/*top: 10px;*/
 	border-style: none;
@@ -111,7 +111,9 @@
 	bottom: 10px;
 	margin-top: 10px;
 	margin-bottom: 10px;
-	font-size: 14px;
+	margin-left: 20px;
+	font-size: 13px;
+	font-family: 'Pretendard-Regular';
 }
 .signup_nicname, .signup_id{
 	display: flex;
@@ -148,5 +150,5 @@ p{
 	position: relative;
 	top:30px;
 	left: 65px;
-
+	font-family: 'Pretendard-Regular';
 }

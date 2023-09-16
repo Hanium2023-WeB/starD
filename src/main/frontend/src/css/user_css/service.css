@@ -20,6 +20,7 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    font-family: 'Pretendard-Regular';
 }
 .terms_list, .term_item {
     margin-top: 0px;
@@ -37,7 +38,7 @@
 }
 .terms_desc{
     margin-top: 15px;
-    margin-left: 80px;
+    margin-left: 35px;
     padding-right: 35px;
     font-size: 13px;
     line-height: 18px;
@@ -125,11 +126,12 @@ em {
     flex-direction: row;
 }
 .check_term_of_service > span > p{
-  margin-bottom: 0px;
+    margin-bottom: 0px;
     position: relative;
     top: 3px;
     cursor: pointer;
     width: 150px;
+    font-family: 'Pretendard-Regular';
 }
 #term{
     width: 150px;

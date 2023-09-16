@@ -6,8 +6,18 @@ const category = () => {
 	return (
 		<div className="category">
 			<div className="c_01">
+				<div id={"c_title"}>
+				<Link
+					to={"/"}
+					style={{
+						textDecoration: "none",
+						color: "inherit",
+					}}
+				>
 				HOME
-				<div class="sub_c">
+				</Link>
+				</div>
+				<div className="sub_c">
 					<nav>
 						<ul>
 							<Link
@@ -25,8 +35,18 @@ const category = () => {
 				</div>
 			</div>
 			<div className="c_02">
+				<div id={"c_title"}>
+				<Link
+					to={"/study"}
+					style={{
+						textDecoration: "none",
+						color: "inherit",
+					}}
+				>
 				STUDY
-				<div class="sub_c">
+				</Link>
+				</div>
+				<div className="sub_c">
 					<nav>
 						<ul>
 							<Link
@@ -61,8 +81,18 @@ const category = () => {
 				</div>
 			</div>
 			<div className="c_03">
+				<div id={"c_title"}>
+				<Link
+					to={"/mypage"}
+					style={{
+						textDecoration: "none",
+						color: "inherit",
+					}}
+				>
 				MY
-				<div class="sub_c">
+				</Link>
+				</div>
+				<div className="sub_c">
 					<nav>
 						<ul>
 							<li>내가 작성한 글</li>
@@ -72,8 +102,10 @@ const category = () => {
 				</div>
 			</div>
 			<div className="c_04">
+				<div id={"c_title"}>
 				SCRAP
-				<div class="sub_c">
+				</div>
+				<div className="sub_c">
 					<nav>
 						<ul>
 							<li>스크랩한 스터디</li>
