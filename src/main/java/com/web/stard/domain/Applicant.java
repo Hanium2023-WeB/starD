@@ -37,7 +37,7 @@ public class Applicant {        // 스터디 신청자
     private LocalDateTime applicationTime;
 
     @Column(name = "participation_state")
-    private boolean participationState;     // 참여 상태
+    private boolean participationState;     // 참여 상태 ( null : 개설자 선택 이전의 상태 / true : 수락 / false : 거절 )
 
     @Column(name = "apply_reason")
     private String applyReason;     // 지원 동기

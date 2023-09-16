@@ -9,18 +9,12 @@ import axios from "axios";
 const StudyApplyList = () => {
     const [applyList, setApplyList] = useState([]);
     const [MotiveToggle, setMotiveToggle] = useState(false);
+    const [openMotivationIndex, setOpenMotivationIndex] = useState(-1); // 각 신청자에 대한 상태를 추적하는 상태 추가
     const accessToken = localStorage.getItem('accessToken');
-    const [MotiveToggleIndex, setMotiveToggleIndex] = useState(null);
 
     let {id} = useParams();
 
     useEffect(() => {
-        // const ApplyStudy = localStorage.getItem("ApplyStudy");
-        // if (ApplyStudy && ApplyStudy !== "") {
-        //     const ParsedApplyStudy = JSON.parse(ApplyStudy);
-        //     console.log(ParsedApplyStudy);
-        //     setApplyList(ParsedApplyStudy);
-        // }
 
         // TODO 서버에서 지원동기 가져오기
         axios.get(`http://localhost:8080/api/v2/studies/${id}/select`, {
@@ -40,28 +34,83 @@ const StudyApplyList = () => {
 
     }, []);
 
-    // console.log("담아온ApplyStudy", applyList);
-    // //로컬스토리지에서 받아온 리스트에서 스터디의 아이디값과 같은 스터디의 멤버들만 보여주도록
-    // const filteredApplyList = applyList.filter(item => item.study.id === parseInt(id));
-    // console.log("나의 스터디에 신청한 사람들 조회리스트", filteredApplyList);
+    // const SeeMotivation = () => {
+    //     setMotiveToggle(true);
+    // }
+    //
+    // const onClose = () => {
+    //     setMotiveToggle(false);
+    // }
 
-    const SeeMotivation = (index) => {
-        setMotiveToggle(true);
-        setMotiveToggleIndex(index);
+    const toggleMotivation = (index) => {
+        if (openMotivationIndex === index) {
+            setOpenMotivationIndex(-1); // 이미 열린 모티베이션 모달이라면 닫습니다.
+        } else {
+            setOpenMotivationIndex(index); // 선택한 신청자의 모티베이션 모달을 엽니다.
+        }
+    };
 
-    }
-    const onClose = () => {
-        setMotiveToggle(false);
-        setMotiveToggleIndex(null);
+    const handleaccept = (memberId) => {
+        window.confirm(memberId + "을(를) 수락하시겠습니까?");
 
-    }
-    const handleaccept = () => {
-        alert("수락하시겠습니까?");
         //TODO db에서 받아오기 setApplyList로 상태 업데이트
+        axios.put(`http://localhost:8080/api/v2/studies/${id}/select`, {}, {
+            params: {
+                applicantId : memberId,
+                isSelect : true
+            },
+            withCredentials: true,
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
+        })
+            .then((res) => {
+                console.log("수락 전송 성공 : ", res.data);
+
+                if (res.data !== "SUCCESS"){
+                    window.confirm(memberId + "을(를) 수락 실패했습니다.");
+                    console.log("수락 실패");
+                } else {
+                    window.confirm(memberId + "을(를) 수락했습니다.");
+                }
+                window.location.reload();
+
+            })
+            .catch((error) => {
+                console.error("수락 실패:", error);
+            });
+
     }
-    const handlereturn = () => {
-        alert("거절하시겠습니까?");
+    const handlereturn = (memberId) => {
+        window.confirm(memberId + "을(를) 거절하시겠습니까?");
         //TODO db에서 받아오기 setApplyList로 상태 업데이트
+        axios.put(`http://localhost:8080/api/v2/studies/${id}/select`, {}, {
+            params: {
+                applicantId : memberId,
+                isSelect : false
+            },
+            withCredentials: true,
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
+        })
+            .then((res) => {
+                console.log("거절 전송 성공 : ", res.data);
+
+                if (res.data !== "SUCCESS"){
+                    window.confirm(memberId + "을(를) 거절 실패했습니다.");
+                    console.log("거절 실패");
+                } else {
+                    window.confirm(memberId + "을(를) 거절했습니다.");
+                }
+
+                window.location.reload();
+
+            })
+            .catch((error) => {
+                console.error("거절 실패:", error);
+            });
+
     }
     return (
         <div className={"ListWrap"}>
@@ -76,14 +125,18 @@ const StudyApplyList = () => {
                             <tr key={index}>
                                 <td>{item.member.nickname}</td>
                                 <td>
-                                    <button onClick={()=>SeeMotivation(index)}>보기</button>
-                                    {MotiveToggle && MotiveToggleIndex === index &&(
-                                        <Motive motive={item.applyReason} onClose={onClose}/>
+                                    {/*<button onClick={SeeMotivation}>보기</button>*/}
+                                    {/*{MotiveToggle && (*/}
+                                    {/*    <Motive motive={item.applyReason} onClose={onClose}/>*/}
+                                    {/*)}*/}
+                                    <button onClick={() => toggleMotivation(index)}>보기</button>
+                                    {openMotivationIndex === index && (
+                                        <Motive motive={item.applyReason} onClose={() => setOpenMotivationIndex(-1)} />
                                     )}
                                 </td>
                                 <td>
-                                    <span><button onClick={handleaccept}>수락</button></span>
-                                    <span><button onClick={handlereturn}>거절</button></span>
+                                    <span><button onClick={() => handleaccept(item.member.id)}>수락</button></span>
+                                    <span><button onClick={() => handlereturn(item.member.id)}>거절</button></span>
                                 </td>
                             </tr>
                         ))}

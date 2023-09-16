@@ -7,11 +7,13 @@ import com.web.stard.dto.StudyDto;
 import com.web.stard.service.StudyService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -23,11 +25,6 @@ public class StudyController {
     private final StudyService studyService;
 
 
-//    @GetMapping     // [R] 스터디 게시글 전체 조회
-//    public Page<ScrapStudySlide> getStudies(@RequestParam(value = "page", defaultValue = "1", required = false) int page) {
-//        return studyService.findAll(page);
-//    }
-
     @GetMapping("/all")     // [R] 스터디 게시글 전체 조회 ( 모집 중 / 모집 완료 순으로)
     public Page<Study> getAllStudies(@RequestParam(value = "page", defaultValue = "1", required = false) int page) {
         return studyService.findAllByOrderByRecruitStatus(page);
@@ -36,7 +33,6 @@ public class StudyController {
 
     @GetMapping("/{id}")    // [R] 스터디 게시글 세부 조회
     public Study getStudy(@PathVariable Long id){
-        System.out.println("세부 조회");
         return studyService.findById(id);
     }
 
@@ -130,29 +126,60 @@ public class StudyController {
         return studyService.updateStudy(id, studyDto, authentication);
     }
 
-    @PostMapping("/{id}/apply")       // [C] 스터디 지원 신청
-    public Study createApplicant(@PathVariable long id, @RequestParam String apply_reason) {
-        System.out.println("스터디 지원 : " + id + "지원 동기 : " + apply_reason );
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    @PostMapping("/{id}/apply")       // [C] 스터디 신청
+    public Study createApplicant(@PathVariable long id, @RequestParam String apply_reason, Authentication authentication) {
+        authentication = SecurityContextHolder.getContext().getAuthentication();
         return studyService.createApplicant(id, apply_reason, authentication);
     }
 
-    @GetMapping("/{id}/apply")       // [C] 스터디 지원 신청 확인 여부
-    public boolean isApplicant(@PathVariable long id) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    @GetMapping("/{id}/apply")       // [C] 로그인한 사용자의 스터디 신청 확인 여부
+    public boolean isApplicant(@PathVariable long id, Authentication authentication) {
+        authentication = SecurityContextHolder.getContext().getAuthentication();
         return studyService.isApplicant(id, authentication);
     }
 
-    @GetMapping("/{id}/apply-reason")       // [C] 스터디 지원 신청 확인 여부 및 applicant return
-    public Applicant findApplicant(@PathVariable long id) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    @GetMapping("/{id}/apply-reason")       // [C] 로그인한 사용자의 스터디 지원 신청 확인 여부 및 applicant return
+    public Applicant findApplicant(@PathVariable long id, Authentication authentication) {
+        authentication = SecurityContextHolder.getContext().getAuthentication();
         return studyService.findByMemberAndStudy(id, authentication);
     }
 
-    @PostMapping("/{id}/select")       // [C] 스터디 참여자 선택
-    public Study createParticipant(@PathVariable long id) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return studyService.createParticipant(id, authentication);
+    @PutMapping("/{id}/select")       // [U] 스터디 참여자 선택 ( 수락 / 거절 )
+    public ResponseEntity<String> selectParticipant(@PathVariable long id, @RequestParam String applicantId, @RequestParam boolean isSelect, Authentication authentication) {
+        authentication = SecurityContextHolder.getContext().getAuthentication();
+        try {
+            studyService.selectParticipant(id, applicantId, isSelect, authentication);
+            return new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<String>("NOT SUCCESS", HttpStatus.BAD_REQUEST);
+        }
+
+    }
+
+    @GetMapping("/{id}/select")       // [R] 스터디 참여자 리스트 Select
+    public ResponseEntity<Map<String, Object>> findParticipants(@PathVariable long id, Authentication authentication) {
+        authentication = SecurityContextHolder.getContext().getAuthentication();
+        Map<String, Object> result = new HashMap<>();
+        try{
+            result.put("data", studyService.getParticipants(id, authentication));
+            return ResponseEntity.ok().body(result);
+        }catch (Exception e) {
+            result.put("data", "스터디 개설자가 아닙니다.");
+            return ResponseEntity.badRequest().body(result);
+        }
+    }
+
+
+    @GetMapping("/{id}/recruiter")       // [R] 로그인한 사용자의 스터디 개설자 확인 여부
+    public boolean isRecruiter(@PathVariable long id, Authentication authentication) {
+        authentication = SecurityContextHolder.getContext().getAuthentication();
+        return studyService.isRecruiter(id, authentication);
+    }
+
+    @PostMapping("/{id}/open")       // [C] 스터디 개설
+    public Study openStudy(@PathVariable long id, Authentication authentication) {
+        authentication = SecurityContextHolder.getContext().getAuthentication();
+        return studyService.openStudy(id, authentication);
     }
 
 

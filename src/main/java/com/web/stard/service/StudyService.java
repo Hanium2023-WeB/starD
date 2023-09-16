@@ -16,6 +16,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -27,6 +28,7 @@ public class StudyService {
     private final MemberService memberService;
     private final ApplicantRepository applicantRepository;
     private final StudyMemberRepository studyMemberRepository;
+
 
     public Study findById(Long id) {
         Optional<Study> result = studyRepository.findById(id);
@@ -249,8 +251,6 @@ public class StudyService {
     @Transactional
     public Study createApplicant(long id, String apply_reason, Authentication authentication) {
 
-        // TODO 스터디 개설자는 자동으로 신청자 테이블에 저장?
-
         String userId = authentication.getName();
         Member member = memberService.find(userId);
 
@@ -260,7 +260,7 @@ public class StudyService {
                 .study(study)
                 .member(member)
                 .applyReason(apply_reason)
-                .participationState(false)
+//                .participationState(false)    // 처음 참여 상태는 null ( 참여만 한 상태 )
                 .build();
 
         applicantRepository.save(applicant);
@@ -308,7 +308,96 @@ public class StudyService {
         Member member = memberService.find(userId);
 
         if (applicantRepository.existsByMemberAndStudy(member, study))
-            return  applicantRepository.findByMemberAndStudy(member, study);
+            return applicantRepository.findByMemberAndStudy(member, study);
         return null;
     }
+
+    // 스터디 참여자 선택 ( 수락 / 거절 )
+    public void selectParticipant(long studyId, String applicantId, boolean isSelect, Authentication authentication) throws Exception {
+        if(isRecruiter(studyId, authentication)){   // 로그인한 사용자가 스터디 개설자라면 참여 상태 변경
+            Study study = findById(studyId);
+            Member member = memberService.find(applicantId);
+
+            Applicant applicant = applicantRepository.findByMemberAndStudy(member, study);
+            applicant.setParticipationState(isSelect);
+
+        } else {
+            throw new Exception("스터디 개설자가 아닙니다.");
+        }
+    }
+
+    // [R] 스터디 참여자 리스트 Select
+    public List<Applicant> getParticipants(long id, Authentication authentication) throws Exception {
+        System.out.println("스터디 참여자 리스트 서비스 진입 O" + id);
+        Study study = findById(id);
+
+        if(isRecruiter(id, authentication)){
+            return applicantRepository.findByStudy(study);
+        } else {
+            throw new Exception("스터디 개설자가 아닙니다.");
+        }
+    }
+
+    public boolean isRecruiter(long id, Authentication authentication) {
+
+        String userId = authentication.getName();
+        Study study = findById(id);
+
+        if (study.getRecruiter().getId().equals(userId))
+            return true;
+
+        return false;
+    }
+
+    // 스터디 참여 상태가 true인 사용자 Select
+    public List<Applicant> getStudyMember(long id, Authentication authentication) {
+        String userId = authentication.getName();
+        Study study = findById(id);
+        Member member = memberService.find(userId);
+
+        return applicantRepository.findByMemberAndStudyAndParticipationState(member, study, true);
+    }
+
+    public void createStudyMember(long id, Authentication authentication) {
+
+        List<Applicant> applicants = getStudyMember(id, authentication);
+
+        for (Applicant applicant: applicants) {
+
+            StudyMember studyMember = StudyMember.builder()
+                    .member(applicant.getMember())
+                    .study(applicant.getStudy())
+                    .replyAllow(true)
+                    .deleteAllow(true)
+                    .recruiterAllow(true).build();
+
+            studyMemberRepository.save(studyMember);
+        }
+    }
+
+    public Study openStudy(long id, Authentication authentication) {
+
+        createStudyMember(id, authentication);
+
+        Study study = findById(id);
+        String userId = authentication.getName();
+        Member member = memberService.find(userId);
+
+        // 로그인한 사용자 마지막으로 스터디 참여자로 add
+        StudyMember studyMember = StudyMember.builder()
+                .member(member)
+                .study(study)
+                .replyAllow(true)
+                .deleteAllow(true)
+                .recruiterAllow(true).build();
+
+        studyMemberRepository.save(studyMember);
+
+        study.setProgressStatus(ProgressStatus.valueOf("IN_PROGRESS"));
+        study.setRecruitStatus(RecruitStatus.valueOf("RECRUITMENT_COMPLETE"));
+
+        return study;
+
+    }
+
 }
