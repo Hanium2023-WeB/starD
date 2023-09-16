@@ -72,6 +72,9 @@ const StudyApplyList = () => {
             {/*))}*/}
         </table>
             </div>
+                <div className={"openStudy"}>
+                    <button id={"open-btn"}>스터디 열기</button>
+                </div>
             </div>
         </div>
     )
