@@ -1,5 +1,7 @@
 
 const Motive=({motive, onClose})=>{
+    console.log("지원 동기 : ", motive);
+    console.log("onClose : ", onClose);
 
     return(
         <div className={"background"}>

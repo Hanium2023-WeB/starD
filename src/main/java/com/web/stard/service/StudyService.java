@@ -328,8 +328,11 @@ public class StudyService {
 
     // [R] 스터디 참여자 리스트 Select
     public List<Applicant> getParticipants(long id, Authentication authentication) throws Exception {
+        System.out.println("스터디 참여자 리스트 서비스 진입 O" + id);
+        Study study = findById(id);
+
         if(isRecruiter(id, authentication)){
-            return applicantRepository.findByStudy(findById(id));
+            return applicantRepository.findByStudy(study);
         } else {
             throw new Exception("스터디 개설자가 아닙니다.");
         }
@@ -391,6 +394,7 @@ public class StudyService {
         studyMemberRepository.save(studyMember);
 
         study.setProgressStatus(ProgressStatus.valueOf("IN_PROGRESS"));
+        study.setRecruitStatus(RecruitStatus.valueOf("RECRUITMENT_COMPLETE"));
 
         return study;
 
