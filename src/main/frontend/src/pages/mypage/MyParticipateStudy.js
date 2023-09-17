@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import {Link, useLocation} from "react-router-dom";
+import {Link, useLocation, useNavigate} from "react-router-dom";
 import Category from "../../components/repeat_etc/Category.js";
 import App from "../../App.js";
 import "../../css/study_css/MyParticipateStudy.css";
@@ -52,6 +52,15 @@ const MyParticipateStudy = ({ sideheader }) => {
 	const [page, setPage] = useState(1);
 	const [count, setCount] = useState(0);
 	const [itemsPerPage, setItemsPerPage] = useState(9);
+	const navigate = useNavigate();
+
+	//TODO 모집완료 시 신청한 스터디멤버의 이름이 모인 배열
+	useEffect(() => {
+		if (location.state && location.state.acceptedMembers != null) {
+			const ll = location.state.acceptedMembers;
+			console.log(ll);
+		}
+	}, []);
 
 	function calculateDateDifference(startDate, endDate) {
 		const start = new Date(startDate);
@@ -137,6 +146,15 @@ const MyParticipateStudy = ({ sideheader }) => {
 
 	}, [accessToken]);
 
+	const goNextTeamBlog=(item)=>{
+		console.log("팀블로그에 넘겨주는 item:", item);
+		navigate(`/${item.study.id}/teamblog`, {
+			state:{
+				MyParticipate: item
+			}
+		});
+	}
+
 	const mypartistudylist = () => {
 		return (
 			<div className="study_list">
@@ -165,13 +183,14 @@ const MyParticipateStudy = ({ sideheader }) => {
 								</div>
 							</div>
 						</div>
-						<Link
-							to={`/studydetail/${d.study.id}`}
-							style={{
-								textDecoration: "none",
-								color: "inherit",
-							}}
-						>
+						{/*<Link*/}
+						{/*	to={`/${d.study.id}/teamblog/`}*/}
+						{/*	style={{*/}
+						{/*		textDecoration: "none",*/}
+						{/*		color: "inherit",*/}
+						{/*	}}*/}
+						{/*>*/}
+						<div className={"contnet"} onClick={()=>goNextTeamBlog(d)}>
 							<div className="list_deadline">
 								마감일 | {d.study.recruitmentDeadline}
 							</div>
@@ -180,7 +199,8 @@ const MyParticipateStudy = ({ sideheader }) => {
 							<div className="list_onoff">{d.study.onOff}</div>
 							<div className="stroke"></div>
 							<div className="list_founder">{d.study.recruiter.nickname}</div>
-						</Link>
+						</div>
+						{/*</Link>*/}
 					</div>
 				))}
 
