@@ -142,7 +142,7 @@ function App() {
                         }
                     />
                     <Route
-                        path="/teamblog"
+                        path="/:id/teamblog"
                         element={
                             <TeamBlog/>
                         }
