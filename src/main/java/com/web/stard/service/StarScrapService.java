@@ -121,6 +121,17 @@ public class StarScrapService {
         return allStarList.size();
     }
 
+    /* study 공감 여부 */
+    public Boolean getStudyStar(Long id, Authentication authentication) {
+        Study study = studyService.findById(id);
+        Member member = memberService.find(authentication.getName());
+
+        StarScrap star = existsStudyStar(member, study);
+        if (star != null) {
+            return true;
+        } return false;
+    }
+
     /* ScrapStudySlide 공감 추가 */
     public StarScrap addStudyStar(Long id, Authentication authentication) {
         Study study = studyService.findById(id);
@@ -182,9 +193,17 @@ public class StarScrapService {
     }
 
     /* 스크랩한 Post(community) List 조회 */
-    public List<StarScrap> allPostScrapList(Authentication authentication) {
+    public List<Study> allPostScrapList(Authentication authentication) {
         Member member = memberService.find(authentication.getName());
-        return starScrapRepository.findAllByMemberAndTypeAndTableType(member, ActType.SCRAP, PostType.COMM);
+        List<StarScrap> scraps = starScrapRepository.findAllByMemberAndTypeAndTableType(member, ActType.SCRAP, PostType.COMM);
+        List<Study> scrapList = null;
+        if (scraps.size() > 0) {
+            scrapList = new ArrayList<>();
+        }
+        for (StarScrap s : scraps) {
+            scrapList.add(s.getStudy());
+        }
+        return scrapList;
     }
 
     /* 해당 Post(community)의 스크랩 개수 */
@@ -249,9 +268,17 @@ public class StarScrapService {
     }
 
     /* 스크랩한 ScrapStudySlide List 조회 */
-    public List<StarScrap> allStudyScrapList(Authentication authentication) {
+    public List<Study> allStudyScrapList(Authentication authentication) {
         Member member = memberService.find(authentication.getName());
-        return starScrapRepository.findAllByMemberAndTypeAndTableType(member, ActType.SCRAP, PostType.STUDY);
+        List<StarScrap> scraps = starScrapRepository.findAllByMemberAndTypeAndTableType(member, ActType.SCRAP, PostType.STUDY);
+        List<Study> scrapList = null;
+        if (scraps.size() > 0) {
+            scrapList = new ArrayList<>();
+        }
+        for (StarScrap s : scraps) {
+            scrapList.add(s.getStudy());
+        }
+        return scrapList;
     }
 
     /* 해당 Study의 스크랩 개수 */
@@ -261,6 +288,17 @@ public class StarScrapService {
         List<StarScrap> allScrapList = starScrapRepository.findAllByStudyAndTypeAndTableType(study, ActType.SCRAP, PostType.STUDY);
 
         return allScrapList.size();
+    }
+
+    /* study 스크랩 여부 */
+    public Boolean getStudyScrap(Long id, Authentication authentication) {
+        Study study = studyService.findById(id);
+        Member member = memberService.find(authentication.getName());
+
+        StarScrap scrap = existsStudyScrap(member, study);
+        if (scrap != null) {
+            return true;
+        } return false;
     }
 
     /* ScrapStudySlide Scrap 추가 */
@@ -336,5 +374,21 @@ public class StarScrapService {
         }
 
         return scraps;
+    }
+
+    public List<Boolean> getStudyPageStarByScrap(Authentication authentication) {
+        List<Study> studies = allStudyScrapList(authentication);
+        Member member = memberService.find(authentication.getName());
+        List<Boolean> stars = new ArrayList<>();
+
+        for (Study study : studies) {
+            if (existsStudyStar(member, study) == null) {
+                stars.add(false);
+            } else {
+                stars.add(true);
+            }
+        }
+
+        return stars;
     }
 }
