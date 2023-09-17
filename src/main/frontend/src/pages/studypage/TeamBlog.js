@@ -1,10 +1,37 @@
 import Header from "../../components/repeat_etc/Header";
-import React from "react";
+import React, {useEffect, useState} from "react";
 import BgImg from "../../images/blue-galaxy-wallpaper.jpg";
 import Check from "../../images/unchecked.png";
 import "../../css/study_css/TeamBlog.css";
+import axios from "axios";
+import {useParams} from "react-router-dom";
 
 const TeamBlog = () => {
+
+    const accessToken = localStorage.getItem('accessToken');
+    const [ApplyMemberList, setApplyMemberList] = useState([]); //참여멤버
+    const {id} = useParams();
+    console.log("팀 블로그 진입 : ", id);
+
+    useEffect(() => {
+        // TODO 서버에서 참여멤버 가져오기
+        axios.get(`http://localhost:8080/api/v2/studies/${id}/study-member`, {
+            withCredentials: true,
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
+        })
+            .then((res) => {
+                console.log("모집완료된 참여 멤버 전송 성공 : ", res.data);
+
+                setApplyMemberList(res.data);
+            })
+            .catch((error) => {
+                console.error("모집완료된 참여 멤버 가져오기 실패:", error);
+            });
+
+    }, [accessToken]);
+
     return (
         <div style={{}}>
             <Header showSideCenter={true}/>

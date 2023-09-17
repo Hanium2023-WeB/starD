@@ -31,13 +31,13 @@ const HomeDashBoard = () => {
     const [itemsPerPage, setItemsPerPage] = useState(9);
     const navigate = useNavigate();
 
-    //TODO 모집완료 시 신청한 스터디멤버의 이름이 모인 배열
-    useEffect(() => {
-        if (location.state && location.state.acceptedMembers != null) {
-            const ll = location.state.acceptedMembers;
-            console.log(ll);
-        }
-    }, []);
+    // //TODO 모집완료 시 신청한 스터디멤버의 이름이 모인 배열
+    // useEffect(() => {
+    //     if (location.state && location.state.acceptedMembers != null) {
+    //         const ll = location.state.acceptedMembers;
+    //         console.log(ll);
+    //     }
+    // }, []);
 
     function calculateDateDifference(startDate, endDate) {
         const start = new Date(startDate);
@@ -98,7 +98,7 @@ const HomeDashBoard = () => {
     //TODO 모집완료 시 참여내역 불러오기
 
     useEffect(() => {
-        // TODO 서버에서 참여스터디와 참여멤버 가져오기
+        // TODO 서버에서 참여스터디 가져오기
         axios.get("http://localhost:8080/user/mypage/studying", {
             withCredentials: true,
             headers: {
@@ -106,7 +106,7 @@ const HomeDashBoard = () => {
             }
         })
             .then((res) => {
-                console.log("모집완료된 스터디, 참여멤버 전송 성공 : ", res.data);
+                console.log("모집완료된 스터디 전송 성공 : ", res.data);
                 setStudies(res.data.content);
 
                 // 페이지 정보를 업데이트합니다.
@@ -118,7 +118,7 @@ const HomeDashBoard = () => {
 
             })
             .catch((error) => {
-                console.error("모집완료된 스터디, 참여멤버  가져오기 실패:", error);
+                console.error("모집완료된 스터디 가져오기 실패:", error);
             });
 
     }, [accessToken]);

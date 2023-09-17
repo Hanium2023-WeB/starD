@@ -405,4 +405,12 @@ public class StudyService {
 
     }
 
+    public List<StudyMember> findStudyMember(long id, Authentication authentication) throws Exception {
+        Study study = findById(id);
+        return studyMemberRepository.findByStudy(study);
+    }
+
+
+
+
 }
