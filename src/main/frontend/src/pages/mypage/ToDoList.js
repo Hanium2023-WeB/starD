@@ -24,9 +24,18 @@ const ToDoList = ({ sideheader }) => {
 
 
   useEffect(() => {
-    const study = localStorage.getItem('studies');
-    setStudy(study);
-    console.log("참여하는 스터디", study);
+    const ParticipatedStudy = localStorage.getItem('MyParticipatedStudy');  //참여중인 스터디
+    const parsedParticipatedStudy = JSON.parse(ParticipatedStudy);
+    const StudyIdANDMember = localStorage.getItem("ParticipateState");
+    const parsedStudyIdAndMember = JSON.parse(StudyIdANDMember);
+
+    // const member = localStorage.getItem("acceptedMembers"); //모집 후 최종 멤버들
+    // const StudyId = localStorage.getItem("ParticipatedStudyId");
+
+    setStudy(parsedParticipatedStudy);
+    console.log("참여하는 스터디", parsedParticipatedStudy);
+    // console.log("참여멤버", member);
+    console.log("스터디별 참여 멤버들", parsedStudyIdAndMember);
   }, []);
 
   const onInsertToggle = () => {

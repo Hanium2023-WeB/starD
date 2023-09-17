@@ -58,7 +58,6 @@ const MyApplyStudy = ({sideheader}) => {
             .then((res) => {
                 console.log("전송 성공 : ", res.data);
                 setStudies(res.data.content);
-                //Todo 신청자 조회할 시 사용한 로컬스토리지 내가 지원한 스터디 데이터
                 localStorage.setItem("ApplyStudy",JSON.stringify(res.data.content));
 
                 handlePageChange({

@@ -128,6 +128,7 @@ const StudyApplyList = () => {
 
     useEffect(() => {
         console.log("수락한 멤버", acceptedMembers);
+        // localStorage.setItem("acceptedMembers", acceptedMembers);
     }, [acceptedMembers]);
 
     const handlereturn = (memberId, index) => {
@@ -211,8 +212,12 @@ const StudyApplyList = () => {
                         console.log("모집 완료 실패");
                     } else {
                         alert("모집 완료. 참여내역으로 이동합니다.");
+                        console.log("ㄴㅇㄹㄴㅇ:", acceptedMembers);
                         navigate(`/myparticipatestudy`, {
-                            state: {acceptedMembers}
+                            state: {
+                                "acceptedMembers":acceptedMembers,
+                                "studyId":id,
+                             }
                         })
                     }
                 })

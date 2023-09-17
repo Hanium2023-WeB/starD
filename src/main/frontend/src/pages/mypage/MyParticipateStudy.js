@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import {Link, useLocation} from "react-router-dom";
+import {Link, useLocation, useNavigate} from "react-router-dom";
 import Category from "../../components/repeat_etc/Category.js";
 import App from "../../App.js";
 import "../../css/study_css/MyParticipateStudy.css";
@@ -52,6 +52,38 @@ const MyParticipateStudy = ({ sideheader }) => {
 	const [page, setPage] = useState(1);
 	const [count, setCount] = useState(0);
 	const [itemsPerPage, setItemsPerPage] = useState(9);
+	const navigate = useNavigate();
+
+	//TODO 스터디 아이디 별 최종 모집 멤버들 상태
+	const [ParticipateState, setParticipatedState] = useState({});
+
+	//TODO 스터디 아이디 별 최종 모집 멤버들 상태값 로컬스토리지에 저장 -> ToDoList에서 get할 예정
+	useEffect(() => {
+		if (location.state && location.state.acceptedMembers != null) {
+			const Accepted_Members = location.state.acceptedMembers;
+			console.log("모집후 최종 멤버들:", Accepted_Members);
+			setParticipatedState(prevState => {
+				const StudyId = location.state.studyId;
+				// 이전 상태 복제
+				const newState = {...prevState};
+
+				// 스터디 아이디를 키로 사용하여 해당 스터디의 멤버 배열을 저장
+				newState[StudyId] = Accepted_Members;
+
+				// 로컬 스토리지에 업데이트된 상태 저장
+				localStorage.setItem("ParticipateState", JSON.stringify(newState));
+
+				return newState;
+			});
+		}
+		// 	localStorage.setItem("acceptedMembers", Accepted_Members);
+		// }
+		// if (location.state && location.state.studyId != null) {
+		// 	const Study_Id = location.state.studyId;
+		// 	console.log("멤버들이 속한 스터디 아이디:",Study_Id);
+		// 	localStorage.setItem("ParticipatedStudyId", Study_Id);
+		// }
+	}, []);
 
 	function calculateDateDifference(startDate, endDate) {
 		const start = new Date(startDate);
@@ -122,7 +154,8 @@ const MyParticipateStudy = ({ sideheader }) => {
 			.then((res) => {
 				console.log("모집완료된 스터디, 참여멤버 전송 성공 : ", res.data);
 				setStudies(res.data.content);
-
+				//Todo 신청자 조회할 시 사용한 로컬스토리지 내가 참여하는 스터디 데이터 -> ToDoList.js에서 get함
+				localStorage.setItem("MyParticipatedStudy", JSON.stringify(res.data.content));
 				// 페이지 정보를 업데이트합니다.
 				setItemsPerPage(res.data.pageable.pageSize);
 				setCount(res.data.totalElements);
@@ -136,6 +169,15 @@ const MyParticipateStudy = ({ sideheader }) => {
 			});
 
 	}, [accessToken]);
+
+	const goNextTeamBlog=(item)=>{
+		console.log("팀블로그에 넘겨주는 item:", item);
+		navigate(`/${item.study.id}/teamblog`, {
+			state:{
+				MyParticipate: item
+			}
+		});
+	}
 
 	const mypartistudylist = () => {
 		return (
@@ -165,13 +207,14 @@ const MyParticipateStudy = ({ sideheader }) => {
 								</div>
 							</div>
 						</div>
-						<Link
-							to={`/studydetail/${d.study.id}`}
-							style={{
-								textDecoration: "none",
-								color: "inherit",
-							}}
-						>
+						{/*<Link*/}
+						{/*	to={`/${d.study.id}/teamblog/`}*/}
+						{/*	style={{*/}
+						{/*		textDecoration: "none",*/}
+						{/*		color: "inherit",*/}
+						{/*	}}*/}
+						{/*>*/}
+						<div className={"contnet"} onClick={()=>goNextTeamBlog(d)}>
 							<div className="list_deadline">
 								마감일 | {d.study.recruitmentDeadline}
 							</div>
@@ -180,7 +223,8 @@ const MyParticipateStudy = ({ sideheader }) => {
 							<div className="list_onoff">{d.study.onOff}</div>
 							<div className="stroke"></div>
 							<div className="list_founder">{d.study.recruiter.nickname}</div>
-						</Link>
+						</div>
+						{/*</Link>*/}
 					</div>
 				))}
 
