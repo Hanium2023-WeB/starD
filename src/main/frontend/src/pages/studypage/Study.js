@@ -20,6 +20,11 @@ const Study = () => {
     const [scrapStates, setScrapStates] = useState([]);
     const [likeStates, setLikeStates] = useState([]);
 
+    // 각 스터디 스크랩, 공감 상태 저장
+    // (위에 scrapStates, likeStates 사용하면 의존성 배열 때문에 useEffect 무한 반복,,)
+    const [scrapTwoStates, setScrapTwoStates] = useState([]);
+    const [likeTwoStates, setLikeTwoStates] = useState([]);
+
     const [showStudyInsert, setShowStudyInsert] = useState(false);
 
     // 각 스터디 리스트 항목의 스크랩 상태를 저장하는 배열
@@ -231,6 +236,51 @@ const Study = () => {
                 // 페이지 정보를 업데이트합니다.
                 setItemsPerPage(res.data.pageable.pageSize);
                 setCount(res.data.totalElements);
+
+                if (accessToken && isLoggedInUserId) {
+                    return axios.get("http://localhost:8080/study/stars", {
+                        params: {
+                            page: page,
+                        },
+                        withCredentials: true,
+                        headers: {
+                            'Authorization': `Bearer ${accessToken}`
+                        }
+                    });
+                } else {
+                    Promise.resolve(null);
+                }
+            })
+            .then((response) => {
+                setLikeTwoStates(response.data);
+
+                if (accessToken && isLoggedInUserId) {
+                    return axios.get("http://localhost:8080/study/scraps", {
+                        params: {
+                            page: page,
+                        },
+                        withCredentials: true,
+                        headers: {
+                            'Authorization': `Bearer ${accessToken}`
+                        }
+                    });
+                } else {
+                    Promise.resolve(null);
+                }
+            })
+            .then((response) => {
+                setScrapTwoStates(response.data);
+
+                const studyList = studies;
+
+                const updateStudies = studyList.map((study, index) => {
+                    study.like = likeStates[index];
+                    study.scrap = scrapStates[index];
+
+                    return study;
+                });
+
+                setStudies(updateStudies);
             })
             .catch((error) => {
                 console.error("데이터 가져오기 실패:", error);
