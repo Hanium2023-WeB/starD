@@ -193,7 +193,7 @@ const Mypage = ({ sideheader }) => {
                   </ul>
                 ) : (
                   <div className="empty_today_todo">
-                    <span>할 일이 없습니다. 할 일을 입력해주세요.</span>
+                    <span>일정이 없습니다. 일정을 입력해주세요.</span>
                   </div>
                 )}
               </div>
