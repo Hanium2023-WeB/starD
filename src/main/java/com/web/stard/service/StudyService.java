@@ -158,6 +158,19 @@ public class StudyService {
         return studies;
     }
 
+    public Page<StudyMember> findStudying(Authentication authentication, int page) {
+        System.out.println("findStudying 진입 O ");
+        String userId = authentication.getName();
+        Member member = memberService.find(userId);
+
+        Sort sort = Sort.by(new Sort.Order(Sort.Direction.DESC, "id"));
+        Pageable pageable = PageRequest.of(page - 1, 9, sort);
+
+        Page<StudyMember> studies = studyMemberRepository.findByMember(member, pageable);
+        System.out.println(studies.getTotalElements());
+        return studies;
+    }
+
     @Transactional
     public void deleteStudy(long id, Authentication authentication) {
 
@@ -260,25 +273,10 @@ public class StudyService {
                 .study(study)
                 .member(member)
                 .applyReason(apply_reason)
-//                .participationState(false)    // 처음 참여 상태는 null ( 참여만 한 상태 )
+                .participationState(null)    // 처음 참여 상태는 null ( 참여만 한 상태 )
                 .build();
 
         applicantRepository.save(applicant);
-
-        return null;
-    }
-
-    @Transactional
-    public Study createParticipant(long id, Authentication authentication) {
-        // TODO 스터디 참여자 생성 코드 작성
-        String userId = authentication.getName();
-        Member member = memberService.find(userId);
-
-        Study study = findById(id);
-
-        // TODO Applicant의 참여 상태를 true로 변경
-        // TODO Study_Member 테이블에 저장
-        // TODO 스터디 개설자 같은 경우 study_membmer 테이블에 자동 저장?
 
         return null;
     }
@@ -313,6 +311,7 @@ public class StudyService {
     }
 
     // 스터디 참여자 선택 ( 수락 / 거절 )
+    @Transactional
     public void selectParticipant(long studyId, String applicantId, boolean isSelect, Authentication authentication) throws Exception {
         if(isRecruiter(studyId, authentication)){   // 로그인한 사용자가 스터디 개설자라면 참여 상태 변경
             Study study = findById(studyId);
@@ -351,18 +350,16 @@ public class StudyService {
 
     // 스터디 참여 상태가 true인 사용자 Select
     public List<Applicant> getStudyMember(long id, Authentication authentication) {
-        String userId = authentication.getName();
         Study study = findById(id);
-        Member member = memberService.find(userId);
-
-        return applicantRepository.findByMemberAndStudyAndParticipationState(member, study, true);
+        return applicantRepository.findByStudyAndParticipationState(study, true);
     }
 
+    @Transactional
     public void createStudyMember(long id, Authentication authentication) {
-
         List<Applicant> applicants = getStudyMember(id, authentication);
 
         for (Applicant applicant: applicants) {
+            System.out.println(applicant.getMember() + " " + applicant.getStudy());
 
             StudyMember studyMember = StudyMember.builder()
                     .member(applicant.getMember())
@@ -375,28 +372,36 @@ public class StudyService {
         }
     }
 
-    public Study openStudy(long id, Authentication authentication) {
+    @Transactional
+    public void openStudy(long id, Authentication authentication) throws Exception {
 
-        createStudyMember(id, authentication);
+        try {
+            Study study = findById(id);
+            String userId = authentication.getName();
+            Member member = memberService.find(userId);
+            System.out.println(study.getRecruiter().getId());
+            System.out.println(userId);
 
-        Study study = findById(id);
-        String userId = authentication.getName();
-        Member member = memberService.find(userId);
+            if (study.getRecruiter().getId().equals(userId)) {
+                createStudyMember(id, authentication);
 
-        // 로그인한 사용자 마지막으로 스터디 참여자로 add
-        StudyMember studyMember = StudyMember.builder()
-                .member(member)
-                .study(study)
-                .replyAllow(true)
-                .deleteAllow(true)
-                .recruiterAllow(true).build();
+                // 로그인한 사용자 마지막으로 스터디 참여자로 add
+                StudyMember studyMember = StudyMember.builder()
+                        .member(member)
+                        .study(study)
+                        .replyAllow(true)
+                        .deleteAllow(true)
+                        .recruiterAllow(true).build();
 
-        studyMemberRepository.save(studyMember);
+                studyMemberRepository.save(studyMember);
 
-        study.setProgressStatus(ProgressStatus.valueOf("IN_PROGRESS"));
-        study.setRecruitStatus(RecruitStatus.valueOf("RECRUITMENT_COMPLETE"));
+                study.setProgressStatus(ProgressStatus.valueOf("IN_PROGRESS"));
+                study.setRecruitStatus(RecruitStatus.valueOf("RECRUITMENT_COMPLETE"));
+            }
 
-        return study;
+        } catch (Exception e) {
+            throw new Exception("스터디 열기 실패");
+        }
 
     }
 

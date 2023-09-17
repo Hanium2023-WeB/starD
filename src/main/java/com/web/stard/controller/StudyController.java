@@ -177,9 +177,16 @@ public class StudyController {
     }
 
     @PostMapping("/{id}/open")       // [C] 스터디 개설
-    public Study openStudy(@PathVariable long id, Authentication authentication) {
+    public ResponseEntity<String> openStudy(@PathVariable long id, Authentication authentication) {
+        System.out.println("스터디 오픈 컨트롤러 진입 O ");
         authentication = SecurityContextHolder.getContext().getAuthentication();
-        return studyService.openStudy(id, authentication);
+
+        try {
+            studyService.openStudy(id, authentication);
+            return new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<String>("NOT SUCCESS", HttpStatus.BAD_REQUEST);
+        }
     }
 
 
