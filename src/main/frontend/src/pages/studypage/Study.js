@@ -220,6 +220,7 @@ const Study = () => {
     const [page, setPage] = useState(1);
     const [count, setCount] = useState(0);
     const [itemsPerPage, setItemsPerPage] = useState(9);
+
     const handlePageChange = ({page, itemsPerPage, totalItemsCount}) => {
         setPage(page);
 
@@ -230,12 +231,23 @@ const Study = () => {
             },
         });
 
-        // 데이터를 받아온 후 스터디 리스트를 업데이트합니다.
-        setStudies(result.data.content);
+        // // 데이터를 받아온 후 스터디 리스트를 업데이트합니다.
+        // setStudies(result.data.content);
+        //
+        // // 페이지 정보를 업데이트합니다.
+        // setItemsPerPage(result.data.pageable.pageSize);
+        // setCount(result.data.totalElements);
 
-        // 페이지 정보를 업데이트합니다.
-        setItemsPerPage(result.data.pageable.pageSize);
-        setCount(result.data.totalElements);
+        // 데이터를 받아온 후 스터디 리스트를 업데이트합니다.
+        result.then((response) => {
+            setStudies(response.data.content);
+            // 페이지 정보를 업데이트합니다.
+            setItemsPerPage(response.data.pageable.pageSize);
+            setCount(response.data.totalElements);
+            // 여기서 다음 작업을 수행할 수 있습니다.
+        }).catch((error) => {
+            console.error("데이터 가져오기 실패:", error);
+        });
 
         if (accessToken && isLoggedInUserId) {
             const res_like = axios.get("http://localhost:8080/study/stars", {
@@ -273,8 +285,8 @@ const Study = () => {
             setStudies(updateStudies);
         }
 
-        setItemsPerPage(itemsPerPage); //한페이지 당 아이템 개수
-        setCount(totalItemsCount); //전체 아이템 개수
+        // setItemsPerPage(itemsPerPage); //한페이지 당 아이템 개수
+        // setCount(totalItemsCount); //전체 아이템 개수
     };
 
 
@@ -283,24 +295,16 @@ const Study = () => {
         // 여기서 백엔드에게 데이터 요청
         axios.get("http://localhost:8080/api/v2/studies/all")
             .then((res) => {
-                // console.log("전송 성공");
-                // console.log(res.data);
-                // 데이터를 받아오면 전체 아이템 개수를 Paging.js에게 Props으로 넘길 예정,
-                // 서버에서 받아온 스터디 리스트를 setStudies를 통해 업데이트
+                // console.log("전체 리스트 값 가져오기 전송 성공 : ", res.data.content);
                 const studyList = res.data.content;
 
                 const updateStudies = res.data.content.map((study, index) => {
                     study.like = likeStates[index];
                     study.scrap = scrapStates[index];
-
                     return study;
                 });
 
                 setStudies(updateStudies);
-
-//                localStorage.setItem("studies", JSON.stringify(studies));
-//                console.log(updateStudies);
-
                 // 서버에서 받아온 페이지 정보를 setPageInfo를 통해 업데이트합니다.
                 handlePageChange({
                     itemsPerPage: res.data.pageable.pageSize, // 페이지 당 아이템 수
