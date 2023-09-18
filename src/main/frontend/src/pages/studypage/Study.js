@@ -245,45 +245,45 @@ const Study = () => {
             setItemsPerPage(response.data.pageable.pageSize);
             setCount(response.data.totalElements);
             // 여기서 다음 작업을 수행할 수 있습니다.
+
+            if (accessToken && isLoggedInUserId) {
+                const res_like = axios.get("http://localhost:8080/study/stars", {
+                    params: {
+                        page: page,
+                    },
+                    withCredentials: true,
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`
+                    }
+                });
+
+                const res_scrap = axios.get("http://localhost:8080/study/scraps", {
+                    params: {
+                        page: page,
+                    },
+                    withCredentials: true,
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`
+                    }
+                });
+
+                setLikeTwoStates(res_like.data);
+                setScrapTwoStates(res_scrap.data);
+
+                const studyList = response.data.content;
+
+                const updateStudies = studyList.map((study, index) => {
+                    study.like = likeStates[index];
+                    study.scrap = scrapStates[index];
+
+                    return study;
+                });
+
+                setStudies(updateStudies);
+            }
         }).catch((error) => {
             console.error("데이터 가져오기 실패:", error);
         });
-
-        if (accessToken && isLoggedInUserId) {
-            const res_like = axios.get("http://localhost:8080/study/stars", {
-                params: {
-                    page: page,
-                },
-                withCredentials: true,
-                headers: {
-                    'Authorization': `Bearer ${accessToken}`
-                }
-            });
-
-            const res_scrap = axios.get("http://localhost:8080/study/scraps", {
-                params: {
-                    page: page,
-                },
-                withCredentials: true,
-                headers: {
-                    'Authorization': `Bearer ${accessToken}`
-                }
-            });
-
-            setLikeTwoStates(res_like.data);
-            setScrapTwoStates(res_scrap.data);
-
-            const studyList = result.data.content;
-
-            const updateStudies = studyList.map((study, index) => {
-                study.like = likeStates[index];
-                study.scrap = scrapStates[index];
-
-                return study;
-            });
-
-            setStudies(updateStudies);
-        }
 
         // setItemsPerPage(itemsPerPage); //한페이지 당 아이템 개수
         // setCount(totalItemsCount); //전체 아이템 개수

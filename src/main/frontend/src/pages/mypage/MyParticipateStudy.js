@@ -234,49 +234,53 @@ const MyParticipateStudy = ({ sideheader }) => {
 			}
 		});
 
-        // 데이터를 받아온 후 스터디 리스트를 업데이트합니다.
-        setStudies(result.data.content);
+        result.then((response) => {
+            setStudies(response.data.content);
 
-        // 페이지 정보를 업데이트합니다.
-        setItemsPerPage(result.data.pageable.pageSize);
-        setCount(result.data.totalElements);
+            setItemsPerPage(response.data.pageable.pageSize);
+            setCount(response.data.totalElements);
 
-        const res_like = axios.get("http://localhost:8080/mypage/study/star-scrap", { // 공감
-            params: {
-                page: page,
-                status: "participate",
-                type: "star",
-            },
-            withCredentials: true,
-            headers: {
-                'Authorization': `Bearer ${accessToken}`
-            }
+            const res_like = axios.get("http://localhost:8080/mypage/study/star-scrap", { // 공감
+                params: {
+                    page: page,
+                    status: "participate",
+                    type: "star",
+                },
+                withCredentials: true,
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`
+                }
+            });
+
+            const res_scrap = axios.get("http://localhost:8080/mypage/study/star-scrap", { // 스크랩
+                params: {
+                    page: page,
+                    status: "participate",
+                    type: "scrap",
+                },
+                withCredentials: true,
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`
+                }
+            });
+
+            setLikeTwoStates(res_like)
+            setScrapTwoStates(res_scrap);
+
+            const studyList = response.data.content;
+
+            const updateStudies = studyList.map((study, index) => {
+                study.like = likeTwoStates[index];
+                study.scrap = scrapTwoStates[index];
+                return study;
+            });
+
+            setStudies(updateStudies);
+        }).catch((error) => {
+            console.error("데이터 가져오기 실패:", error);
         });
 
-        const res_scrap = axios.get("http://localhost:8080/mypage/study/star-scrap", { // 스크랩
-            params: {
-                page: page,
-                status: "participate",
-                type: "scrap",
-            },
-            withCredentials: true,
-            headers: {
-                'Authorization': `Bearer ${accessToken}`
-            }
-        });
 
-        setLikeTwoStates(res_like)
-        setScrapTwoStates(res_scrap);
-
-        const studyList = result.data.content;
-
-        const updateStudies = studyList.map((study, index) => {
-            study.like = likeTwoStates[index];
-            study.scrap = scrapTwoStates[index];
-            return study;
-        });
-
-        setStudies(updateStudies);
 
 		setItemsPerPage(itemsPerPage); //한페이지 당 아이템 개수
 		setCount(totalItemsCount); //전체 아이템 개수
