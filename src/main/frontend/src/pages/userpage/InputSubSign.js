@@ -138,7 +138,6 @@ const InputSubSign =()=>{
                         </div>
                     </div>
                     <div className="next_btn">
-                        <button id="next" onClick={()=>{navigate(-1)}}>이전</button>
                         <button id="next" onClick={onClickSkipBtn}>건너뛰기</button>
                         <button id="next" onClick={onClickSaveBtn}>가입하기</button>
                     </div>
