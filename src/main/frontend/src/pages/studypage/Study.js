@@ -224,67 +224,54 @@ const Study = () => {
         setPage(page);
 
         // 백엔드에 데이터를 요청합니다.
-        axios.get("http://localhost:8080/api/v2/studies/all", {
+        const result = axios.get("http://localhost:8080/api/v2/studies/all", {
             params: {
                 page: page,
             },
-        })
-            .then((res) => {
-                // 데이터를 받아온 후 스터디 리스트를 업데이트합니다.
-                setStudies(res.data.content);
+        });
 
-                // 페이지 정보를 업데이트합니다.
-                setItemsPerPage(res.data.pageable.pageSize);
-                setCount(res.data.totalElements);
+        // 데이터를 받아온 후 스터디 리스트를 업데이트합니다.
+        setStudies(result.data.content);
 
-                if (accessToken && isLoggedInUserId) {
-                    return axios.get("http://localhost:8080/study/stars", {
-                        params: {
-                            page: page,
-                        },
-                        withCredentials: true,
-                        headers: {
-                            'Authorization': `Bearer ${accessToken}`
-                        }
-                    });
-                } else {
-                    Promise.resolve(null);
+        // 페이지 정보를 업데이트합니다.
+        setItemsPerPage(result.data.pageable.pageSize);
+        setCount(result.data.totalElements);
+
+        if (accessToken && isLoggedInUserId) {
+            const res_like = axios.get("http://localhost:8080/study/stars", {
+                params: {
+                    page: page,
+                },
+                withCredentials: true,
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`
                 }
-            })
-            .then((response) => {
-                setLikeTwoStates(response.data);
-
-                if (accessToken && isLoggedInUserId) {
-                    return axios.get("http://localhost:8080/study/scraps", {
-                        params: {
-                            page: page,
-                        },
-                        withCredentials: true,
-                        headers: {
-                            'Authorization': `Bearer ${accessToken}`
-                        }
-                    });
-                } else {
-                    Promise.resolve(null);
-                }
-            })
-            .then((response) => {
-                setScrapTwoStates(response.data);
-
-                const studyList = studies;
-
-                const updateStudies = studyList.map((study, index) => {
-                    study.like = likeStates[index];
-                    study.scrap = scrapStates[index];
-
-                    return study;
-                });
-
-                setStudies(updateStudies);
-            })
-            .catch((error) => {
-                console.error("데이터 가져오기 실패:", error);
             });
+
+            const res_scrap = axios.get("http://localhost:8080/study/scraps", {
+                params: {
+                    page: page,
+                },
+                withCredentials: true,
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`
+                }
+            });
+
+            setLikeTwoStates(res_like.data);
+            setScrapTwoStates(res_scrap.data);
+
+            const studyList = result.data.content;
+
+            const updateStudies = studyList.map((study, index) => {
+                study.like = likeStates[index];
+                study.scrap = scrapStates[index];
+
+                return study;
+            });
+
+            setStudies(updateStudies);
+        }
 
         setItemsPerPage(itemsPerPage); //한페이지 당 아이템 개수
         setCount(totalItemsCount); //전체 아이템 개수

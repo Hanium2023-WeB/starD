@@ -391,4 +391,67 @@ public class StarScrapService {
 
         return stars;
     }
+
+    public List<Boolean> getMyPageStudyStarScrap(int page, Authentication authentication,
+                                                 String status, String type) {
+        // status -> 참여, 개설, 신청
+        // type -> 공감, 스크랩
+
+        List<Boolean> starScraps = new ArrayList<>();
+        Member member = memberService.find(authentication.getName());
+        List<Study> studies = null;
+
+        if (status.equals("participate")) {
+            if (type.equals("star")) {
+
+            } else { // scrap
+
+            }
+        } else if (status.equals("open")) {
+            Page<Study> studyList = studyService.findByRecruiter(authentication, page);
+            if (type.equals("star")) {
+                for (Study study : studyList.getContent()) {
+                    if (existsStudyStar(member, study) == null) {
+                        starScraps.add(false);
+                    } else {
+                        starScraps.add(true);
+                    }
+                }
+            } else { // scrap
+                for (Study study : studyList.getContent()) {
+                    if (existsStudyScrap(member, study) == null) {
+                        starScraps.add(false);
+                    } else {
+                        starScraps.add(true);
+                    }
+                }
+            }
+        } else { // apply
+            Page<Applicant> applicants = studyService.findByMember(authentication, page);
+            studies = new ArrayList<>();
+            for (Applicant applicant : applicants.getContent()) {
+                studies.add(applicant.getStudy());
+            }
+
+            if (type.equals("star")) {
+                for (Study study : studies) {
+                    if (existsStudyStar(member, study) == null) {
+                        starScraps.add(false);
+                    } else {
+                        starScraps.add(true);
+                    }
+                }
+            } else { // scrap
+                for (Study study : studies) {
+                    if (existsStudyScrap(member, study) == null) {
+                        starScraps.add(false);
+                    } else {
+                        starScraps.add(true);
+                    }
+                }
+            }
+        }
+
+        return starScraps;
+    }
 }

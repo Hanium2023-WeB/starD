@@ -120,4 +120,12 @@ public class StarScrapController {
     public List<Boolean> getStudyPageStarByScrap(Authentication authentication) {
         return starScrapService.getStudyPageStarByScrap(authentication);
     }
+
+    /* 마이페이지 - 스터디 공감, 스크랩 조회 */
+    @GetMapping("/mypage/study/star-scrap")
+    public List<Boolean> getMyPageStudyStarScraps(@RequestParam(value = "page", defaultValue = "1", required = false) int page,
+                                                  Authentication authentication,
+                                                  @RequestParam String status, @RequestParam String type) {
+        return starScrapService.getMyPageStudyStarScrap(page, authentication, status, type);
+    }
 }
