@@ -195,10 +195,14 @@ const MyOpenStudy = ({sideheader}) => {
 
                 setStudies(updateStudies);
 
-                handlePageChange({
-                    itemsPerPage: res.data.pageable.pageSize, // 페이지 당 아이템 수
-                    totalItemsCount: res.data.totalElements, // 전체 아이템 수
-                });
+//                handlePageChange({
+//                    itemsPerPage: res.data.pageable.pageSize, // 페이지 당 아이템 수
+//                    totalItemsCount: res.data.totalElements, // 전체 아이템 수
+//                });
+
+				// 페이지 정보를 업데이트합니다.
+				setItemsPerPage(res.data.pageable.pageSize);
+				setCount(res.data.totalElements);
             })
             .catch((error) => {
                 console.error("데이터 가져오기 실패:", error);
