@@ -109,6 +109,7 @@ const Home = () => {
     }
     return (
         <div className="main_wrap">
+        <Link to="/chat">채팅으로 이동</Link>
             {/*{sideheader}*/}
             <Header showSideCenter={true}/>
             <div className="subground">

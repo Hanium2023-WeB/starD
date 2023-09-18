@@ -29,6 +29,7 @@ import SearchBar from "./SearchBar";
 import SearchResult from "./pages/studypage/SearchResult";
 import StudyApplyList from "./pages/studypage/StudyApplyList";
 import TeamBlog from "./pages/studypage/TeamBlog";
+import Chat from "./components/chat/Chat";
 
 
 function App() {
@@ -57,6 +58,10 @@ function App() {
                     <Route
                         path="/"
                         element={<Home />}
+                    />
+                    <Route
+                        path="/chat"
+                        element={<Chat  />}
                     />
                     <Route
                         path="/login"
