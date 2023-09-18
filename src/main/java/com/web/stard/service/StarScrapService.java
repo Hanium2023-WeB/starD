@@ -402,10 +402,27 @@ public class StarScrapService {
         List<Study> studies = null;
 
         if (status.equals("participate")) {
+            Page<StudyMember> studyMembers = studyService.findStudying(authentication, page);
+            studies = new ArrayList<>();
+            for (StudyMember sm : studyMembers.getContent()) {
+                studies.add(sm.getStudy());
+            }
             if (type.equals("star")) {
-
+                for (Study study : studies) {
+                    if (existsStudyStar(member, study) == null) {
+                        starScraps.add(false);
+                    } else {
+                        starScraps.add(true);
+                    }
+                }
             } else { // scrap
-
+                for (Study study : studies) {
+                    if (existsStudyScrap(member, study) == null) {
+                        starScraps.add(false);
+                    } else {
+                        starScraps.add(true);
+                    }
+                }
             }
         } else if (status.equals("open")) {
             Page<Study> studyList = studyService.findByRecruiter(authentication, page);
