@@ -9,6 +9,7 @@ import uncheckbox from "../images/unchecked.png";
 import {Link} from "react-router-dom";
 import Header from "../components/repeat_etc/Header";
 import LOGO from "../images/Logo.png";
+import HomeDashBoard from "../components/study/HomeDashBoard";
 
 const searchItems = [
     "back-end",
@@ -118,11 +119,29 @@ const Home = () => {
             </div>
             {/*로그인 했을 때 안했을 때 화면 바꾸기*/}
             {isLogin && user ?
+                <div>
                 <div className="dashboard">
+                    <div className="user_wrap">
+                        <div className="dashboard_tag_wrap">
+                            <p>STAR_D의 요즘 뜨는 태그</p>
+                            <div className="dashboard_Tags">
+                                {tags.map((item) => {
+                                    return (
+                                        <div className={"dashboard_tagname_wrap"}>
+                                            <button id={"dashboard_tagbtn"} value={item.tagname}
+                                                    onClick={handleontag}>{item.tagname}</button>
+                                        </div>
+                                    )
+                                })
+                                }
+                            </div>
+                        </div>
+                    </div>
                     <div className="dashboard_detail">
-                        참여하고있는 스터디 보여주기
-                        <br/>
-                        클릭 시 팀블로그로 넘어가도록
+                        {/*참여하고있는 스터디 보여주기*/}
+                        {/*<br/>*/}
+                        {/*클릭 시 팀블로그로 넘어가도록*/}
+                        <HomeDashBoard/>
                     </div>
                     <div className="dashboard_todo">
 
@@ -156,6 +175,8 @@ const Home = () => {
                             </div>
                         )}
                     </div>
+
+                </div>
                 </div>
                 : <div className="nouser_wrap">
                     <div className="tag_wrap">

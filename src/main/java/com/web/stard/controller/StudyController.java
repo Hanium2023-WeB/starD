@@ -144,7 +144,7 @@ public class StudyController {
         return studyService.findByMemberAndStudy(id, authentication);
     }
 
-    @PutMapping("/{id}/select")       // [U] 스터디 참여자 선택 ( 수락 / 거절 )
+    @PutMapping("/{id}/select")       // [U] 스터디 신청자 선택 ( 수락 / 거절 )
     public ResponseEntity<String> selectParticipant(@PathVariable long id, @RequestParam String applicantId, @RequestParam boolean isSelect, Authentication authentication) {
         authentication = SecurityContextHolder.getContext().getAuthentication();
         try {
@@ -156,7 +156,7 @@ public class StudyController {
 
     }
 
-    @GetMapping("/{id}/select")       // [R] 스터디 참여자 리스트 Select
+    @GetMapping("/{id}/select")       // [R] 스터디 신청자 리스트 Select
     public ResponseEntity<Map<String, Object>> findParticipants(@PathVariable long id, Authentication authentication) {
         authentication = SecurityContextHolder.getContext().getAuthentication();
         Map<String, Object> result = new HashMap<>();
@@ -176,12 +176,30 @@ public class StudyController {
         return studyService.isRecruiter(id, authentication);
     }
 
-    @PostMapping("/{id}/open")       // [C] 스터디 개설
-    public Study openStudy(@PathVariable long id, Authentication authentication) {
+    @PostMapping("/{id}/open")       // [C] 스터디 모집 완료
+    public ResponseEntity<String> openStudy(@PathVariable long id, Authentication authentication) {
         authentication = SecurityContextHolder.getContext().getAuthentication();
-        return studyService.openStudy(id, authentication);
+
+        try {
+            studyService.openStudy(id, authentication);
+            return new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<String>("NOT SUCCESS", HttpStatus.BAD_REQUEST);
+        }
     }
 
+    @GetMapping("/{id}/study-member")       // [R] 스터디 참여자 리스트 Select
+    public ResponseEntity<Map<String, Object>> findStudyMember(@PathVariable long id, Authentication authentication) {
+        authentication = SecurityContextHolder.getContext().getAuthentication();
+        Map<String, Object> result = new HashMap<>();
+        try{
+            result.put("data", studyService.findStudyMember(id, authentication));
+            return ResponseEntity.ok().body(result);
+        }catch (Exception e) {
+            result.put("data", "스터디 참여자 리스트 가져오기 실패");
+            return ResponseEntity.badRequest().body(result);
+        }
+    }
 
 
 }

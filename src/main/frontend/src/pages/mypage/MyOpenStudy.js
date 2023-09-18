@@ -33,7 +33,7 @@ const MyOpenStudy = ({sideheader}) => {
     const [count, setCount] = useState(0);
     const [itemsPerPage, setItemsPerPage] = useState(9);
 
-    //TODO MyOpenStudy 서버 전달
+    //TODO MyOpenStudy 서버 전달 -> 해결
     // useEffect(() => {
     //     if (studiesChanged) {
     //         const response = axios.post("url", {

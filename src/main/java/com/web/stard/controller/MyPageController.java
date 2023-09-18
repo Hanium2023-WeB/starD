@@ -253,5 +253,12 @@ public class MyPageController {
         return studyService.findByRecruiter(authentication, page);
     }
 
+    // [R] 스터디 참여 내역
+    @GetMapping("/studying")
+    public Page<StudyMember> findStudyingHistory(@RequestParam(value = "page", defaultValue = "1", required = false) int page, Authentication authentication) {
+        System.out.println("스터디 참여 내역 컨트롤러 진입 O ");
+        return studyService.findStudying(authentication, page);
+    }
+
 
 }

@@ -240,6 +240,46 @@ input::placeholder{
 	right: 35px;
 	bottom: 3.5px;
 }
+.user_wrap{
+	width: 17.5%;
+	border: 3px solid #0d0d2a;
+	margin-left: 10px;
+	font-family: 'Pretendard-Regular';
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+}
+
+.dashboard_tag_wrap{
+	display: flex;
+	flex-direction: column;
+}
+.dashboard_tag_wrap p{
+	font-size: 15px;
+	font-weight: bolder;
+	padding:10px;
+}
+.dashboard_Tags{
+	display: flex;
+	flex-direction: column;
+	margin-left: 40px;
+	padding: 10px;
+}
+.dashboard_tagname_wrap{
+	width: fit-content;
+	margin-bottom: 10px;
+}
+#dashboard_tagbtn{
+	width: 70px;
+	padding: 10px;
+	background-color: white;
+	color: #395B64;
+	border: 1px solid #A5C9CA ;
+	border-radius: 10px;
+	box-shadow: 0px 10px 10px 0px rgba(165, 201, 202, 0.15);
+	font-family: 'Pretendard-Regular';
+}
+
 .dashboard{
 	width: 100%;
 	display: flex;
@@ -250,12 +290,13 @@ input::placeholder{
 	margin-left: 10px;
 	margin-bottom: 30px;
 }
+
 .dashboard_todo{
-	width: 38%;
+	width: 30%;
 	font-size: 20px;
-	border: 1px solid lightpink;
+	border: 3px solid #0d0d2a;
 	padding: 10px;
-	margin-left: 60px;
+	margin-left: 10px;
 	font-family: 'Pretendard-Regular';
 }
 .dashboard_todo #today{
@@ -273,8 +314,8 @@ button#todo_more{
 	margin-left: 9vw;
 }
 .dashboard_detail{
-	width: 52.6%;
-	border: 1px solid lightpink;
+	width: 45%;
+	border: 3px solid #0d0d2a;
 	margin-left: 10px;
 	font-family: 'Pretendard-Regular';
 
