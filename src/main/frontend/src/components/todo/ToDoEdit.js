@@ -8,7 +8,7 @@ const ToDoEdit=({selectedTodo, onUpdate})=>{
     },[]);
 
     const onSubmit=useCallback((e)=>{
-    alert("수정하시겠습니까?");
+    alert("수정되었습니다.");
     onUpdate(selectedTodo.id, value);
       setValue(''); //value 초기화
       //기본이벤트(새로고침) 방지

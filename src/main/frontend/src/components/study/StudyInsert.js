@@ -193,19 +193,46 @@ const StudyInsert = ({updateStudies, onClose}) => {
         e.preventDefault(); // 기본 이벤트 방지
 
         if (
-            formData.title.trim() === '' ||
-            formData.field.trim() === null ||
-            formData.number.trim() === '' ||
-            formData.deadline.trim() === '' ||
-            formData.startDate.trim() === '' ||
-            formData.endDate.trim() === '' ||
-            formData.description.trim() === '' ||
+            formData.title.trim() === '' &&
+            formData.number.trim() === '' &&
+            formData.deadline.trim() === '' &&
+            formData.startDate.trim() === '' &&
+            formData.endDate.trim() === '' &&
+            formData.description.trim() === '' &&
             !formData.onoff
         ) {
             // 하나라도 비어있으면 알림을 표시하거나 다른 처리를 수행할 수 있습니다.
-            alert('진행 방식을 선택해주세요.');
+            alert('스터디 정보를 입력해주세요.');
 
             return; // 창이 넘어가지 않도록 중단
+        }
+        if (formData.title.trim() === '') {
+            alert("제목을 입력해주세요.");
+            return;
+        }
+        if (formData.number.trim() === '') {
+            alert("모집 인원을 입력해주세요.");
+            return;
+        }
+        if (formData.deadline.trim() === '') {
+            alert("모집 마감일을 입력해주세요.");
+            return;
+        }
+        if (formData.startDate.trim() === '') {
+            alert("스터디 시작일을 입력해주세요.");
+            return;
+        }
+        if (formData.endDate.trim() === '') {
+            alert("스터디 종료일을 입력해주세요.");
+            return;
+        }
+        if (formData.description.trim() === '') {
+            alert("상세 내용을 입력해주세요.");
+            return;
+        }
+        if (!formData.onoff) {
+            alert("온라인, 오프라인 여부를 선택해주세요.");
+            return;
         }
 
         const tagElement = document.querySelector(".HashWrapInner");
