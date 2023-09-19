@@ -150,7 +150,7 @@ const Header = ({ showSideCenter }) => {
 								STAR D
 
 									<div className={"Header_logo_img"}>
-								<img src={LOGO} width={"40px"}/></div>
+								<img src={LOGO} width={"60px"}/></div>
 								</div>
 							</Link>
 						</li>

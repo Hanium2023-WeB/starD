@@ -106,6 +106,7 @@ header .head_left {
 .Header_logo_img{
 	position: relative;
 	/*width: 40px;*/
+	width: 70px;
 	transform: rotate(45deg);
 }
 /*.main_wrap > header .head_left{*/
