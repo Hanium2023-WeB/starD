@@ -12,37 +12,124 @@ import axios from "axios";
 const MyApplyStudy = ({sideheader}) => {
 
     const [studies, setStudies] = useState([]); //내가 지원한 스터디 상태값
+    const [scrapStates, setScrapStates] = useState([]); //내가 지원한 스터디 스크랩 상태값
+    const [likeStates, setLikeStates] = useState([]); //내가 지원한 스터디 공감 상태값
     const [studiesChanged, setStudiesChanged] = useState(false);
     const accessToken = localStorage.getItem('accessToken');
+    const isLoggedInUserId = localStorage.getItem('isLoggedInUserId');
 
     //페이징관련 코드
     const [page, setPage] = useState(1);
     const [count, setCount] = useState(0);
     const [itemsPerPage, setItemsPerPage] = useState(9);
 
+    // 각 스터디 스크랩, 공감 상태 저장
+    // (위에 scrapStates, likeStates 사용하면 의존성 배열 때문에 useEffect 무한 반복,,)
+    const [scrapTwoStates, setScrapTwoStates] = useState([]);
+    const [likeTwoStates, setLikeTwoStates] = useState([]);
+
+    useEffect(() => {
+        if (accessToken && isLoggedInUserId) {
+            axios.get("http://localhost:8080/mypage/study/star-scrap", { // 공감
+                params: {
+                    page: page,
+                    status: "apply",
+                    type: "star",
+                },
+                withCredentials: true,
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`
+                }
+            })
+                .then(response => {
+                    setLikeStates(response.data);
+                })
+                .catch(error => {
+                    console.log("공감 불러오기 실패", error);
+                });
+
+            axios.get("http://localhost:8080/mypage/study/star-scrap", { // 스크랩
+                params: {
+                    page: page,
+                    status: "apply",
+                    type: "scrap",
+                },
+                withCredentials: true,
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`
+                }
+            })
+                .then(response => {
+                    setScrapStates(response.data);
+                })
+                .catch(error => {
+                    console.log("스크랩 불러오기 실패", error);
+                });
+        }
+    }, []);
+
     const handlePageChange = ({page, itemsPerPage, totalItemsCount}) => {
         setPage(page);
 
         // 백엔드에 데이터를 요청합니다.
-        axios.get("http://localhost:8080/user/mypage/apply-study", {
+        const result = axios.get("http://localhost:8080/user/mypage/apply-study", {
             params: {
                 page: page,
             }, withCredentials: true,
             headers: {
                 'Authorization': `Bearer ${accessToken}`
             }
-        })
-            .then((res) => {
-                // 데이터를 받아온 후 스터디 리스트를 업데이트합니다.
-                setStudies(res.data.content);
+        });
 
-                // 페이지 정보를 업데이트합니다.
-                setItemsPerPage(res.data.pageable.pageSize);
-                setCount(res.data.totalElements);
-            })
-            .catch((error) => {
-                console.error("데이터 가져오기 실패:", error);
-            });
+        result.then((response) => {
+            setStudies(response.data.content);
+
+            setItemsPerPage(response.data.pageable.pageSize);
+            setCount(response.data.totalElements);
+
+            if (accessToken && isLoggedInUserId) {
+                const res_like = axios.get("http://localhost:8080/mypage/study/star-scrap", { // 공감
+                    params: {
+                        page: page,
+                        status: "apply",
+                        type: "star",
+                    },
+                    withCredentials: true,
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`
+                    }
+                });
+
+                const res_scrap = axios.get("http://localhost:8080/mypage/study/star-scrap", { // 스크랩
+                    params: {
+                        page: page,
+                        status: "apply",
+                        type: "scrap",
+                    },
+                    withCredentials: true,
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`
+                    }
+                });
+
+                setLikeTwoStates(res_like)
+                setScrapTwoStates(res_scrap);
+
+                const studyList = response.data.content;
+
+                const updateStudies = studyList.map((study, index) => {
+                    study.like = likeTwoStates[index];
+                    study.scrap = scrapTwoStates[index];
+                    return study;
+                });
+
+                setStudies(updateStudies);
+            }
+        }).catch((error) => {
+            console.error("데이터 가져오기 실패:", error);
+        });
+
+
 
         setItemsPerPage(itemsPerPage); //한페이지 당 아이템 개수
         setCount(totalItemsCount); //전체 아이템 개수
@@ -57,7 +144,17 @@ const MyApplyStudy = ({sideheader}) => {
         })
             .then((res) => {
                 console.log("전송 성공 : ", res.data);
-                setStudies(res.data.content);
+
+                const studyList = res.data.content;
+
+                const updateStudies = res.data.content.map((study, index) => {
+                    study.like = likeStates[index];
+                    study.scrap = scrapStates[index];
+
+                    return study;
+                });
+
+                setStudies(updateStudies);
                 localStorage.setItem("ApplyStudy",JSON.stringify(res.data.content));
 
                 handlePageChange({
@@ -68,7 +165,7 @@ const MyApplyStudy = ({sideheader}) => {
             .catch((error) => {
                 console.error("데이터 가져오기 실패:", error);
             });
-    }, [accessToken]);
+    }, [accessToken, likeStates, scrapStates]);
 
 //    useEffect(() => {
 //        const storedStudies = localStorage.getItem("studies");
@@ -96,7 +193,7 @@ const MyApplyStudy = ({sideheader}) => {
     const toggleScrap = (index) => {
         setStudies((prevStudies) => {
             const newStudies = [...prevStudies];
-            const studyId = newStudies[index].id;
+            const studyId = newStudies[index].study.id;
             if (newStudies[index].scrap) { // true -> 활성화되어 있는 상태 -> 취소해야 함
                 axios.delete(`http://localhost:8080/scrap/study/${studyId}`, {
                     params: { id: studyId },
@@ -147,9 +244,7 @@ const MyApplyStudy = ({sideheader}) => {
     const toggleLike = (index) => {
         setStudies((prevStudies) => {
             const newStudies = [...prevStudies];
-            newStudies[index] = {...newStudies[index], like: !newStudies[index].like};
-            setStudiesChanged(true); // Mark studies as changed
-            const studyId = newStudies[index].id;
+            const studyId = newStudies[index].study.id;
             if (newStudies[index].like) { // true -> 활성화되어 있는 상태 -> 취소해야 함
                 axios.delete(`http://localhost:8080/star/study/${studyId}`, {
                     params: { id: studyId },
