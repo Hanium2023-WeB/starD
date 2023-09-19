@@ -61,8 +61,8 @@ const StudyInfo = ({study, handleEditClick, handleStudyDelete}) => {
                         <span>{study.tags}</span>
                     </li>
                     <li>
-                        <span>모집 중</span>
-                        <span>{study.capacity}</span>
+                        <span>모집 인원</span>
+                        <span>{study.capacity} 명</span>
                     </li>
                     <li>
                         <span>진행 방식</span>
