@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 import App from "../../App.js";
 import Slide from "../../components/study/Slide.js";
 import Category from "../../components/repeat_etc/Category.js";
@@ -28,6 +28,7 @@ const Mypage = ({ sideheader }) => {
   const [parsedmeetings, setParsedMeetings] = useState({});
   const [meetings, setMeetings] = useState({});
   const [todayKey, setTodayKey] = useState("");
+  const navigate = useNavigate();
 
   const Year = today.getFullYear();
   const Month = today.getMonth() + 1;
@@ -97,6 +98,7 @@ const Mypage = ({ sideheader }) => {
     const res = await fetch(
       "https://jsonplaceholder.typicode.com/comments"
     ).then((res) => res.json());
+
     const initDate = res.slice(0, 10).map((it) => {
       return {
         tag: it.email,
@@ -138,6 +140,14 @@ const Mypage = ({ sideheader }) => {
     //페이지가 마운트 되자마자 api호출
     getData();
   }, []);
+
+  const ShowAllToDo=()=>{
+    navigate("/ToDoList", {
+      state:{
+        openStudy:state
+      }
+    })
+  }
   return (
     <div>
      <Header showSideCenter={true}/>
@@ -209,7 +219,7 @@ const Mypage = ({ sideheader }) => {
                     color: "inherit",
                   }}
                 >
-                  <button id="more">전체보기</button>
+                  <button id="more" onClick={ShowAllToDo}>전체보기</button>
                 </Link>
               </div>
               <div id="detail">

@@ -137,7 +137,7 @@ const HomeDashBoard = () => {
             <div className={"HomeDashBoard"}>
             <div className="study_list">
                 {studies.map((d, index) => (
-                    <div className="dashboardlist" key={d.study.id}>
+                    <div className="dashboardlist" key={d.study.id} onClick={()=>goNextTeamBlog(d)}>
                         <div className="dashboard_header">
                             <div className="dashboard_sub_header">
 
@@ -162,7 +162,7 @@ const HomeDashBoard = () => {
                             </div>
                         </div>
 
-                        <div className={"contnet"} onClick={()=>goNextTeamBlog(d)}>
+                        <div className={"contnet"} >
                             <div className="list_deadline">
                                 마감일 | {d.study.recruitmentDeadline} / 팀장: {d.study.recruiter.nickname}
                             </div>

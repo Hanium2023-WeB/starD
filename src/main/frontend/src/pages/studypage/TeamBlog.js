@@ -1,5 +1,6 @@
 import Header from "../../components/repeat_etc/Header";
 import React, {useEffect, useState} from "react";
+import {useNavigate} from "react-router-dom";
 import BgImg from "../../images/blue-galaxy-wallpaper.jpg";
 import Check from "../../images/unchecked.png";
 import "../../css/study_css/TeamBlog.css";
@@ -11,6 +12,7 @@ const TeamBlog = () => {
     const accessToken = localStorage.getItem('accessToken');
     const [ApplyMemberList, setApplyMemberList] = useState([]); //참여멤버
     const {id} = useParams();
+    const navigate = useNavigate();
     console.log("팀 블로그 진입 : ", id);
 
     useEffect(() => {
@@ -31,7 +33,14 @@ const TeamBlog = () => {
             });
 
     }, [accessToken]);
-
+    //팀별 투두리스트 페이지로 넘어가게 하는 함수>>참여 멤버 가져오기
+    const GoToTeamToDo=()=>{
+        navigate(`/${id}/teamblog/TeamToDo`, {
+            state: {
+                ApplyMemberList: ApplyMemberList
+            }
+        })
+    }
     return (
         <div style={{}}>
             <Header showSideCenter={true}/>
@@ -55,7 +64,7 @@ const TeamBlog = () => {
                 <div className="content">
                     <div className="left">
                         <div className="team_todo team">
-                            <p>오늘의 할 일&nbsp;&nbsp;<span>&gt;</span></p>
+                            <span onClick={GoToTeamToDo}><p>To Do&nbsp;&nbsp;<span>&gt;</span></p></span>
                             <div className="team_todo_content">
                                 <div>
                                     <h4 className="manager">김솜솜</h4>

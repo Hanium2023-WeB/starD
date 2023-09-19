@@ -29,9 +29,9 @@ const Home = () => {
     const [todayKey, setTodayKey] = useState("");
     const [isLogin, setIsLogin] = useState(""); // Login 여부 상태관리
     const [user, setUser] = useState(""); // 로그인 유저이름 상태관리
-    const [tag, setTag] = useState([{id: 0, tagname: "백엔드"},
-        {id: 1, tagname: "프론트"}, {id: 2, tagname: "파이썬"},
-        {id: 3, tagname: "네트워크"}, {id: 4, tagname: "클라우드"}]);
+    const [tag, setTag] = useState([{id: 0, tagname: "취업"},
+        {id: 1, tagname: "자소서"}, {id: 2, tagname: "프로그래밍"},
+        {id: 3, tagname: "독서"}, {id: 4, tagname: "여행"}]);
     const [isTag, setIsTag] = useState("");
 
     const Year = today.getFullYear();
@@ -41,7 +41,7 @@ const Home = () => {
 
     useEffect(() => {
         localStorage.removeItem('studies');
-        localStorage.removeItem('todos');
+        // localStorage.removeItem('todos');
         localStorage.removeItem('selectedSido');
         localStorage.removeItem('selectedGugun');
     }, []);
@@ -123,11 +123,13 @@ const Home = () => {
                 <div className="dashboard">
                     <div className="user_wrap">
                         <div className="dashboard_tag_wrap">
-                            <p>STAR_D의 요즘 뜨는 태그</p>
+                            <p id={"tag-title"}>STAR_D의 요즘 뜨는 태그</p>
+                            <p id={"tag-subtitle"}>TOP 5</p>
                             <div className="dashboard_Tags">
                                 {tags.map((item) => {
                                     return (
                                         <div className={"dashboard_tagname_wrap"}>
+                                            <p id={"ranking"}>{item.id + 1}</p>
                                             <button id={"dashboard_tagbtn"} value={item.tagname}
                                                     onClick={handleontag}>{item.tagname}</button>
                                         </div>

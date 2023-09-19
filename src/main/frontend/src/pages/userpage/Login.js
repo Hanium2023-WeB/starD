@@ -46,9 +46,11 @@ const Login = () => {
             .post("http://localhost:8080/api/v2/members/login", {
                 memberId: state.ID,
                 password: state.PW
-            }, {params: {
+            }, {
+                params: {
                     memberId: state.ID,
-                    password: state.PW},
+                    password: state.PW
+                },
                 withCredentials: true
             })
             .then((res) => {
@@ -57,8 +59,7 @@ const Login = () => {
 
                 if (res.data.state === 400) {
                     alert("입력값을 확인해주세요. \n로그인 실패");
-                }
-                else {
+                } else {
                     const accessToken = res.data.data.accessToken;
 
                     // 로그인 성공 시 localstorage에 accessToken, 사용자 Id 값 저장
@@ -120,16 +121,18 @@ const Login = () => {
                     <div className="findlog">
                         <Link to={"/login/findeID"}
                               style={{
-                            textDecoration: "none",
-                            color: "blue",
-                        }}><span id={"id"}>아이디 찾기 / </span>
+                                  textDecoration: "none",
+                                  color: "blue",
+                              }}>
+                            <span id={"id"}>아이디 찾기 / </span>
                         </Link>
                         <span id={"pw"}>비밀번호 찾기 / </span>
                         <Link to={"/subinfo"}
                               style={{
                                   textDecoration: "none",
                                   color: "blue",
-                              }}>  <span id={"signup"}>회원가입</span></Link>
+                              }}>
+                            <span id={"signup"}>회원가입</span></Link>
                     </div>
                 </div>
             </div>

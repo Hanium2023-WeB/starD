@@ -12,6 +12,7 @@ import Calender from "../../components/calender/Calender.js";
 import { format, subMonths, addMonths } from "date-fns";
 import Backarrow from "../../components/repeat_etc/Backarrow.js";
 import Header from "../../components/repeat_etc/Header";
+import { useLocation } from "react-router-dom";
 const ToDoList = ({ sideheader }) => {
   const [selectedTodo, setSelectedTodo] = useState(null);
   const [insertToggle, setInsertToggle] = useState(false);
@@ -22,17 +23,20 @@ const ToDoList = ({ sideheader }) => {
   const Dates = selectedDate.getDate();
   const [studies, setStudy]= useState([]);
 
+  const location = useLocation();
+
 
   useEffect(() => {
     const ParticipatedStudy = localStorage.getItem('MyParticipatedStudy');  //참여중인 스터디
     const parsedParticipatedStudy = JSON.parse(ParticipatedStudy);
     const StudyIdANDMember = localStorage.getItem("ParticipateState");
     const parsedStudyIdAndMember = JSON.parse(StudyIdANDMember);
-
+    const openStudies = location.state;
     // const member = localStorage.getItem("acceptedMembers"); //모집 후 최종 멤버들
     // const StudyId = localStorage.getItem("ParticipatedStudyId");
 
     setStudy(parsedParticipatedStudy);
+    console.log("개설된 스터디",openStudies);
     console.log("참여하는 스터디", parsedParticipatedStudy);
     // console.log("참여멤버", member);
     console.log("스터디별 참여 멤버들", parsedStudyIdAndMember);

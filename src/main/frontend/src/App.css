@@ -26,7 +26,7 @@ body {
 	/*background-color: #e7f6f2;*/
 	/*background-color: #0d0d2a;*/
 	/*background-image: url("./images/aurora_background.jpg");*/
-	background-image: url("./images/blue-galaxy-wallpaper.jpg");
+	background-image: url("./images/aurora_background.jpg");
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -258,19 +258,31 @@ input::placeholder{
 	font-size: 15px;
 	font-weight: bolder;
 	padding:10px;
+	margin-bottom: 5px;
 }
+#tag-subtitle{
+	padding-top:0px;
+	margin-left: 53px;
+}
+
 .dashboard_Tags{
 	display: flex;
 	flex-direction: column;
-	margin-left: 40px;
+	margin-left: 5px;
 	padding: 10px;
 }
 .dashboard_tagname_wrap{
 	width: fit-content;
 	margin-bottom: 10px;
+	display: flex;
 }
+#ranking{
+	font-weight: bolder;
+	font-size: 15px;
+}
+
 #dashboard_tagbtn{
-	width: 70px;
+	width: 80px;
 	padding: 10px;
 	background-color: white;
 	color: #395B64;

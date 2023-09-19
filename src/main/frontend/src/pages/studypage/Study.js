@@ -20,6 +20,7 @@ const Study = () => {
     const [scrapStates, setScrapStates] = useState([]);
     const [likeStates, setLikeStates] = useState([]);
 
+
     // 각 스터디 스크랩, 공감 상태 저장
     // (위에 scrapStates, likeStates 사용하면 의존성 배열 때문에 useEffect 무한 반복,,)
     const [scrapTwoStates, setScrapTwoStates] = useState([]);
