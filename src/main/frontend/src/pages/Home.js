@@ -8,7 +8,7 @@ import checkbox from "../images/check.png";
 import uncheckbox from "../images/unchecked.png";
 import {Link} from "react-router-dom";
 import Header from "../components/repeat_etc/Header";
-import LOGO from "../images/Logo.png";
+import LOGO from "../images/Logo2.png";
 import HomeDashBoard from "../components/study/HomeDashBoard";
 
 const searchItems = [
@@ -113,7 +113,7 @@ const Home = () => {
             <Header showSideCenter={true}/>
             <div className="subground">
                 <div className="LOGO">
-                    <img src={LOGO} alt="LOGO" width="80px"/>
+                    <img src={LOGO} alt="LOGO" width="100px"/>
                 </div>
                 <SearchBar searchItems={searchItems}/>
             </div>
