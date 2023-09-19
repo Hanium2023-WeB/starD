@@ -113,7 +113,7 @@ const Home = () => {
             <Header showSideCenter={true}/>
             <div className="subground">
                 <div className="LOGO">
-                    <img src={LOGO} alt="LOGO" width="100px"/>
+                    <img class="LOGO-transform" src={LOGO} alt="LOGO" width="100px"/>
                 </div>
                 <SearchBar searchItems={searchItems}/>
             </div>
