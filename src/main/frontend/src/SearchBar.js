@@ -92,33 +92,35 @@ const SearchBar = (props) => {
 					/>
 					<img src ={searchicon} width="20px"/>
 				</div>
-				<div className="showfilter">
-					{search !== "" && filterProducts.length === 0 ? (
-						<p>해당 키워드를 가진 스터디가 없습니다.</p>
-					) : null}
-					{search !== "" && filterProducts.length > 0 ? (
-						<ul>
-							{filterProducts.map((item) => {
-								return (
-									<li key={item} onClick={()=>searchItem(item)}>
-										{/*<Link*/}
-										{/*	to={`/${item}`}*/}
-										{/*	style={{*/}
-										{/*		textDecoration: "none",*/}
-										{/*		color: "inherit",*/}
-										{/*	}}*/}
-										{/*	state={{item:item}}*/}
-										{/*>*/}
-										{item}
-										{/*</Link>*/}
-									</li>
-								);
-							})}
-						</ul>
-					) : null}
-				</div>
-			</div>
+			{/*	<div className="showfilter">*/}
+			{/*		{search !== "" && filterProducts.length === 0 ? (*/}
+			{/*			<p>해당 키워드를 가진 스터디가 없습니다.</p>*/}
+			{/*		) : null}*/}
+			{/*		{search !== "" && filterProducts.length > 0 ? (*/}
+			{/*			<ul>*/}
+			{/*				{filterProducts.map((item) => {*/}
+			{/*					return (*/}
+			{/*						<li key={item} onClick={()=>searchItem(item)}>*/}
+			{/*							/!*<Link*!/*/}
+			{/*							/!*	to={`/${item}`}*!/*/}
+			{/*							/!*	style={{*!/*/}
+			{/*							/!*		textDecoration: "none",*!/*/}
+			{/*							/!*		color: "inherit",*!/*/}
+			{/*							/!*	}}*!/*/}
+			{/*							/!*	state={{item:item}}*!/*/}
+			{/*							/!*>*!/*/}
+			{/*							{item}*/}
+			{/*							/!*</Link>*!/*/}
+			{/*						</li>*/}
+			{/*					);*/}
+			{/*				})}*/}
+			{/*			</ul>*/}
+			{/*		) : null}*/}
+			{/*	</div>*/}
+			{/*</div>*/}
 
+		{/*</div>*/}
+			</div>
 		</div>
 	);
 };
