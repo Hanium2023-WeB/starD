@@ -22,7 +22,7 @@ html {
 	position: relative;
 }
 .arrow_left .openStudy{
-	background-color: #395b64;
+	background-color: #0038FF;
 	border: none;
 	font-size: 13px;
 	color: #fff;
@@ -37,6 +37,7 @@ html {
 }
 .study{
 	margin-bottom: 100px;
+	font-family: 'Pretendard-Regular';
 }
 .study h3{
 	font-size: 17px;
@@ -82,7 +83,7 @@ html {
 }
 .study_header .study_edit,
 .study_header .study_remove{
-	background-color: #395b64;
+	background-color: #0038FF;
 	border-radius: 50px;
 	font-family: 'Pretendard-Regular';
 	cursor: pointer;
@@ -140,7 +141,7 @@ html {
 	justify-content: center;
 }
 .btn .apply_btn {
-	background-color: #395b64;
+	background-color: #0038FF;
 	border: none;
 	font-size: 20px;
 	color: #fff;

@@ -10,6 +10,14 @@ html {
 /*	justify-content: center;*/
 /*	position: relative;*/
 /*}*/
+.container {
+	width: 90%;
+	margin: 30px auto 0;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	position: relative;
+}
 .main_container {
 	width: 85%;
 	max-width: 900px;
@@ -27,6 +35,18 @@ html {
 /*	padding: 15px;*/
 /*	margin-top: 0;*/
 /*}*/
+.category {
+	background-color: #0038FF;
+	display: flex;
+	flex-direction: column;
+	margin-right: 50px;
+	height: 500px;
+	color: #808080FF;
+	width: 120px;
+	border-radius: 10px;
+	padding: 15px;
+	margin-top: 0;
+}
 .c_01,
 .c_02,
 .c_03,
@@ -48,7 +68,7 @@ html {
 }
 .sub_c > nav ul li {
 	list-style: none;
-	color: #0038FF;
+	color: white;
 	font-size: 15px;
 
 	white-space: nowrap;
@@ -143,7 +163,7 @@ p {
 	padding-right: 0;
 	border-radius: 15px;
 	width: 94%;
-	height: 220px;
+	height: 70%;
 	overflow: hidden;
 }
 ul {
@@ -162,7 +182,7 @@ li {
 	display: flex;
 	justify-content: space-between;
 	position: relative;
-	bottom: 130px;
+	bottom: 55%;
 	width: 100%;
 }
 

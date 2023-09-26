@@ -107,6 +107,7 @@ input{
 select{
     background-color: #F2F2F2;
     border-style: none;
+    font-family: 'Pretendard-Regular';
 }
 
 #sign_out.sub_container{

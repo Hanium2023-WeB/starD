@@ -1,6 +1,5 @@
 import Header from "../../components/repeat_etc/Header";
-import React, {useEffect, useState} from "react";
-import {useNavigate} from "react-router-dom";
+import React from "react";
 import BgImg from "../../images/blue-galaxy-wallpaper.jpg";
 import Check from "../../images/unchecked.png";
 import "../../css/study_css/TeamBlog.css";
@@ -9,39 +8,6 @@ import {useParams} from "react-router-dom";
 import TeamBlogcss from  "../../css/study_css/TeamBlog.css";
 
 const TeamBlog = () => {
-
-    const accessToken = localStorage.getItem('accessToken');
-    const [ApplyMemberList, setApplyMemberList] = useState([]); //참여멤버
-    const {id} = useParams();
-    const navigate = useNavigate();
-    console.log("팀 블로그 진입 : ", id);
-
-    useEffect(() => {
-        // TODO 서버에서 참여멤버 가져오기
-        axios.get(`http://localhost:8080/api/v2/studies/${id}/study-member`, {
-            withCredentials: true,
-            headers: {
-                'Authorization': `Bearer ${accessToken}`
-            }
-        })
-            .then((res) => {
-                console.log("모집완료된 참여 멤버 전송 성공 : ", res.data);
-
-                setApplyMemberList(res.data);
-            })
-            .catch((error) => {
-                console.error("모집완료된 참여 멤버 가져오기 실패:", error);
-            });
-
-    }, [accessToken]);
-    //팀별 투두리스트 페이지로 넘어가게 하는 함수>>참여 멤버 가져오기
-    const GoToTeamToDo=()=>{
-        navigate(`/${id}/teamblog/TeamToDo`, {
-            state: {
-                ApplyMemberList: ApplyMemberList
-            }
-        })
-    }
     return (
         <div style={{}}>
             <Header showSideCenter={true}/>
@@ -65,7 +31,7 @@ const TeamBlog = () => {
                 <div className="content">
                     <div className="left">
                         <div className="team_todo team">
-                            <span onClick={GoToTeamToDo}><p>To Do&nbsp;&nbsp;<span>&gt;</span></p></span>
+                            <p>오늘의 할 일&nbsp;&nbsp;<span>&gt;</span></p>
                             <div className="team_todo_content">
                                 <div>
                                     <h4 className="manager">김솜솜</h4>

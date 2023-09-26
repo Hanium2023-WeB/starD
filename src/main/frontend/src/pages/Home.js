@@ -54,7 +54,6 @@ const Home = () => {
         localStorage.removeItem('selectedGugun');
     }, []);
 
-
     useEffect(() => {
         // Load todos from localStorage when the component mounts
         const savedTodos = localStorage.getItem("todos");

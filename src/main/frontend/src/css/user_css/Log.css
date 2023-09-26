@@ -68,17 +68,15 @@
 	height: 40px;
 	padding-left: 10px;
 	border-radius: 10px;
-	border: 1.5px solid #a5c9ca;
+	/*border: 1.5px solid #0038FF;*/
 }
 
 .loginbtn {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	position: relative;
-	bottom: 40px;
-	left: 10px;
-	
+	margin-top: 25px;
+	margin-bottom: 20px;
 }
 .loginbtn {
 	top: 10px;
@@ -91,7 +89,7 @@
 
 .loginbtn button,
 .signbtn button {
-	background-color: #395b64;
+	background-color: #0038FF;
 	color: white;
 	width: 250px;
 	height: 40px;
@@ -111,7 +109,6 @@
 	bottom: 10px;
 	margin-top: 10px;
 	margin-bottom: 10px;
-	margin-left: 20px;
 	font-size: 13px;
 	font-family: 'Pretendard-Regular';
 }
@@ -123,16 +120,21 @@
 #signup_nicname_btn{
 	width: 15%;
 	height: 30px;
-	background-color: #395b64;
+	background-color: #0038FF;
 	color: white;
 	font-size: 11px;
 	margin-left: 10px;
 	border-radius: 10px;
 	border-style: none;
 	cursor: pointer;
+	margin-top: -3px;
+	font-family: 'Pretendard-Regular';
 }
 .input_bottom {
 	margin-bottom: 20px;
+}
+.input_bottom input{
+	margin-left:0;
 }
 #signup_nicname_btn[disabled] {
 	background-color: #767678; /* Set a different background color for disabled state */
@@ -147,8 +149,7 @@ p{
 }
 
 .findlog{
-	position: relative;
-	top:30px;
-	left: 65px;
+	display: flex;
+	justify-content: center;
 	font-family: 'Pretendard-Regular';
 }

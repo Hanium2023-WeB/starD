@@ -5,6 +5,8 @@ html {
 .container {
 	width: 100%;
 	margin: 0 auto;
+	width: 90%;
+	margin: 30px auto 0;
 	display: flex;
 	flex-direction: row;
 	font-family: 'Pretendard-Regular';
@@ -129,7 +131,7 @@ html {
 	display: flex;
 }
 .study_list .list_day {
-	background-color: #e7f6f2;
+	background-color: #efefef;
 	padding: 7px 10px;
 	border-radius: 50px;
 	margin-right: 10px;
@@ -166,14 +168,14 @@ html {
 .study_list .list_tag {
 	width: fit-content;
 	background-color: #ffffff;
-	border: 0.275px solid #a5c9ca;
+	border: 0.275px solid #FFC947;
 	padding: 7px 10px;
 	border-radius: 50px;
 }
 .study_list .list_onoff {
 	width: fit-content;
-	background-color: #a5c9ca;
-	border: 0.275px solid #a5c9ca;
+	background-color: #FFC947;
+	border: 0.275px solid #FFC947;
 	padding: 7px 10px;
 	border-radius: 50px;
 }
