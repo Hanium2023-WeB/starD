@@ -181,7 +181,7 @@ nav {
 	align-items: center;
 	list-style: none;
 	padding: 20px;
-
+	font-weight: bold;
 }
 .headerbar nav ul {
 	padding: 0px;
@@ -221,6 +221,7 @@ nav {
 	margin-right: 10px;
 	margin-bottom: 15px;
 	color:grey;
+	font-family: 'Pretendard-Regular';
 }
 #sub option{
 	border: 1px solid #d9d9d9;
@@ -420,24 +421,23 @@ button#todo_more{
 .firstRow-tags,.secondRow-tags{
 	display: flex;
 	flex-direction: row;
-	justify-content: space-between;
+	justify-content: center;
 	flex-shrink: 0;
-	width: 50%;
 	margin-top: 30px;
-	margin-left: 390px;;
-
 }
 .secondRow-tags{
-	width: 30%;
-	margin-left: 550px;
 	margin-top: 70px;
 }
 
 .tagname_wrap{
 	display: flex;
 	flex-direction: column;
-
+	margin-right:15px;
 }
+.tagname_wrap:nth-last-of-type(1){
+	margin-right:0;
+}
+
 #tag-grade{
 	display: flex;
 	justify-content: center;
