@@ -2,7 +2,7 @@ import Header from "../../components/repeat_etc/Header";
 import React from "react";
 import BgImg from "../../images/blue-galaxy-wallpaper.jpg";
 import Check from "../../images/unchecked.png";
-import "../../css/study_css/TeamBlog.css";
+import TeamBlogcss from  "../../css/study_css/TeamBlog.css";
 
 const TeamBlog = () => {
     return (
