@@ -100,7 +100,7 @@ const ToDoList = ({ sideheader }) => {
         if (filteredTodos.length > 0) {
           acc[dateKey] = filteredTodos;
         }
-        if (filteredTodos.length==0){
+        if (filteredTodos.length===0){
         }
         return acc;
       }, {});

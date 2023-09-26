@@ -25,9 +25,9 @@
     font-weight: bolder;
     margin-left: 30px;
 }
-hr{
-    margin-left: 15px;
-}
+/*hr{*/
+/*    margin-left: 15px;*/
+/*}*/
 .dashboard_container{
     display: flex;
     padding-top: 10px;
