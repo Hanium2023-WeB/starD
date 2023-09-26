@@ -4,6 +4,8 @@ import arrowup from "../../images/arrowup.png";
 //class >> footer_info == min width 650px
 //650px 보다 작을 때는 푸터를 토글 형식으로 할 예정
 
+
+
 const Footer = () => {
 	const [toggle, setToggle] = useState(false);
 	const [arrow, setarrow] = useState(`${arrowdown}`);

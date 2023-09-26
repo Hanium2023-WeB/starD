@@ -22,7 +22,10 @@ const ToDoInsert = ({onInsert})=>{
     ,[value])
 return(
 <form className="TodoInsert">
-   <input onChange={onChange} 
+        <select id="todo-select">
+            <option value="전체">전체</option>
+        </select>
+   <input id={"insert-input"} onChange={onChange}
    value={value} 
    placeholder="할 일을 입력하세요"/>
    <button type="submit" onClick={onSubmit}>입력</button>

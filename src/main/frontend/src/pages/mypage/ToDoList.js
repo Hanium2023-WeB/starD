@@ -145,20 +145,20 @@ const ToDoList = ({ sideheader }) => {
   return (
     <div>
       <Header showSideCenter={true}/>
-      <Backarrow subname={"ToDoList & Calender"}/>
+      {/*<Backarrow subname={"투두 리스트 & 일정"}/>*/}
       <div className="container">
+        <Category />
         <div className="main_container">
+          <p id={"main-container-title"}>투두 리스트 & 일정</p>
           <div className="sub_container" id="todo_sub">
-            <Category />
             <div className="todo_container">
               <div class="today">
                 {" "}
                 <span>{`오늘은 ${Year}년 ${Month}월 ${Dates}일입니다.`}</span>
               </div>
               <ToDoInsert onInsert={onInsert} />
-
               <ul className="TodoList">
-              {filteredTodos.length==0 && (
+              {filteredTodos.length == 0 && (
                 <div className="alert_empty_todo">
                 <span>할 일이 없습니다.<br/>  할 일을 입력해주세요.</span>
                 </div>

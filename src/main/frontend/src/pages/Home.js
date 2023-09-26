@@ -12,7 +12,7 @@ import mapicon from "../images/free-icon-map.png";
 import chaticon from "../images/free-icon-chat.png";
 import {Link} from "react-router-dom";
 import Header from "../components/repeat_etc/Header";
-import LOGO from "../images/Logo2.png";
+import LOGO from "../images/Logo.png";
 import HomeDashBoard from "../components/study/HomeDashBoard";
 
 const searchItems = [
