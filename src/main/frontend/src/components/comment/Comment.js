@@ -20,8 +20,15 @@ const Comment = () => {
 
   // TODO 컴포넌트가 마운트될 때 댓글 목록을 가져옴
   useEffect(() => {
-    fetchComments();
-  }, [targetId, type, accessToken]);
+    fetchComments()
+        .then(() => {
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.error("댓글 목록을 불러오는 중 에러 발생:", error);
+          setLoading(false); // 에러 발생 시에도 로딩 상태를 false로 설정합니다.
+        });
+    }, [targetId, type, accessToken]);
 
   // TODO accessToken으로 닉네임 알아오기
   useEffect(() => {
@@ -72,7 +79,7 @@ const Comment = () => {
     // targetId가 없다면 댓글 목록을 가져올 수 없음
     if (targetId === "") {
       setLoading(false); // 로딩 상태 해제
-      return;
+      return Promise.resolve(); // 빈 Promise를 반환
     }
 
     // 게시글 타입에 따라 요청 URL을 설정합니다.
@@ -83,7 +90,7 @@ const Comment = () => {
       url = `http://localhost:8080/replies/study/${targetId}`;
     }
 
-    axios
+    return axios
       .get(url, {
         withCredentials: true,
         headers: {
@@ -98,11 +105,10 @@ const Comment = () => {
           author: comment.member.nickname, // 작성자의 닉네임 저장
         }));
         setComments(commentsWithIds);
-        setLoading(false); // 로딩 상태 해제
       })
       .catch((error) => {
         console.error("댓글 목록을 불러오는 중 에러 발생:", error);
-        setLoading(false); // 로딩 상태 해제
+        throw error; // 오류를 다시 던져서 .catch() 블록으로 전달
       });
   };
 
@@ -130,8 +136,7 @@ const Comment = () => {
         alert("댓글이 등록되었습니다.");
 
         // 서버로부터 받은 응답에서 새로 등록된 댓글 정보를 가져옵니다.
-        const newCommentData = response.data.replyContent;
-
+        const newCommentData = response.data;
         // 댓글 목록을 업데이트합니다.
         setComments((prevComments) => [...prevComments, newCommentData]);
         fetchComments();
@@ -170,6 +175,7 @@ const Comment = () => {
         );
         setEditingComment(null);
         setComments(updatedComments);
+        fetchComments();
       })
       .catch((error) => {
         console.error("댓글 수정 중 에러 발생:", error);
@@ -201,6 +207,9 @@ const Comment = () => {
     }
   };
 
+  if (loading) {
+    return <p>로딩 중...</p>;
+  }
   return (
     <div className="comment_form">
       <div>

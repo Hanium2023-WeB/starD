@@ -17,4 +17,6 @@ public interface StudyMemberRepository extends JpaRepository<StudyMember, Long> 
     List<StudyMember> findByMember(Member member);
 
     Page<StudyMember> findByMember(Member member, Pageable pageable);
+
+    List<StudyMember> findByStudy(Study study);
 }

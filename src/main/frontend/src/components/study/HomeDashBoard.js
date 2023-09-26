@@ -19,8 +19,14 @@ const HomeDashBoard = () => {
     const [ApplyStudyList, setApplyStudyList] = useState([]);
     const [studies, setStudies] = useState([]);
 
-    const [scrapStates, setScrapStates] = useState(studies.scrap);
-    const [likeStates, setLikeStates] = useState(studies.like);
+    const [scrapStates, setScrapStates] = useState([]);
+    const [likeStates, setLikeStates] = useState([]);
+
+    // 각 스터디 스크랩, 공감 상태 저장
+    // (위에 scrapStates, likeStates 사용하면 의존성 배열 때문에 useEffect 무한 반복,,)
+    const [scrapTwoStates, setScrapTwoStates] = useState([]);
+    const [likeTwoStates, setLikeTwoStates] = useState([]);
+
     const location = useLocation();
     const studyState = location.state;
     const [studiesChanged, setStudiesChanged] = useState(false);
@@ -31,13 +37,13 @@ const HomeDashBoard = () => {
     const [itemsPerPage, setItemsPerPage] = useState(9);
     const navigate = useNavigate();
 
-    //TODO 모집완료 시 신청한 스터디멤버의 이름이 모인 배열
-    useEffect(() => {
-        if (location.state && location.state.acceptedMembers != null) {
-            const ll = location.state.acceptedMembers;
-            console.log(ll);
-        }
-    }, []);
+    // //TODO 모집완료 시 신청한 스터디멤버의 이름이 모인 배열
+    // useEffect(() => {
+    //     if (location.state && location.state.acceptedMembers != null) {
+    //         const ll = location.state.acceptedMembers;
+    //         console.log(ll);
+    //     }
+    // }, []);
 
     function calculateDateDifference(startDate, endDate) {
         const start = new Date(startDate);
@@ -52,6 +58,38 @@ const HomeDashBoard = () => {
     const toggleScrap = (index) => {
         setStudies((prevStudies) => {
             const newStudies = [...prevStudies];
+            const studyId = newStudies[index].study.id;
+            if (newStudies[index].scrap) { // true -> 활성화되어 있는 상태 -> 취소해야 함
+                axios.delete(`http://localhost:8080/scrap/study/${studyId}`, {
+                    params: { id: studyId },
+                    withCredentials: true,
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`
+                    }
+                })
+                    .then(response => {
+                        console.log("스크랩 취소 성공 " + response.data);
+                    })
+                    .catch(error => {
+                        console.error("Error:", error);
+                        console.log("스크랩 취소 실패");
+                    });
+            } else {
+                axios.post(`http://localhost:8080/scrap/study/${studyId}`, null, {
+                    params: { id: studyId },
+                    withCredentials: true,
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`
+                    }
+                })
+                    .then(response => {
+                        console.log("스크랩 성공");
+                    })
+                    .catch(error => {
+                        console.error("Error:", error);
+                        console.log("스크랩 실패");
+                    });
+            }
             newStudies[index] = {...newStudies[index], scrap: !newStudies[index].scrap};
             setStudiesChanged(true); // Mark studies as changed
             return newStudies;
@@ -61,35 +99,138 @@ const HomeDashBoard = () => {
     const toggleLike = (index) => {
         setStudies((prevStudies) => {
             const newStudies = [...prevStudies];
+            const studyId = newStudies[index].study.id;
+            if (newStudies[index].like) { // true -> 활성화되어 있는 상태 -> 취소해야 함
+                axios.delete(`http://localhost:8080/star/study/${studyId}`, {
+                    params: { id: studyId },
+                    withCredentials: true,
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`
+                    }
+                })
+                    .then(response => {
+                        console.log("공감 취소 성공 " + response.data);
+                    })
+                    .catch(error => {
+                        console.error("Error:", error);
+                        console.log("공감 취소 실패");
+                    });
+            } else {
+                axios.post(`http://localhost:8080/star/study/${studyId}`, null, {
+                    params: { id: studyId },
+                    withCredentials: true,
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`
+                    }
+                })
+                    .then(response => {
+                        console.log("공감 성공");
+                    })
+                    .catch(error => {
+                        console.error("Error:", error);
+                        console.log("공감 실패");
+                    });
+            }
             newStudies[index] = {...newStudies[index], like: !newStudies[index].like};
             setStudiesChanged(true); // Mark studies as changed
             return newStudies;
         });
     };
 
-    const handlePageChange = ({page, itemsPerPage, totalItemsCount}) => {
-        setPage(page);
-
-        // 백엔드에 데이터를 요청합니다.
-        axios.get("http://localhost:8080/user/mypage/studying", {
+    useEffect(() => {
+        axios.get("http://localhost:8080/mypage/study/star-scrap", { // 공감
             params: {
                 page: page,
-            }, withCredentials: true,
+                status: "participate",
+                type: "star",
+            },
+            withCredentials: true,
             headers: {
                 'Authorization': `Bearer ${accessToken}`
             }
         })
-            .then((res) => {
-                // 데이터를 받아온 후 스터디 리스트를 업데이트합니다.
-                setStudies(res.data.content);
-
-                // 페이지 정보를 업데이트합니다.
-                setItemsPerPage(res.data.pageable.pageSize);
-                setCount(res.data.totalElements);
+            .then(response => {
+                setLikeStates(response.data);
             })
-            .catch((error) => {
-                console.error("데이터 가져오기 실패:", error);
+            .catch(error => {
+                console.log("공감 불러오기 실패", error);
             });
+
+        axios.get("http://localhost:8080/mypage/study/star-scrap", { // 스크랩
+            params: {
+                page: page,
+                status: "participate",
+                type: "scrap",
+            },
+            withCredentials: true,
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
+        })
+            .then(response => {
+                setScrapStates(response.data);
+            })
+            .catch(error => {
+                console.log("스크랩 불러오기 실패", error);
+            });
+    }, []);
+
+    const handlePageChange = ({page, itemsPerPage, totalItemsCount}) => {
+        setPage(page);
+
+		// 백엔드에 데이터를 요청합니다.
+		const result = axios.get("http://localhost:8080/user/mypage/studying", {
+			params: {
+				page: page,
+			}, withCredentials: true,
+			headers: {
+				'Authorization': `Bearer ${accessToken}`
+			}
+		});
+
+        // 데이터를 받아온 후 스터디 리스트를 업데이트합니다.
+        setStudies(result.data.content);
+
+        // 페이지 정보를 업데이트합니다.
+        setItemsPerPage(result.data.pageable.pageSize);
+        setCount(result.data.totalElements);
+
+        const res_like = axios.get("http://localhost:8080/mypage/study/star-scrap", { // 공감
+            params: {
+                page: page,
+                status: "participate",
+                type: "star",
+            },
+            withCredentials: true,
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
+        });
+
+        const res_scrap = axios.get("http://localhost:8080/mypage/study/star-scrap", { // 스크랩
+            params: {
+                page: page,
+                status: "participate",
+                type: "scrap",
+            },
+            withCredentials: true,
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
+        });
+
+        setLikeTwoStates(res_like)
+        setScrapTwoStates(res_scrap);
+
+        const studyList = result.data.content;
+
+        const updateStudies = studyList.map((study, index) => {
+            study.like = likeTwoStates[index];
+            study.scrap = scrapTwoStates[index];
+            return study;
+        });
+
+        setStudies(updateStudies);
 
         setItemsPerPage(itemsPerPage); //한페이지 당 아이템 개수
         setCount(totalItemsCount); //전체 아이템 개수
@@ -98,7 +239,7 @@ const HomeDashBoard = () => {
     //TODO 모집완료 시 참여내역 불러오기
 
     useEffect(() => {
-        // TODO 서버에서 참여스터디와 참여멤버 가져오기
+        // TODO 서버에서 참여스터디 가져오기
         axios.get("http://localhost:8080/user/mypage/studying", {
             withCredentials: true,
             headers: {
@@ -106,8 +247,18 @@ const HomeDashBoard = () => {
             }
         })
             .then((res) => {
-                console.log("모집완료된 스터디, 참여멤버 전송 성공 : ", res.data);
-                setStudies(res.data.content);
+                console.log("모집완료된 스터디 전송 성공 : ", res.data);
+
+				const studyList = res.data.content;
+
+                const updateStudies = res.data.content.map((study, index) => {
+                    study.like = likeStates[index];
+                    study.scrap = scrapStates[index];
+
+                    return study;
+                });
+
+                setStudies(updateStudies);
 
                 // 페이지 정보를 업데이트합니다.
                 setItemsPerPage(res.data.pageable.pageSize);
@@ -118,10 +269,10 @@ const HomeDashBoard = () => {
 
             })
             .catch((error) => {
-                console.error("모집완료된 스터디, 참여멤버  가져오기 실패:", error);
+                console.error("모집완료된 스터디 가져오기 실패:", error);
             });
 
-    }, [accessToken]);
+    }, [accessToken, likeStates, scrapStates]);
 
     const goNextTeamBlog=(item)=>{
         console.log("팀블로그에 넘겨주는 item:", item);
@@ -137,7 +288,7 @@ const HomeDashBoard = () => {
             <div className={"HomeDashBoard"}>
             <div className="study_list">
                 {studies.map((d, index) => (
-                    <div className="dashboardlist" key={d.study.id}>
+                    <div className="dashboardlist" key={d.study.id} onClick={()=>goNextTeamBlog(d)}>
                         <div className="dashboard_header">
                             <div className="dashboard_sub_header">
 
@@ -162,7 +313,7 @@ const HomeDashBoard = () => {
                             </div>
                         </div>
 
-                        <div className={"contnet"} onClick={()=>goNextTeamBlog(d)}>
+                        <div className={"contnet"} >
                             <div className="list_deadline">
                                 마감일 | {d.study.recruitmentDeadline} / 팀장: {d.study.recruiter.nickname}
                             </div>

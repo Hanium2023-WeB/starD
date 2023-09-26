@@ -19,6 +19,8 @@ function checkRecruitStatus(recruitStatus) {
 
     if (recruitStatus == "RECRUITING")
         return "모집 중";
+    else
+        return "모집 완료";
 }
 
 const StudyListItem = ({studies, toggleLike, toggleScrap, d, index}) => {

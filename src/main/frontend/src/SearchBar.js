@@ -11,6 +11,8 @@ const SearchBar = (props) => {
 	const [search, setSearch] = useState("");
 	const [selectOption, setSelectOption] = useState("제목");
 	const navigate = useNavigate();
+	const [searchState , setSearchState] = useState();
+
 
 	//엔터를 치면 해당 검색페이지로 넘어갑니다
 	const handleKeyDown = (e) => {
@@ -51,7 +53,7 @@ const SearchBar = (props) => {
 					.then((res)=>{
 						console.log("전송 성공");
 						console.log(res.data);
-
+						setSearchState(res.data);
 					}).catch((error)=>{
 						console.log('전송 실패', error);
 					})
@@ -67,7 +69,9 @@ const SearchBar = (props) => {
 		console.log("타깃",item)
 		setSearch(item);
 		const queryParams = `?q=${encodeURIComponent(item)}&select=${encodeURIComponent(selectOption)}`;
-		navigate(`/search${queryParams}`);
+		navigate(`/search${queryParams}`,{
+			 state:searchState
+		});
 	}
 
 	return (
@@ -117,9 +121,6 @@ const SearchBar = (props) => {
 			{/*			</ul>*/}
 			{/*		) : null}*/}
 			{/*	</div>*/}
-			{/*</div>*/}
-
-		{/*</div>*/}
 			</div>
 		</div>
 	);

@@ -12,6 +12,8 @@ import {useLocation} from "react-router-dom";
 import axios from "axios";
 import StudyApplyList  from "../../pages/studypage/StudyApplyList";
 
+
+
 const StudyDetail = ({sideheader}) => {
 
     const location = useLocation();
@@ -32,7 +34,6 @@ const StudyDetail = ({sideheader}) => {
     const isLoggedInUserId = localStorage.getItem('isLoggedInUserId');
     const [applyReason, setApplyReason] = useState([]);
     const [isRecruiter, setIsRecruiter] = useState(false);
-
 
     useEffect(() => {
 

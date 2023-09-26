@@ -1,16 +1,40 @@
-const StudyInfo = ({ study, handleEditClick, handleStudyDelete }) => {
+const formatDatetime = (datetime) => { //날짜 시간 형식
+    const date = new Date(datetime);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    const hours = String(date.getHours()).padStart(2, "0");
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+    const formattedDatetime = `${year}-${month}-${day} ${hours}:${minutes}`;
+    return formattedDatetime;
+};
+
+const StudyInfo = ({study, handleEditClick, handleStudyDelete}) => {
     console.log("study:", study);
     const showregion = () => {
         if (study.onOff === "offline" || study.onOff === "both") {
             return (
-            <li>
-                <span>지역</span>
-                <span>{study.city} </span>
-                <span>{study.district}</span>
-            </li>
+                <li>
+                    <span>지역</span>
+                    <span>{study.city} </span>
+                    <span>{study.district}</span>
+                </li>
             )
         }
     }
+
+    // 날짜, 시간 포맷팅("yyyy-MM-dd HH:mm" 형식)
+    const formatDatetime = (datetime) => {
+      const date = new Date(datetime);
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
+      const hours = String(date.getHours()).padStart(2, "0");
+      const minutes = String(date.getMinutes()).padStart(2, "0");
+      const formattedDatetime = `${year}-${month}-${day} ${hours}:${minutes}`;
+      return formattedDatetime;
+    };
+
     return (
         <>
             <div className="study_header">
@@ -18,7 +42,7 @@ const StudyInfo = ({ study, handleEditClick, handleStudyDelete }) => {
                 <div>
                     <div className="study_author_info">
                         <p className="study_author">{study.recruiter.nickname}</p>
-                        <p className="study_created_date">{study.recruitmentStart}</p>
+                        <p className="study_created_date">{formatDatetime(study.recruitmentStart)}</p>
                     </div>
                     <div className="study_detail_btn">
                         <button className="study_edit" onClick={handleEditClick}>수정</button>
@@ -37,8 +61,8 @@ const StudyInfo = ({ study, handleEditClick, handleStudyDelete }) => {
                         <span>{study.tags}</span>
                     </li>
                     <li>
-                        <span>모집 중</span>
-                        <span>{study.capacity}</span>
+                        <span>모집 인원</span>
+                        <span>{study.capacity} 명</span>
                     </li>
                     <li>
                         <span>진행 방식</span>

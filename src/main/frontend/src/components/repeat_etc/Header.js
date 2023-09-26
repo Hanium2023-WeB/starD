@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {Link} from "react-router-dom";
-import LOGO from "../../images/Logo.png"
+import LOGO from "../../images/Logo2.png"
 
 const Header = ({ showSideCenter }) => {
 	//헤더 잡아놓기
@@ -148,6 +148,7 @@ const Header = ({ showSideCenter }) => {
 							>
 								<div className={"Header_logo"}>
 								STAR D
+
 									<div className={"Header_logo_img"}>
 								<img src={LOGO} width={"60px"}/></div>
 								</div>

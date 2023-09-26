@@ -17,8 +17,8 @@ const StudyInsert = ({updateStudies, onClose}) => {
     const [studies, setStudies] = useState([]);
     const value = "*스터디 주제: \n*스터디 목표: \n*예상 스터디 일정(횟수): \n*예상 커리큘럼 간략히: \n*스터디 소개와 개설 이유: \n*스터디 관련 주의사항: ";
     const [tags, setTags] = useState([]);
-    const [city, setCity]= useState("");
-    const[district, setDistrict] = useState("");
+    const [city, setCity] = useState("");
+    const [district, setDistrict] = useState("");
     const [current, setCurrent] = useState("Recruiting");
     //폼 데이터
     const [formData, setFormData] = useState({
@@ -27,46 +27,47 @@ const StudyInsert = ({updateStudies, onClose}) => {
         author: "",
         number: "",
         onoff: "",
-        sido:"",
-        gugun:"",
+        sido: "",
+        gugun: "",
         deadline: "",
         startDate: "",
         endDate: "",
         description: "",
         tag: "",
         created_date: new Date(),
-        current:current,
+        current: current,
         scrap: false,
         like: false,
 
     });
 //관심분야 옵션들
     const tagoptions = [
-        { value: "웹 개발", name: "웹 개발" },
-        { value: "앱 개발", name: "앱 개발" },
-        { value: "머신러닝", name: "머신러닝" },
-        { value: "데이터 분석", name: "데이터 분석" },
-        { value: "게임 개발", name: "게임 개발" },
-        { value: "블록체인", name: "블록체인" },
-        { value: "네트워크 보안", name: "네트워크 보안" },
-        { value: "클라우드 컴퓨팅", name: "클라우드 컴퓨팅" },
-        { value: "인공지능", name: "인공지능" },
-        { value: "사이버 보안", name: "사이버 보안" },
-        { value: "소프트웨어 테스트", name: "소프트웨어 테스트" },
-        { value: "로봇공학", name: "로봇공학" },
-        { value: "사물인터넷 (IoT)", name: "사물인터넷 (IoT)" },
-        { value: "데이터베이스 관리", name: "데이터베이스 관리" },
-        { value: "UI/UX 디자인", name: "UI/UX 디자인" },
-        { value: "프로젝트 관리", name: "프로젝트 관리" },
-        { value: "빅데이터", name: "빅데이터" },
-        { value: "컴퓨터 그래픽스", name: "컴퓨터 그래픽스" },
-        { value: "자동화", name: "자동화" },
-        { value: "블로그 운영", name: "블로그 운영" },
+        { value: "취업", name: "취업" },
+        { value: "자소서", name: "자소서" },
+        { value: "면접", name: "면접" },
+        { value: "취미", name: "취미" },
+        { value: "영어 공부", name: "영어 공부" },
+        { value: "프로그래밍", name: "프로그래밍" },
+        { value: "음악", name: "음악" },
+        { value: "미술", name: "미술" },
+        { value: "스포츠", name: "스포츠" },
+        { value: "요리", name: "요리" },
+        { value: "건강", name: "건강" },
+        { value: "여행", name: "여행" },
+        { value: "독서", name: "독서" },
+        { value: "투자", name: "투자" },
+        { value: "사회봉사", name: "사회봉사" },
+        { value: "뉴스", name: "뉴스" },
+        { value: "기술 동향", name: "기술 동향" },
+        { value: "건축", name: "건축" },
+        { value: "환경", name: "환경" },
+        {value: "블로그 운영", name: "블로그 운영"},
+        // Add more categories as needed
     ];
 
     //입력데이터 상태관리
     const handleInputChange = (e) => {
-        const { name, value } = e.target;
+        const {name, value} = e.target;
         setFormData({
             ...formData,
             [name]: value,
@@ -86,16 +87,16 @@ const StudyInsert = ({updateStudies, onClose}) => {
     const handleRegionCityChange = (newCity) => {
         setCity(newCity);
         setFormData({
-       ...formData,
-            sido : newCity,
-      })
-  };
+            ...formData,
+            sido: newCity,
+        })
+    };
     //구,군 추가
     const handleRegionDistrictChange = (newDistrict) => {
         setDistrict(newDistrict);
         setFormData({
             ...formData,
-            gugun : newDistrict,
+            gugun: newDistrict,
         })
     };
 
@@ -112,13 +113,28 @@ const StudyInsert = ({updateStudies, onClose}) => {
     }
 
     const onInsertStudy = useCallback((study) => {
-        const {title, field, author, number, onoff,sido, gugun, deadline, startDate, endDate, description, tag, created_date, current} = study;
-        console.log("study::::::::::: " , tag);
+        const {
+            title,
+            field,
+            author,
+            number,
+            onoff,
+            sido,
+            gugun,
+            deadline,
+            startDate,
+            endDate,
+            description,
+            tag,
+            created_date,
+            current
+        } = study;
+        console.log("study::::::::::: ", tag);
         const selectedField = document.querySelector('select[name="field"]').value;
 
-        let selectedSido="";
+        let selectedSido = "";
         let selectedGugun = "";
-        if(showSelect) {
+        if (showSelect) {
             //온라인을 택하지 않았을 때만 값을 받아오고 온라인을 택했을 때는 그냥 "" 처리
             const selectedSido = document.querySelector('select[name="sido1"]').value;
             const selectedGugun = document.querySelector('select[name="gugun1"]').value;
@@ -130,15 +146,15 @@ const StudyInsert = ({updateStudies, onClose}) => {
             author,
             number,
             onoff,
-            sido:selectedSido,
-            gugun:selectedGugun,
+            sido: selectedSido,
+            gugun: selectedGugun,
             deadline,
             startDate,
             endDate,
             description,
             tag,
             created_date,
-            current:current,
+            current: current,
             id: dataId,
             scrap: false,
             like: false,
@@ -177,17 +193,46 @@ const StudyInsert = ({updateStudies, onClose}) => {
         e.preventDefault(); // 기본 이벤트 방지
 
         if (
-            formData.title.trim() === '' ||
-            formData.field.trim() === null ||
-            formData.number.trim() === '' ||
-            formData.deadline.trim() === '' ||
-            formData.startDate.trim() === '' ||
-            formData.endDate.trim() === '' ||
-            formData.description.trim() === ''
+            formData.title.trim() === '' &&
+            formData.number.trim() === '' &&
+            formData.deadline.trim() === '' &&
+            formData.startDate.trim() === '' &&
+            formData.endDate.trim() === '' &&
+            formData.description.trim() === '' &&
+            !formData.onoff
         ) {
             // 하나라도 비어있으면 알림을 표시하거나 다른 처리를 수행할 수 있습니다.
-            alert('모든 필드를 입력해주세요.');
+            alert('스터디 정보를 입력해주세요.');
+
             return; // 창이 넘어가지 않도록 중단
+        }
+        if (formData.title.trim() === '') {
+            alert("제목을 입력해주세요.");
+            return;
+        }
+        if (formData.number.trim() === '') {
+            alert("모집 인원을 입력해주세요.");
+            return;
+        }
+        if (formData.deadline.trim() === '') {
+            alert("모집 마감일을 입력해주세요.");
+            return;
+        }
+        if (formData.startDate.trim() === '') {
+            alert("스터디 시작일을 입력해주세요.");
+            return;
+        }
+        if (formData.endDate.trim() === '') {
+            alert("스터디 종료일을 입력해주세요.");
+            return;
+        }
+        if (formData.description.trim() === '') {
+            alert("상세 내용을 입력해주세요.");
+            return;
+        }
+        if (!formData.onoff) {
+            alert("온라인, 오프라인 여부를 선택해주세요.");
+            return;
         }
 
         const tagElement = document.querySelector(".HashWrapInner");
@@ -214,36 +259,38 @@ const StudyInsert = ({updateStudies, onClose}) => {
         //TODO 스터디 개설 서버 전송 (스크랩, 공감 제외)
         const response = axios.post("http://localhost:8080/api/v2/studies",
             {
-                title:studyWithTags.title,
-                field:studyWithTags.field,  // 분야
+                title: studyWithTags.title,
+                field: studyWithTags.field,  // 분야
                 capacity: studyWithTags.number, // 모집 인원
-                onOff:studyWithTags.onoff,  // 온/온라인/무관
-                city:studyWithTags.sido,    // 시
-                district:studyWithTags.gugun,   // 구
+                onOff: studyWithTags.onoff,  // 온/온라인/무관
+                city: studyWithTags.sido,    // 시
+                district: studyWithTags.gugun,   // 구
                 recruitmentDeadline: studyWithTags.deadline,    // 모집 마감
                 activityStart: studyWithTags.startDate, // 활동 시작
-                activityDeadline:studyWithTags.endDate, // 활동 마감
+                activityDeadline: studyWithTags.endDate, // 활동 마감
                 content: studyWithTags.description, // 내용
                 tags: studyWithTags.tag,    // 태그
                 // scrap: studies.scrap,
                 // like:studies.like,
             },
-            {withCredentials: true,
+            {
+                withCredentials: true,
                 headers: {
                     'Authorization': `Bearer ${accessToken}`
-                }})
-            .then((res)=>{
+                }
+            })
+            .then((res) => {
                 // console.log("전송 성공");
                 // console.log(res.data);
                 //성공하면
                 // navigate("/myopenstudy", {state: formData});
 
-            }).catch((error)=>{
+            }).catch((error) => {
                 console.log('전송 실패', error);
             })
 
         //JSON.stringify(formData) 이렇게 안해주고 그냥 formData만 넘겨주게 되면 Object Object 가 뜸
-        console.log("response : ",response);
+        console.log("response : ", response);
         // console.log(`formData: ${JSON.stringify(formData)}`)
         // console.log(`studies: ${JSON.stringify(studies)}`)
         //myopenstudy에 navigate로 데이터 넘기기
@@ -289,26 +336,28 @@ const StudyInsert = ({updateStudies, onClose}) => {
                         </div>
                     </div>
                     <div className="right">
-                        <div className={"interest"} style={{marginRight:"10px"}}>
-                            <span id={"inter"} >분야</span>
+                        <div className={"interest"} style={{marginRight: "10px"}}>
+                            <span id={"inter"}>분야</span>
                             {/*<input type="text" name="field" value={formData.field} onChange={handleInputChange}*/}
                             {/*       className="inputbox" placeholder="사용할 태그를 입력해주세요"/>*/}
                             <span className="field_wrapper">
                                 <select name="field" value={formData.field} onChange={handleInputChange}>
-                                    {tagoptions.map((interest,idx) =>
-                                        <option key={idx} value={interest.value} >{interest.name}</option>
+                                    {tagoptions.map((interest, idx) =>
+                                        <option key={idx} value={interest.value}>{interest.name}</option>
                                     )}
                                 </select>
                             </span>
                         </div>
-                        <div style={{marginRight:"10px"}}>
+                        <div style={{marginRight: "10px"}}>
                             <span className="onoff_title">진행 방식</span>
                             <div className="onoff">
                                 <input type="radio" value="online" name="onoff" onChange={handleRadioChange}/>온라인
                                 <input type="radio" value="offline" name="onoff" onChange={handleRadioChange}/>오프라인
                                 <input type="radio" value="both" name="onoff" onChange={handleRadioChange}/>무관
                                 {showSelect && (
-                                    <StudyRegion formData={formData} city={formData?.sido} district={formData?.gugun}  handleRegionCityChange={handleRegionCityChange} handleRegionDistrictChange={handleRegionDistrictChange} />
+                                    <StudyRegion formData={formData} city={formData?.sido} district={formData?.gugun}
+                                                 handleRegionCityChange={handleRegionCityChange}
+                                                 handleRegionDistrictChange={handleRegionDistrictChange}/>
                                 )}
                             </div>
                         </div>
