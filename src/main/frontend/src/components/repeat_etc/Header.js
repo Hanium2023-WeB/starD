@@ -197,6 +197,7 @@ const Header = ({ showSideCenter }) => {
 	// };
 
 	return (
+		<div className={"header_wrap"}>
 		<header>
 			<div className="head_left">{sideleft()}</div>
 			{showSideCenter ? <div className="head_text">{sidecenter()}</div>:
@@ -204,6 +205,7 @@ const Header = ({ showSideCenter }) => {
 			}
 			<div className="head_right">{Side()}</div>
 		</header>
+		</div>
 	);
 };
 export default Header;
