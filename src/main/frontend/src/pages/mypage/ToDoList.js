@@ -79,42 +79,66 @@ const ToDoList = ({ sideheader }) => {
     },
     [selectedDate]
   );
+
   const dateKey = selectedDate.toDateString();
   console.log(`dateKey: ${dateKey}`);
+
   const filteredTodos = todoswithAssignee[dateKey] || [];
+  console.log("todoswithAssignee",filteredTodos);
 
   //삭제 함수
-  const onRemove = useCallback(
+  const onRemove = useCallback( //todos.todo의 id
     (id) => {
+      console.log("id",id);
       alert("삭제하시겠습니까?");
-      const updatedTodos = Object.keys(todos).reduce((acc, dateKey) => {
-        const filteredTodos = todoswithAssignee[dateKey].filter((todo) => todo.id !== id);
-        if (filteredTodos.length > 0) {
-          acc[dateKey] = filteredTodos;
-        }
-        if (filteredTodos.length===0){
-        }
-        return acc;
-      }, {});
-      setTodos(updatedTodos);
-    },
-    [todos]
+      const updatedTodos = {...todoswithAssignee};
+      Object.keys(updatedTodos).forEach((dateKey)=>{
+      updatedTodos[dateKey] = updatedTodos[dateKey].filter((todo)=>todo.todo.id !==id);
+      });
+      setTodoswithAssignee(updatedTodos);
+      // console.log("RemovetodoswithAssignee",todoswithAssignee);
+    },[todoswithAssignee]
+
+    //   const updatedTodos = Object.keys(todoswithAssignee).reduce((acc, dateKey) => {
+    //     const filteredTodos = todoswithAssignee[dateKey].filter((todo) => todo.id !== id);
+    //     console.log("reefilteredTodos",filteredTodos);
+    //     if (filteredTodos.length > 0) {
+    //       acc[dateKey] = filteredTodos;
+    //     }
+    //     if (filteredTodos.length===0){
+    //     }
+    //     return acc;
+    //   }, {});
+    //   setTodoswithAssignee(updatedTodos);
+    // },
+    // [todoswithAssignee]
   );
 
   //수정 함수
-  const onUpdate = (id, text) => {
+  const onUpdate =useCallback((id, title, task) => {
     onInsertToggle();
+    setTodoswithAssignee((prevTodos) => {
+      const updatedTodos = { ...prevTodos };
+      Object.keys(updatedTodos).forEach((dateKey) => {
+        updatedTodos[dateKey] = updatedTodos[dateKey].map((todo) =>
+            todo.todo.id === id ? { todo: { ...todo.todo, title, task }, toDoStatus: todo.toDoStatus } : todo
+        );
+      });
+      return updatedTodos;
+    });
+  }, []);
+    // const updatedTodos = Object.keys(todos).reduce((acc, dateKey) => {
+    //   const updatedTodosForKey = todos[dateKey].map((todo) =>
+    //     todo.id === id ? { ...todo, title, task } : todo
+    //   );
+    //   acc[dateKey] = updatedTodosForKey;
+    //   return acc;
+    // }, {});
 
-    const updatedTodos = Object.keys(todos).reduce((acc, dateKey) => {
-      const updatedTodosForKey = todos[dateKey].map((todo) =>
-        todo.id === id ? { ...todo, text } : todo
-      );
-      acc[dateKey] = updatedTodosForKey;
-      return acc;
-    }, {});
+    // setTodos(updatedTodos);
+  // };
 
-    setTodos(updatedTodos);
-  };
+  //체크 버튼 바꾸는 함수
   const onToggle = useCallback(
     (id) => {
       const updatedTodos = Object.keys(todos).reduce((acc, dateKey) => {
@@ -168,7 +192,6 @@ const ToDoList = ({ sideheader }) => {
                   />
                 ))}
               </ul>
-
               {insertToggle && (
                 <ToDoEdit selectedTodo={selectedTodo} onUpdate={onUpdate} />
               )}

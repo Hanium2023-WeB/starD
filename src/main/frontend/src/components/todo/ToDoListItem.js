@@ -19,8 +19,8 @@ const ToDoListItem = ({todos, onRemove, onToggle, onChangeSelectedTodo, onInsert
                 <div className="text">{todos.todo.task}</div>
             </div>
             <div className="Edit" onClick={() => {
-                onChangeSelectedTodo(todos);
                 onInsertToggle();
+                onChangeSelectedTodo(todos);
             }}>
                 <img src={editicon} width="20px" />
             </div>
