@@ -25,23 +25,6 @@ const ToDoList = ({ sideheader }) => {
 
   const location = useLocation();
 
-
-  useEffect(() => {
-    const ParticipatedStudy = localStorage.getItem('MyParticipatedStudy');  //참여중인 스터디
-    const parsedParticipatedStudy = JSON.parse(ParticipatedStudy);
-    const StudyIdANDMember = localStorage.getItem("ParticipateState");
-    const parsedStudyIdAndMember = JSON.parse(StudyIdANDMember);
-    const openStudies = location.state;
-    // const member = localStorage.getItem("acceptedMembers"); //모집 후 최종 멤버들
-    // const StudyId = localStorage.getItem("ParticipatedStudyId");
-
-    setStudy(parsedParticipatedStudy);
-    console.log("개설된 스터디",openStudies);
-    console.log("참여하는 스터디", parsedParticipatedStudy);
-    // console.log("참여멤버", member);
-    console.log("스터디별 참여 멤버들", parsedStudyIdAndMember);
-  }, []);
-
   const onInsertToggle = () => {
     if (selectedTodo) {
       setSelectedTodo(null);
@@ -53,7 +36,8 @@ const ToDoList = ({ sideheader }) => {
     setSelectedTodo(todo);
   };
 
-  const [todos, setTodos] = useState({});
+  const [todos, setTodos] = useState({}); //투두만
+  const [todoswithAssignee, setTodoswithAssignee] = useState({}); //투두랑 담당자 함친 객체 배열 state
 
   //새로운 일정 추가
   const nextId = useRef(1);
@@ -71,32 +55,40 @@ const ToDoList = ({ sideheader }) => {
     localStorage.setItem("todos", JSON.stringify(todos));
   }, [todos]);
 
+  //할일 추가 함수
   const onInsert = useCallback(
-    (text) => {
+    (title,task) => {
       const dateKey = selectedDate.toDateString();
       const todo = {
         id: nextId.current,
-        text,
+        title,
+        task,
         checked: false,
         date: dateKey,
       };
-      setTodos((prevTodos) => ({
+      const assignee ={
+        todo:todo,
+        toDoStatus :false,
+      }
+      setTodoswithAssignee((prevTodos) => ({
         ...prevTodos,
-        [dateKey]: [...(prevTodos[dateKey] || []), todo],
+        [dateKey]: [...(prevTodos[dateKey] || []), assignee],
       }));
+
       nextId.current++;
     },
     [selectedDate]
   );
   const dateKey = selectedDate.toDateString();
   console.log(`dateKey: ${dateKey}`);
-  const filteredTodos = todos[dateKey] || [];
+  const filteredTodos = todoswithAssignee[dateKey] || [];
 
+  //삭제 함수
   const onRemove = useCallback(
     (id) => {
       alert("삭제하시겠습니까?");
       const updatedTodos = Object.keys(todos).reduce((acc, dateKey) => {
-        const filteredTodos = todos[dateKey].filter((todo) => todo.id !== id);
+        const filteredTodos = todoswithAssignee[dateKey].filter((todo) => todo.id !== id);
         if (filteredTodos.length > 0) {
           acc[dateKey] = filteredTodos;
         }
@@ -109,6 +101,7 @@ const ToDoList = ({ sideheader }) => {
     [todos]
   );
 
+  //수정 함수
   const onUpdate = (id, text) => {
     onInsertToggle();
 
@@ -152,25 +145,26 @@ const ToDoList = ({ sideheader }) => {
           <p id={"main-container-title"}>투두 리스트 & 일정</p>
           <div className="sub_container" id="todo_sub">
             <div className="todo_container">
-              <div class="today">
+              <div className="today">
                 {" "}
                 <span>{`오늘은 ${Year}년 ${Month}월 ${Dates}일입니다.`}</span>
               </div>
-              <ToDoInsert onInsert={onInsert} />
+              <ToDoInsert onInsert={onInsert} dueDate={selectedDate}/>
               <ul className="TodoList">
-              {filteredTodos.length == 0 && (
+              {filteredTodos.length === 0 && (
                 <div className="alert_empty_todo">
                 <span>할 일이 없습니다.<br/>  할 일을 입력해주세요.</span>
                 </div>
               )}
                 {filteredTodos.map((todo) => (
                   <ToDoListItem
-                    todo={todo}
+                    todos={todo}
                     key={todo.id}
                     onRemove={onRemove}
                     onToggle={onToggle}
                     onChangeSelectedTodo={onChangeSelectedTodo}
                     onInsertToggle={onInsertToggle}
+                    selectedDate={selectedDate}
                   />
                 ))}
               </ul>

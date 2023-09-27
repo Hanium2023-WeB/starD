@@ -5,7 +5,7 @@ html {
 .container {
 	width: 100%;
 	margin: 0 auto;
-	width: 90%;
+	/*width: 90%;*/
 	margin: 30px auto 0;
 	display: flex;
 	flex-direction: row;
@@ -23,6 +23,7 @@ html {
 	font-family: inter;
 	font-weight: bolder;
 	position: relative;
+	left: 15px;
 }
 
 .main_container h2 {
@@ -88,7 +89,7 @@ html {
 .content_container {
 	display: flex;
 	padding-top: 10px;
-	padding-left: 35px;
+	padding-right: 60px;
 	border-radius: 15px;
 	height: 100%;
 	overflow: hidden;
@@ -105,8 +106,8 @@ html {
 }
 .study_list .list {
 	width: 25%;
-	height: 240px;
-	margin-right: 20px;
+	height: 220px;
+	margin-right: 12px;
 	margin-bottom: 20px;
 	padding: 30px;
 	/*border: 1px solid #99a3af;*/
