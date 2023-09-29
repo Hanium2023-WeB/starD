@@ -344,7 +344,7 @@ const Signup = () => {
                     <div className="input_info" style={{left:"31px"}}>
                         <div className="subinfo">아이디<span className="require_info">*</span></div>
                         <div className="signup_id input_bottom">
-                            <div style={{display:"flex"}}>
+                            <div style={{display:"flex",alignItems:"center"}}>
                                 <input
                                     ref={inputID}
                                     name={"id"} // Member 클래스의 필드 이름과 일치해야 함
@@ -392,7 +392,7 @@ const Signup = () => {
 
                         <div className="subinfo">닉네임<span className="require_info">*</span></div>
                         <div className="signup_nicname input_bottom">
-                            <div style={{display:"flex"}}>
+                            <div style={{display:"flex",alignItems:"center"}}>
                                 <input
                                     ref={inputNicname}
                                     name={"nickname"}

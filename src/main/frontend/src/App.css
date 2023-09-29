@@ -30,7 +30,8 @@ body {
 .main_wrap{
 	height: 3369px;
 }
-#study.main_wrap {
+#study.main_wrap,
+#community.main_wrap{
 	height: fit-content;
 }
 
@@ -206,11 +207,6 @@ nav {
 	margin-bottom: 50px;
 	margin-top: 0px;
 }
-.select_search{
-	position: relative;
-	bottom: 9px;
-	right: 18px;
-}
 #sub{
 	border: 1px solid #d9d9d9;
 	border-radius: 10px;
@@ -219,7 +215,7 @@ nav {
 	width: 111px;
 	height: 47px;
 	margin-right: 10px;
-	margin-bottom: 15px;
+	/*margin-bottom: 15px;*/
 	color:grey;
 	font-family: 'Pretendard-Regular';
 }
@@ -237,8 +233,8 @@ nav {
 }
 
 input {
-	position: relative;
-	bottom: 10px;
+	/*position: relative;*/
+	/*bottom: 10px;*/
 	width: 500px;
 	height: 50px;
 	border-radius: 10px;
@@ -272,10 +268,14 @@ input::placeholder{
 	font-size: 1.5rem;
 
 }
-.searchinput img{
+.searchinput{
 	position: relative;
-	right: 35px;
-	bottom: 3.5px;
+}
+.searchinput img{
+	position: absolute;
+	right: 20px;
+	top: 50%;
+	transform: translateY(-50%);
 }
 .welcome{
 	display: flex;
@@ -746,10 +746,10 @@ footer p {
 		margin-bottom: 50px;
 		margin-top: 70px;
 	}
-	.select_search {
-		position: relative;
-		bottom: 4px;
-	}
+	/*.select_search {*/
+	/*	position: relative;*/
+	/*	bottom: 4px;*/
+	/*}*/
 	.searchinput input{
 		width: 240px;
 	}
