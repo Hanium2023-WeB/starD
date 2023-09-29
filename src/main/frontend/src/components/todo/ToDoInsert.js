@@ -8,76 +8,55 @@ import {useLocation} from "react-router-dom";
 //투두리스트 데이터 구조 변경 -> 아이디,스터디 ,할 일,날짜, 담당자
 
 const ToDoInsert = ({onInsert, dueDate}) => {
-    // const accessToken = localStorage.getItem('accessToken');
-    // const [scrapStates, setScrapStates] = useState([]); //내가 지원한 스터디 스크랩 상태값
-    // const [likeStates, setLikeStates] = useState([]); //내가 지원한 스터디 공감 상태값
+    const accessToken = localStorage.getItem('accessToken');
+    const [studies, setStudy] = useState([]);//참여 중인 스터디 리스트
+    const [studyTitles, setStudyTitles] = useState([]); //참여 중인 스터디 제목
+    const [studyIds, setStudyIds] = useState([]); //참여 중인 스터디 아이디
+    const [studyMems, setStudyMems] = useState([]); //참여 멤버
 
-    const [studies, setStudy] = useState([]);//스터디
-    const [ParticipateState, setParticipatedState] = useState({}); //참여멤버
-    const [studyTitles, setStudyTitles] = useState([]);
-    const location = useLocation();
-
+    // TODO 서버에서 참여스터디와 참여멤버 가져오기
     useEffect(() => {
-        const ParticipatedStudy = localStorage.getItem('MyParticipatedStudy');  //참여중인 스터디
-        const parsedParticipatedStudy = JSON.parse(ParticipatedStudy);
-        const StudyIdANDMember = localStorage.getItem("ParticipateState");
-        const parsedStudyIdAndMember = JSON.parse(StudyIdANDMember);
-        const studiesTitle = parsedParticipatedStudy.map(studyObj => studyObj.study.title);
-        setStudyTitles(studiesTitle);
-        console.log("타이틀", studyTitles);
-        // const member = localStorage.getItem("acceptedMembers"); //모집 후 최종 멤버들
-        // const StudyId = localStorage.getItem("ParticipatedStudyId");
-        setStudy(parsedParticipatedStudy);
-        console.log("참여하는 스터디", parsedParticipatedStudy);
-        console.log("스터디 타이틀", studiesTitle);
+        axios.get("http://localhost:8080/user/mypage/studying", {
+            withCredentials: true,
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
+        })
+            .then((res) => {
+                console.log("모집완료된 스터디, 참여멤버 전송 성공 : ", res.data);
 
-        // console.log("참여멤버", member);
-        console.log("스터디별 참여 멤버들", parsedStudyIdAndMember);
-    }, []);
+                const studyList = res.data.content;
+                setStudy(studyList);
+                // console.log("모집완료 ? :", studies);
+                const studiesTitle = studyList.map(item => item.study.title);
+                setStudyTitles(studiesTitle);
+                const studiesIds = studyList.map(item => item.study.id);
+                setStudyIds(studiesIds);
+                const ParticipatedStudiesMem = studyList.map(item => item.member.id);
+                setStudyMems(ParticipatedStudiesMem);
 
-    // useEffect(() => {
-    //     // TODO 서버에서 참여스터디와 참여멤버 가져오기
-    //     axios.get("http://localhost:8080/user/mypage/studying", {
-    //         withCredentials: true,
-    //         headers: {
-    //             'Authorization': `Bearer ${accessToken}`
-    //         }
-    //     })
-    //         .then((res) => {
-    //             console.log("모집완료된 스터디, 참여멤버 전송 성공 : ", res.data);
-    //
-    //             const studyList = res.data.content;
-    //
-    //             const updateStudies = res.data.content.map((study, index) => {
-    //                 study.like = likeStates[index];
-    //                 study.scrap = scrapStates[index];
-    //
-    //                 return study;
-    //             });
-    //
-    //             setStudies(updateStudies);
-    //
-    //             // localStorage.setItem("MyParticipatedStudy", JSON.stringify(res.data.content));
-    //             // 페이지 정보를 업데이트합니다.
-    //             // setApplyStudyList(res.data);
-    //             //setApplyMemberList();
-    //             console.error("모집완료된 스터디, 참여멤버  가져오기:",res.data.content);
-    //         })
-    //         .catch((error) => {
-    //             console.error("모집완료된 스터디, 참여멤버  가져오기 실패:", error);
-    //         });
-    //
-    // }, [accessToken, likeStates, scrapStates]);
+                console.log("참여 스터디 아이디", studiesIds);
+                console.log("참여 스터디 제목", studiesTitle);
+                console.log("참여중인 스터디", studyList);
+                console.log("참여멤버", ParticipatedStudiesMem);
+
+            })
+            .catch((error) => {
+                console.error("모집완료된 스터디, 참여멤버  가져오기 실패:", error);
+            });
+
+    }, [accessToken]);
 
     //할 일 state
     const [TaskValue, setTaskValue] = useState('');
 
     //어떤 스터디의 할 일인지 상태
     const [InsertToDoTitle, setInsertToDoTitle] = useState("")
-
+    const [InsertToDoStudyId, setInsertToDoStudyId] = useState("")
+    const studyIdAsNumber = parseInt(InsertToDoStudyId, 10); // 10진수로 파싱
     //투두 객체 배열 상태
     const [InsertToDo, setInsertToDo] = useState({
-            title: InsertToDoTitle,
+            title: studyIdAsNumber,
             task: TaskValue,
             dueDate: dueDate,
         }
@@ -101,13 +80,174 @@ const ToDoInsert = ({onInsert, dueDate}) => {
             e.preventDefault();
         }
         , [TaskValue])
-    const selectStudyTitle = (e) => {
+    // const onSubmit = useCallback(
+    //     (e) => {
+    //         e.preventDefault();
+    //
+    //         // 데이터 전송 요청
+    //         axios
+    //             .post("http://localhost:8080/todo",{
+    //                 headers: {
+    //                     Authorization: `Bearer ${accessToken}`,
+    //                 },
+    //                 params: {
+    //                     year: dueDate.getFullYear(),
+    //                     month: dueDate.getMonth()+1,
+    //                     Authorization: `Bearer ${accessToken}`,
+    //                 },
+    //
+    //             })
+    //             .then((response) => {
+    //                 console.log("Task created successfully:", response.data);
+    //
+    //                 // Call the onInsert function to update your component's state with the new task
+    //                 onInsert(InsertToDoTitle, TaskValue);
+    //
+    //                 // Clear the input field
+    //                 setTaskValue("");
+    //             })
+    //             .catch((error) => {
+    //                 console.error("Error creating task:", error);
+    //             });
+    //     },
+    //     [InsertToDoTitle, TaskValue, dueDate, onInsert]
+    // );
+
+    // const onSubmit = useCallback(
+    //     async (e) => {
+    //         e.preventDefault();
+    //         //Prepare the data to send in the request body
+    //         axios.get('http://localhost:8080/todo/all', {
+    //             params: {
+    //                 year: dueDate.getFullYear(),
+    //                 month: dueDate.getMonth() + 1,
+    //             },
+    //             headers: {
+    //                 Authorization: `Bearer ${accessToken}`,
+    //             },
+    //         })
+    //             .then((response) => {
+    //                 // Handle the response data here (e.g., update your component's state)
+    //                 console.log('가져오기 성공:', response.data);
+    //             })
+    //             .catch((error) => {
+    //                 // Handle any errors that occur during the request
+    //                 console.error('가져오기 실패:', error);
+    //             });
+    //
+    //         //Make a POST request to your backend
+    //         const todopostrespose = await axios
+    //             .post("http://localhost:8080/todo", {
+    //                 studyId: InsertToDoStudyId, // Replace with the actual studyId
+    //                 toDo: {
+    //                     title: InsertToDoTitle,
+    //                     task: TaskValue,
+    //                 },
+    //                 assigneeStr: studyMems.toString(), // Replace with the actual assigneeStr
+    //             }, {
+    //                 headers: {
+    //                     Authorization: `Bearer ${accessToken}`,
+    //                 },
+    //             })
+    //             .then((response) => {
+    //                 console.log("전송 성공:", response.data);
+    //                 onInsert(InsertToDoTitle, TaskValue);
+    //                 setTaskValue("");
+    //             })
+    //             .catch((error) => {
+    //                 console.error("전송 실패", error);
+    //             });
+    //
+    //     },
+    //     [InsertToDoTitle, TaskValue, studyIds, studyMems, accessToken, onInsert]
+    // );
+    // 찐
+    // const onSubmit = useCallback(
+    //     async (e) => {
+    //         e.preventDefault();
+    //
+    //         try {
+    //             // Step 1: 먼저 필요한 데이터를 서버에서 가져옵니다.
+    //             const fetchDataResponse = await axios.get(`http://localhost:8080/todo/all`, {
+    //                 params: {
+    //                     year: dueDate.getFullYear(),
+    //                     month: dueDate.getMonth() + 1,
+    //                 },
+    //                 headers: {
+    //                     Authorization: `Bearer ${accessToken}`,
+    //                 },
+    //             });
+    //
+    //             // Handle the response data here if needed
+    //             console.log('가져오기 성공:', fetchDataResponse.data);
+    //
+    //             // Step 2: 가져온 데이터와 사용자 입력 데이터를 사용하여 POST 요청을 보냅니다.
+    //             const postData = {
+    //                 studyId:InsertToDoStudyId,
+    //                 toDo: {
+    //                     title: InsertToDoTitle,
+    //                     task: TaskValue,
+    //                     dueDate: dueDate,
+    //                 },
+    //                 assigneeStr: studyMems.join(','), // Convert studyMems to a comma-separated string
+    //             };
+    //
+    //             const postDataResponse = await axios.post("http://localhost:8080/todo", postData, {
+    //                 withCredentials: true,
+    //                 headers: {
+    //                     'Authorization': `Bearer ${accessToken}`
+    //                 }
+    //             });
+    //
+    //             console.log("전송 성공:", postDataResponse.data);
+    //
+    //             // Call the onInsert function to update your component's state with the new task
+    //             onInsert(InsertToDoTitle, TaskValue);
+    //             // Clear the input field
+    //             setTaskValue("");
+    //         } catch (error) {
+    //             console.error("에러:", error);
+    //         }
+    //     },
+    //     [InsertToDoTitle, TaskValue, InsertToDoStudyId, dueDate, accessToken, onInsert]
+    // );
+
+
+    //전체 투두 가져오기
+    // useEffect(() => {
+    //     axios.get('http://localhost:8080/todo/all', {
+    //         params: {
+    //             year: dueDate.getFullYear(),
+    //             month: dueDate.getMonth() + 1,
+    //         },
+    //         headers: {
+    //             Authorization: `Bearer ${accessToken}`,
+    //         },
+    //     })
+    //         .then((response) => {
+    //             // Handle the response data here (e.g., update your component's state)
+    //             console.log('가져오기 성공:', response.data);
+    //         })
+    //         .catch((error) => {
+    //             // Handle any errors that occur during the request
+    //             console.error('가져오기 실패:', error);
+    //         });
+    // }, []);
+
+
+    const selectStudy = (e) => {
         setInsertToDoTitle(e.target.value)
+        const selectedStudy = studies.find((study) => study.study.title === e.target.value);
+        const selectedId = selectedStudy.study.id;
+        setInsertToDoStudyId(selectedId);
+
         console.log(e.target.value);
+        console.log(selectedId);
+
     }
     return (
         <form className="TodoInsert">
-            <select id="todo-select" onChange={selectStudyTitle} value={InsertToDoTitle}>
+            <select id="todo-select" onChange={selectStudy} value={InsertToDoTitle}>
                 <option value="전체">전체</option>
                 {studyTitles.map((item, index) => (
                     <option key={index} value={item}>{item}</option>
