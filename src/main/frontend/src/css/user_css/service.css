@@ -119,7 +119,6 @@ em {
     align-items: center;
     margin: 20px 0;
     position: relative;
-    left: 40px;
 }
 .check_term_of_service > span{
     display: flex;
@@ -130,7 +129,6 @@ em {
     position: relative;
     top: 3px;
     cursor: pointer;
-    width: 150px;
     font-family: 'Pretendard-Regular';
 }
 #term{

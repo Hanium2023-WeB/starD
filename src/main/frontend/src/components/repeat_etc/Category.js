@@ -115,6 +115,7 @@ const category = () => {
 				</div>
 			</div>
 		</div>
+
 	);
 };
 

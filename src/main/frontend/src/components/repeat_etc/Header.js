@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {Link} from "react-router-dom";
-import LOGO from "../../images/Logo2.png"
+import LOGO from "../../images/Logo.png"
 
 const Header = ({ showSideCenter }) => {
 	//헤더 잡아놓기
@@ -198,6 +198,8 @@ const Header = ({ showSideCenter }) => {
 	// };
 
 	return (
+		<div>
+		<div className={"header_wrap"}>
 		<header>
 			<div className="head_left">{sideleft()}</div>
 			{showSideCenter ? <div className="head_text">{sidecenter()}</div>:
@@ -205,6 +207,9 @@ const Header = ({ showSideCenter }) => {
 			}
 			<div className="head_right">{Side()}</div>
 		</header>
+		</div>
+			{/*<hr id={"header-end"}/>*/}
+		</div>
 	);
 };
 export default Header;

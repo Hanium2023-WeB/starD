@@ -8,7 +8,7 @@ import ToDoListItems from "../../css/todo_css/ToDoListItem.css";
 import {useEffect} from "react";
 
 //할일 보여주는 컴포넌트
-const ToDoListItem = ({todos, onRemove, onToggle, onChangeSelectedTodo, onInsertToggle, selectedDate}) => {
+const TeamToDoListItem = ({todos, onRemove, onToggle, onChangeSelectedTodo, onInsertToggle, selectedDate}) => {
     console.log('todo:', todos);
 
     return(
@@ -31,4 +31,4 @@ const ToDoListItem = ({todos, onRemove, onToggle, onChangeSelectedTodo, onInsert
     );
 };
 
-export default ToDoListItem;
+export default TeamToDoListItem;

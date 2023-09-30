@@ -159,11 +159,11 @@ const Slide = ({ state }) => {
     };
 
   const toPrev = () => {
-    slidePx < 0 && setSlidePx(slidePx + 300);
+    slidePx < 0 && setSlidePx(slidePx + 284);
   };
 
   const toNext = () => {
-    slidePx > -1980 && setSlidePx(slidePx - 300);
+    slidePx > -1980 && setSlidePx(slidePx - 284);
   };
 
   return (

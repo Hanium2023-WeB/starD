@@ -18,6 +18,7 @@ import Header from "../../components/repeat_etc/Header";
 //https://jsonplaceholder.typicode.com/comments
 
 import "../../css/mypage_css/Mypage.css";
+import Footer from "../../components/repeat_etc/Footer";
 
 const Mypage = ({ sideheader }) => {
   const dataId = useRef(0);
@@ -32,7 +33,8 @@ const Mypage = ({ sideheader }) => {
 
   const Year = today.getFullYear();
   const Month = today.getMonth() + 1;
-  const Dates = today.getDate();
+  const Dates = today.getDate()
+
 
   //todo
   useEffect(() => {
@@ -148,12 +150,15 @@ const Mypage = ({ sideheader }) => {
       }
     })
   }
+
   return (
     <div>
      <Header showSideCenter={true}/>
+
       <div className="container">
         <Category />
         <div className="main_container">
+          <p id={"main-container-title"}>마이페이지</p>
           <div className="sub_container">
             <div className="reliability">
               <div className="tag">
@@ -268,6 +273,7 @@ const Mypage = ({ sideheader }) => {
         </div>
       </div>
     </div>
+
   );
 };
 export default Mypage;

@@ -122,7 +122,6 @@ const SearchBar = (props) => {
 			{/*		) : null}*/}
 			{/*	</div>*/}
 			</div>
-
 		</div>
 	);
 };
