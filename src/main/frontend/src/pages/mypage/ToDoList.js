@@ -87,7 +87,7 @@ const ToDoList = ({sideheader}) => {
             setTodos(JSON.parse(savedTodos));
         }
     }, []);
-    
+
     //백엔드 연동 전- 로컬 스토리지에서 할 일 리스트 잠시 저장
     useEffect(() => {
         localStorage.setItem("todos", JSON.stringify(todos));
