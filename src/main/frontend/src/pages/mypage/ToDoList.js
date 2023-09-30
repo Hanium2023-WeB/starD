@@ -50,7 +50,6 @@ const ToDoList = ({sideheader}) => {
                 setStudyIds(studiesIds);
                 const ParticipatedStudiesMem = studyList.map(item => item.member.id);
                 setStudyMems(ParticipatedStudiesMem);
-
                 console.log("참여 스터디 아이디", studiesIds);
                 console.log("참여 스터디 제목", studiesTitle);
                 console.log("참여중인 스터디", studyList);
@@ -88,97 +87,38 @@ const ToDoList = ({sideheader}) => {
             setTodos(JSON.parse(savedTodos));
         }
     }, []);
-
-    //전체 투두 가져오기
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                // Step 1: 먼저 필요한 데이터를 서버에서 가져옵니다.
-                const response = await axios.get('http://localhost:8080/todo/all', {
-                    params: {
-                        year: Year.toString(),
-                        month: Month.toString(),
-                    },
-                    headers: {
-                        Authorization: `Bearer ${accessToken}`,
-                    },
-                });
-
-                // Handle the response data here if needed
-                console.log('가져오기 성공:', response.data);
-                setStudy(response.data);
-
-            } catch (error) {
-                console.error("에러:", error);
-            }
-        };
-        // fetchData 함수 호출
-        fetchData();
-    }, [Year, Month, accessToken]);
-
-
+    
     //백엔드 연동 전- 로컬 스토리지에서 할 일 리스트 잠시 저장
     useEffect(() => {
         localStorage.setItem("todos", JSON.stringify(todos));
-        // const response = axios.post("http://localhost:8080/todo/all",
-        //     {
-        //           toDo:todoswithAssignee.todo,
-        //           toDoStatus: todoswithAssignee.toDoStatus,
-        //     }
-        // ).then(function (response){
-        //   console.log("할 일 전송 성공 :",response)
-        // })
-        //     .catch(function (error){
-        //       console.log(error);
-        //     })
     }, [todoswithAssignee]);
 
     //할일 추가 함수
     const onInsert = useCallback(
-        (studyId, task) => {
+        (title, task, titleId) => {
+            const filteredObjects = studies.filter(item => item.study.title === title);
+            console.log("filteredObjects",filteredObjects.study);
+            console.log("title", title);
             const dateKey = selectedDate.toDateString();
             const todo = {
                 id: nextId.current,
-                title: studyId,
+                study: filteredObjects.study,
                 task: task,
                 date: dateKey,
+                Assignee: filteredObjects.member,
             };
-            const assignee = {
+            const assignees = {
                 todo: todo,
+                member: filteredObjects.member,
                 toDoStatus: false,
             }
-            // axios.post(`http://localhost:8080/todo/user/${todo.title}`, {
-            //     // Data to send to the server
-            //     title: todo.title,
-            //     task: todo.task,
-            //     // Include other data if needed
-            // })
-            //     .then((response) => {
-            //         // Handle the response from the server if needed
-            //         console.log("Insert request successful:", response.data);
-            //
-            //         // Update the local state (if needed) with the newly created to-do item
-            //         setTodoswithAssignee((prevTodos) => ({
-            //             ...prevTodos,
-            //             [dateKey]: [...(prevTodos[dateKey] || []), assignee],
-            //         }));
-            //
-            //         nextId.current++;
-            //     })
-            //     .catch((error) => {
-            //         // Handle any errors that occur during the request
-            //         console.error("Insert request error:", error);
-            //     });
             setTodoswithAssignee((prevTodos) => ({
                 ...prevTodos,
-                [dateKey]: [...(prevTodos[dateKey] || []), assignee],
+                [dateKey]: [...(prevTodos[dateKey] || []), assignees],
             }));
-
             nextId.current++;
+        }, [selectedDate]);
 
-        },
-        [selectedDate]
-    );
 
     const dateKey = selectedDate.toDateString();
     console.log(`dateKey: ${dateKey}`);
@@ -197,8 +137,7 @@ const ToDoList = ({sideheader}) => {
             });
             setTodoswithAssignee(updatedTodos);
             // console.log("RemovetodoswithAssignee",todoswithAssignee);
-        }, [todoswithAssignee]
-    );
+        },[]);
 
     //수정 함수
     const onUpdate = useCallback((id, title, task) => {
