@@ -1,6 +1,9 @@
-import React, {useState} from "react";
+import React, {useCallback, useState} from "react";
+import axios from "axios";
 
 const PostInsert = () => {
+    const [dataId, setDataId] = useState(0);
+    const [posts, setPosts] = useState([]);
     const [formData, setFormData] = useState({
         title:"",
         category:"",
@@ -42,8 +45,81 @@ const PostInsert = () => {
         });
     };
 
+    const onInsertPost = useCallback((post) => {
+        const {
+            title,
+            field,
+            content,
+            created_date
+        } = post;
+
+        const selectedCategory = document.querySelector('select[name="category"]').value;
+
+        const newData = {
+            title,
+            category: selectedCategory,
+            content,
+            created_date,
+            id: dataId,
+        };
+        setPosts((prevPosts) => [...prevPosts, newData]);
+
+        setDataId((prevDataId) => prevDataId + 1);
+        return newData;
+    }, [posts, dataId]);
+
+    const handleSubmit = useCallback(e => {
+        e.preventDefault();
+
+        if (
+            formData.title.trim() === '' &&
+            formData.content.trim() === ''
+        ) {
+            // 하나라도 비어있으면 알림을 표시하거나 다른 처리를 수행할 수 있습니다.
+            alert('게시글 정보를 입력해주세요.');
+
+            return; // 창이 넘어가지 않도록 중단
+        }
+        if (formData.title.trim() === '') {
+            alert("제목을 입력해주세요.");
+            return;
+        }
+        if (formData.content.trim() === '') {
+            alert("내용을 입력해주세요.");
+            return;
+        }
+
+        setFormData(onInsertPost(formData));
+        console.log(`ffffffffformData: ${JSON.stringify(formData)}`)
+
+        const accessToken = localStorage.getItem('accessToken');
+
+        //TODO 게시글 작성 서버 전송 (스크랩, 공감 제외)
+        const response = axios.post("",
+            {
+                title:formData.title,
+                category:formData.category,
+                content:formData.content,
+            },
+            {
+                withCredentials: true,
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`
+                }
+            })
+            .then((res) => {
+                // console.log("전송 성공");
+                // console.log(res.data);
+                //성공하면
+                // navigate("/myopenstudy", {state: formData});
+
+            }).catch((error) => {
+                console.log('전송 실패', error);
+            })
+    }, [formData])
+
     return (
-        <form className="new_post_form">
+        <form className="new_post_form" onSubmit={handleSubmit}>
             <div>
                 <span>제목</span>
                 <input type="text" name="title" value={formData.title} onChange={handleInputChange}/>
@@ -51,7 +127,7 @@ const PostInsert = () => {
             <div>
                 <span>카테고리</span>
                 <span className="field_wrapper">
-                    <select name="field" value={formData.field} onChange={handleInputChange}>
+                    <select name="category" value={formData.category} onChange={handleInputChange}>
                         {tagoptions.map((interest, idx) =>
                             <option key={idx} value={interest.value}>{interest.name}</option>
                         )}

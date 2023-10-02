@@ -53,10 +53,10 @@ const Community = () => {
                                     <th>조회수</th>
                                     <th>공감수</th>
                                     <th>스크랩수</th>
-                                    {/*{posts.map((d, index) => (*/}
-                                    <PostListItem posts={posts}/>
-                                    <PostListItem posts={posts}/>
-                                    {/*))}*/}
+                                    {posts.map((d, index) => (
+                                        <PostListItem posts={d} d={d}
+                                                      index={index} key={d.id}/>
+                                    ))}
                                 </table>
                             </div>
                         </div>
