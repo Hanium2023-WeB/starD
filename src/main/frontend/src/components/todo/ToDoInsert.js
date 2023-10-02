@@ -108,19 +108,24 @@ const ToDoInsert = ({onInsert, dueDate}) => {
                 //
                 // const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
                 // Step 2: 가져온 데이터와 사용자 입력 데이터를 사용하여 POST 요청을 보냅니다.
-                const postData = {
-                    studyId: studyId,
-                    toDo: {
-                        id:nextId.current,
-                        study: study,
-                        task: task,
-                        dueDate: dueDate,
-                        assigneeStr: assigneeStr,
-                    },
-                    assigneeStr: assigneeStr,  // Convert studyMems to a comma-separated string
+//                const postData = {
+//                    studyId: studyId,
+//                    toDo: {
+//                        id:nextId.current,
+//                        study: study,
+//                        task: task,
+//                        dueDate: dueDate,
+//                        assigneeStr: assigneeStr,
+//                    },
+//                    assigneeStr: assigneeStr,  // Convert studyMems to a comma-separated string
+//                };
+
+                const todoData = {
+                    task: task,
+                    dueDate: dueDate,
                 };
 
-                const postDataResponse = await axios.post(`http://localhost:8080/todo`,postData,{
+                const postDataResponse = await axios.post(`http://localhost:8080/todo`, todoData, {
                     params:{
                         studyId: studyId,
                         assigneeStr: assigneeStr,
