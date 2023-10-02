@@ -6,18 +6,19 @@
     width: 50%;
     display: flex;
     margin-left: 25%;
-    padding-bottom: 20px;
     position: relative;
     right: 2%;
+    margin-top: 5%;
 }
 svg{
     margin-right: 2%;
 }
 .backarrow p {
-    font-size: 20px;
-    margin: 0;
+    font-size: 30px;
     margin-left: 1%;
-    margin-top: 6px;
+    font-weight: bolder;
+    font-family: inter;
+
 }
 .change_nicname,.change_estate, .change_email,
 .change_interest, .change_pw , .change_phone , .signout{
@@ -106,6 +107,7 @@ input{
 select{
     background-color: #F2F2F2;
     border-style: none;
+    font-family: 'Pretendard-Regular';
 }
 
 #sign_out.sub_container{

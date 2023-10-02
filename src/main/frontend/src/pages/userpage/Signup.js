@@ -341,7 +341,7 @@ const Signup = () => {
                     <p>회원가입 <span style={{color:"red"}}>(STEP 1)</span></p>
                 </div>
                 <form onSubmit={handleSubmit}>
-                    <div className="input_info" style={{left:"25px"}}>
+                    <div className="input_info" style={{left:"31px"}}>
                         <div className="subinfo">아이디<span className="require_info">*</span></div>
                         <div className="signup_id input_bottom">
                             <div style={{display:"flex"}}>
@@ -427,6 +427,7 @@ const Signup = () => {
                         <div className="subinfo">이메일<span className="require_info">*</span></div>
                         <div className="inputemail">
                             <input
+                                style={{marginLeft:"0"}}
                                 ref={inputemail}
                                 name={"email"}
                                 value={state.email}

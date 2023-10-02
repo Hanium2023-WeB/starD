@@ -2,7 +2,7 @@ import React, {useState, useRef, useCallback, useEffect} from "react";
 import Editcss from "../../css/todo_css/ToDoEdit.css";
 import {useLocation} from "react-router-dom";
 
-const ToDoEdit = ({selectedTodo, onUpdate}) => {
+const TeamToDoEdit = ({selectedTodo, onUpdate}) => {
     console.log("selectedTodo",selectedTodo);
     const [studies, setStudy] = useState([]);//스터디
     const [ParticipateState, setParticipatedState] = useState({}); //참여멤버
@@ -67,4 +67,4 @@ const ToDoEdit = ({selectedTodo, onUpdate}) => {
         </div>
     )
 }
-export default ToDoEdit;
+export default TeamToDoEdit;

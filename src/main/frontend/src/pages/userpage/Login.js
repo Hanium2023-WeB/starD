@@ -106,6 +106,7 @@ const Login = () => {
                     <div className="subinfo">비밀번호</div>
                     <div>
                         <input
+                            style={{marginLeft:"0"}}
                             ref={inputPW}
                             placeholder="비밀번호를 입력해주세요"
                             name={"PW"}
