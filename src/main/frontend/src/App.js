@@ -30,6 +30,8 @@ import SearchResult from "./pages/studypage/SearchResult";
 import StudyApplyList from "./pages/studypage/StudyApplyList";
 import TeamBlog from "./pages/studypage/TeamBlog";
 import TeamToDoList from "./pages/teamblog/TeamToDoList";
+import Community from "./pages/community/Community";
+import PostDetail from "./pages/community/PostDetail";
 
 
 function App() {
@@ -160,6 +162,18 @@ function App() {
                            element={
                             <TeamToDoList/>
                            }
+                    />
+                    <Route
+                        path="/community"
+                        element={
+                            <Community/>
+                        }
+                    />
+                    <Route
+                        path="/postdetail"
+                        element={
+                            <PostDetail/>
+                        }
                     />
                 </Routes>
 
