@@ -1,5 +1,6 @@
 package com.web.stard.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -30,6 +31,7 @@ public class ToDo {
 
 
     @Transient // DB랑 매핑되지 않음
+    @JsonIgnore
     private List<Assignee> assignees; // 담당자
 
     @Override

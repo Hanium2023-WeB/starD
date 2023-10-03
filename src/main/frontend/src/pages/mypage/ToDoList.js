@@ -24,7 +24,7 @@ const ToDoList = ({sideheader}) => {
     const Month = selectedDate.getMonth() + 1;
     const Dates = selectedDate.getDate();
     const [studies, setStudy] = useState([]);
-
+    const[TodosStates,setTodosStates] = useState([]);
     // const[ToDos,setToDos] = useState([]);
     const location = useLocation();
     const [studyTitles, setStudyTitles] = useState([]); //참여 중인 스터디 제목
@@ -59,8 +59,23 @@ const ToDoList = ({sideheader}) => {
             .catch((error) => {
                 console.error("모집완료된 스터디, 참여멤버  가져오기 실패:", error);
             });
-
     }, [accessToken]);
+    useEffect(() => {
+        axios.get(`http://localhost:8080/todo/all`, {
+            params: {
+                year: selectedDate.getFullYear(),
+                month: selectedDate.getMonth() + 1,
+            },
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+            },
+        }).then((response)=> {
+            console.log('가져오기 성공:', response.data);
+            setTodosStates(response.data);
+        }).catch((error)=> {
+            console.log('가져오기 실패:', error);
+        })
+        },[]);
 
     const onInsertToggle = () => {
         if (selectedTodo) {
@@ -87,17 +102,18 @@ const ToDoList = ({sideheader}) => {
             setTodos(JSON.parse(savedTodos));
         }
     }, []);
-    
+
     //백엔드 연동 전- 로컬 스토리지에서 할 일 리스트 잠시 저장
-    useEffect(() => {
-        localStorage.setItem("todos", JSON.stringify(todos));
-    }, [todoswithAssignee]);
+    // useEffect(() => {
+    //     localStorage.setItem("todos", JSON.stringify(todos));
+    // }, [todoswithAssignee]);
 
     //할일 추가 함수
     const onInsert = useCallback(
         (title, task, titleId) => {
             const filteredObjects = studies.filter(item => item.study.title === title);
-            console.log("filteredObjects",filteredObjects.study);
+            //스터디 이름과 같은 스터디 객체를 찾는다
+            console.log("filteredObjects", filteredObjects);
             console.log("title", title);
             const dateKey = selectedDate.toDateString();
             const todo = {
@@ -105,7 +121,7 @@ const ToDoList = ({sideheader}) => {
                 study: filteredObjects.study,
                 task: task,
                 date: dateKey,
-                Assignee: filteredObjects.member,
+                assignees:filteredObjects.member,
             };
             const assignees = {
                 todo: todo,
@@ -137,7 +153,7 @@ const ToDoList = ({sideheader}) => {
             });
             setTodoswithAssignee(updatedTodos);
             // console.log("RemovetodoswithAssignee",todoswithAssignee);
-        },[]);
+        }, []);
 
     //수정 함수
     const onUpdate = useCallback((id, title, task) => {
