@@ -4,6 +4,9 @@ import {useState} from "react";
 import Header from "../../components/repeat_etc/Header";
 
 const Logout = ({sideheader}) => {
+
+    // TODO 바로 로그아웃 할 수 있도록 수정하기
+
     const navigate = useNavigate(); // useNavigate 훅을 사용하여 navigate 함수를 가져옴
 
     const accessToken = localStorage.getItem('accessToken');
