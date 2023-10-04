@@ -21,17 +21,29 @@ public class CommunityController {
     private final MemberService memberService;
     private final CommunityService comService;
 
-    /* 커뮤니티 게시글 조회 (페이지화 추가) */
+    /* 커뮤니티 게시글 조회 (페이지화 X) */
     @GetMapping
-    public List<Post> getAllCommunityPost(@RequestParam("page") int page) {
-//        return comService.getAllCommunityPost(); // 페이지화 X (그냥 전체 조회)
-        return comService.getAllCommunityPost(page);
+    public List<Post> getAllCommunityPost() {
+        return comService.getAllCommunityPost(); // 페이지화 X (그냥 전체 조회)
     }
+
+//    /* 커뮤니티 게시글 조회 (페이지화 추가) */
+//    @GetMapping
+//    public List<Post> getAllCommunityPost(@RequestParam("page") int page) {
+//        return comService.getAllCommunityPost(page);
+//    }
 
     /* 커뮤니티 게시글 세부 조회 */
     @GetMapping("/{id}")
     public Post getCommunityPost(@PathVariable Long id) {
-        return comService.getCommunityPost(id);
+        String userId = null;
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+            if (!id.equals("anonymousUser")) {
+                userId = authentication.getName(); // 사용자 아이디
+            }
+        }
+        return comService.getCommunityPost(id, userId);
     }
 
     /* 커뮤니티 게시글 등록 */

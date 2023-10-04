@@ -170,7 +170,7 @@ function App() {
                         }
                     />
                     <Route
-                        path="/postdetail"
+                        path="/postdetail/:id"
                         element={
                             <PostDetail/>
                         }

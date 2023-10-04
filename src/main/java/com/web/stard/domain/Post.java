@@ -1,5 +1,6 @@
 package com.web.stard.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 import lombok.*;
 
@@ -30,4 +31,12 @@ public class Post extends BaseEntity {
 
     @NotNull @Column(name = "view_count")
     private int viewCount;
+
+
+
+    @Transient // DB랑 매핑되지 않음
+    private int starCount; // 공감 수
+
+    @Transient // DB랑 매핑되지 않음
+    private int scrapCount; // 공감 수
 }

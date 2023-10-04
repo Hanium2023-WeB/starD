@@ -1,23 +1,33 @@
 import Header from "../../components/repeat_etc/Header";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
+import {Link, useNavigate} from "react-router-dom";
 
 import "../../css/community_css/Community.css";
 import SearchBar from "../../SearchBar";
 import PostInsert from "../../components/community/PostInsert";
 import PostListItem from "../../components/community/PostListItem";
+import axios from "axios";
 
 const Community = () => {
+    const navigate = useNavigate();
     const [posts, setPosts] = useState([]);
     const [showPostInsert, setShowPostInsert] = useState(false);
 
+
+    // localStorage에 저장된 accessToken 추출
+    let accessToken = localStorage.getItem('accessToken');
+
+    // localStorage에 저장된 로그인한 사용자 Id 추출
+    let isLoggedInUserId = localStorage.getItem('isLoggedInUserId');
+
     const handleMoveToStudyInsert = (e) => {
-        // if (accessToken && isLoggedInUserId) {
+         if (accessToken && isLoggedInUserId) {
             e.preventDefault();
             setShowPostInsert(!showPostInsert);
-        // } else {
-        //     alert("로그인 해주세요");
-        //     navigate("/login");
-        // }
+         } else {
+             alert("로그인 해주세요");
+             navigate("/login");
+         }
     };
 
     const searchItems = [
@@ -27,6 +37,17 @@ const Community = () => {
         "aws",
         "framework"
     ]
+
+    useEffect(() => {
+        axios.get("http://localhost:8080/com")
+            .then((res) => {
+                setPosts(res.data);
+            })
+            .catch((error) => {
+                console.error("데이터 가져오기 실패:", error);
+            });
+    }, []);
+
     return (
         <div className={"main_wrap"} id={"community"}>
             <Header showSideCenter={true}/>

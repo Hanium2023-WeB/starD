@@ -95,7 +95,7 @@ const PostInsert = () => {
         const accessToken = localStorage.getItem('accessToken');
 
         //TODO 게시글 작성 서버 전송 (스크랩, 공감 제외)
-        const response = axios.post("",
+        const response = axios.post("http://localhost:8080/com",
             {
                 title:formData.title,
                 category:formData.category,
