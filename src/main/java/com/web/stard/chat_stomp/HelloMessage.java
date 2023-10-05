@@ -1,4 +1,4 @@
-package com.web.stard.chatting;
+package com.web.stard.chat_stomp;
 
 public class HelloMessage {
 

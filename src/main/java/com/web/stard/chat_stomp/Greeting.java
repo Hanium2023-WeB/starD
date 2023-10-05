@@ -1,5 +1,8 @@
-package com.web.stard.chatting;
+package com.web.stard.chat_stomp;
 
+import lombok.Getter;
+
+@Getter
 public class Greeting {
 
     private String content;
@@ -9,10 +12,6 @@ public class Greeting {
 
     public Greeting(String content) {
         this.content = content;
-    }
-
-    public String getContent() {
-        return content;
     }
 
 }

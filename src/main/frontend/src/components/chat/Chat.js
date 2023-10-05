@@ -1,63 +1,118 @@
-import React, { useState, useEffect } from 'react';
+import React, { Component } from 'react';
+import { Client } from '@stomp/stompjs';
 
-const Chat = () => {
-  const [chat, setChat] = useState('');
-  const [chatList, setChatList] = useState([]);
-  const [socket, setSocket] = useState(null);
+const stompClient = new Client({
+  brokerURL: 'ws://localhost:8080/gs-guide-websocket',
+});
 
-  useEffect(() => {
-    // WebSocket 연결
-    const ws = new WebSocket('ws://localhost:3000/ws');
+class Chat extends Component {
+  constructor(props) {
+    super(props);
 
-    ws.onopen = () => {
-      console.log('WebSocket 연결 성공');
+    this.state = {
+      connected: false,
+      message: '',
+      greetings: [],
     };
 
-    ws.onmessage = (event) => {
-      const message = JSON.parse(event.data);
-      setChatList((prevChatList) => [...prevChatList, message.chat]);
-    };
+    // 이미 생성한 stompClient 객체를 사용합니다.
+    this.stompClient = new Client({
+      brokerURL: 'ws://localhost:8080/gs-guide-websocket',
+    });
 
-    ws.onclose = () => {
-      console.log('WebSocket 연결 종료');
-    };
+    this.stompClient.onConnect = this.onConnect;
+    this.stompClient.onWebSocketError = this.onWebSocketError;
+    this.stompClient.onStompError = this.onStompError;
+  }
 
-    setSocket(ws);
+  componentDidMount() {
+    // React 컴포넌트가 마운트된 후 연결 버튼을 활성화
+    this.setConnected(false);
+  }
 
-    return () => {
-      ws.close();
-    };
-  }, []);
-
-  const sendMessage = () => {
-    if (socket && chat) {
-      const message = {
-        chat: chat,
-      };
-      socket.send(JSON.stringify(message));
-      setChat(''); // 입력 필드 초기화
-    }
+  onConnect = (frame) => {
+    this.setConnected(true);
+    console.log('Connected: ' + frame);
+    this.stompClient.subscribe('/topic/greetings', (greeting) => {
+      this.showGreeting(JSON.parse(greeting.body).content);
+    });
   };
 
-  const handleChange = (event) => {
-    setChat(event.target.value);
+  onWebSocketError = (error) => {
+    console.error('Error with websocket', error);
   };
 
-  return (
-    <div>
-      <div className="chat-list">
-        {chatList.map((message, index) => (
-          <div key={index} className="chat-message">
-            {message}
+  onStompError = (frame) => {
+    console.error('Broker reported error: ' + frame.headers['message']);
+    console.error('Additional details: ' + frame.body);
+  };
+
+  setConnected = (connected) => {
+    this.setState({
+      connected: connected,
+    });
+  };
+
+  connect = () => {
+    this.stompClient.activate();
+  };
+
+  disconnect = () => {
+    this.stompClient.deactivate();
+    this.setConnected(false);
+    console.log('Disconnected');
+  };
+
+  sendName = () => {
+    this.stompClient.publish({
+      destination: '/app/hello',
+      body: JSON.stringify({ 'name': this.state.message }),
+    });
+  };
+
+  showGreeting = (message) => {
+    this.setState((prevState) => ({
+      greetings: [...prevState.greetings, message],
+    }));
+  };
+
+  render() {
+    return (
+        <div>
+          <div>
+            <label>WebSocket connection:</label>
+            <button onClick={this.connect} disabled={this.state.connected}>Connect</button>
+            <button onClick={this.disconnect} disabled={!this.state.connected}>Disconnect</button>
           </div>
-        ))}
-      </div>
-      <div className="chat-input">
-        <input type="text" name="chatInput" onChange={handleChange} value={chat} />
-        <button onClick={sendMessage}>메시지 보내기</button>
-      </div>
-    </div>
-  );
-};
+          <div>
+            <label>채팅 보내기</label>
+            <input
+                type="text"
+                value={this.state.message}
+                onChange={(e) => this.setState({ message: e.target.value })}
+                placeholder="내용을 입력하세요"
+            />
+            <button onClick={this.sendName}>Send</button>
+          </div>
+          <div>
+            <table>
+              <thead>
+              <tr>
+                <th>Messages</th>
+              </tr>
+              </thead>
+              <tbody>
+              {this.state.greetings.map((greeting, index) => (
+                  <tr key={index}>
+                    <td>{greeting}</td>
+                  </tr>
+              ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+    );
+  }
+}
 
 export default Chat;
