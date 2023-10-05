@@ -51,7 +51,7 @@ const StudyDetail = ({sideheader}) => {
             // console.log("전송 성공 : ", res.data);
             setStudyItem(res.data);
             if (res.data.recruiter.id === isLoggedInUserId) {
-                console.log("자기 자신의 글");
+                console.log("자기 자신의 글",res.data);
                 setIsRecruiter(true);
             }
         })
@@ -91,12 +91,50 @@ const StudyDetail = ({sideheader}) => {
     }
 
     const handleStudyUpdate = (updatedStudy) => {
+        console.log("수정될 데이터?:",updatedStudy);
         setEditing(false);
-        setStudyDetail([updatedStudy]);
+        const accessToken = localStorage.getItem('accessToken');
+
+        axios.put(`http://localhost:8080/api/v2/studies/${updatedStudy.id}`,
+            {
+                title: updatedStudy.title,
+                field: updatedStudy.field,  // 분야
+                capacity: updatedStudy.number, // 모집 인원
+                onOff: updatedStudy.onoff,  // 온/온라인/무관
+                city: updatedStudy.sido,    // 시
+                district: updatedStudy.gugun,   // 구
+                recruitmentDeadline: updatedStudy.deadline,    // 모집 마감
+                activityStart: updatedStudy.startDate, // 활동 시작
+                activityDeadline: updatedStudy.endDate, // 활동 마감
+                content: updatedStudy.description, // 내용
+                tags: updatedStudy.tag,    // 태그
+                // scrap: studies.scrap,
+                // like:studies.like,
+            },
+            {
+                withCredentials: true,
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`
+                }
+            })
+            .then((res) => {
+                console.log("API Response:", res.data);
+                console.log("수정 성공");
+                // console.log(res.data);
+                //성공하면
+                // navigate("/myopenstudy", {state: formData});
+            }).catch((error) => {
+            console.log('수정 실패', error);
+        })
+
+        setStudyDetail(updatedStudy);
+        console.log("updatedStudies",studyDetail);
+
         const updatedStudies = studies.map(study =>
             study.id === updatedStudy.id ? updatedStudy : study
         );
         setStudies(updatedStudies);
+
     }
 
     const handleStudyDelete = () => {
