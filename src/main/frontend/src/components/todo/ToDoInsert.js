@@ -13,8 +13,21 @@ const ToDoInsert = ({onInsert, dueDate}) => {
     const [studyTitles, setStudyTitles] = useState([]); //참여 중인 스터디 제목
     const [studyIds, setStudyIds] = useState([]); //참여 중인 스터디 아이디
     const [studyMems, setStudyMems] = useState(""); //참여 멤버
-    const [responseData , setResponseData] = useState([]);
+    const [responseData, setResponseData] = useState([]);
 
+
+    const inputDate = new Date(dueDate);
+
+//서버에 보내줄 날짜 형식 맞추기
+//주어진 날짜가 협정 세계시 (UTC)에 맞게 설정되어 있는지 확인
+//JavaScript에서는 날짜와 시간을 다룰 때, 기본적으로 현재 로컬 시간대에 따라 처리하므로 UTC로 조정하려면 몇 가지 추가 작업이 필요
+
+    inputDate.setMinutes(inputDate.getMinutes() - inputDate.getTimezoneOffset());
+    const year = inputDate.getFullYear();
+    const month = inputDate.getMonth() + 1;
+    const formattedDate = inputDate.toISOString();
+
+    console.log("formattedDate >>", formattedDate);
 
 
     // TODO 서버에서 참여스터디와 참여멤버 가져오기
@@ -42,6 +55,7 @@ const ToDoInsert = ({onInsert, dueDate}) => {
                 console.log("참여 스터디 제목", studiesTitle);
                 console.log("참여중인 스터디", studyList);
                 console.log("참여멤버", ParticipatedStudiesMem);
+                console.log('날짜', dueDate);
 
 
             })
@@ -82,15 +96,14 @@ const ToDoInsert = ({onInsert, dueDate}) => {
                 // Step 1: 먼저 필요한 데이터를 서버에서 가져옵니다.
                 const fetchDataResponse = await axios.get(`http://localhost:8080/todo/all`, {
                     params: {
-                        year: dueDate.getFullYear(),
-                        month: dueDate.getMonth() + 1,
+                        year: year,
+                        month: month,
                     },
                     headers: {
                         Authorization: `Bearer ${accessToken}`,
                     },
                 });
 
-                // Handle the response data here if needed
                 console.log('가져오기 성공:', fetchDataResponse.data);
                 setResponseData(fetchDataResponse.data);
                 console.log("studyIdAsNumber:", studyIdAsNumber);
@@ -99,34 +112,14 @@ const ToDoInsert = ({onInsert, dueDate}) => {
                 const assigneeStr = studyMems;
                 const task = TaskValue;
                 const study = InsertToDoStudy;
-                // const year = dueDate.getFullYear();
-                // const month = String(dueDate.getMonth() + 1).padStart(2, '0');
-                // const day = String(dueDate.getDate()).padStart(2, '0');
-                // const hours = String(dueDate.getHours()).padStart(2, '0');
-                // const minutes = String(dueDate.getMinutes()).padStart(2, '0');
-                // const seconds = String(dueDate.getSeconds()).padStart(2, '0');
-                //
-                // const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-                // Step 2: 가져온 데이터와 사용자 입력 데이터를 사용하여 POST 요청을 보냅니다.
-//                const postData = {
-//                    studyId: studyId,
-//                    toDo: {
-//                        id:nextId.current,
-//                        study: study,
-//                        task: task,
-//                        dueDate: dueDate,
-//                        assigneeStr: assigneeStr,
-//                    },
-//                    assigneeStr: assigneeStr,  // Convert studyMems to a comma-separated string
-//                };
 
                 const todoData = {
                     task: task,
-                    dueDate: dueDate,
+                    dueDate: formattedDate,
                 };
 
                 const postDataResponse = await axios.post(`http://localhost:8080/todo`, todoData, {
-                    params:{
+                    params: {
                         studyId: studyId,
                         assigneeStr: assigneeStr,
                     },
@@ -138,9 +131,8 @@ const ToDoInsert = ({onInsert, dueDate}) => {
 
                 console.log("전송 성공:", postDataResponse.data);
 
-                // Call the onInsert function to update your component's state with the new task
-                onInsert(InsertToDoTitle, TaskValue,InsertToDoStudyId);
-                // Clear the input field
+                // onInsert(InsertToDoTitle, TaskValue,InsertToDoStudyId);
+
                 setTaskValue("");
             } catch (error) {
                 console.error("에러:", error);
@@ -150,9 +142,9 @@ const ToDoInsert = ({onInsert, dueDate}) => {
         [InsertToDoTitle, TaskValue, InsertToDoStudyId, dueDate, accessToken, onInsert]
     );
 
-    useEffect(()=>{
+    useEffect(() => {
         console.log('투두리스트:', responseData);
-    },[responseData]);
+    }, [responseData]);
 
     const selectStudy = (e) => {
         setInsertToDoTitle(e.target.value)
@@ -164,7 +156,9 @@ const ToDoInsert = ({onInsert, dueDate}) => {
             console.log(e.target.value);
             console.log(selectedId);
         }
+
     }
+
     return (
         <form className="TodoInsert">
             <select id="todo-select" onChange={selectStudy} value={InsertToDoTitle}>

@@ -195,7 +195,7 @@ const StudyApplyList = () => {
     //myparticipatestudy 으로 navigate할 때 넘겨주는 state값은 참여 멤버들의 이름배열임
     const goNextTeamBlog = (count) => {
 
-        if (count < capacity) {
+        if (count > capacity) {
             alert("모집인원을 초과하였습니다.");
             return;
         } else {
