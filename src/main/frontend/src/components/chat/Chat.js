@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
 import { Client } from '@stomp/stompjs';
-
-const stompClient = new Client({
-  brokerURL: 'ws://localhost:8080/gs-guide-websocket',
-});
+import axios from 'axios';
 
 class Chat extends Component {
   constructor(props) {
@@ -13,9 +10,9 @@ class Chat extends Component {
       connected: false,
       message: '',
       greetings: [],
+      userNickname: '', // 사용자 닉네임 상태 변수 추가
     };
 
-    // 이미 생성한 stompClient 객체를 사용합니다.
     this.stompClient = new Client({
       brokerURL: 'ws://localhost:8080/gs-guide-websocket',
     });
@@ -26,9 +23,32 @@ class Chat extends Component {
   }
 
   componentDidMount() {
-    // React 컴포넌트가 마운트된 후 연결 버튼을 활성화
     this.setConnected(false);
+    this.fetchUserNickname(); // 사용자 닉네임 가져오기
   }
+
+  // 사용자 닉네임 가져오는 함수
+  fetchUserNickname = () => {
+    const accessToken = localStorage.getItem('accessToken');
+    if (accessToken) {
+      axios
+          .get('http://localhost:8080/member/find-nickname', {
+            withCredentials: true,
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          })
+          .then((response) => {
+            const member = response.data;
+            this.setState({
+              userNickname: member.nickname,
+            });
+          })
+          .catch((error) => {
+            console.error('서버에서 닉네임을 가져오는 중 에러 발생:', error);
+          });
+    }
+  };
 
   onConnect = (frame) => {
     this.setConnected(true);
@@ -54,7 +74,17 @@ class Chat extends Component {
   };
 
   connect = () => {
-    this.stompClient.activate();
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken) {
+      const headers = {
+        Authorization: `Bearer ${accessToken}`,
+      };
+
+      this.stompClient.activate({ headers });
+    } else {
+      console.error('Access token not found.');
+    }
   };
 
   disconnect = () => {
@@ -64,9 +94,12 @@ class Chat extends Component {
   };
 
   sendName = () => {
+    const { message, userNickname } = this.state;
+    const messageWithNickname = `${userNickname}:  ${message}`;
+
     this.stompClient.publish({
       destination: '/app/hello',
-      body: JSON.stringify({ 'name': this.state.message }),
+      body: JSON.stringify({ 'name': messageWithNickname }),
     });
   };
 
@@ -81,8 +114,12 @@ class Chat extends Component {
         <div>
           <div>
             <label>WebSocket connection:</label>
-            <button onClick={this.connect} disabled={this.state.connected}>Connect</button>
-            <button onClick={this.disconnect} disabled={!this.state.connected}>Disconnect</button>
+            <button onClick={this.connect} disabled={this.state.connected}>
+              Connect
+            </button>
+            <button onClick={this.disconnect} disabled={!this.state.connected}>
+              Disconnect
+            </button>
           </div>
           <div>
             <label>채팅 보내기</label>
