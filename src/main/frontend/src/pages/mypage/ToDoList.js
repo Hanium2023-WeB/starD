@@ -283,9 +283,7 @@ const ToDoList = ({sideheader}) => {
             const allselect = "0";
             setInsertToDoStudyId(allselect);
             console.log("전체 select: ", allselect);
-
         }
-
     }
     useEffect(() => {
         console.log("InsertToDoStudyId_투두리스트:::", InsertToDoStudyId);
