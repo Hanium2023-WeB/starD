@@ -307,7 +307,7 @@ const ToDoList = ({sideheader}) => {
                         </div>
                         <div>
                             <select id="todo-select" onChange={selectStudy} value={InsertToDoTitle}>
-                                <option value="전체">전체</option>
+                                <option value="전체">전체보기</option>
                                 {studyTitles.map((item, index) => (
                                     <option key={index} value={item}>{item}</option>
 
