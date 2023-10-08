@@ -13,7 +13,6 @@ const Community = () => {
     const [posts, setPosts] = useState([]);
     const [showPostInsert, setShowPostInsert] = useState(false);
 
-
     // localStorage에 저장된 accessToken 추출
     let accessToken = localStorage.getItem('accessToken');
 
@@ -75,7 +74,7 @@ const Community = () => {
                                     <th>공감수</th>
                                     <th>스크랩수</th>
                                     {posts.map((d, index) => (
-                                        <PostListItem posts={d} d={d}
+                                        <PostListItem setPosts={setPosts} posts={d} d={d}
                                                       index={index} key={d.id}/>
                                     ))}
                                 </table>

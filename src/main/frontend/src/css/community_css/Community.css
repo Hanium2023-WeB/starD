@@ -109,6 +109,7 @@ input{
     border-radius: 50px;
     font-family: 'Pretendard-Regular';
     cursor: pointer;
+    margin-right: 10px;
 }
 
 
@@ -116,7 +117,7 @@ input{
 /* post_detail */
 .community_detail{
     width:70%;
-    margin:80px auto 60px;
+    margin:40px auto 60px;
 }
 .community_detail .post_header{
     font-size:13px;
@@ -131,6 +132,15 @@ input{
     font-size:25px;
     font-weight: bold;
     margin-bottom: 20px;
+}
+.community_detail .post_header .button button {
+    background-color: #0038FF;
+    border-radius: 50px;
+    font-family: 'Pretendard-Regular';
+    cursor: pointer;
+    color:#fff;
+    border: none;
+    padding:8px 15px;
 }
 .community_detail .post_header .post_info{
     display: flex;

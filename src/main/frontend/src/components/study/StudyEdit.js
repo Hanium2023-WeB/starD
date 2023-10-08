@@ -1,6 +1,7 @@
 import React, {useCallback, useEffect, useState} from "react";
 import RealEstate from "../info/RealEstate";
 import StudyRegion from "./StudyRegion";
+import Tag from "./Tag";
 
 const StudyEdit = ({study, onUpdateStudy, onCancel}) => {
 
@@ -9,6 +10,12 @@ const StudyEdit = ({study, onUpdateStudy, onCancel}) => {
 
     const [showSelect, setShowSelect] = useState(false);
     const [selectedOption, setSelectedOption] = useState(null);
+
+    const initialTags = study.tags || [];
+    const [tags, setTags] = useState(initialTags);
+
+    const [selectedOnOff, setSelectedOnOff] = useState(study.onOff);
+    const [selectedField, setSelectedField] = useState(study.field);
 
     const [city, setCity]= useState("");
     const [district, setDistrict] = useState("");
@@ -38,14 +45,14 @@ const StudyEdit = ({study, onUpdateStudy, onCancel}) => {
 
     const handleRadioChange = useCallback((e) => {
         const selectedValue = e.target.value;
-        setSelectedOption(selectedValue);
+        setSelectedOnOff(selectedValue);
         setUpdatedStudy((prevStudy) => ({
             ...prevStudy,
             onoff: selectedValue,
         }));
         console.log(selectedOption)
         setShowSelect(selectedValue === "offline" || selectedValue === "both");
-    },[selectedOption]);
+    },[]);
 
     const handleInputChange = (e) => {
         const {name, value} = e.target;
@@ -75,6 +82,10 @@ const StudyEdit = ({study, onUpdateStudy, onCancel}) => {
         onUpdateStudy(updatedStudy);
     }
 
+    const handleTagChange = (selectedTag) => {
+        setTags(selectedTag); // 변경된 부분: 태그 정보를 배열로 변환하여 설정
+    };
+
     useEffect(()=>{
         if (updatedStudy.onOff === "offline" || updatedStudy.onOff === "both"){
             setShowSelect(true);
@@ -96,7 +107,7 @@ const StudyEdit = ({study, onUpdateStudy, onCancel}) => {
                         </div>
                         <div>
                             <span>모집 인원</span>
-                            <input type="text" name="number" value={updatedStudy.capacity} onChange={handleInputChange}
+                            <input type="number" name="capacity" value={updatedStudy.capacity} onChange={handleInputChange}
                                    className="inputbox"/>
                         </div>
                         <div>
@@ -113,10 +124,8 @@ const StudyEdit = ({study, onUpdateStudy, onCancel}) => {
                     <div className="right">
                         <div style={{marginRight:"10px"}}>
                             <span>분야</span>
-                            <input type="text" name="tag" value={updatedStudy.tags} onChange={handleInputChange}
-                                   className="inputbox"/>
                             <span className="field_wrapper">
-                                <select name="field" value={updatedStudy.field} onChange={handleInputChange}>
+                                <select name="field" value={selectedField} onChange={e => setSelectedField(e.target.value)}>
                                     {tagoptions.map((interest,idx) =>
                                         <option key={idx} value={interest.value} >{interest.name}</option>
                                     )}
@@ -126,9 +135,9 @@ const StudyEdit = ({study, onUpdateStudy, onCancel}) => {
                         <div style={{marginRight:"10px"}}>
                             <span className="onoff_title">진행 방식</span>
                             <div className="onoff">
-                                <input type="radio" value="online" name="onOff" onChange={handleRadioChange} checked={updatedStudy.onOff === "online" || selectedOption === "online"}/>온라인
-                                <input type="radio" value="offline" name="onOff" onChange={handleRadioChange} checked={updatedStudy.onOff === "offline" || selectedOption === "offline"}/>오프라인
-                                <input type="radio" value="both" name="onOff" onChange={handleRadioChange} checked={updatedStudy.onOff === "both" || selectedOption === "both"}/>무관
+                                <input type="radio" value="online" name="onOff" onChange={handleRadioChange} checked={updatedStudy.onOff === "online" || selectedOnOff === "online"}/>온라인
+                                <input type="radio" value="offline" name="onOff" onChange={handleRadioChange} checked={updatedStudy.onOff === "offline" || selectedOnOff === "offline"}/>오프라인
+                                <input type="radio" value="both" name="onOff" onChange={handleRadioChange} checked={updatedStudy.onOff === "both" || selectedOnOff === "both"}/>무관
                                 {showSelect && (
                                     <StudyRegion formData={updatedStudy} city={updatedStudy?.city} district={updatedStudy?.district}  handleRegionCityChange={handleRegionCityChange} handleRegionDistrictChange={handleRegionDistrictChange} />
                                 )}
@@ -144,10 +153,14 @@ const StudyEdit = ({study, onUpdateStudy, onCancel}) => {
                 </div>
                 <div className="study_open_detail">
                     <span>상세 내용</span>
-                    <textarea name="description" onChange={handleInputChange}
-                              defaultValue={updatedStudy.content}/>
+                    {/*<textarea name="description" onChange={handleInputChange}*/}
+                    {/*          defaultValue={updatedStudy.content}/>*/}
                     <textarea name="content" onChange={handleInputChange}
                               value={updatedStudy.content}/>
+                </div>
+                <div className="study_tag">
+                    <span>스터디 태그</span>
+                    <Tag onTagChange={handleTagChange} tags={tags}/>
                 </div>
                 <div className="btn">
                     <button onClick={handleUpdateClick} className="recruit_btn">저장</button>
