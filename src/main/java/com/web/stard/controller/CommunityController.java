@@ -46,6 +46,33 @@ public class CommunityController {
         return comService.getCommunityPost(id, userId);
     }
 
+    /* 전체 검색 (페이지화 X) */
+    @GetMapping("/search")
+    public List<Post> searchCommPost(@RequestParam String searchType, @RequestParam String searchWord) {
+        return comService.searchCommPost(searchType, searchWord);
+    }
+
+//    /* 전체 검색 (페이지화) */
+//    @GetMapping("/search")
+//    public List<Post> searchCommPost(@RequestParam String searchType, @RequestParam String searchWord,
+//                                     @RequestParam("page") int page) {
+//        return comService.searchCommPost(searchType, searchWord, page);
+//    }
+
+    /* 카테고리 - 전체 검색 (페이지화 X) */
+    @GetMapping("/search/category")
+    public List<Post> searchCommPostByCategory(@RequestParam String searchType, @RequestParam String category,
+                                               @RequestParam String searchWord) {
+        return comService.searchCommPostByCategory(searchType, category, searchWord);
+    }
+
+//    /* 카테고리 - 전체 검색 (페이지화) */
+//    @GetMapping("/search/category")
+//    public List<Post> searchCommPostByCategory(@RequestParam String searchType, @RequestParam String category,
+//                                               @RequestParam String searchWord, @RequestParam("page") int page) {
+//        return comService.searchCommPostByCategory(searchType, category, searchWord, page);
+//    }
+
     /* 커뮤니티 게시글 등록 */
     @PostMapping
     public Post registerCommPost(@RequestBody Post requestPost, Authentication authentication) {
