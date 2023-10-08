@@ -29,6 +29,12 @@ const ToDoList = ({sideheader}) => {
     const [studyIds, setStudyIds] = useState([]); //참여 중인 스터디 아이디
     const [studyMems, setStudyMems] = useState([]); //참여 멤버
 
+
+    const [InsertToDoTitle, setInsertToDoTitle] = useState("")
+    const [InsertToDoStudyId, setInsertToDoStudyId] = useState("")
+    const [InsertToDoStudy, setInsertToDoStudy] = useState([]); //선택한 스터디 객체
+    const studyIdAsNumber = parseFloat(InsertToDoStudyId);
+
     useEffect(() => {
         axios.get("http://localhost:8080/user/mypage/studying", {
             withCredentials: true, headers: {
@@ -210,36 +216,60 @@ const ToDoList = ({sideheader}) => {
 
     //전체 스터디의 투두 가져오기
     useEffect(() => {
-        axios.get(`http://localhost:8080/todo/all`, {
-            params: {
-                year: selectedDate.getFullYear(), month: selectedDate.getMonth() + 1,
-            }, headers: {
-                Authorization: `Bearer ${accessToken}`,
-            },
-        }).then((response) => {
-            console.log('가져오기 성공:', response.data);
+        if(InsertToDoStudyId === "0") {
+            axios.get(`http://localhost:8080/todo/all`, {
+                params: {
+                    year: selectedDate.getFullYear(), month: selectedDate.getMonth() + 1,
+                }, headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            }).then((response) => {
+                console.log('전체 스터디 투두리스트 가져오기 성공:', response.data);
 
-            const groupedTodos = {};
-            response.data.forEach((todoItem) => {
-                const dueDate = new Date(todoItem.toDo.dueDate).toDateString();
-                if (!groupedTodos[dueDate]) {
-                    groupedTodos[dueDate] = [];
-                }
-                groupedTodos[dueDate].push(todoItem);
-            });
+                const groupedTodos = {};
+                response.data.forEach((todoItem) => {
+                    const dueDate = new Date(todoItem.toDo.dueDate).toDateString();
+                    if (!groupedTodos[dueDate]) {
+                        groupedTodos[dueDate] = [];
+                    }
+                    groupedTodos[dueDate].push(todoItem);
+                });
 
-            setTodoswithAssignee((prevTodos) => ({
-                ...prevTodos, ...groupedTodos,
-            }));
-        }).catch((error) => {
-            console.log('가져오기 실패:', error);
-        })
-    }, [onInsert]);
+                setTodoswithAssignee((prevTodos) => ({
+                    ...prevTodos, ...groupedTodos,
+                }));
+            }).catch((error) => {
+                console.log('전체 스터디 투두리스트 가져오기 실패:', error);
+            })
+        }else{
+            axios.get(`http://localhost:8080/todo/user/${studyIdAsNumber}`, {
+                params: {
+                    year: selectedDate.getFullYear(), month: selectedDate.getMonth() + 1,
+                }, headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            }).then((response) => {
+                console.log('스터디별 투두리스트 가져오기 성공:', response.data);
 
-    const [InsertToDoTitle, setInsertToDoTitle] = useState("")
-    const [InsertToDoStudyId, setInsertToDoStudyId] = useState("")
-    const [InsertToDoStudy, setInsertToDoStudy] = useState([]); //선택한 스터디 객체
-    const studyIdAsNumber = parseFloat(InsertToDoStudyId);
+                const groupedTodos = {};
+                response.data.forEach((todoItem) => {
+                    const dueDate = new Date(todoItem.toDo.dueDate).toDateString();
+                    if (!groupedTodos[dueDate]) {
+                        groupedTodos[dueDate] = [];
+                    }
+                    groupedTodos[dueDate].push(todoItem);
+                });
+
+                setTodoswithAssignee((prevTodos) => ({
+                    ...prevTodos, ...groupedTodos,
+                }));
+            }).catch((error) => {
+                console.log('스터디별 투두리스트 가져오기 실패:', error);
+            })
+        }
+    }, [InsertToDoStudyId,studyIdAsNumber]);
+
+
     const selectStudy = (e) => {
         setInsertToDoTitle(e.target.value)
         if (e.target.value !== "전체") {
