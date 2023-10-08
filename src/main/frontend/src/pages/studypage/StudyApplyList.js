@@ -211,9 +211,9 @@ const StudyApplyList = () => {
                     if (res.data !== "SUCCESS") {
                         console.log("모집 완료 실패");
                     } else {
-                        alert("모집 완료. 참여내역으로 이동합니다.");
+                        alert("모집 완료. 팀블로그로 이동합니다.");
                         console.log("ㄴㅇㄹㄴㅇ:", acceptedMembers);
-                        navigate(`/myparticipatestudy`, {
+                        navigate(`/${id}/teamblog`, {
                             state: {
                                 "acceptedMembers":acceptedMembers,
                                 "studyId":id,
@@ -222,12 +222,9 @@ const StudyApplyList = () => {
                     }
                 })
                 .catch((error) => {
-                    console.error("데이터 가져오기 실패:", error);
+                    console.error("참여완료 데이터 전송 실패:", error);
                 });
-
-
         }
-
     }
     return (
         <div className={"ListWrap"}>

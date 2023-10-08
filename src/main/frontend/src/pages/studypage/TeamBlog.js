@@ -1,13 +1,50 @@
 import Header from "../../components/repeat_etc/Header";
-import React from "react";
+import React, {useEffect, useState} from "react";
 import BgImg from "../../images/blue-galaxy-wallpaper.jpg";
 import Check from "../../images/unchecked.png";
 import "../../css/study_css/TeamBlog.css";
 import axios from "axios";
 import {useParams} from "react-router-dom";
 import TeamBlogcss from  "../../css/study_css/TeamBlog.css";
+import {useLocation} from "react-router-dom";
 
 const TeamBlog = () => {
+    const accessToken = localStorage.getItem('accessToken');
+    const Study = useLocation();
+    console.log("받아온 Study",Study.state.MyParticipate.study.id);
+    const studyId = Study.state.MyParticipate.study.id;
+
+    if (studyId !== undefined) {
+        console.log("Study ID:", studyId);
+    } else {
+        console.log("Study ID is undefined.");
+    }
+
+    const id = parseFloat(studyId);
+    const [Member,setMember]= useState([]);
+
+    //TODO 참여멤버 리스트 가지고오기
+    useEffect(() => {
+        axios.get(`http://localhost:8080/api/v2/studies/${id}/study-member`, {
+            withCredentials: true,
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
+        })
+            .then((res) => {
+                console.log("참여멤버 get 성공 : ", res.data);
+
+                const studymemberList = res.data;
+
+                setMember(studymemberList);
+
+            })
+            .catch((error) => {
+                console.error("참여멤버 get 실패:", error);
+            });
+
+    }, [accessToken]);
+
     return (
         <div style={{}}>
             <Header showSideCenter={true}/>
