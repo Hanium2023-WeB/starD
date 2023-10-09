@@ -29,7 +29,6 @@ import SearchBar from "./SearchBar";
 import SearchResult from "./pages/studypage/SearchResult";
 import StudyApplyList from "./pages/studypage/StudyApplyList";
 import TeamBlog from "./pages/studypage/TeamBlog";
-import TeamToDoList from "./pages/teamblog/TeamToDoList";
 
 
 function App() {
@@ -156,11 +155,11 @@ function App() {
                              <StudyApplyList/>
                         }
                     />
-                    <Route path={"/:id/teamblog/TeamToDoList"}
-                           element={
-                            <TeamToDoList/>
-                           }
-                    />
+                    {/*<Route path={"/:id/teamblog/TeamToDoList"}*/}
+                    {/*       element={*/}
+                    {/*        <TeamToDoList/>*/}
+                    {/*       }*/}
+                    {/*/>*/}
                 </Routes>
 
                 <Footer/>

@@ -7,16 +7,16 @@ import removeicon from "../../images/remove.png";
 import ToDoListItems from "../../css/todo_css/ToDoListItem.css";
 import {useEffect} from "react";
 
-//할일 보여주는 컴포넌트
+//할 일 보여주는 컴포넌트
 const TeamToDoListItem = ({todos, onRemove, onToggle, onChangeSelectedTodo, onInsertToggle, selectedDate}) => {
-    console.log('todo:', todos);
-
+    // console.log('todo:', todos);
+    // 여기에서 todos는 const filteredTodos = todoswithAssignee[dateKey] || [];
     return(
-        <li key={todos.todo.id} className="TodoListItem">
-            <p>{todos.todo.title}</p>
-            <div className={cn('checkbox', { checked: todos.toDoStatus })} onClick={() => onToggle(todos.todo.id, todos.toDoStatus)}>
+        <li key={todos.toDo.id} className="TodoListItem">
+            <p>{todos.toDo.study.title}</p>
+            <div className={cn('checkbox', { checked: todos.toDoStatus })} onClick={() => onToggle(todos.toDo.id, todos.toDoStatus)}>
                 {todos.toDoStatus ? <img src={checkbox} width="20px" /> : <img src={uncheckbox} width="20px" />}
-                <div className="text">{todos.todo.task}</div>
+                <div className="text">{todos.toDo.task}</div>
             </div>
             <div className="Edit" onClick={() => {
                 onInsertToggle();
@@ -24,7 +24,7 @@ const TeamToDoListItem = ({todos, onRemove, onToggle, onChangeSelectedTodo, onIn
             }}>
                 <img src={editicon} width="20px" />
             </div>
-            <div className="Remove" onClick={() => onRemove(todos.todo.id)}>
+            <div className="Remove" onClick={() => onRemove(todos.toDo.id)}>
                 <img src={removeicon} width="20px" />
             </div>
         </li>
