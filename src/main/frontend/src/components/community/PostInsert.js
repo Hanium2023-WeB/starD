@@ -1,7 +1,9 @@
 import React, {useCallback, useState} from "react";
+import {useNavigate} from "react-router-dom";
 import axios from "axios";
 
 const PostInsert = () => {
+    const navigate = useNavigate();
     const [dataId, setDataId] = useState(0);
     const [posts, setPosts] = useState([]);
     const [formData, setFormData] = useState({
@@ -110,12 +112,15 @@ const PostInsert = () => {
             .then((res) => {
                 // console.log("전송 성공");
                 // console.log(res.data);
-                //성공하면
+                // 성공하면
                 // navigate("/myopenstudy", {state: formData});
 
             }).catch((error) => {
                 console.log('전송 실패', error);
             })
+        console.log("response : ", response);
+        e.preventDefault();
+        navigate("/");
     }, [formData])
 
     return (

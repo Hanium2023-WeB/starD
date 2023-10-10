@@ -185,7 +185,7 @@ const StudyDetail = ({sideheader}) => {
                                     handleStudyDelete={handleStudyDelete}
                                 />
                                 <div className="study_intro">
-                                    <div>스터디 소개</div>
+                                    <div style={{fontWeight:"bold"}}>스터디 소개</div>
                                     {studyItem && (
                                         <div
                                             dangerouslySetInnerHTML={{

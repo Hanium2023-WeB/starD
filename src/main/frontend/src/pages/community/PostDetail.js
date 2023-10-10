@@ -8,6 +8,7 @@ import React, {useState, useEffect} from "react";
 import LikeButton from "../../components/repeat_etc/LikeButton";
 import ScrapButton from "../../components/repeat_etc/ScrapButton";
 import axios from "axios";
+import PostEdit from "../../components/community/PostEdit";
 
 const PostDetail = () => {
     const navigate = useNavigate();
@@ -22,6 +23,10 @@ const PostDetail = () => {
 
     const [initiallyScrapStates, setInitiallyScrapStates] = useState(false);
     const [initiallyLikeStates, setInitiallyLikeStates] = useState(false);
+
+    const [posts, setPosts] = useState([]);
+    const [editing, setEditing] = useState(false);
+    const [postDetail, setPostDetail] = useState([]);// 게시글 상세 정보를 상태로 관리
 
     let accessToken = localStorage.getItem('accessToken');
     let isLoggedInUserId = localStorage.getItem('isLoggedInUserId');
@@ -60,6 +65,7 @@ const PostDetail = () => {
         }
     }, [id]);
 
+
     useEffect(() => {
         const config = {
             headers: {}
@@ -73,8 +79,6 @@ const PostDetail = () => {
         axios.get(`http://localhost:8080/com/${id}`, config)
             .then((res) => {
                 setPostItem(res.data);
-
-
             })
                 .catch((error) => {
                     console.error("커뮤니티 게시글 세부 데이터 가져오기 실패:", error);
@@ -167,6 +171,32 @@ const PostDetail = () => {
         }
     };
 
+    const handleEditClick = () => {
+        setEditing(true);
+    }
+
+    const handleCancelEdit = () => {
+        setEditing(false);
+    }
+
+    const handlePostUpdate = (updatedPost) => {
+        setEditing(false);
+        setPostDetail([updatedPost]);
+        const updatedPosts = posts.map(post =>
+            post.id === updatedPost.id ? updatedPost : post
+        );
+        setPosts(updatedPosts);
+    }
+
+    const handlePostDelete = () => {
+        const confirmDelete = window.confirm("정말로 게시글을 삭제하시겠습니까?");
+        if (confirmDelete) {
+            const updatedPosts = posts.filter(post => post.id !== postDetail[0].id);
+            setPosts(updatedPosts);
+            window.location.href = "/community";
+        }
+    }
+
     // 날짜, 시간 포맷팅("yyyy-MM-dd HH:mm" 형식)
     const formatDatetime = (datetime) => {
       const date = new Date(datetime);
@@ -184,6 +214,13 @@ const PostDetail = () => {
             <Header showSideCenter={true}/>
             <div className="community_container">
                 <h1>COMMUNITY LIST</h1>
+                {editing ? (
+                        <PostEdit
+                            post={postItem}
+                            onUpdatePost={handlePostUpdate}
+                            onCancel={handleCancelEdit}
+                        />
+                    ) : (
                 <div className="community_detail">
                     {postItem && (
                         <div className="post_header">
@@ -191,8 +228,14 @@ const PostDetail = () => {
                                 <span>카테고리 > </span>
                                 <span>{postItem.category}</span>
                             </div>
-                            <div className="post_title">
-                                {postItem.title}
+                            <div style={{display:"flex", justifyContent:"space-between"}}>
+                                <div className="post_title">
+                                    {postItem.title}
+                                </div>
+                                <div className="button">
+                                    <button style={{marginRight:"5px"}} onClick={handleEditClick}>수정</button>
+                                    <button onClick={handlePostDelete}>삭제</button>
+                                </div>
                             </div>
                             <div className="post_info">
                                 <div className="left">
@@ -225,6 +268,7 @@ const PostDetail = () => {
                         </Link>
                     </div>
                 </div>
+                    )}
             </div>
             <div className="comment_container">
                 <Comment/>
