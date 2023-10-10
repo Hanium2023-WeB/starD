@@ -57,7 +57,7 @@ public class ToDoController {
     }
 
     /* TO DO 수정 */
-    @PostMapping("/{toDoId}")
+    @PutMapping ("/{toDoId}")
     public ToDo updateTodo(@PathVariable Long toDoId, @RequestBody ToDo updateToDo,
                            @RequestParam String assigneeStr, Authentication authentication) {
         // TODO : 권한 확인 (스터디원인지) -> 동작 확인 필요
