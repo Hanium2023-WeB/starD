@@ -24,7 +24,7 @@ const TeamToDoList = ({studyId, Member, selectStudy}) => {
     const [studyIds, setStudyIds] = useState([]); //참여 중인 스터디 아이디
     const [studyMems, setStudyMems] = useState([]); //참여 멤버
 
-    const [assignandtodoid, setAssignandToDoid] = useState({}); //투두 id와 담당자 저장하기
+
 
     const [Assignees, setAssignees] = useState([]); //담당자
     const studyIdAsNumber = parseFloat(studyId);
@@ -87,11 +87,7 @@ const TeamToDoList = ({studyId, Member, selectStudy}) => {
         setTodoswithAssignee((prevTodos) => ({ //날짜 기준으로 세팅
             ...prevTodos, [dateKey]: [...(prevTodos[dateKey] || []), TodoWithAssign],
         }));
-        setAssignandToDoid((prevState) => ({
-            ...prevState,
-            todoid: todoswithAssignee,
-            assign: assign,
-        }));
+
         nextId.current++;
 
     }, [selectedDate, studies, todoswithAssignee]);
@@ -192,8 +188,7 @@ const TeamToDoList = ({studyId, Member, selectStudy}) => {
         //불러온 투두리스트
         console.log("setTodoswithAssignee_TODOLIST:", todoswithAssignee);
         console.log("setTodoswithAssignee_Member:", Member);
-        console.log("담당자있는 투두:", assignandtodoid);
-    }, [todoswithAssignee, Member, assignandtodoid]);
+    }, [todoswithAssignee, Member]);
 
     //해당 스터디의 투두 가져오기
     useEffect(() => {
