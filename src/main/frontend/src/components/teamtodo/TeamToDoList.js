@@ -23,7 +23,10 @@ const TeamToDoList = ({studyId, Member, selectStudy}) => {
     const [studyTitles, setStudyTitles] = useState([]); //참여 중인 스터디 제목
     const [studyIds, setStudyIds] = useState([]); //참여 중인 스터디 아이디
     const [studyMems, setStudyMems] = useState([]); //참여 멤버
-    const [Assignees, setAssignees] =useState([]);
+
+    const [assignandtodoid, setAssignandToDoid] = useState({}); //투두 id와 담당자 저장하기
+
+    const [Assignees, setAssignees] = useState([]); //담당자
     const studyIdAsNumber = parseFloat(studyId);
 
     const onInsertToggle = () => {
@@ -55,9 +58,9 @@ const TeamToDoList = ({studyId, Member, selectStudy}) => {
     };
     //담당자 삭제 함수
     const handleRemoveAssignees = (e) => {
-        const removeAssignName =Assignees.filter((item)=> item !== e.target.value);
+        const removeAssignName = Assignees.filter((item) => item !== e.target.value);
         setAssignees(removeAssignName);
-        console.log("삭제 완료: ",Assignees);
+        console.log("삭제 완료: ", Assignees);
     };
 
     useEffect(() => {
@@ -67,26 +70,31 @@ const TeamToDoList = ({studyId, Member, selectStudy}) => {
 
     //할일 추가 함수
     const onInsert = useCallback((task, studyId) => {
-            const StringAssignees = Assignees.toString();
-            const dateKey = selectedDate.toDateString();
-            const todo = {
-                id: nextId.current,
-                study: selectStudy,
-                task: task,
-                date: dateKey,
-                assignees: StringAssignees,
-            };
-            const TodoWithAssign = {
-                toDo: todo, member: StringAssignees, toDoStatus: false,
-            }
+        const StringAssignees = Assignees.toString();
+        const assign = Assignees;
+        const dateKey = selectedDate.toDateString();
+        const todo = {
+            id: nextId.current,
+            study: selectStudy,
+            task: task,
+            date: dateKey,
+            assignees: StringAssignees,
+        };
+        const TodoWithAssign = {
+            toDo: todo, member: StringAssignees, toDoStatus: false,
+        }
 
-            setTodoswithAssignee((prevTodos) => ({ //날짜 기준으로 세팅
-                ...prevTodos, [dateKey]: [...(prevTodos[dateKey] || []), TodoWithAssign],
-            }));
+        setTodoswithAssignee((prevTodos) => ({ //날짜 기준으로 세팅
+            ...prevTodos, [dateKey]: [...(prevTodos[dateKey] || []), TodoWithAssign],
+        }));
+        setAssignandToDoid((prevState) => ({
+            ...prevState,
+            todoid: todoswithAssignee,
+            assign: assign,
+        }));
+        nextId.current++;
 
-            nextId.current++;
-
-    }, [selectedDate, studies]);
+    }, [selectedDate, studies, todoswithAssignee]);
 
 
     const filteredTodos = todoswithAssignee[dateKey] || [];
@@ -184,7 +192,8 @@ const TeamToDoList = ({studyId, Member, selectStudy}) => {
         //불러온 투두리스트
         console.log("setTodoswithAssignee_TODOLIST:", todoswithAssignee);
         console.log("setTodoswithAssignee_Member:", Member);
-    }, [todoswithAssignee, Member]);
+        console.log("담당자있는 투두:", assignandtodoid);
+    }, [todoswithAssignee, Member, assignandtodoid]);
 
     //해당 스터디의 투두 가져오기
     useEffect(() => {
@@ -237,7 +246,9 @@ const TeamToDoList = ({studyId, Member, selectStudy}) => {
                                     >
                                         {item.member.name}
                                     </div>
-                                    <button id={"delete_assignees"} value={item.member.name} onClick={handleRemoveAssignees}>x</button>
+                                    <button id={"delete_assignees"} value={item.member.name}
+                                            onClick={handleRemoveAssignees}>x
+                                    </button>
                                 </div>
                             ))}
                         </div>
@@ -249,7 +260,6 @@ const TeamToDoList = ({studyId, Member, selectStudy}) => {
                                 ))}
                             </ul>
                         </div>
-
                         <TeamToDoInsert onInsert={onInsert} dueDate={selectedDate} Inserttodostudyid={studyId}
                                         studyidasnumber={studyIdAsNumber} Assignees={Assignees}/>
                         <ul className="TodoList">
@@ -266,12 +276,15 @@ const TeamToDoList = ({studyId, Member, selectStudy}) => {
                                         onChangeSelectedTodo={onChangeSelectedTodo}
                                         onInsertToggle={onInsertToggle}
                                         selectedDate={selectedDate}
+                                        Assignees={Assignees}
                                     />)
                                 }
                             }))}
                         </ul>
-                        {insertToggle && (<TeamToDoEdit selectedTodo={selectedTodo} onUpdate={onUpdate}
-                                                        participatedstudies={studies}/>)}
+                        {insertToggle && (<TeamToDoEdit selectedTodo={selectedTodo} onUpdate={onUpdate} Member={Member}
+                                                        handleAddAssignees={handleAddAssignees}
+                                                        handleRemoveAssignees={handleRemoveAssignees}
+                                                        Assignees={Assignees}/>)}
                     </div>
                     <Calender todo={todoswithAssignee.todo} onDateClick={handleDateClick}/>
                 </div>

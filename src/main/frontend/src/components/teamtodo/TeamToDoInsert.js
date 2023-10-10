@@ -7,14 +7,14 @@ import {useLocation} from "react-router-dom";
 //추가할 부분: 서버에서 참여 중인 스터디 내역, 참여 멤버 가지고 오기
 //투두리스트 데이터 구조 변경 -> 아이디,스터디 ,할 일,날짜, 담당자
 
-const TeamToDoInsert = ({onInsert, dueDate, Inserttodostudyid,studyidasnumber,Assignees}) => {
+const TeamToDoInsert = ({onInsert, dueDate, Inserttodostudyid, studyidasnumber, Assignees}) => {
     const accessToken = localStorage.getItem('accessToken');
     const [studies, setStudy] = useState([]);//참여 중인 스터디 리스트
     const [studyTitles, setStudyTitles] = useState([]); //참여 중인 스터디 제목
     const [studyIds, setStudyIds] = useState([]); //참여 중인 스터디 아이디
     const [studyMems, setStudyMems] = useState(""); //참여 멤버
     const [responseData, setResponseData] = useState([]);
-    const StringAssignees =Assignees.toString();
+    const StringAssignees = Assignees.toString(); //담당자 문자열
 
     const inputDate = new Date(dueDate);
 
@@ -80,7 +80,7 @@ const TeamToDoInsert = ({onInsert, dueDate, Inserttodostudyid,studyidasnumber,As
         async (e) => {
             if (TaskValue !== '') {
                 onInsert(TaskValue, studyIdAsNumber);
-                nextId.current +=1;
+                nextId.current += 1;
             } else {
                 alert("할 일을 입력해 주세요.");
                 return;
@@ -107,6 +107,7 @@ const TeamToDoInsert = ({onInsert, dueDate, Inserttodostudyid,studyidasnumber,As
                 console.log("studyIdAsNumber:", studyIdAsNumber);
 
                 const studyId = studyIdAsNumber;
+                const todoid = fetchDataResponse.data.toDo.id;
                 const assigneeStr = StringAssignees;
                 const task = TaskValue;
                 // const study = InsertToDoStudy;
@@ -145,9 +146,9 @@ const TeamToDoInsert = ({onInsert, dueDate, Inserttodostudyid,studyidasnumber,As
     }, [responseData]);
 
 
-    useEffect(()=>{
+    useEffect(() => {
         console.log("선택된 스터디 아이디:", InsertToDoStudyId);
-    },[InsertToDoStudyId]);
+    }, [InsertToDoStudyId]);
 
     return (
         <form className="TodoInsert" onSubmit={onSubmit}>

@@ -3,11 +3,9 @@ import Editcss from "../../css/todo_css/ToDoEdit.css";
 import {useLocation} from "react-router-dom";
 import axios from "axios";
 
-const TeamToDoEdit = ({selectedTodo, onUpdate, participatedstudies}) => {
+const TeamToDoEdit = ({selectedTodo, onUpdate,Member,handleAddAssignees,handleRemoveAssignees,Assignees}) => {
     const accessToken = localStorage.getItem('accessToken');
     console.log("selectedTodo", selectedTodo);
-    const [ParticipateState, setParticipatedState] = useState({}); //참여멤버
-    const [studyTitles, setStudyTitles] = useState([]);
     const [studyMems, setStudyMems] = useState(""); //참여 멤버
     const inputDate = new Date(selectedTodo.toDo.date);
     const [UpdatedToDo, setUpdatedToDo] = useState(selectedTodo);
@@ -17,21 +15,8 @@ const TeamToDoEdit = ({selectedTodo, onUpdate, participatedstudies}) => {
 
     const formattedDate = inputDate;
 
-    //어떤 스터디의 할 일인지 상태
-    // const [InsertToDoStudyTitle, setInsertToDoStudyTitle] = useState(selectedTodo.toDo.study.title)
-    // const [InsertToDoStudyId, setInsertToDoStudyId] = useState(selectedTodo.toDo.study.id);
-
-    // useEffect(() => {
-    //     console.log("participatedstudies", participatedstudies); //참여하고있는 스터디
-    //     const EditstudiesTitle = participatedstudies.map(studyObj => studyObj.study.title);
-    //     setStudyTitles(EditstudiesTitle);
-    //     // setStudy(studies);
-    //     const ParticipatedStudiesMem = participatedstudies.map(item => item.member.id);
-    //     setStudyMems(ParticipatedStudiesMem[0]);
-    //
-    // }, []);
-
     const [task, setTask] = useState('');
+
     const onChange = useCallback((e) => {
         console.log("task", e.target.value);
         setTask(e.target.value);
@@ -47,22 +32,6 @@ const TeamToDoEdit = ({selectedTodo, onUpdate, participatedstudies}) => {
         console.log("setUpdatedToDo", UpdatedToDo);
     }, [task]);
 
-    // const selectStudyTitle = useCallback((e) => {
-    //     setInsertToDoStudyTitle(e.target.value)
-    //     const selectedStudyId = participatedstudies.find((studyObj) => studyObj.study.title === e.target.value)?.study.id;
-    //     setInsertToDoStudyId(selectedStudyId);
-    //     console.log(e.target.value);
-    //     setUpdatedToDo((prevState) => {
-    //         return {
-    //             ...prevState,
-    //             study: {
-    //                 ...prevState.toDo.study,
-    //                 title: e.target.value,
-    //             },
-    //         };
-    //     });
-    // }, [InsertToDoStudyId]);
-
     const onSubmit = useCallback(async (e) => {
         alert("수정되었습니다.");
         console.log("setUpdatedToDo?:", UpdatedToDo);
@@ -73,18 +42,37 @@ const TeamToDoEdit = ({selectedTodo, onUpdate, participatedstudies}) => {
         if (selectedTodo) {
             setTask(selectedTodo.toDo.task);
         }
+        console.log("selectedTodo,",selectedTodo);
     }, [selectedTodo]);
+
 
     return (
         <div className="background">
             <form onSubmit={onSubmit} className="todoedit_insert">
                 <h2>수정하기</h2>
-                {/*<select id="todo-select" onChange={selectStudyTitle} value={InsertToDoStudyTitle}>*/}
-                {/*    <option value="전체">전체</option>*/}
-                {/*    {studyTitles.map((item, index) => (*/}
-                {/*        <option key={index} value={item}>{item}</option>*/}
-                {/*    ))}*/}
-                {/*</select>*/}
+                <div className={"select_assignee"}>
+                    <p>담당자</p>
+                    {Array.isArray(Member) && Member.length > 0 && Member.map((item, index) => (
+                        <div className={"assignees"} key={index}>
+                            <div
+                                className="assignee-name"
+                                data-assign-name={item.member.name}
+                                onClick={handleAddAssignees}
+                            >
+                                {item.member.name}
+                            </div>
+                            <button id={"delete_assignees"} value={item.member.name} onClick={handleRemoveAssignees}>x</button>
+                        </div>
+                    ))}
+                </div>
+                <div className={"selected-assignees"}>
+                    <p>선택한 담당자</p>
+                    <ul>
+                        {Assignees.map((assignee, index) => (
+                            <li key={index}>{assignee}</li>
+                        ))}
+                    </ul>
+                </div>
                 <input
                     onChange={onChange}
                     value={task}
