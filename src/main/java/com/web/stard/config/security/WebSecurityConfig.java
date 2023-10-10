@@ -62,6 +62,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             "/api/v2/studies/all",
 
             "/api/v2/studies/search-by-title",
+            "/api/v2/studies/search-by-content",
+            "/api/v2/studies/search-by-recruiter",
             "/member/find-nickname",
 
             "/com/**"

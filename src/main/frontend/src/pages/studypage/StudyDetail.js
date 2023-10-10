@@ -99,15 +99,15 @@ const StudyDetail = ({sideheader}) => {
             {
                 title: updatedStudy.title,
                 field: updatedStudy.field,  // 분야
-                capacity: updatedStudy.number, // 모집 인원
-                onOff: updatedStudy.onoff,  // 온/온라인/무관
-                city: updatedStudy.sido,    // 시
-                district: updatedStudy.gugun,   // 구
-                recruitmentDeadline: updatedStudy.deadline,    // 모집 마감
-                activityStart: updatedStudy.startDate, // 활동 시작
-                activityDeadline: updatedStudy.endDate, // 활동 마감
-                content: updatedStudy.description, // 내용
-                tags: updatedStudy.tag,    // 태그
+                capacity: updatedStudy.capacity, // 모집 인원
+                onOff: updatedStudy.onOff,  // 온/온라인/무관
+                city: updatedStudy.city,    // 시
+                district: updatedStudy.district,   // 구
+                recruitmentDeadline: updatedStudy.recruitmentDeadline,    // 모집 마감
+                activityStart: updatedStudy.activityStart, // 활동 시작
+                activityDeadline: updatedStudy.activityDeadline, // 활동 마감
+                content: updatedStudy.content, // 내용
+                tags: updatedStudy.tags,    // 태그
                 // scrap: studies.scrap,
                 // like:studies.like,
             },

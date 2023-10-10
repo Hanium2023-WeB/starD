@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import LOGO from "../../images/Logo.png"
 
 const Header = ({ showSideCenter }) => {
@@ -8,6 +8,7 @@ const Header = ({ showSideCenter }) => {
 	// const { isLoggedIn } = useAuth(); // useAuth를 이용하여 로그인 상태를 가져옴
 	// 로그인 여부 확인 변수
 	let [isLoggedIn, setIsLoggedIn] = useState(false);
+	const navigate = useNavigate();
 
 	// localStorage에 저장된 accessToken 추출
 	let accessToken = localStorage.getItem('accessToken');
@@ -48,16 +49,23 @@ const Header = ({ showSideCenter }) => {
 
 						// 로그아웃 상태로 설정
 						setIsLoggedIn(false);
+						alert("30분이 지나 자동 로그아웃");
+						// window.location.reload();
+						navigate("/");
 					})
 					.catch(error => {
 						console.log("로그아웃 실패", error);
+						localStorage.removeItem('accessToken');
+						localStorage.removeItem('isLoggedInUserId');
+						setIsLoggedIn(false);
+						// window.location.reload();
+						navigate("/");
 					});
 			};
 
 
 			if (accessToken != null && isLoggedInUserId != null) {
 				// 로그인 한 상태이거나 accessToken이 만료된 상태
-				console.log("test");
 				axios.get("http://localhost:8080/api/v2/members/accessToken-expiration", {    // accessToken 만료 여부 확인 function
 					withCredentials: true,
 					headers: {
@@ -68,13 +76,14 @@ const Header = ({ showSideCenter }) => {
 					}
 				})
 					.then((res) => {
-						console.log("결과 값 : " + res.data);
+						console.log("accessToken 확인 여부 결과 값 : " + res.data);
 
 						if (res.data === false)
 							// accessToken이 만료되지 않는 상태
 							setIsLoggedIn(true);
 						else {
 							// accessToken이 만료된 상태 -> 로그아웃 및 로그아웃 상태로 변환
+							console.log("토큰 만료")
 							logout(isLoggedInUserId);
 							setIsLoggedIn(false);
 						}
@@ -83,7 +92,8 @@ const Header = ({ showSideCenter }) => {
 						console.log(error);
 					});
 			} else {    // accessToken이 존재하지 않다면 로그인 안 한 상태
-				console.log("test2");
+				localStorage.removeItem('accessToken');
+				localStorage.removeItem('isLoggedInUserId');
 				setIsLoggedIn(false);
 			}
 		}, []);

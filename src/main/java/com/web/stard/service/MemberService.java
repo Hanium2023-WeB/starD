@@ -37,13 +37,8 @@ public class MemberService {
         return null;
     }
 
-    /* 닉네임으로 검색 */
     public Member findByNickname(String nickname) {
-        Optional<Member> result = memberRepository.findByNickname(nickname);
-
-        if(result.isPresent())
-            return result.get();
-        return null;
+        return memberRepository.findByNickname(nickname);
     }
 
     /* 비밀번호 확인 */

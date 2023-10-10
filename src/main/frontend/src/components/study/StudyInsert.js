@@ -280,8 +280,8 @@ const StudyInsert = ({updateStudies, onClose}) => {
                 }
             })
             .then((res) => {
-                // console.log("전송 성공");
-                // console.log(res.data);
+                console.log("전송 성공");
+                console.log(res.data);
                 //성공하면
                 // navigate("/myopenstudy", {state: formData});
 

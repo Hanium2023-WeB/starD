@@ -7,7 +7,7 @@ import {useLocation} from "react-router-dom";
 //추가할 부분: 서버에서 참여 중인 스터디 내역, 참여 멤버 가지고 오기
 //투두리스트 데이터 구조 변경 -> 아이디,스터디 ,할 일,날짜, 담당자
 
-const ToDoInsert = ({onInsert, dueDate}) => {
+const ToDoInsert = ({onInsert, dueDate, Inserttodostudyid,Inserttodotitle,Inserttodostudy,studyidasnumber}) => {
     const accessToken = localStorage.getItem('accessToken');
     const [studies, setStudy] = useState([]);//참여 중인 스터디 리스트
     const [studyTitles, setStudyTitles] = useState([]); //참여 중인 스터디 제목
@@ -27,7 +27,7 @@ const ToDoInsert = ({onInsert, dueDate}) => {
     const month = inputDate.getMonth() + 1;
     const formattedDate = inputDate.toISOString();
 
-    console.log("formattedDate >>", formattedDate);
+    // console.log("formattedDate >>", formattedDate);
 
 
     // TODO 서버에서 참여스터디와 참여멤버 가져오기
@@ -69,20 +69,20 @@ const ToDoInsert = ({onInsert, dueDate}) => {
     const [TaskValue, setTaskValue] = useState('');
 
     //어떤 스터디의 할 일인지 상태
-    const [InsertToDoTitle, setInsertToDoTitle] = useState("")
-    const [InsertToDoStudyId, setInsertToDoStudyId] = useState("")
-    const [InsertToDoStudy, setInsertToDoStudy] = useState([]); //선택한 스터디 객체
-    const studyIdAsNumber = parseFloat(InsertToDoStudyId);
+    const [InsertToDoTitle, setInsertToDoTitle] = useState(Inserttodotitle);
+    const [InsertToDoStudyId, setInsertToDoStudyId] = useState(Inserttodostudyid);
+    const [InsertToDoStudy, setInsertToDoStudy] = useState(Inserttodostudy); //선택한 스터디 객체
+    const studyIdAsNumber = studyidasnumber;
     const nextId = useRef(1);
     const onChange = useCallback(e => {
         setTaskValue(e.target.value);
     }, [])
-
     //할 일 추가 버튼 함수
     const onSubmit = useCallback(
         async (e) => {
             if (TaskValue !== '') {
-                onInsert(InsertToDoTitle, TaskValue, InsertToDoStudyId);
+                onInsert(InsertToDoTitle, TaskValue, studyIdAsNumber);
+                nextId.current +=1;
             } else {
                 alert("할 일을 입력해 주세요.");
                 return;
@@ -131,47 +131,53 @@ const ToDoInsert = ({onInsert, dueDate}) => {
 
                 console.log("전송 성공:", postDataResponse.data);
 
-                // onInsert(InsertToDoTitle, TaskValue,InsertToDoStudyId);
-
                 setTaskValue("");
             } catch (error) {
                 console.error("에러:", error);
             }
 
         },
-        [InsertToDoTitle, TaskValue, InsertToDoStudyId, dueDate, accessToken, onInsert]
+        [Inserttodotitle, TaskValue, Inserttodostudyid, dueDate, accessToken, onInsert]
     );
 
     useEffect(() => {
         console.log('투두리스트:', responseData);
     }, [responseData]);
 
-    const selectStudy = (e) => {
-        setInsertToDoTitle(e.target.value)
-        if (e.target.value !== "전체") {
-            const selectedStudy = studies.find((study) => study.study.title === e.target.value);
-            const selectedId = selectedStudy.study.id;
-            setInsertToDoStudyId(selectedId);
-            setInsertToDoStudy(selectedStudy);
-            console.log(e.target.value);
-            console.log(selectedId);
-        }
-
-    }
+    // const selectStudy = (e) => {
+    //     setInsertToDoTitle(e.target.value)
+    //     if (e.target.value !== "전체") {
+    //         const selectedStudy = studies.find((study) => study.study.title === e.target.value);
+    //         const selectedId = selectedStudy.study.id;
+    //         setInsertToDoStudyId(selectedId);
+    //         setInsertToDoStudy(selectedStudy);
+    //         console.log(e.target.value);
+    //         console.log(selectedId);
+    //     }else if(e.target.value==="전체"){
+    //         const allselect = "0";
+    //         setInsertToDoStudyId(allselect);
+    //         console.log("전체 select: ",allselect);
+    //
+    //     }
+    //
+    // }
+    useEffect(()=>{
+        console.log("선택된 스터디 아이디:", InsertToDoStudyId);
+    },[InsertToDoStudyId]);
 
     return (
-        <form className="TodoInsert">
-            <select id="todo-select" onChange={selectStudy} value={InsertToDoTitle}>
-                <option value="전체">전체</option>
-                {studyTitles.map((item, index) => (
-                    <option key={index} value={item}>{item}</option>
+        <form className="TodoInsert" onSubmit={onSubmit}>
+            {/*<select id="todo-select" onChange={selectStudy} value={InsertToDoTitle}>*/}
+            {/*    <option value="전체">전체</option>*/}
+            {/*    {studyTitles.map((item, index) => (*/}
+            {/*        <option key={index} value={item}>{item}</option>*/}
 
-                ))}
-            </select>
+            {/*    ))}*/}
+            {/*</select>*/}
             <input id={"insert-input"} onChange={onChange}
                    value={TaskValue}
                    placeholder="할 일을 입력하세요"/>
-            <button type="submit" onClick={onSubmit}>입력</button>
+            <button type="submit">입력</button>
         </form>
     );
 };
