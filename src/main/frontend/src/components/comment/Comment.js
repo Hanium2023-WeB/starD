@@ -21,6 +21,28 @@ const Comment = () => {
   const {id} = useParams();
   targetId = id;
 
+  // 스터디 상태(개설 완료 여부)
+  const [studyStatus, setStudyStatus] = useState("");
+
+  // TODO 스터디 상세 정보에서 스터디 개설 여부 가져오기
+  useEffect(() => {
+    axios.get(`http://localhost:8080/api/v2/studies/${targetId}`, {
+      withCredentials: true,
+      headers: {
+        'Authorization': `Bearer ${accessToken}`
+      }
+    }).then((res) => {
+      const studyDetail = res.data;
+      setStudyStatus(studyDetail.recruitStatus);
+    })
+        .catch((error) => {
+          console.error("스터디 개설 여부 가져오기 실패:", error);
+        });
+
+  }, [targetId, accessToken]);
+
+  console.log("!!!개설여부 : ", studyStatus);
+
   // TODO 컴포넌트가 마운트될 때 댓글 목록을 가져옴
   useEffect(() => {
     fetchComments()
@@ -217,13 +239,23 @@ const Comment = () => {
     <div className="comment_form">
       <div>
         <h2>댓글</h2>
-        <CommentForm addComment={addComment} />
-        <CommentList
-          comments={comments}
-          onEditClick={handleEditClick}
-          onRemoveClick={handleRemoveClick}
-          userNickname={userNickname}
-        />
+
+        {/* 스터디가 개설 완료 상태인 경우 댓글 창 표시x */}
+        {studyStatus === 'RECRUITMENT_COMPLETE' ? null : (
+            <CommentForm addComment={addComment} />
+        )}
+
+        <br/><br/>
+        {comments.length === 0 ? (
+            <p className="comment_empty_message">댓글 내역이 없습니다.</p>
+        ) : (
+            <CommentList
+                comments={comments}
+                onEditClick={handleEditClick}
+                onRemoveClick={handleRemoveClick}
+                userNickname={userNickname}
+            />
+        )}
       </div>
       {editingComment && (
         <CommentEdit
