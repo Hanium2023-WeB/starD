@@ -65,64 +65,66 @@ const StudyApplyList = () => {
     };
 
     const handleaccept = (memberId, index) => {
-        window.confirm(memberId + "을(를) 수락하시겠습니까?");
+        const result = window.confirm(memberId + "을(를) 수락하시겠습니까?");
 
-        //TODO db에서 받아오기 setApplyList로 상태 업데이트
-        axios.put(`http://localhost:8080/api/v2/studies/${id}/select`, {}, {
-            params: {
-                applicantId: memberId,
-                isSelect: true
-            },
-            withCredentials: true,
-            headers: {
-                'Authorization': `Bearer ${accessToken}`
-            }
-        })
-            .then((res) => {
-                console.log("수락 전송 성공 : ", res.data);
-
-                if (res.data !== "SUCCESS") {
-                    window.confirm(memberId + "을(를) 수락 실패했습니다.");
-                    console.log("수락 실패");
-                } else {
-                    window.confirm(memberId + "을(를) 수락했습니다.");
-
-                    setApplyList((prevApplyList) => {
-                        const updatedList = prevApplyList.map((item) => {
-                            if (item.member.id === memberId) {
-                                // Update the participationState of the accepted member
-                                return {...item, participationState: true};
-                            }
-                            return item;
-                        });
-                        return updatedList;
-                    });
-
-                    //수락버튼 눌렀을때
-                    setClickedApplyStates((prevStates) => {
-                        const updatedStates = [...prevStates];
-                        updatedStates[index] = true;
-                        return updatedStates;
-                    });
-                    //수락버튼 눌렀을 때 거절버튼은 false 상태가 되어야 함
-                    setClickedRejectStates((prevStates) => {
-                        const updatedStates = [...prevStates];
-                        updatedStates[index] = false;
-                        return updatedStates;
-                    });
-
-                    setAcceptedMembers([...acceptedMembers, memberId]);
-                    // if (count < capacity) {
-                    //     setCount(count + 1);
-                    // }
+        if (result) {
+            //TODO db에서 받아오기 setApplyList로 상태 업데이트
+            axios.put(`http://localhost:8080/api/v2/studies/${id}/select`, {}, {
+                params: {
+                    applicantId: memberId,
+                    isSelect: true
+                },
+                withCredentials: true,
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`
                 }
-                // window.location.reload();
-
-
             })
-            .catch((error) => {
-                console.error("수락 실패:", error);
-            });
+                .then((res) => {
+                    console.log("수락 전송 성공 : ", res.data);
+
+                    if (res.data !== "SUCCESS") {
+                        window.alert(memberId + "을(를) 수락 실패했습니다.");
+                        console.log("수락 실패");
+                    } else {
+                        window.alert(memberId + "을(를) 수락했습니다.");
+
+                        setApplyList((prevApplyList) => {
+                            const updatedList = prevApplyList.map((item) => {
+                                if (item.member.id === memberId) {
+                                    // Update the participationState of the accepted member
+                                    return {...item, participationState: true};
+                                }
+                                return item;
+                            });
+                            return updatedList;
+                        });
+
+                        //수락버튼 눌렀을때
+                        setClickedApplyStates((prevStates) => {
+                            const updatedStates = [...prevStates];
+                            updatedStates[index] = true;
+                            return updatedStates;
+                        });
+                        //수락버튼 눌렀을 때 거절버튼은 false 상태가 되어야 함
+                        setClickedRejectStates((prevStates) => {
+                            const updatedStates = [...prevStates];
+                            updatedStates[index] = false;
+                            return updatedStates;
+                        });
+
+                        setAcceptedMembers([...acceptedMembers, memberId]);
+                        // if (count < capacity) {
+                        //     setCount(count + 1);
+                        // }
+                    }
+                    // window.location.reload();
+
+
+                })
+                .catch((error) => {
+                    console.error("수락 실패:", error);
+                });
+        }
 
     }
 
@@ -132,64 +134,67 @@ const StudyApplyList = () => {
     }, [acceptedMembers]);
 
     const handlereturn = (memberId, index) => {
-        window.confirm(memberId + "을(를) 거절하시겠습니까?");
-        //TODO db에서 받아오기 setApplyList로 상태 업데이트
-        axios.put(`http://localhost:8080/api/v2/studies/${id}/select`, {}, {
-            params: {
-                applicantId: memberId,
-                isSelect: true
-            },
-            withCredentials: true,
-            headers: {
-                'Authorization': `Bearer ${accessToken}`
-            }
-        })
-            .then((res) => {
-                console.log("거절 전송 성공 : ", res.data);
+        const result = window.confirm(memberId + "을(를) 거절하시겠습니까?");
 
-                if (res.data !== "SUCCESS") {
-                    window.confirm(memberId + "을(를) 거절 실패했습니다.");
-                    console.log("거절 실패");
-                } else {
-                    window.confirm(memberId + "을(를) 거절했습니다.");
-                    setApplyList((prevApplyList) => {
-                        const updatedList = prevApplyList.map((item) => {
-                            if (item.member.id === memberId) {
-                                // 거절한 멤버 업데이트
-                                return {...item, participationState: false};
-                            }
-                            return item;
-                        });
-                        return updatedList;
-                    });
-                    //거절버튼 눌렀을 때
-                    setClickedRejectStates((prevStates) => {
-                        const updatedStates = [...prevStates];
-                        updatedStates[index] = true;
-                        return updatedStates;
-                    });
-                    //거절버튼 눌렀을 때 수락버튼은 false상태가 되어야함
-                    setClickedApplyStates((prevStates) => {
-                        const updatedStates = [...prevStates];
-                        updatedStates[index] = false;
-                        return updatedStates;
-                    });
-                    setAcceptedMembers(acceptedMembers.filter((id) => id !== memberId));
+        if (result) {
 
-                    // if (count > 0) {
-                    //     setCount(count - 1);
-                    // }
-
+            //TODO db에서 받아오기 setApplyList로 상태 업데이트
+            axios.put(`http://localhost:8080/api/v2/studies/${id}/select`, {}, {
+                params: {
+                    applicantId: memberId,
+                    isSelect: true
+                },
+                withCredentials: true,
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`
                 }
-                // setCount(count-1);
-                // window.location.reload();
-
-
             })
-            .catch((error) => {
-                console.error("거절 실패:", error);
-            });
+                .then((res) => {
+                    console.log("거절 전송 성공 : ", res.data);
 
+                    if (res.data !== "SUCCESS") {
+                        window.alert(memberId + "을(를) 거절 실패했습니다.");
+                        console.log("거절 실패");
+                    } else {
+                        window.alert(memberId + "을(를) 거절했습니다.");
+                        setApplyList((prevApplyList) => {
+                            const updatedList = prevApplyList.map((item) => {
+                                if (item.member.id === memberId) {
+                                    // 거절한 멤버 업데이트
+                                    return {...item, participationState: false};
+                                }
+                                return item;
+                            });
+                            return updatedList;
+                        });
+                        //거절버튼 눌렀을 때
+                        setClickedRejectStates((prevStates) => {
+                            const updatedStates = [...prevStates];
+                            updatedStates[index] = true;
+                            return updatedStates;
+                        });
+                        //거절버튼 눌렀을 때 수락버튼은 false상태가 되어야함
+                        setClickedApplyStates((prevStates) => {
+                            const updatedStates = [...prevStates];
+                            updatedStates[index] = false;
+                            return updatedStates;
+                        });
+                        setAcceptedMembers(acceptedMembers.filter((id) => id !== memberId));
+
+                        // if (count > 0) {
+                        //     setCount(count - 1);
+                        // }
+
+                    }
+                    // setCount(count-1);
+                    // window.location.reload();
+
+
+                })
+                .catch((error) => {
+                    console.error("거절 실패:", error);
+                });
+        }
     }
     //TODO 모집완료 버튼 누르면 이 함수 실행
     //myparticipatestudy 으로 navigate할 때 넘겨주는 state값은 참여 멤버들의 이름배열임
