@@ -7,14 +7,14 @@ import {useLocation} from "react-router-dom";
 //추가할 부분: 서버에서 참여 중인 스터디 내역, 참여 멤버 가지고 오기
 //투두리스트 데이터 구조 변경 -> 아이디,스터디 ,할 일,날짜, 담당자
 
-const TeamToDoInsert = ({onInsert, dueDate, Inserttodostudyid,studyidasnumber}) => {
+const TeamToDoInsert = ({onInsert, dueDate, Inserttodostudyid,studyidasnumber,Assignees}) => {
     const accessToken = localStorage.getItem('accessToken');
     const [studies, setStudy] = useState([]);//참여 중인 스터디 리스트
     const [studyTitles, setStudyTitles] = useState([]); //참여 중인 스터디 제목
     const [studyIds, setStudyIds] = useState([]); //참여 중인 스터디 아이디
     const [studyMems, setStudyMems] = useState(""); //참여 멤버
     const [responseData, setResponseData] = useState([]);
-
+    const StringAssignees =Assignees.toString();
 
     const inputDate = new Date(dueDate);
 
@@ -49,7 +49,7 @@ const TeamToDoInsert = ({onInsert, dueDate, Inserttodostudyid,studyidasnumber}) 
                 const studiesIds = studyList.map(item => item.study.id);
                 setStudyIds(studiesIds);
                 const ParticipatedStudiesMem = studyList.map(item => item.member.id);
-                setStudyMems(ParticipatedStudiesMem[0]);
+                // setStudyMems(Assignees.toString());
 
                 console.log("참여 스터디 아이디", studiesIds);
                 console.log("참여 스터디 제목", studiesTitle);
@@ -107,7 +107,7 @@ const TeamToDoInsert = ({onInsert, dueDate, Inserttodostudyid,studyidasnumber}) 
                 console.log("studyIdAsNumber:", studyIdAsNumber);
 
                 const studyId = studyIdAsNumber;
-                const assigneeStr = studyMems;
+                const assigneeStr = StringAssignees;
                 const task = TaskValue;
                 // const study = InsertToDoStudy;
 
@@ -127,7 +127,7 @@ const TeamToDoInsert = ({onInsert, dueDate, Inserttodostudyid,studyidasnumber}) 
                     }
                 });
 
-                console.log("전송 성공:", postDataResponse.data);
+                console.log("전송 성공:", postDataResponse);
 
                 setTaskValue("");
             } catch (error) {
@@ -139,26 +139,12 @@ const TeamToDoInsert = ({onInsert, dueDate, Inserttodostudyid,studyidasnumber}) 
     );
 
     useEffect(() => {
+
         console.log('투두리스트:', responseData);
+        console.log('담당자:', Assignees.toString()); //배열형태로 잘 옴
     }, [responseData]);
 
-    // const selectStudy = (e) => {
-    //     setInsertToDoTitle(e.target.value)
-    //     if (e.target.value !== "전체") {
-    //         const selectedStudy = studies.find((study) => study.study.title === e.target.value);
-    //         const selectedId = selectedStudy.study.id;
-    //         setInsertToDoStudyId(selectedId);
-    //         setInsertToDoStudy(selectedStudy);
-    //         console.log(e.target.value);
-    //         console.log(selectedId);
-    //     }else if(e.target.value==="전체"){
-    //         const allselect = "0";
-    //         setInsertToDoStudyId(allselect);
-    //         console.log("전체 select: ",allselect);
-    //
-    //     }
-    //
-    // }
+
     useEffect(()=>{
         console.log("선택된 스터디 아이디:", InsertToDoStudyId);
     },[InsertToDoStudyId]);

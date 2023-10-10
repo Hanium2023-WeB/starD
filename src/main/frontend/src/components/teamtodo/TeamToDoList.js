@@ -8,9 +8,10 @@ import axios from "axios";
 import TeamToDoInsert from "../../components/teamtodo/TeamToDoInsert";
 import TeamToDoEdit from "../../components/teamtodo/TeamToDoEdit";
 import TeamToDoListItem from "../../components/teamtodo/TeamToDoListItem";
+import TeamToDoList_css from "../../css/todo_css/TeamToDoList.css";
 
 
-const TeamToDoList = ({studyId}) => {
+const TeamToDoList = ({studyId, Member, selectStudy}) => {
     const [selectedTodo, setSelectedTodo] = useState(null);
     const [insertToggle, setInsertToggle] = useState(false);
     const [selectedDate, setSelectedDate] = useState(new Date()); // 추가: 선택한 날짜 상태
@@ -22,38 +23,8 @@ const TeamToDoList = ({studyId}) => {
     const [studyTitles, setStudyTitles] = useState([]); //참여 중인 스터디 제목
     const [studyIds, setStudyIds] = useState([]); //참여 중인 스터디 아이디
     const [studyMems, setStudyMems] = useState([]); //참여 멤버
-
+    const [Assignees, setAssignees] =useState([]);
     const studyIdAsNumber = parseFloat(studyId);
-
-    useEffect(() => {
-        axios.get("http://localhost:8080/user/mypage/studying", {
-            withCredentials: true, headers: {
-                'Authorization': `Bearer ${accessToken}`
-            }
-        })
-            .then((res) => {
-                console.log("모집완료된 스터디, 참여멤버 전송 성공 : ", res.data);
-
-                const studyList = res.data.content;
-                setStudy(studyList);
-                //console.log("모집완료 ? :", studies);
-                const studiesTitle = studyList.map(item => item.study.title);
-                setStudyTitles(studiesTitle);
-                const studiesIds = studyList.map(item => item.study.id);
-                setStudyIds(studiesIds);
-                const ParticipatedStudiesMem = studyList.map(item => item.member.id);
-                setStudyMems(ParticipatedStudiesMem);
-                console.log("참여 스터디 아이디", studiesIds);
-                console.log("참여 스터디 제목", studiesTitle);
-                console.log("참여중인 스터디", studyList);
-                console.log("참여멤버", ParticipatedStudiesMem);
-
-            })
-            .catch((error) => {
-                console.error("모집완료된 스터디, 참여멤버  가져오기 실패:", error);
-            });
-    }, [accessToken]);
-
 
     const onInsertToggle = () => {
         if (selectedTodo) {
@@ -76,26 +47,37 @@ const TeamToDoList = ({studyId}) => {
     const dateKey = selectedDate.toDateString();
     // console.log(`dateKey: ${dateKey}`);
 
+    //담당자 선택 함수
+    const handleAddAssignees = (e) => {
+        const assignName = e.target.getAttribute('data-assign-name');
+        const updatedAssignees = [...Assignees, assignName];
+        setAssignees(updatedAssignees);
+    };
+    //담당자 삭제 함수
+    const handleRemoveAssignees = (e) => {
+        const removeAssignName =Assignees.filter((item)=> item !== e.target.value);
+        setAssignees(removeAssignName);
+        console.log("삭제 완료: ",Assignees);
+    };
+
+    useEffect(() => {
+        console.log("선택 담당자:", Assignees.toString());
+    }, [Assignees]);
+
+
     //할일 추가 함수
     const onInsert = useCallback((task, studyId) => {
-        const filteredObjects = studies.find((item) => item.study.id === studyId);
-        //스터디 이름과 같은 스터디 객체를 찾는다
-        if (!filteredObjects) {
-            console.error("Study not found for studyId:", studyId);
-            //전체를 골랐을 때 처리 studyId 0임.
-            return;
-        } else {
-            console.log("filteredObjects", filteredObjects);
+            const StringAssignees = Assignees.toString();
             const dateKey = selectedDate.toDateString();
             const todo = {
                 id: nextId.current,
-                study: filteredObjects.study,
+                study: selectStudy,
                 task: task,
                 date: dateKey,
-                assignees: filteredObjects.member,
+                assignees: StringAssignees,
             };
             const TodoWithAssign = {
-                toDo: todo, member: filteredObjects.member, toDoStatus: false,
+                toDo: todo, member: StringAssignees, toDoStatus: false,
             }
 
             setTodoswithAssignee((prevTodos) => ({ //날짜 기준으로 세팅
@@ -103,7 +85,7 @@ const TeamToDoList = ({studyId}) => {
             }));
 
             nextId.current++;
-        }
+
     }, [selectedDate, studies]);
 
 
@@ -201,40 +183,38 @@ const TeamToDoList = ({studyId}) => {
     useEffect(() => {
         //불러온 투두리스트
         console.log("setTodoswithAssignee_TODOLIST:", todoswithAssignee);
-    }, [todoswithAssignee]);
+        console.log("setTodoswithAssignee_Member:", Member);
+    }, [todoswithAssignee, Member]);
 
-    //전체 스터디의 투두 가져오기
+    //해당 스터디의 투두 가져오기
     useEffect(() => {
-            axios.get(`http://localhost:8080/todo/user/${studyIdAsNumber}`, {
-                params: {
-                    year: selectedDate.getFullYear(), month: selectedDate.getMonth() + 1,
-                }, headers: {
-                    Authorization: `Bearer ${accessToken}`,
-                },
-            }).then((response) => {
-                console.log('스터디별 투두리스트 가져오기 성공:', response.data);
+        axios.get(`http://localhost:8080/todo/user/${studyIdAsNumber}`, {
+            params: {
+                year: selectedDate.getFullYear(), month: selectedDate.getMonth() + 1,
+            }, headers: {
+                Authorization: `Bearer ${accessToken}`,
+            },
+        }).then((response) => {
+            console.log('스터디별 투두리스트 가져오기 성공:', response.data);
 
-                const groupedTodos = {};
-                response.data.forEach((todoItem) => {
-                    const dueDate = new Date(todoItem.toDo.dueDate).toDateString();
-                    if (!groupedTodos[dueDate]) {
-                        groupedTodos[dueDate] = [];
-                    }
-                    groupedTodos[dueDate].push(todoItem);
-                });
+            const groupedTodos = {};
+            response.data.forEach((todoItem) => {
+                const dueDate = new Date(todoItem.toDo.dueDate).toDateString();
+                if (!groupedTodos[dueDate]) {
+                    groupedTodos[dueDate] = [];
+                }
+                groupedTodos[dueDate].push(todoItem);
+            });
 
-                setTodoswithAssignee((prevTodos) => ({
-                    ...prevTodos, ...groupedTodos,
-                }));
-            }).catch((error) => {
-                console.log('스터디별 투두리스트 가져오기 실패:', error);
-            })
+            setTodoswithAssignee((prevTodos) => ({
+                ...prevTodos, ...groupedTodos,
+            }));
+        }).catch((error) => {
+            console.log('스터디별 투두리스트 가져오기 실패:', error);
+        })
     }, [studyIdAsNumber]);
 
-    useEffect(() => {
-        console.log("studyIdAsNumber_투두리스트:::", studyIdAsNumber);
 
-    }, [ studyIdAsNumber]);
     return (<div>
         <div className="container">
             <div className="main_container">
@@ -245,16 +225,33 @@ const TeamToDoList = ({studyId}) => {
                             {" "}
                             <span>{`오늘은 ${Year}년 ${Month}월 ${Dates}일입니다.`}</span>
                         </div>
-                        {/*<div>*/}
-                        {/*    <select id="todo-select" onChange={selectStudy} value={InsertToDoTitle}>*/}
-                        {/*        <option value="전체">전체보기</option>*/}
-                        {/*        {studyTitles.map((item, index) => (*/}
-                        {/*            <option key={index} value={item}>{item}</option>*/}
+                        {/*담당자 선택*/}
+                        <div className={"select_assignee"}>
+                            <p>담당자</p>
+                            {Array.isArray(Member) && Member.length > 0 && Member.map((item, index) => (
+                                <div className={"assignees"} key={index}>
+                                    <div
+                                        className="assignee-name"
+                                        data-assign-name={item.member.name}
+                                        onClick={handleAddAssignees}
+                                    >
+                                        {item.member.name}
+                                    </div>
+                                    <button id={"delete_assignees"} value={item.member.name} onClick={handleRemoveAssignees}>x</button>
+                                </div>
+                            ))}
+                        </div>
+                        <div className={"selected-assignees"}>
+                            <p>선택한 담당자</p>
+                            <ul>
+                                {Assignees.map((assignee, index) => (
+                                    <li key={index}>{assignee}</li>
+                                ))}
+                            </ul>
+                        </div>
 
-                        {/*        ))}*/}
-                        {/*    </select>*/}
-                        {/*</div>*/}
-                        <TeamToDoInsert onInsert={onInsert} dueDate={selectedDate} Inserttodostudyid={studyId} studyidasnumber={studyIdAsNumber}/>
+                        <TeamToDoInsert onInsert={onInsert} dueDate={selectedDate} Inserttodostudyid={studyId}
+                                        studyidasnumber={studyIdAsNumber} Assignees={Assignees}/>
                         <ul className="TodoList">
                             {filteredTodos.length === 0 && (<div className="alert_empty_todo">
                                 <span>할 일이 없습니다.<br/>  할 일을 입력해주세요.</span>

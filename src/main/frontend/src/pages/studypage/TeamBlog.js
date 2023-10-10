@@ -11,7 +11,8 @@ import TeamToDoList from "../../components/teamtodo/TeamToDoList";
 const TeamBlog = () => {
     const accessToken = localStorage.getItem('accessToken');
     const Study = useLocation();
-    console.log("받아온 Study",Study.state.MyParticipate.study.id);
+    console.log("받아온 Study",Study.state.MyParticipate.study);
+    const selectStudy = Study.state.MyParticipate.study;
     const studyId = Study.state.MyParticipate.study.id;
 
     if (studyId !== undefined) {
@@ -36,7 +37,7 @@ const TeamBlog = () => {
 
                 const studymemberList = res.data;
 
-                setMember(studymemberList);
+                setMember(studymemberList.data);
 
             })
             .catch((error) => {
@@ -67,7 +68,7 @@ const TeamBlog = () => {
                 </div>
                 <div className="content">
                     <div>
-                        <TeamToDoList studyId={studyId}/>
+                        <TeamToDoList studyId={studyId} Member={Member} selectStudy={selectStudy}/>
                     </div>
             {/*        <div className="left">*/}
             {/*            <div className="team_todo team">*/}
