@@ -72,10 +72,6 @@ public class LocationService {
             location.setLatitude(geoLoc.getLatitude());
             location.setLongitude(geoLoc.getLongitude());
 
-            if (location.getAddress().equals("서울특별시 강남구")) {
-                location.setWeight(location.getWeight() + 1);
-            }
-
             System.out.println(location.toString());
         }
 
