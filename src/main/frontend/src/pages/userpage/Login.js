@@ -58,7 +58,7 @@ const Login = () => {
                 console.log(res.data);
 
                 if (res.data.state === 400) {
-                    alert("입력값을 확인해주세요. \n로그인 실패");
+                    alert("입력값을 확인해주세요.\n로그인 실패");
                 } else {
                     const accessToken = res.data.data.accessToken;
 
@@ -76,7 +76,7 @@ const Login = () => {
                 // 로그인 실패 시 현재 페이지 다시 로드
                 // window.location.reload();
 
-                alert("입력값을 확인해주세요. \n로그인 실패");
+                alert("입력값을 확인해주세요.\n로그인 실패");
             });
     };
     return (
@@ -128,7 +128,7 @@ const Login = () => {
                             <span id={"id"}>아이디 찾기 / </span>
                         </Link>
                         <span id={"pw"}>비밀번호 찾기 / </span>
-                        <Link to={"/subinfo"}
+                        <Link to={"/subinfo/signup"}
                               style={{
                                   textDecoration: "none",
                                   color: "blue",
