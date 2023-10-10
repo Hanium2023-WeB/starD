@@ -29,7 +29,6 @@ import SearchBar from "./SearchBar";
 import SearchResult from "./pages/studypage/SearchResult";
 import StudyApplyList from "./pages/studypage/StudyApplyList";
 import TeamBlog from "./pages/studypage/TeamBlog";
-import TeamToDoList from "./pages/teamblog/TeamToDoList";
 import Community from "./pages/community/Community";
 import PostDetail from "./pages/community/PostDetail";
 
