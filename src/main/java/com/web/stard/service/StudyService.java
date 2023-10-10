@@ -98,17 +98,20 @@ public class StudyService {
         return studies;
     }
 
-    public Page<Study> findByRecruiterContainingOrderByRecruitStatus(String keyword, int page) {
+    public Page<Study> findByRecruiter_NicknameContainingOrderByRecruitStatus(String keyword, int page) {
 
         Sort sort = Sort.by(new Sort.Order(Sort.Direction.DESC, "createdAt"));
         Pageable pageable = PageRequest.of(page - 1, 10, sort);
 
-        Page<Study> studies = studyRepository.findByRecruiterContainingOrderByRecruitStatus(keyword, pageable);
+        Page<Study> studies = studyRepository.findByRecruiter_NicknameContainingOrderByRecruitStatus(keyword, pageable);
 
         return studies;
+
+
     }
 
     public Page<Study> findByContentContainingOrderByRecruitStatus(String keyword, int page) {
+        System.out.println("내용 키워드 : " + keyword);
 
         Sort sort = Sort.by(new Sort.Order(Sort.Direction.DESC, "createdAt"));
         Pageable pageable = PageRequest.of(page - 1, 10, sort);
@@ -313,7 +316,7 @@ public class StudyService {
     // 스터디 참여자 선택 ( 수락 / 거절 )
     @Transactional
     public void selectParticipant(long studyId, String applicantId, boolean isSelect, Authentication authentication) throws Exception {
-        if(isRecruiter(studyId, authentication)){   // 로그인한 사용자가 스터디 개설자라면 참여 상태 변경
+        if (isRecruiter(studyId, authentication)) {   // 로그인한 사용자가 스터디 개설자라면 참여 상태 변경
             Study study = findById(studyId);
             Member member = memberService.find(applicantId);
 
@@ -330,7 +333,7 @@ public class StudyService {
         System.out.println("스터디 참여자 리스트 서비스 진입 O" + id);
         Study study = findById(id);
 
-        if(isRecruiter(id, authentication)){
+        if (isRecruiter(id, authentication)) {
             return applicantRepository.findByStudy(study);
         } else {
             throw new Exception("스터디 개설자가 아닙니다.");
@@ -358,7 +361,7 @@ public class StudyService {
     public void createStudyMember(long id, Authentication authentication) {
         List<Applicant> applicants = getStudyMember(id, authentication);
 
-        for (Applicant applicant: applicants) {
+        for (Applicant applicant : applicants) {
             System.out.println(applicant.getMember() + " " + applicant.getStudy());
 
             StudyMember studyMember = StudyMember.builder()
@@ -409,8 +412,6 @@ public class StudyService {
         Study study = findById(id);
         return studyMemberRepository.findByStudy(study);
     }
-
-
 
 
 }

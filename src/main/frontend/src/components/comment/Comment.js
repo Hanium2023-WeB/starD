@@ -2,14 +2,14 @@ import CommentForm from "./CommentForm";
 import { useState, useEffect } from "react";
 import CommentList from "./CommentList";
 import CommentEdit from "./CommentEdit";
-import { useLocation } from "react-router-dom";
+import {useLocation, useParams} from "react-router-dom";
 import axios from "axios";
 
 const Comment = () => {
   const accessToken = localStorage.getItem('accessToken');
   const [userNickname, setUserNickname] = useState("");
   const location = useLocation();
-  const targetId = location.state || ""; // StudyListItem.js 파일에서 스터디 id 값을 get
+  let targetId = location.state; // StudyListItem.js 파일에서 스터디 id 값을 get
 
   const [comments, setComments] = useState([]);
   const [editingComment, setEditingComment] = useState(null); // 수정 중인 댓글 상태 추가
@@ -17,6 +17,31 @@ const Comment = () => {
   // study/qna/comm 타입을 저장할 상태 변수
   const [type, setType] = useState(null);
   const [loading, setLoading] = useState(true); // 초기에 로딩 중 상태로 설정
+
+  const {id} = useParams();
+  targetId = id;
+
+  // 스터디 상태(개설 완료 여부)
+  const [studyStatus, setStudyStatus] = useState("");
+
+  // TODO 스터디 상세 정보에서 스터디 개설 여부 가져오기
+  useEffect(() => {
+    axios.get(`http://localhost:8080/api/v2/studies/${targetId}`, {
+      withCredentials: true,
+      headers: {
+        'Authorization': `Bearer ${accessToken}`
+      }
+    }).then((res) => {
+      const studyDetail = res.data;
+      setStudyStatus(studyDetail.recruitStatus);
+    })
+        .catch((error) => {
+          console.error("스터디 개설 여부 가져오기 실패:", error);
+        });
+
+  }, [targetId, accessToken]);
+
+  console.log("!!!개설여부 : ", studyStatus);
 
   // TODO 컴포넌트가 마운트될 때 댓글 목록을 가져옴
   useEffect(() => {
@@ -28,7 +53,7 @@ const Comment = () => {
           console.error("댓글 목록을 불러오는 중 에러 발생:", error);
           setLoading(false); // 에러 발생 시에도 로딩 상태를 false로 설정합니다.
         });
-    }, [targetId, type, accessToken]);
+    }, [id, type, accessToken]);
 
   // TODO accessToken으로 닉네임 알아오기
   useEffect(() => {
@@ -214,13 +239,23 @@ const Comment = () => {
     <div className="comment_form">
       <div>
         <h2>댓글</h2>
-        <CommentForm addComment={addComment} />
-        <CommentList
-          comments={comments}
-          onEditClick={handleEditClick}
-          onRemoveClick={handleRemoveClick}
-          userNickname={userNickname}
-        />
+
+        {/* 스터디가 개설 완료 상태인 경우 댓글 창 표시x */}
+        {studyStatus === 'RECRUITMENT_COMPLETE' ? null : (
+            <CommentForm addComment={addComment} />
+        )}
+
+        <br/><br/>
+        {comments.length === 0 ? (
+            <p className="comment_empty_message">댓글 내역이 없습니다.</p>
+        ) : (
+            <CommentList
+                comments={comments}
+                onEditClick={handleEditClick}
+                onRemoveClick={handleRemoveClick}
+                userNickname={userNickname}
+            />
+        )}
       </div>
       {editingComment && (
         <CommentEdit

@@ -58,6 +58,30 @@ const SearchBar = (props) => {
 						console.log('전송 실패', error);
 					})
 			}
+			else if (selectOption === "내용") {
+				axios.get("http://localhost:8080/api/v2/studies/search-by-content",
+					{params: {
+							keyword: search}})
+					.then((res)=>{
+						console.log("전송 성공");
+						console.log(res.data);
+						setSearchState(res.data);
+					}).catch((error)=>{
+					console.log('전송 실패', error);
+				})
+			}
+			else {
+				axios.get("http://localhost:8080/api/v2/studies/search-by-recruiter",
+					{params: {
+							keyword: search}})
+					.then((res)=>{
+						console.log("전송 성공");
+						console.log(res.data);
+						setSearchState(res.data);
+					}).catch((error)=>{
+					console.log('전송 실패', error);
+				})
+			}
 		} catch (error) {
 			console.error("Error:", error);
 		}
@@ -81,7 +105,7 @@ const SearchBar = (props) => {
 				<select id="sub" value={selectOption} onChange={onHandleselect}>
 					<option value="제목">제목</option>
 					<option value="내용">내용</option>
-					<option value="주제">작성자</option>
+					<option value="작성자">작성자</option>
 				</select>
 			</div>
 
