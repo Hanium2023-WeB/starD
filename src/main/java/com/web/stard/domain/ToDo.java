@@ -31,7 +31,7 @@ public class ToDo {
 
 
     @Transient // DB랑 매핑되지 않음
-    @JsonIgnore
+//    @JsonIgnore
     private List<Assignee> assignees; // 담당자
 
     @Override

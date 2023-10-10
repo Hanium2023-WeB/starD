@@ -288,7 +288,7 @@ const MyParticipateStudy = ({sideheader}) => {
     //TODO 모집완료 시 참여내역 불러오기
 
     useEffect(() => {
-        // TODO 서버에서 참여스터디와 참여멤버 가져오기
+        // TODO 서버에서 참여스터디 가져오기
         axios.get("http://localhost:8080/user/mypage/studying", {
             withCredentials: true,
             headers: {
@@ -320,7 +320,7 @@ const MyParticipateStudy = ({sideheader}) => {
 
             })
             .catch((error) => {
-                console.error("모집완료된 스터디, 참여멤버  가져오기 실패:", error);
+                console.error("모집완료된 스터디 가져오기 실패:", error);
             });
 
     }, [accessToken, likeStates, scrapStates]);

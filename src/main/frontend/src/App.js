@@ -158,11 +158,11 @@ function App() {
                              <StudyApplyList/>
                         }
                     />
-                    <Route path={"/:id/teamblog/TeamToDoList"}
-                           element={
-                            <TeamToDoList/>
-                           }
-                    />
+                    {/*<Route path={"/:id/teamblog/TeamToDoList"}*/}
+                    {/*       element={*/}
+                    {/*        <TeamToDoList/>*/}
+                    {/*       }*/}
+                    {/*/>*/}
                     <Route
                         path="/community"
                         element={
