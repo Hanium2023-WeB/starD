@@ -37,6 +37,10 @@ public class MemberService {
         return null;
     }
 
+    public Member findByNickname(String nickname) {
+        return memberRepository.findByNickname(nickname);
+    }
+
     /* 비밀번호 확인 */
     public boolean checkPw(String id, String password) {
         String storedPassword = memberRepository.findPasswordById(id).getPassword(); // 사용자 pw

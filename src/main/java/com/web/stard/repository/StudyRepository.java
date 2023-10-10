@@ -21,7 +21,8 @@ public interface StudyRepository extends JpaRepository<Study, Long> {
 
     Page<Study> findByContentContainingOrderByRecruitStatus(String keyword, Pageable pageable);
 
-    Page<Study> findByRecruiterContainingOrderByRecruitStatus(String keyword, Pageable pageable);
+    Page<Study> findByRecruiter_NicknameContainingOrderByRecruitStatus(String keyword, Pageable pageable);
+
 
     Page<Study> findByRecruitStatus(RecruitStatus recruitStatus, Pageable pageable);
 
