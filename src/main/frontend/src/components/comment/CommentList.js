@@ -1,4 +1,5 @@
-import React from "react";
+import React, {useState} from "react";
+import Report from "../report/Report.js";
 
 const formatDatetime = (datetime) => {
   const date = new Date(datetime);
@@ -12,7 +13,28 @@ const formatDatetime = (datetime) => {
 };
 
 const CommentList = ({ comments, onEditClick, onRemoveClick, onReplySubmit, userNickname }) => {
-console.log("^comments: ",comments);
+  const [showReportModal, setShowReportModal] = useState(false); // 모달 상태 변수 추가
+  const [reportCommentId, setReportCommentId] = useState(null); // 신고할 댓글 ID 상태 변수 추가
+
+  // 모달 열기 핸들러 함수
+  const handleOpenReportModal = (commentId) => {
+    setReportCommentId(commentId);
+    setShowReportModal(true);
+  };
+
+  // 모달 닫기 핸들러 함수
+  const handleCloseReportModal = () => {
+    setReportCommentId(null);
+    setShowReportModal(false);
+  };
+
+  // 모달에서 신고 사유를 처리하는 함수
+  const handleReportSubmit = (reportReason) => {
+    // reportReason을 처리하는 로직을 추가하세요.
+    console.log("신고 사유:", reportReason);
+  };
+
+  console.log("^comments: ",comments);
  // 댓글 목록이 비어있을 때 빈 배열로 대체
   if (!comments) {
     comments = [];
@@ -48,12 +70,19 @@ console.log("^comments: ",comments);
             {comment.author !== userNickname && (
               <>
                 <span>&nbsp;&nbsp; | &nbsp;&nbsp;</span>
-                <span className="comment_report_btn">신고</span>
+                <span className="comment_report_btn"
+                      onClick={() => handleOpenReportModal(comment.id)}>신고</span>
               </>
             )}
           </li>
         ))}
       </ul>
+      <Report
+          show={showReportModal}
+          handleClose={handleCloseReportModal}
+          onReportSubmit={handleReportSubmit}
+          targetId={reportCommentId} // targetId 전달
+      />
     </div>
   );
 };
