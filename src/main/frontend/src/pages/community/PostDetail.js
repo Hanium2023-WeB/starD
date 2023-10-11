@@ -235,6 +235,7 @@ const PostDetail = () => {
 
                     alert("삭제에 실패했습니다.");
                 });
+            navigate("/community");
         }
     }
 

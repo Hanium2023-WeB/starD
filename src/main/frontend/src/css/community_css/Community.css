@@ -159,6 +159,7 @@ input{
 .community_detail .post_header .post_info .right .scrap_btn{
     margin-right:10px;
     display: flex;
+    cursor: pointer;
 }
 
 .community_detail .post_content{
