@@ -1,6 +1,7 @@
 package com.web.stard.controller;
 
 import com.web.stard.domain.Post;
+import com.web.stard.dto.request.CommPostRequestDto;
 import com.web.stard.service.CommunityService;
 import com.web.stard.service.MemberService;
 import lombok.AllArgsConstructor;
@@ -82,7 +83,7 @@ public class CommunityController {
 
     /* 커뮤니티 게시글 수정 */
     @PostMapping("/{id}")
-    public Post updateCommPost(@PathVariable Long id, @RequestBody Post requestPost, Authentication authentication) {
+    public Post updateCommPost(@PathVariable Long id, @RequestBody CommPostRequestDto requestPost, Authentication authentication) {
         Post post = comService.updateCommPost(id, requestPost, authentication);
         return post;
     }
