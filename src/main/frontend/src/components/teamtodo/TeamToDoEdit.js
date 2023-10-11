@@ -6,8 +6,9 @@ import axios from "axios";
 const TeamToDoEdit = ({selectedTodo, onUpdate,Member,Assignees}) => {
     const accessToken = localStorage.getItem('accessToken');
     console.log("selectedTodo", selectedTodo);
-     const [todoassignees,setTodoAssignees] = useState(Assignees);
-    const [studyMems, setStudyMems] = useState(""); //참여 멤버;
+     const n = selectedTodo.assignees.map((item)=> item.member.name);
+    console.log("Assignees", n);
+     const [todoassignees,setTodoAssignees] = useState(n);
     const inputDate = new Date(selectedTodo.dueDate);
      const [UpdatedToDo, setUpdatedToDo] = useState({});
 // 로컬 시간대 고려
@@ -49,6 +50,7 @@ const TeamToDoEdit = ({selectedTodo, onUpdate,Member,Assignees}) => {
         // console.log("setUpdatedToDo", UpdatedToDo);
     }, [todoassignees,handleAddAssignees]);
 
+
     const onSubmit = useCallback(async (e) => {
         // alert("수정되었습니다.");
          console.log("setUpdatedToDo?:", UpdatedToDo);
@@ -78,17 +80,21 @@ const TeamToDoEdit = ({selectedTodo, onUpdate,Member,Assignees}) => {
                             >
                                 {item.member.name}
                             </div>
-                            <button id={"delete_assignees"} value={item.member.name} onClick={handleRemoveAssignees}>x</button>
+                            {/*<button id={"delete_assignees"} value={item.member.name} onClick={handleRemoveAssignees}>x</button>*/}
                         </div>
                     ))}
                 </div>
                 <div className={"selected-assignees"}>
                     <p>선택한 담당자</p>
-                    <ul>
                         {todoassignees.map((assignee, index) => (
-                            <li key={index}>{assignee}</li>
+                            <div className={"assignees"}>
+                                <div key={index}>{assignee}</div>
+                                <button id={"delete_assignees"} value={assignee}
+                                        onClick={handleRemoveAssignees}>x
+                                </button>
+                            </div>
                         ))}
-                    </ul>
+
                 </div>
                 <input
                     onChange={onChange}

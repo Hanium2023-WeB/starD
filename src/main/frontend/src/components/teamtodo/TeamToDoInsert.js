@@ -79,7 +79,7 @@ const TeamToDoInsert = ({onInsert, dueDate, Inserttodostudyid, studyidasnumber, 
     const onSubmit = useCallback(
         async (e) => {
             if (TaskValue !== '') {
-                onInsert(TaskValue, studyIdAsNumber);
+                onInsert(TaskValue, studyIdAsNumber,formattedDate,StringAssignees);
                 nextId.current += 1;
             } else {
                 alert("할 일을 입력해 주세요.");
@@ -90,49 +90,49 @@ const TeamToDoInsert = ({onInsert, dueDate, Inserttodostudyid, studyidasnumber, 
 
             e.preventDefault();
 
-            try {
-                // Step 1: 먼저 필요한 데이터를 서버에서 가져옵니다.
-                const fetchDataResponse = await axios.get(`http://localhost:8080/todo/all`, {
-                    params: {
-                        year: year,
-                        month: month,
-                    },
-                    headers: {
-                        Authorization: `Bearer ${accessToken}`,
-                    },
-                });
-
-                console.log('가져오기 성공:', fetchDataResponse.data);
-                setResponseData(fetchDataResponse.data);
-                console.log("studyIdAsNumber:", studyIdAsNumber);
-
-                const studyId = studyIdAsNumber;
-                const assigneeStr = StringAssignees;
-                const task = TaskValue;
-                // const study = InsertToDoStudy;
-
-                const todoData = {
-                    task: task,
-                    dueDate: formattedDate,
-                };
-
-                const postDataResponse = await axios.post(`http://localhost:8080/todo`, todoData, {
-                    params: {
-                        studyId: studyId,
-                        assigneeStr: assigneeStr,
-                    },
-                    withCredentials: true,
-                    headers: {
-                        'Authorization': `Bearer ${accessToken}`
-                    }
-                });
-
-                console.log("전송 성공:", postDataResponse); //담당자 잘 전송되는 듯
-
-                setTaskValue("");
-            } catch (error) {
-                console.error("에러:", error);
-            }
+            // try {
+            //     // Step 1: 먼저 필요한 데이터를 서버에서 가져옵니다.
+            //     const fetchDataResponse = await axios.get(`http://localhost:8080/todo/${studyIdAsNumber}`, {
+            //         params: {
+            //             year: year,
+            //             month: month,
+            //         },
+            //         headers: {
+            //             Authorization: `Bearer ${accessToken}`,
+            //         },
+            //     });
+            //
+            //     console.log('가져오기 성공:', fetchDataResponse.data);
+            //     setResponseData(fetchDataResponse.data);
+            //     console.log("studyIdAsNumber:", studyIdAsNumber);
+            //
+            //     const studyId = studyIdAsNumber;
+            //     const assigneeStr = StringAssignees;
+            //     const task = TaskValue;
+            //     // const study = InsertToDoStudy;
+            //
+            //     const todoData = {
+            //         task: task,
+            //         dueDate: formattedDate,
+            //     };
+            //
+            //     const postDataResponse = await axios.post(`http://localhost:8080/todo`, todoData, {
+            //         params: {
+            //             studyId: studyId,
+            //             assigneeStr: assigneeStr,
+            //         },
+            //         withCredentials: true,
+            //         headers: {
+            //             'Authorization': `Bearer ${accessToken}`
+            //         }
+            //     });
+            //
+            //     console.log("전송 성공:", postDataResponse); //담당자 잘 전송되는 듯
+            //
+            //     setTaskValue("");
+            // } catch (error) {
+            //     console.error("에러:", error);
+            // }
 
         },
         [TaskValue, Inserttodostudyid, dueDate, accessToken, onInsert]
