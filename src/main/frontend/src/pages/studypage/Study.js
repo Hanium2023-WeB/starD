@@ -222,100 +222,70 @@ const Study = () => {
     const [count, setCount] = useState(0);
     const [itemsPerPage, setItemsPerPage] = useState(9);
 
-    const handlePageChange = ({page, itemsPerPage, totalItemsCount}) => {
-        setPage(page);
 
-        // 백엔드에 데이터를 요청합니다.
-        const result = axios.get("http://localhost:8080/api/v2/studies/all", {
-            params: {
-                page: page,
-            },
-        });
-
-        // // 데이터를 받아온 후 스터디 리스트를 업데이트합니다.
-        // setStudies(result.data.content);
-        //
-        // // 페이지 정보를 업데이트합니다.
-        // setItemsPerPage(result.data.pageable.pageSize);
-        // setCount(result.data.totalElements);
-
-        // 데이터를 받아온 후 스터디 리스트를 업데이트합니다.
-        result.then((response) => {
-            setStudies(response.data.content);
-            // 페이지 정보를 업데이트합니다.
-            setItemsPerPage(response.data.pageable.pageSize);
-            setCount(response.data.totalElements);
-            // 여기서 다음 작업을 수행할 수 있습니다.
-
-            if (accessToken && isLoggedInUserId) {
-                const res_like = axios.get("http://localhost:8080/study/stars", {
-                    params: {
-                        page: page,
-                    },
-                    withCredentials: true,
-                    headers: {
-                        'Authorization': `Bearer ${accessToken}`
-                    }
-                });
-
-                const res_scrap = axios.get("http://localhost:8080/study/scraps", {
-                    params: {
-                        page: page,
-                    },
-                    withCredentials: true,
-                    headers: {
-                        'Authorization': `Bearer ${accessToken}`
-                    }
-                });
-
-                setLikeTwoStates(res_like.data);
-                setScrapTwoStates(res_scrap.data);
-
-                const studyList = response.data.content;
-
-                const updateStudies = studyList.map((study, index) => {
-                    study.like = likeStates[index];
-                    study.scrap = scrapStates[index];
-
-                    return study;
-                });
-
-                setStudies(updateStudies);
-            }
-        }).catch((error) => {
-            console.error("데이터 가져오기 실패:", error);
-        });
-
-        // setItemsPerPage(itemsPerPage); //한페이지 당 아이템 개수
-        // setCount(totalItemsCount); //전체 아이템 개수
+    const handlePageChange = (selectedPage) => {
+        // 페이지 번호를 업데이트하고 해당 페이지의 데이터를 가져오도록 설정
+        setPage(selectedPage);
     };
 
-
     useEffect(() => {
-        // TODO: 전체 리스트 값 가져오기
-        // 여기서 백엔드에게 데이터 요청
-        axios.get("http://localhost:8080/api/v2/studies/all")
-            .then((res) => {
-                // console.log("전체 리스트 값 가져오기 전송 성공 : ", res.data.content);
-                const studyList = res.data.content;
-
-                const updateStudies = res.data.content.map((study, index) => {
-                    study.like = likeStates[index];
-                    study.scrap = scrapStates[index];
-                    return study;
-                });
-
-                setStudies(updateStudies);
-                // 서버에서 받아온 페이지 정보를 setPageInfo를 통해 업데이트합니다.
-                handlePageChange({
-                    itemsPerPage: res.data.pageable.pageSize, // 페이지 당 아이템 수
-                    totalItemsCount: res.data.totalElements, // 전체 아이템 수
-                });
+        // 데이터를 가져오는 함수
+        const fetchStudies = (pageNumber) => {
+            // 해당 페이지의 데이터를 가져와서 업데이트
+            axios.get("http://localhost:8080/api/v2/studies/all", {
+                params: {
+                    page: pageNumber,
+                },
             })
-            .catch((error) => {
-                console.error("데이터 가져오기 실패:", error);
-            });
-    }, [likeStates, scrapStates]);
+                .then((response) => {
+                    setStudies(response.data.content);
+                    setItemsPerPage(response.data.pageable.pageSize);
+                    setCount(response.data.totalElements);
+
+                    if (accessToken && isLoggedInUserId) {
+                        const res_like = axios.get("http://localhost:8080/study/stars", {
+                            params: {
+                                page: page,
+                            },
+                            withCredentials: true,
+                            headers: {
+                                'Authorization': `Bearer ${accessToken}`
+                            }
+                        });
+
+                        const res_scrap = axios.get("http://localhost:8080/study/scraps", {
+                            params: {
+                                page: page,
+                            },
+                            withCredentials: true,
+                            headers: {
+                                'Authorization': `Bearer ${accessToken}`
+                            }
+                        });
+
+                        setLikeTwoStates(res_like.data);
+                        setScrapTwoStates(res_scrap.data);
+
+                        const studyList = response.data.content;
+
+                        const updateStudies = studyList.map((study, index) => {
+                            study.like = likeStates[index];
+                            study.scrap = scrapStates[index];
+
+                            return study;
+                        });
+
+                        setStudies(updateStudies);
+                    }
+                })
+                .catch((error) => {
+                    console.error("데이터 가져오기 실패:", error);
+                });
+        };
+
+        // 페이지 번호 변경 시 데이터 가져오기
+        fetchStudies(page);
+    }, [page, likeStates, scrapStates]);
 
 
     return (
@@ -360,7 +330,7 @@ const Study = () => {
             </div>
             <div className={"paging"}>
                 {!showStudyInsert && (
-                    <Paging  page={page} totalItemCount={count} itemsPerPage={itemsPerPage}/>
+                    <Paging page={page} totalItemCount={count} itemsPerPage={itemsPerPage} handlePageChange={handlePageChange} />
                 )}
             </div>
         </div>
