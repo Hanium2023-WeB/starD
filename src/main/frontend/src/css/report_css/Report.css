@@ -66,8 +66,9 @@
     border-radius: 15px;
     width: 70px;
     padding: 4px 0;
-    background: #405962;
-    color: #fff;
+    background: #c0dca4;
     cursor: pointer;
     font-size: 15px;
+    border: none;
+
 }
