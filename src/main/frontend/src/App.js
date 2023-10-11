@@ -31,7 +31,7 @@ import StudyApplyList from "./pages/studypage/StudyApplyList";
 import TeamBlog from "./pages/studypage/TeamBlog";
 import Community from "./pages/community/Community";
 import PostDetail from "./pages/community/PostDetail";
-
+import Chat from "./components/chat/Chat";
 
 function App() {
 
@@ -172,6 +172,12 @@ function App() {
                         path="/postdetail/:id"
                         element={
                             <PostDetail/>
+                        }
+                    />
+                    <Route
+                        path="/chat"
+                        element={
+                            <Chat/>
                         }
                     />
                 </Routes>
