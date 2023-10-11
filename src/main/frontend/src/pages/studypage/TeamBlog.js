@@ -4,7 +4,7 @@ import BgImg from "../../images/blue-galaxy-wallpaper.jpg";
 import Check from "../../images/unchecked.png";
 import "../../css/study_css/TeamBlog.css";
 import axios from "axios";
-import {useParams} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import TeamBlogcss from  "../../css/study_css/TeamBlog.css";
 import {useLocation} from "react-router-dom";
 import TeamToDoList from "../../components/teamtodo/TeamToDoList";
@@ -63,7 +63,9 @@ const TeamBlog = () => {
                         <li>팀블로그 홈</li>
                         <li>TODO</li>
                         <li>일정</li>
-                        <li>실시간 채팅</li>
+                        <li>
+                            <Link to="/chat">실시간 채팅</Link>
+                        </li>
                     </ul>
                 </div>
                 <div className="content">

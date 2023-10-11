@@ -1,71 +1,155 @@
-import React, { useState, useEffect } from 'react';
-import SockJsClient from 'react-stomp';
-import * as StompJs from "@stomp/stompjs";
+import React, { Component } from 'react';
+import { Client } from '@stomp/stompjs';
+import axios from 'axios';
 
-const Chat = () => {
-    const [chat, setChat] = useState('');
-    const [chatList, setChatList] = useState([]); //화면에 표시될 채팅리스트
-    const { apply_id } = useParams(); // 채널을 구분하는 식별자를 URL 파라미터(스터디아이디?)로 받는다.
-    const [socket, setSocket] = useState(null);
+class Chat extends Component {
+    constructor(props) {
+        super(props);
 
-    useEffect(() => {
-        // WebSocket 연결 -> WebSocket에 연결할 주소를 인자로 주어 호출
-        const ws = new WebSocket('ws://localhost:3000/ws');
-
-        ws.onopen = () => {
-            //서버와 핸드 셰이킹이 이루어진 직후 해당 함수를 수행
-            console.log('WebSocket 연결 성공');
+        this.state = {
+            connected: false,
+            message: '',
+            greetings: [],
+            userNickname: '', // 사용자 닉네임 상태 변수 추가
         };
 
-        ws.onmessage = (event) => {
-            //서버로부터 데이터를 수신할 경우 해당 함수를 수행
-            const message = JSON.parse(event.data);
-            setChatList((prevChatList) => [...prevChatList, message.chat]);
-        };
+        this.stompClient = new Client({
+            brokerURL: 'ws://localhost:8080/gs-guide-websocket',
+        });
 
-        ws.onclose = () => {
-            //서버와의 연결이 종료된 직후 해당 함수를 수행
-            console.log('WebSocket 연결 종료');
-        };
-        ws.onerror=()=>{
-            //에러가 발생했을 때 해당 함수를 수행
+        this.stompClient.onConnect = this.onConnect;
+        this.stompClient.onWebSocketError = this.onWebSocketError;
+        this.stompClient.onStompError = this.onStompError;
+    }
+
+    componentDidMount() {
+        this.setConnected(false);
+        this.fetchUserNickname(); // 사용자 닉네임 가져오기
+    }
+
+    // 사용자 닉네임 가져오는 함수
+    fetchUserNickname = () => {
+        const accessToken = localStorage.getItem('accessToken');
+        if (accessToken) {
+            axios
+                .get('http://localhost:8080/member/find-nickname', {
+                    withCredentials: true,
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                    },
+                })
+                .then((response) => {
+                    const member = response.data;
+                    this.setState({
+                        userNickname: member.nickname,
+                    });
+                })
+                .catch((error) => {
+                    console.error('서버에서 닉네임을 가져오는 중 에러 발생:', error);
+                });
         }
-        setSocket(ws);
+    };
 
-        return () => {
-            ws.close();
-        };
-    }, []);
+    onConnect = (frame) => {
+        this.setConnected(true);
+        console.log('Connected: ' + frame);
+        this.stompClient.subscribe('/topic/greetings', (greeting) => {
+            this.showGreeting(JSON.parse(greeting.body).content);
+        });
+    };
 
-    const sendMessage = () => {
-        if (socket && chat) {
-            const message = {
-                chat: chat,
+    onWebSocketError = (error) => {
+        console.error('Error with websocket', error);
+    };
+
+    onStompError = (frame) => {
+        console.error('Broker reported error: ' + frame.headers['message']);
+        console.error('Additional details: ' + frame.body);
+    };
+
+    setConnected = (connected) => {
+        this.setState({
+            connected: connected,
+        });
+    };
+
+    connect = () => {
+        const accessToken = localStorage.getItem('accessToken');
+
+        if (accessToken) {
+            const headers = {
+                Authorization: `Bearer ${accessToken}`,
             };
-            socket.send(JSON.stringify(message));
-            setChat(''); // 입력 필드 초기화
+
+            this.stompClient.activate({ headers });
+        } else {
+            console.error('Access token not found.');
         }
     };
 
-    const handleChange = (event) => {
-        setChat(event.target.value);
+    disconnect = () => {
+        this.stompClient.deactivate();
+        this.setConnected(false);
+        console.log('Disconnected');
     };
 
-    return (
-        <div>
-            <div className="chat-list">
-                {chatList.map((message, index) => (
-                    <div key={index} className="chat-message">
-                        {message}
-                    </div>
-                ))}
+    sendName = () => {
+        const { message, userNickname } = this.state;
+        const messageWithNickname = `${userNickname}:  ${message}`;
+
+        this.stompClient.publish({
+            destination: '/app/hello',
+            body: JSON.stringify({ 'name': messageWithNickname }),
+        });
+    };
+
+    showGreeting = (message) => {
+        this.setState((prevState) => ({
+            greetings: [...prevState.greetings, message],
+        }));
+    };
+
+    render() {
+        return (
+            <div>
+                <div>
+                    <label>WebSocket connection:</label>
+                    <button onClick={this.connect} disabled={this.state.connected}>
+                        Connect
+                    </button>
+                    <button onClick={this.disconnect} disabled={!this.state.connected}>
+                        Disconnect
+                    </button>
+                </div>
+                <div>
+                    <label>채팅 보내기</label>
+                    <input
+                        type="text"
+                        value={this.state.message}
+                        onChange={(e) => this.setState({ message: e.target.value })}
+                        placeholder="내용을 입력하세요"
+                    />
+                    <button onClick={this.sendName}>Send</button>
+                </div>
+                <div>
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>Messages</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {this.state.greetings.map((greeting, index) => (
+                            <tr key={index}>
+                                <td>{greeting}</td>
+                            </tr>
+                        ))}
+                        </tbody>
+                    </table>
+                </div>
             </div>
-            <div className="chat-input">
-                <input type="text" name="chatInput" onChange={handleChange} value={chat} />
-                <button onClick={sendMessage}>메시지 보내기</button>
-            </div>
-        </div>
-    );
-};
+        );
+    }
+}
 
 export default Chat;
