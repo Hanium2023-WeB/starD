@@ -31,6 +31,7 @@ const Mypage = ({ sideheader }) => {
   const [meetings, setMeetings] = useState({});
   const [todayKey, setTodayKey] = useState("");
   const navigate = useNavigate();
+  const accessToken = localStorage.getItem('accessToken');
 
   const [scrapedPosts, setScrapedPosts] = useState([]); //스크랩한 게시물을 보유할 상태 변수
 
@@ -100,15 +101,19 @@ const Mypage = ({ sideheader }) => {
   //스크랩 커뮤니티
   useEffect(() => {
     // API 또는 데이터 원본에서 스크랩한 게시물을 가져옵니다.
-    const response = axios.post('')
+    axios.get("http://localhost:8080/scrap/post", {
+        withCredentials: true,
+        headers: {
+            'Authorization': `Bearer ${accessToken}`
+        }
+    })
         .then((res) => {
           console.log("전송 성공");
           console.log(res.data);
+
+          setScrapedPosts(res.data);
         })
-        .then((data) => {
-          // 가져온 데이터로 스크랩한 게시물 상태 변수를 업데이트합니다.
-          setScrapedPosts(data);
-        }).catch((error) => {
+        .catch((error) => {
           console.error('스크랩한 게시물을 가져오는 중 오류 발생: ', error);
         });
   }, []);
