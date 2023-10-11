@@ -12,6 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @Getter
@@ -23,6 +24,24 @@ public class ReportController {
 
     private final ReportService reportService;
 
+    // string을 enum으로 변환
+    public ReportReason reportReason(String reason) {
+        ReportReason reasonType = null;
+        if (reason.equals("ABUSE")) {
+            reasonType = ReportReason.ABUSE;
+        } else if (reason.equals("SPAM")) {
+            reasonType = ReportReason.PROMOTION;
+        } else if (reason.equals("PROMOTION")) {
+            reasonType = ReportReason.ADULT;
+        } else if (reason.equals("ADULT")) {
+            reasonType = ReportReason.SPAM;
+        } else if (reason.equals("ETC")) {
+            reasonType = ReportReason.ETC;
+        }
+        return reasonType;
+    }
+
+    // TODO - post/study 신고 @RequestBody로 변경하기
     // Post 글 신고
     @PostMapping("/posts")
     public ReportDetail createPostReport(@RequestParam Long postId, @RequestParam ReportReason reason, @RequestParam(required = false) String customReason, Authentication authentication) {
@@ -37,8 +56,17 @@ public class ReportController {
 
     // 댓글 신고
     @PostMapping("/replies")
-    public ReportDetail createReplyReport(@RequestParam Long replyId, @RequestParam ReportReason reason, @RequestParam(required = false) String customReason, Authentication authentication) {
-        return reportService.createReplyReport(replyId, reason, customReason, authentication);
+    public ReportDetail createReplyReport(@RequestBody Map<String, Object> requestPayload, Authentication authentication) {
+        Integer targetIdStr = (Integer) requestPayload.get("id");
+        //Integer replyId = Integer.parseInt(targetIdStr);
+
+        String reason = (String) requestPayload.get("reason");
+        String customReason = (String) requestPayload.get("customReason");
+
+        Long targetIdLong = targetIdStr.longValue();
+        ReportReason reasonType = reportReason(reason);
+
+        return reportService.createReplyReport(targetIdLong, reasonType, customReason, authentication);
     }
 
     // 신고 목록 조회 (누적 신고 수가 5회 이상인)
