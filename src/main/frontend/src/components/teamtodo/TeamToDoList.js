@@ -25,7 +25,6 @@ const TeamToDoList = ({studyId, Member, selectStudy}) => {
     const [studyMems, setStudyMems] = useState([]); //참여 멤버
 
 
-
     const [Assignees, setAssignees] = useState([]); //담당자
     const studyIdAsNumber = parseFloat(studyId);
 
@@ -94,7 +93,6 @@ const TeamToDoList = ({studyId, Member, selectStudy}) => {
 
 
     const filteredTodos = todoswithAssignee[dateKey] || [];
-    // console.log("filteredTodos", filteredTodos);
 
     //삭제 함수
     const onRemove = useCallback( //todos.todo의 id
@@ -121,7 +119,7 @@ const TeamToDoList = ({studyId, Member, selectStudy}) => {
     const onUpdate = useCallback(async (UpdatedToDo) => {
         console.log("selectedTodo..:", UpdatedToDo);
         onInsertToggle();
-        const assigneeStr = studyMems.toString();
+        const assigneeStr = UpdatedToDo.assignees.toString();
         console.log("assigneeStr..:", assigneeStr);
         const todoData = {
             task: UpdatedToDo.toDo.task, dueDate: UpdatedToDo.toDo.dueDate,
@@ -135,26 +133,27 @@ const TeamToDoList = ({studyId, Member, selectStudy}) => {
         });
 
         console.log("전송 성공:", postDataResponse.data);
-        const updatedTodos = {
-            ...todoswithAssignee,
-            [dateKey]: todoswithAssignee[dateKey].map((todo) =>
-                todo.toDo.id === UpdatedToDo.toDo.id
-                    ? {
-                        toDo: {
-                            ...todo.toDo,
-                            study: {...todo.toDo.study, id: UpdatedToDo.toDo.study.id},
+
+        setTodoswithAssignee((prevTodos) => {
+
+            const updatedTodos = {
+                ...prevTodos,
+                [dateKey]: prevTodos[dateKey].map((todo) => {
+                    if (todo.id === UpdatedToDo.toDo.id) {
+                        return {
+                           ...todo,
                             task: UpdatedToDo.toDo.task,
-                        },
-                        toDoStatus: todo.toDoStatus,
+                            assignees: postDataResponse.data.assignees, // Update the assignees
+                        };
+                    } else {
+                        return todo;
                     }
-                    : todo
-            ),
-        };
-
-        setTodoswithAssignee(updatedTodos);
-        console.log("전송 성공t:", todoswithAssignee);
-
-    }, [studyMems, selectedDate, studies]);
+                }),
+            };
+            return updatedTodos;
+        });
+        console.log("todoss: ", todoswithAssignee);
+    }, [studyMems, selectedDate, studies,todoswithAssignee]);
 
 
     //체크 버튼 바꾸는 함수
@@ -186,13 +185,13 @@ const TeamToDoList = ({studyId, Member, selectStudy}) => {
 
     useEffect(() => {
         //불러온 투두리스트
-        console.log("setTodoswithAssignee_TODOLIST:", todoswithAssignee);
-        console.log("setTodoswithAssignee_Member:", Member);
-    }, [todoswithAssignee, Member]);
+        console.log("setTodoswithAssignee_TODOLIST:", todoswithAssignee); //스터디 별 투두리스트 출력
+        console.log("setTodoswithAssignee_Member:", Member); //스터디 참여멤버들 출력
+    }, [todoswithAssignee, Member,onUpdate]);
 
     //해당 스터디의 투두 가져오기
     useEffect(() => {
-        axios.get(`http://localhost:8080/todo/user/${studyIdAsNumber}`, {
+        axios.get(`http://localhost:8080/todo/${studyIdAsNumber}`, {
             params: {
                 year: selectedDate.getFullYear(), month: selectedDate.getMonth() + 1,
             }, headers: {
@@ -203,7 +202,7 @@ const TeamToDoList = ({studyId, Member, selectStudy}) => {
 
             const groupedTodos = {};
             response.data.forEach((todoItem) => {
-                const dueDate = new Date(todoItem.toDo.dueDate).toDateString();
+                const dueDate = new Date(todoItem.dueDate).toDateString();
                 if (!groupedTodos[dueDate]) {
                     groupedTodos[dueDate] = [];
                 }
@@ -262,10 +261,11 @@ const TeamToDoList = ({studyId, Member, selectStudy}) => {
                                 <span>할 일이 없습니다.<br/>  할 일을 입력해주세요.</span>
                             </div>)}
                             {filteredTodos.map((todo => {
-                                if (todo.toDo) {
+                                if (todo) {
                                     return (<TeamToDoListItem
-                                        todos={todo}
-                                        key={todo.toDo.id}
+                                        key={todo.id}
+                                        todo={todo}
+                                        todos={todo.assignees}
                                         onRemove={onRemove}
                                         onToggle={onToggle}
                                         onChangeSelectedTodo={onChangeSelectedTodo}
@@ -276,10 +276,7 @@ const TeamToDoList = ({studyId, Member, selectStudy}) => {
                                 }
                             }))}
                         </ul>
-                        {insertToggle && (<TeamToDoEdit selectedTodo={selectedTodo} onUpdate={onUpdate} Member={Member}
-                                                        handleAddAssignees={handleAddAssignees}
-                                                        handleRemoveAssignees={handleRemoveAssignees}
-                                                        Assignees={Assignees}/>)}
+                        {insertToggle && (<TeamToDoEdit selectedTodo={selectedTodo} onUpdate={onUpdate} Member={Member} Assignees={Assignees}/>)}
                     </div>
                     <Calender todo={todoswithAssignee.todo} onDateClick={handleDateClick}/>
                 </div>

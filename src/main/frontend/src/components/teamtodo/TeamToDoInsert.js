@@ -107,7 +107,6 @@ const TeamToDoInsert = ({onInsert, dueDate, Inserttodostudyid, studyidasnumber, 
                 console.log("studyIdAsNumber:", studyIdAsNumber);
 
                 const studyId = studyIdAsNumber;
-                const todoid = fetchDataResponse.data.toDo.id;
                 const assigneeStr = StringAssignees;
                 const task = TaskValue;
                 // const study = InsertToDoStudy;
@@ -128,7 +127,7 @@ const TeamToDoInsert = ({onInsert, dueDate, Inserttodostudyid, studyidasnumber, 
                     }
                 });
 
-                console.log("전송 성공:", postDataResponse);
+                console.log("전송 성공:", postDataResponse); //담당자 잘 전송되는 듯
 
                 setTaskValue("");
             } catch (error) {
