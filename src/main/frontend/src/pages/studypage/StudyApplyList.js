@@ -213,11 +213,31 @@ const StudyApplyList = () => {
                 .then((res) => {
                     console.log("모집 완료 성공 : ", res.data);
 
+                    // TODO - 개설 시 studyId로 팀 채팅방 자동 생성
+                    const requestData = {
+                        studyId: id
+                    };
+                    axios.post('http://localhost:8080/chat/room', requestData, {
+                        withCredentials: true,
+                        headers: {
+                            'Authorization': `Bearer ${accessToken}`
+                        }
+                    })
+                        .then((response) => {
+                            if (response.data === "SUCCESS") {
+                                console.log(id, " 채팅방 생성 완료");
+                            }
+                        })
+                        .catch((error) => {
+                            console.error("채팅방 생성 실패:", error);
+                        });
+
                     if (res.data !== "SUCCESS") {
                         console.log("모집 완료 실패");
                     } else {
                         alert("모집 완료. 팀블로그로 이동합니다.");
                         console.log("ㄴㅇㄹㄴㅇ:", acceptedMembers);
+                        
                         navigate(`/${id}/teamblog`, {
                             state: {
                                 "acceptedMembers":acceptedMembers,
