@@ -16,7 +16,7 @@ const StudyInsert = ({updateStudies, onClose}) => {
     const [selectedOption, setSelectedOption] = useState(null);
     const [studies, setStudies] = useState([]);
     const value = "*스터디 주제: \n*스터디 목표: \n*예상 스터디 일정(횟수): \n*예상 커리큘럼 간략히: \n*스터디 소개와 개설 이유: \n*스터디 관련 주의사항: ";
-    const [tags, setTags] = useState([]);
+    const [tags, setTags] = useState("");
     const [city, setCity] = useState("");
     const [district, setDistrict] = useState("");
     const [current, setCurrent] = useState("Recruiting");
@@ -246,7 +246,7 @@ const StudyInsert = ({updateStudies, onClose}) => {
 
         const studyWithTags = {
             ...formData,
-            tag: tags.join(','), // 변경된 부분: 태그 정보를 쉼표로 구분된 문자열로 저장
+            tag: tags // 변경된 부분: 태그 정보를 쉼표로 구분된 문자열로 저장
         };
         //TODO 프론트 작업을 위해 잠시 추가
         localStorage.setItem("studyWithTags", JSON.stringify(studyWithTags));

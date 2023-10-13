@@ -28,10 +28,9 @@ public class LocationService {
     @Autowired MemberService memberService;
 
 //    @Value("${naver.client.id}")
-    private String clientId="";
-
+    private String clientId;
 //    @Value("${naver.client.secret}")
-    private String clientSecret="";
+    private String clientSecret;
 
     public Location getRecommendedPlace(Long studyId, String participantsStr) throws Exception {
         List<Member> participants = new ArrayList<>();

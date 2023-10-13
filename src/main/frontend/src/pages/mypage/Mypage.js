@@ -19,6 +19,7 @@ import Header from "../../components/repeat_etc/Header";
 
 import "../../css/mypage_css/Mypage.css";
 import Footer from "../../components/repeat_etc/Footer";
+import axios from "axios";
 
 const Mypage = ({ sideheader }) => {
   const dataId = useRef(0);
@@ -30,11 +31,24 @@ const Mypage = ({ sideheader }) => {
   const [meetings, setMeetings] = useState({});
   const [todayKey, setTodayKey] = useState("");
   const navigate = useNavigate();
+  const accessToken = localStorage.getItem('accessToken');
+
+  const [scrapedPosts, setScrapedPosts] = useState([]); //스크랩한 게시물을 보유할 상태 변수
 
   const Year = today.getFullYear();
   const Month = today.getMonth() + 1;
   const Dates = today.getDate()
 
+  const formatDatetime = (datetime) => {
+    const date = new Date(datetime);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    const hours = String(date.getHours()).padStart(2, "0");
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+    const formattedDatetime = `${year}-${month}-${day} ${hours}:${minutes}`;
+    return formattedDatetime;
+  };
 
   //todo
   useEffect(() => {
@@ -94,54 +108,57 @@ const Mypage = ({ sideheader }) => {
     return checked ? "checked" : "unchecked";
   };
 
+  //스크랩 커뮤니티
+  useEffect(() => {
+    // API 또는 데이터 원본에서 스크랩한 게시물을 가져옵니다.
+    axios.get("http://localhost:8080/scrap/post", {
+        withCredentials: true,
+        headers: {
+            'Authorization': `Bearer ${accessToken}`
+        }
+    })
+        .then((res) => {
+          console.log("전송 성공");
+          console.log(res.data);
 
-  //api 사용하기
-  const getData = async () => {
-    const res = await fetch(
-      "https://jsonplaceholder.typicode.com/comments"
-    ).then((res) => res.json());
+          setScrapedPosts(res.data);
+        })
+        .catch((error) => {
+          console.error('스크랩한 게시물을 가져오는 중 오류 발생: ', error);
+        });
+  }, []);
 
-    const initDate = res.slice(0, 10).map((it) => {
-      return {
-        tag: it.email,
-        author: it.email,
-        day: it.postId,
-        title: it.name,
-        last: 5,
-        created_date: new Date().getTime(),
-        id: dataId.current++,
-      };
-    });
-    setState(initDate);
-    console.log(initDate);
-  };
-
-  // const scrapstudy = () => {
-  // 	return (
-  // 		<div className="list">
-  // 			{state.map((d) => (
-  // 				<div className="list_detail">
-  // 					<p>{d.author}</p>
-  // 				</div>
-  // 			))}
-  // 		</div>
-  // 	);
-  // };
   const scrapstory = () => {
     return (
-      <div className="list_story">
-        {state.map((d) => (
-          <div className="story_detail">
-            <p>{d.author}</p>
-          </div>
-        ))}
-      </div>
+        <>
+        {(scrapedPosts.length === 0) && <p className="no_scrap">스크랩한 게시글이 없습니다.</p>}
+          {(scrapedPosts.length !== 0) &&
+            <table className="post_table">
+              <th>카테고리</th>
+              <th>제목</th>
+              <th>닉네임</th>
+              <th>날짜</th>
+              <th>조회수</th>
+              {scrapedPosts.map((post) => (
+                  <tr className="post_list">
+                    <td className="community_category">{post.category}</td>
+                    <Link to={`/postdetail/${post.id}`}
+                          style={{
+                            textDecoration: "none",
+                            color: "inherit",
+                          }}>
+                      <td className="community_title">{post.title}</td>
+                    </Link>
+                    <td className="community_nickname">{post.member.nickname}</td>
+                    <td className="community_datetime">{formatDatetime(post.createdAt)}</td>
+                    <td>{post.viewCount}</td>
+                  </tr>
+              ))}
+            </table>
+          }
+        </>
     );
   };
-  useEffect(() => {
-    //페이지가 마운트 되자마자 api호출
-    getData();
-  }, []);
 
   const ShowAllToDo=()=>{
     navigate("/ToDoList", {
@@ -260,11 +277,6 @@ const Mypage = ({ sideheader }) => {
 
           <p>스크랩한 스터디</p>
           <Slide state={state} />
-          {/* <div className="scrap_button">
-        <button > {"<"} </button>
-        <button> {">"} </button>
-        </div>  */}
-          {/* {scrapstudy()} */}
           <p>스크랩한 게시글</p>
           <div className="sub_container">
             {scrapstory()}

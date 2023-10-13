@@ -193,17 +193,17 @@ public class StarScrapService {
     }
 
     /* 스크랩한 Post(community) List 조회 */
-    public List<Study> allPostScrapList(Authentication authentication) {
+    public List<Post> allPostScrapList(Authentication authentication) {
         Member member = memberService.find(authentication.getName());
         List<StarScrap> scraps = starScrapRepository.findAllByMemberAndTypeAndTableType(member, ActType.SCRAP, PostType.COMM);
-        List<Study> scrapList = null;
+        List<Post> postList = null;
         if (scraps.size() > 0) {
-            scrapList = new ArrayList<>();
+            postList = new ArrayList<>();
         }
         for (StarScrap s : scraps) {
-            scrapList.add(s.getStudy());
+            postList.add(s.getPost());
         }
-        return scrapList;
+        return postList;
     }
 
     /* 해당 Post(community)의 스크랩 개수 */

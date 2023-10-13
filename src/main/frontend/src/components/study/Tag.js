@@ -105,6 +105,7 @@ const Tag = ({ onTagChange, tags }) => {
         if (typeof tags === 'string') {
             setTagString(tags);
         }
+        console.log("tag type of " + typeof tags);
     }, [tags]);
 
     const onChangeHashtag = (e) => {
@@ -117,13 +118,18 @@ const Tag = ({ onTagChange, tags }) => {
 
             if (e.keyCode === 188 && e.target.value.trim() !== '') {
                 const newHashTag = e.target.value.replace(/,/g, '').trim();
-                setTagString((prevTagString) => prevTagString + `,${newHashTag}`);
+                setTagString((prevTagString) =>
+                    prevTagString.length > 0
+                        ? `${prevTagString}, ${newHashTag}`
+                        : newHashTag
+                );
                 setHashtag('');
                 e.target.value = '';
             }
         },
         []
     );
+
 
     const removeTag = (clickedTag) => {
         const updatedTagString = tagString

@@ -41,6 +41,7 @@ input{
     border-bottom:1px solid #d9d9d9;
     margin-bottom: 30px;
     border-collapse: collapse;
+    font-size:13px;
 }
 .post_table th,
 .post_table td{
@@ -159,6 +160,7 @@ input{
 .community_detail .post_header .post_info .right .scrap_btn{
     margin-right:10px;
     display: flex;
+    cursor: pointer;
 }
 
 .community_detail .post_content{
