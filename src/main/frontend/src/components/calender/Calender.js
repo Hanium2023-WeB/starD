@@ -1,5 +1,5 @@
 //달력 컴포넌트
-import React, {useState} from 'react'; 
+import React, {useEffect, useState} from 'react';
 import {format, subMonths, addMonths} from "date-fns"
 import RenderHeader from "./RenderHeader";
 import RenderDays from "./RenderDays";
@@ -25,6 +25,14 @@ export const Calender = ({todo, onDateClick}) => {
         console.log(selectedDate);
         onDateClick(new Date(day)); //부모 컴포넌트로 선택한 날짜 전달하기
     };
+
+    // useEffect(() => {
+    //     axios.get('http://localhost:8080/schedule/all'),{
+    //         params:{
+    //             year:
+    //         }
+    //     }
+    // }, []);
     return (
         <div className= "calendar">
                 <RenderHeader 

@@ -31,7 +31,7 @@ const ScheduleCalender = ({ onDateClick ,meetings, onUpdate,onRemove}) => {
         prevMonth={prevMonth}
         nextMonth={nextMonth}
       />
-      <RenderDays />
+      <RenderDays/>
       <RenderScheduleCells
         currentMonth={currentMonth}
         selectedDate={selectedDate}
