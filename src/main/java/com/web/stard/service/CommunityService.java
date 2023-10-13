@@ -1,6 +1,7 @@
 package com.web.stard.service;
 
 import com.web.stard.domain.*;
+import com.web.stard.dto.request.CommPostRequestDto;
 import com.web.stard.repository.PostRepository;
 import com.web.stard.repository.StarScrapRepository;
 import lombok.AllArgsConstructor;
@@ -215,7 +216,7 @@ public class CommunityService {
     }
     
     /* 커뮤니티 게시글 수정 */
-    public Post updateCommPost(Long id, Post requestPost, Authentication authentication) {
+    public Post updateCommPost(Long id, CommPostRequestDto requestPost, Authentication authentication) {
         Member member = memberService.find(authentication.getName());
         Post post = getCommunityPost(id, null);
 

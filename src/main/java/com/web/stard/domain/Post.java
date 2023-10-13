@@ -38,5 +38,5 @@ public class Post extends BaseEntity {
     private int starCount; // 공감 수
 
     @Transient // DB랑 매핑되지 않음
-    private int scrapCount; // 공감 수
+    private int scrapCount; // 스크랩 수
 }

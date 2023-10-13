@@ -181,19 +181,61 @@ const PostDetail = () => {
 
     const handlePostUpdate = (updatedPost) => {
         setEditing(false);
-        setPostDetail([updatedPost]);
-        const updatedPosts = posts.map(post =>
-            post.id === updatedPost.id ? updatedPost : post
-        );
-        setPosts(updatedPosts);
+
+        console.log("수정 예정 : " + updatedPost.id + ", " + updatedPost.title + ", " + updatedPost.content
+                    + ", " + updatedPost.category);
+
+        axios.post(`http://localhost:8080/com/${id}`, {
+            title: updatedPost.title,
+            content: updatedPost.content,
+            category: updatedPost.category
+        }, {
+            params: { id: updatedPost.id },
+            withCredentials: true,
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
+        })
+            .then(response => {
+                console.log("커뮤니티 게시글 수정 성공");
+
+                setPostDetail(response.data);
+                const updatedPosts = posts.map(post =>
+                    post.id === updatedPost.id ? updatedPost : post
+                );
+                setPosts(updatedPosts);
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                console.log("커뮤니티 게시글 수정 실패");
+            });
     }
 
     const handlePostDelete = () => {
         const confirmDelete = window.confirm("정말로 게시글을 삭제하시겠습니까?");
         if (confirmDelete) {
-            const updatedPosts = posts.filter(post => post.id !== postDetail[0].id);
-            setPosts(updatedPosts);
-            window.location.href = "/community";
+
+            axios.delete(`http://localhost:8080/com/${id}`, {
+                params: { id: id },
+                withCredentials: true,
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`
+                }
+            })
+                .then(response => {
+                    console.log("커뮤니티 게시글 삭제 성공 ");
+
+                    const updatedPosts = posts.filter(post => post.id !== postDetail[0].id);
+                    setPosts(updatedPosts);
+                    window.location.href = "/community";
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                    console.log("커뮤니티 게시글 삭제 실패");
+
+                    alert("삭제에 실패했습니다.");
+                });
+            navigate("/community");
         }
     }
 

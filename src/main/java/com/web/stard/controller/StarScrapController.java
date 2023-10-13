@@ -75,7 +75,7 @@ public class StarScrapController {
 
     /* Post(community) 스크랩한 게시글 전체 조회 */
     @GetMapping("/scrap/post")
-    public List<Study> allPostScrapList(Authentication authentication) {
+    public List<Post> allPostScrapList(Authentication authentication) {
         return starScrapService.allPostScrapList(authentication);
     }
 
