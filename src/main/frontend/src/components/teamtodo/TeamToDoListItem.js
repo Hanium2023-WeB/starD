@@ -21,7 +21,7 @@ const TeamToDoListItem = ({todo,todos, onRemove, onToggle, onChangeSelectedTodo,
     return (<li key={todo.id} className="TodoListItem">
             {Assignee.map((assignee, index) => (<p key={index}>{assignee}</p>))}
             <div className={cn('checkbox', {checked: TODO.toDoStatus})}
-                 onClick={() => onToggle(TODO.toDo.id, TODO.toDoStatus)}>
+                 onClick={() => onToggle(todo.assignees,TODO.toDo.id, TODO.toDoStatus)}>
                 {TODO.toDoStatus ? <img src={checkbox} width="20px"/> : <img src={uncheckbox} width="20px"/>}
                 <div className="text">{TODO.toDo.task}</div>
             </div>

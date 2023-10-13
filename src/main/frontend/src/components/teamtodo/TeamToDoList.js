@@ -160,19 +160,26 @@ const TeamToDoList = ({studyId, Member, selectStudy}) => {
 
 
     //체크 버튼 바꾸는 함수
-    const onToggle = useCallback(async (id, todo_status) => {
-        const postDataResponse = await axios.post(`http://localhost:8080/todo/${id}/status`, {
-            status: !todo_status
-        }, {
-            withCredentials: true, headers: {
-                'Authorization': `Bearer ${accessToken}`
-            }
-        });
-        console.log("체크 성공:", postDataResponse.data);
+    const onToggle = useCallback(async (assignees, id, todo_status) => {
+        console.log("assignees,", assignees);
+        console.log("현재 상태,",todo_status);
+        assignees.map(async (item) => {
+            const status = item.toDoStatus;
+            console.log("상태:: ", !status);
+            const postDataResponse = await axios.put(`http://localhost:8080/todo/${item.toDo.id}/status`, {
+                status: !status
+            }, {
+                withCredentials: true, headers: {
+                    'Authorization': `Bearer ${accessToken}`
+                }
+            });
+            console.log("체크 성공:", postDataResponse.data);
+        })
+
         setTodoswithAssignee((prevTodos) => {
             const updatedTodos = {...prevTodos};
             Object.keys(updatedTodos).forEach((dateKey) => {
-                updatedTodos[dateKey] = updatedTodos[dateKey].map((todo) => todo.toDo.id === id ? {
+                updatedTodos[dateKey] = updatedTodos[dateKey].map((todo) => todo.id === id ? {
                     ...todo,
                     toDoStatus: !todo.toDoStatus
                 } : todo);
