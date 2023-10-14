@@ -34,6 +34,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             "/swagger-ui.html",
             "/webjars/**",
 
+
             /* swagger v3 */
 //            "/v3/api-docs/**",
 //            "/swagger-ui/**"
@@ -65,6 +66,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             "/api/v2/studies/search-by-content",
             "/api/v2/studies/search-by-recruiter",
             "/member/find-nickname",
+            "/member/find-id",
 
             "/com/**",
 
