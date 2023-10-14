@@ -185,9 +185,8 @@ const ToDoList = ({sideheader}) => {
     const onToggle = useCallback(async (id, todo_status) => {
         console.log("체크 전 상태",todo_status);
         console.log("체크 후 상태",!todo_status);
-        const postDataResponse = await axios.post(`http://localhost:8080/todo/${id}/status`, {
-            status: todo_status
-        }, {
+        const postDataResponse = await axios.post(`http://localhost:8080/todo/${id}/status`, null, {
+            params: {status: !todo_status},
             withCredentials: true, headers: {
                 'Authorization': `Bearer ${accessToken}`
             }

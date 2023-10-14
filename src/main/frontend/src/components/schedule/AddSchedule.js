@@ -14,7 +14,7 @@ const AddSchedule = ({studies,studyTitles, selectedDate, onInsert, onClose }) =>
   // const [study, setStudy] = useState("My");
   const [color, setColor] = useState("");
   const [InsertToDoTitle, setInsertToDoTitle] = useState("")
-  const [InsertStudyId, setInsertStudyId] = useState("0")
+  const [InsertStudyId, setInsertStudyId] = useState(studies[0].study.id) // 초기값 : 첫 번째 스터디 (기본 선택값)
   const [InsertStudy, setInsertStudy] = useState([]); //선택한 스터디 객체
   const studyIdAsNumber = parseFloat(InsertStudyId);
 

@@ -95,13 +95,13 @@ const Schedule = ({sideheader}) => {
             // const newMeetings = {...meetings}; // Create a copy of the meetings object
             const schedule = {
                 id: nextId.current,
-                study: InsertStudy,
+//                study: InsertStudy,
                 title: title,
                 startDate: formattedDate,
             };
 
 
-            axios.post("http://localhost:8080/schedule", {schedule},{
+            axios.post("http://localhost:8080/schedule", schedule,{
                 params: {
                     studyId: studyIdAsNumber
                 },
