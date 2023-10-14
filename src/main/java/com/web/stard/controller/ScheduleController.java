@@ -47,7 +47,7 @@ public class ScheduleController {
     }
 
     /* 일정 수정 */
-    @PostMapping("/{scheduleId}")
+    @PutMapping("/{scheduleId}")
     public Schedule updateSchedule(@PathVariable Long scheduleId, @RequestParam String title,
                                    Authentication authentication) {
         // TODO : 권한 확인 (스터디원인지) -> 동작 확인 필요

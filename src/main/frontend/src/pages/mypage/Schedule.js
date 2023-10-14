@@ -10,97 +10,138 @@ const Schedule = ({sideheader}) => {
     const [meetings, setMeetings] = useState({});
     const [selectedDate, setSelectedDate] = useState(new Date()); // 추가: 선택한 날짜 상태
     const [addToggle, setAddToggle] = useState(false); //일정 추가 +토글버튼 상태
-
+    const accessToken = localStorage.getItem('accessToken');
     const Year = selectedDate.getFullYear();
     const Month = selectedDate.getMonth() + 1;
     const Dates = selectedDate.getDate();
-    // TODO 백엔드 연동
-    const sendMeetingsToBackend = () => {
-        const backendEndpoint = "https://your-backend-url.com/save-meetings";
 
-        const meetingsDataToSend = [];
-      //meetings의 객체의 키인 dateKey를 반복해서 돌고
-        for (const dateKey in meetings) {
-          //meetings[dateKey]의 객체 배열의 키인 studyKey를 반복해서 돌고
-            for (const studyKey in meetings[dateKey]) {
-              //일정을 가져와서
-                for (const meeting of meetings[dateKey][studyKey]) {
-                    const {
-                        id,
-                        study,
-                        start_date,
-                        end_date,
-                        title,
-                        content,
-                        color,
-                    } = meeting; //각 변수에 비구조화할당 후
-                  //배열에 push해주었습니다.
-                    meetingsDataToSend.push({
-                        id,
-                        study,
-                        start_date,
-                        end_date,
-                        title,
-                        content,
-                        color,
-                    });
-                }
+    const [studies, setStudy] = useState([]);
+    const [studyTitles, setStudyTitles] = useState([]); //참여 중인 스터디 제목
+    const [studyIds, setStudyIds] = useState([]); //참여 중인 스터디 아이디
+    const [studyMems, setStudyMems] = useState([]); //참여 멤버
+
+    // TODO 백엔드 연동
+    //참여스터디
+    useEffect(() => {
+        axios.get("http://localhost:8080/user/mypage/studying", {
+            withCredentials: true, headers: {
+                'Authorization': `Bearer ${accessToken}`,
+                'Content-Type': 'application/json',
             }
-        }
-        //meetingsDataToSend배열을 axios로 전달
-        axios.post(backendEndpoint, {meetings: meetingsDataToSend})
-            .then(response => {
-                console.log("Meetings sent to the backend:", response.data);
-                //로그아웃할 때까지 저장
-                //다시 로그인했을 때에도 추가했던 일정들이 사라지지 않고 그대로 존재
+        })
+            .then((res) => {
+                console.log("모집완료된 스터디, 참여멤버 전송 성공 : ", res.data);
+
+                const studyList = res.data.content;
+                setStudy(studyList);
+                //console.log("모집완료 ? :", studies);
+                const studiesTitle = studyList.map(item => item.study.title);
+                setStudyTitles(studiesTitle);
+                const studiesIds = studyList.map(item => item.study.id);
+                setStudyIds(studiesIds);
+                const ParticipatedStudiesMem = studyList.map(item => item.member.id);
+                setStudyMems(ParticipatedStudiesMem);
+                console.log("참여 스터디 아이디", studiesIds);
+                console.log("참여 스터디 제목", studiesTitle);
+                console.log("참여중인 스터디", studyList);
+                console.log("참여멤버", ParticipatedStudiesMem);
+
             })
-            .catch(error => {
-                console.error("Error sending meetings to the backend:", error);
+            .catch((error) => {
+                console.error("모집완료된 스터디, 참여멤버  가져오기 실패:", error);
             });
-    };
+    }, [accessToken]);
+
+    const [schedules, setSchedules] = useState({});
+
+    useEffect(() => {
+        axios.get("http://localhost:8080/schedule/all", {
+            params: {
+                year: selectedDate.getFullYear(), month: selectedDate.getMonth() + 1,
+            },
+            withCredentials: true, headers: {
+                'Authorization': `Bearer ${accessToken}`,
+                'Content-Type': 'application/json'
+            }
+        }).then((response) => {
+            console.log("일정 가져오기 성공", response.data);
+            setSchedules(response.data);
+        }).catch((error) => {
+            console.error("전송 실패", error.response.data); // Log the response data
+        });
+    }, []);
+
+    useEffect(() => {
+        console.log("schedules:", schedules);
+    }, [schedules]);
 
     const handleToggle = (day) => {
         setSelectedDate(new Date(day));
         console.log("클릭한 날짜11");
-        console.log(selectedDate);
+        console.log(new Date(day));
         setAddToggle((prev) => !prev);
     };
     const nextId = useRef(1);
 
     //일정 추가 함수
     const onInsert = useCallback(
-        (start_date, end_date, title, content, study, color) => {
+        (start_date, end_date, title, content, color, studyIdAsNumber, InsertStudy) => {
 
             const startDay = new Date(start_date);
-            const startDates = new Date(selectedDate);
-            const endDay = new Date(end_date);
-            const newMeetings = {...meetings}; // Create a copy of the meetings object
-            console.log("newMeetings: ", newMeetings);
+            const formattedDate = `${startDay.getFullYear()}-${String(startDay.getMonth() + 1).padStart(2, '0')}-${String(startDay.getDate()).padStart(2, '0')}T${String(startDay.getHours()).padStart(2, '0')}:${String(startDay.getMinutes()).padStart(2, '0')}:${String(startDay.getSeconds()).padStart(2, '0')}`;
+
+            // const startDates = new Date(selectedDate);
+            // const endDay = new Date(end_date);
+            // const newMeetings = {...meetings}; // Create a copy of the meetings object
+            const schedule = {
+                id: nextId.current,
+                study: InsertStudy,
+                title: title,
+                startDate: formattedDate,
+            };
+
+
+            axios.post("http://localhost:8080/schedule", {schedule},{
+                params: {
+                    studyId: studyIdAsNumber
+                },
+                withCredentials: true, headers: {
+                    'Authorization': `Bearer ${accessToken}`,
+                    'Content-Type': 'application/json',
+                }
+            }).then((res) => {
+                console.log("전송 성공", res.data);
+            }).catch((error) => {
+                console.error("전송 실패", error.response.data); // Log the response data
+            });
+
+            setSchedules([...schedules, schedule]);
+            console.log("newSchedules: ", schedule);
             //시작일부터 끝까지 반복문
-            while (startDay <= endDay) {
-                const dateKey = startDay.toDateString();
-                const endKey = endDay.toDateString();
-                const meeting = {
-                    id: nextId.current,
-                    start_date: dateKey,
-                    end_date: endKey, // Set the same end_date as start_date for each day
-                    title,
-                    content,
-                    study,
-                    color,
-                };
-
-                newMeetings[dateKey] = {
-                    ...(newMeetings[dateKey] || {}),
-                    [study]: [...(newMeetings[dateKey]?.[study] || []), meeting],
-                };
-
-                startDay.setDate(startDay.getDate() + 1); // Move to the next day
-            }
-            nextId.current += 1;
-            setMeetings(newMeetings);
-            console.log("setMeetings: ", meetings);
-            handleToggle(end_date);
+            // while (startDay <= endDay) {
+            //     const dateKey = startDay.toDateString();
+            //     const endKey = endDay.toDateString();
+            //     const meeting = {
+            //         id: nextId.current,
+            //         start_date: dateKey,
+            //         end_date: endKey, // Set the same end_date as start_date for each day
+            //         title,
+            //         content,
+            //         study,
+            //         color,
+            //     };
+            //
+            //     newMeetings[dateKey] = {
+            //         ...(newMeetings[dateKey] || {}),
+            //         [study]: [...(newMeetings[dateKey]?.[study] || []), meeting],
+            //     };
+            //
+            //     startDay.setDate(startDay.getDate() + 1); // Move to the next day
+            // }
+             nextId.current += 1;
+            // setMeetings(newMeetings);
+            // console.log("setMeetings: ", meetings);
+            // handleToggle(end_date);
         },
         [meetings, selectedDate]
     );
@@ -295,7 +336,7 @@ const Schedule = ({sideheader}) => {
 
     return (
         <div>
-           <Header showSideCenter={true}/>
+            <Header showSideCenter={true}/>
             <Backarrow subname={"스터디 모임 일정"}/>
             <div className="container">
                 <div className="main_container">
@@ -310,6 +351,8 @@ const Schedule = ({sideheader}) => {
                     </div>
                     {addToggle && (
                         <AddSchedule
+                            studies={studies}
+                            studyTitles={studyTitles}
                             selectedDate={selectedDate}
                             onInsert={onInsert}
                             onClose={() => {
