@@ -99,8 +99,6 @@ const Schedule = ({sideheader}) => {
                 title: title,
                 startDate: formattedDate,
             };
-
-
             axios.post("http://localhost:8080/schedule", {schedule},{
                 params: {
                     studyId: studyIdAsNumber

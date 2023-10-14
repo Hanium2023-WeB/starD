@@ -32,6 +32,7 @@ import TeamBlog from "./pages/studypage/TeamBlog";
 import Community from "./pages/community/Community";
 import PostDetail from "./pages/community/PostDetail";
 import Chat from "./components/chat/Chat";
+import FindedID from "./pages/userpage/FindedID.js";
 
 function App() {
 
@@ -75,6 +76,10 @@ function App() {
                     <Route
                         path="/login/findeID"
                         element={<FindID/>}
+                    />
+                    <Route
+                        path="/login/findedID"
+                        element={<FindedID/>}
                     />
                     <Route
                         path="/mypage"
