@@ -27,10 +27,50 @@ public class LocationService {
     @Autowired StudyService studyService;
     @Autowired MemberService memberService;
 
-//    @Value("${naver.client.id}")
+    @Value("${naver.client.id}")
     private String clientId;
-//    @Value("${naver.client.secret}")
+    @Value("${naver.client.secret}")
     private String clientSecret;
+
+    public Location getRecommendedPlaceAll(Long studyId) throws Exception {
+        List<Member> participants = new ArrayList<>();
+        List<StudyMember> studyMembers = studyService.findStudyMember(studyId, null);
+        List<Location> participantsLocation = new ArrayList<>();
+
+        for (StudyMember sm : studyMembers) {
+            participants.add(sm.getMember());
+        }
+
+        // 겹치는 주소 가중치 부여
+        for (Member m : participants) {
+            if (m.getCity() != null && m.getDistrict() != null) { // 입력되어 있는 사용자만 추출
+                String address = m.getCity() + " " + m.getDistrict();
+
+                boolean exists = false;
+                for (Location location : participantsLocation) {
+                    if (address.equals(location.getAddress())) { // 주소가 겹치면 가중치 증가
+                        exists = true;
+                        location.setWeight(location.getWeight() + 1);
+                    }
+                }
+
+                if (!exists) { // 겹치지 않으면 새로 추가
+                    participantsLocation.add(new Location(address, 1));
+                }
+            }
+        }
+
+        for (Location location : participantsLocation) {
+            Location geoLoc = geocoder(location);
+
+            location.setLatitude(geoLoc.getLatitude());
+            location.setLongitude(geoLoc.getLongitude());
+
+            System.out.println(location.toString());
+        }
+
+        return Location.calculate(participantsLocation);
+    }
 
     public Location getRecommendedPlace(Long studyId, String participantsStr) throws Exception {
         List<Member> participants = new ArrayList<>();
