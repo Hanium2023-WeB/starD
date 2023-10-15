@@ -1,5 +1,5 @@
 //달력 컴포넌트
-import React, { useState,useEffect } from "react";
+import React, {useState, useEffect, useCallback} from "react";
 import { format, subMonths, addMonths } from "date-fns";
 import RenderHeader from "../calender/RenderHeader";
 import RenderDays from "../calender/RenderDays";
@@ -17,12 +17,12 @@ const ScheduleCalender = ({ onDateClick ,meetings, onUpdate,onRemove}) => {
     setCurrentMonth(addMonths(currentMonth, 1));
   };
 
-  const handleToggle=(day)=>{
+    const handleToggle= useCallback((day)=>{
     setSelectedDate(new Date(day));
     console.log("클릭한 날짜");
-    console.log(selectedDate);
+    console.log(new Date(day));
     onDateClick(new Date(day)); //부모 컴포넌트로 선택한 날짜 전달하기
-  }
+  },[selectedDate]);
  
   return (
     <div className="Schedulecalendar">
@@ -31,7 +31,7 @@ const ScheduleCalender = ({ onDateClick ,meetings, onUpdate,onRemove}) => {
         prevMonth={prevMonth}
         nextMonth={nextMonth}
       />
-      <RenderDays />
+      <RenderDays/>
       <RenderScheduleCells
         currentMonth={currentMonth}
         selectedDate={selectedDate}

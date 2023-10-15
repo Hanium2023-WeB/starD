@@ -27,8 +27,6 @@ const ToDoInsert = ({onInsert, dueDate, Inserttodostudyid,Inserttodotitle,Insert
     const month = inputDate.getMonth() + 1;
     const formattedDate = inputDate.toISOString();
 
-    // console.log("formattedDate >>", formattedDate);
-
 
     // TODO 서버에서 참여스터디와 참여멤버 가져오기
     useEffect(() => {
@@ -40,7 +38,6 @@ const ToDoInsert = ({onInsert, dueDate, Inserttodostudyid,Inserttodotitle,Insert
         })
             .then((res) => {
                 console.log("모집완료된 스터디, 참여멤버 전송 성공 : ", res.data);
-
                 const studyList = res.data.content;
                 setStudy(studyList);
                 // console.log("모집완료 ? :", studies);
@@ -144,36 +141,12 @@ const ToDoInsert = ({onInsert, dueDate, Inserttodostudyid,Inserttodotitle,Insert
         console.log('투두리스트:', responseData);
     }, [responseData]);
 
-    // const selectStudy = (e) => {
-    //     setInsertToDoTitle(e.target.value)
-    //     if (e.target.value !== "전체") {
-    //         const selectedStudy = studies.find((study) => study.study.title === e.target.value);
-    //         const selectedId = selectedStudy.study.id;
-    //         setInsertToDoStudyId(selectedId);
-    //         setInsertToDoStudy(selectedStudy);
-    //         console.log(e.target.value);
-    //         console.log(selectedId);
-    //     }else if(e.target.value==="전체"){
-    //         const allselect = "0";
-    //         setInsertToDoStudyId(allselect);
-    //         console.log("전체 select: ",allselect);
-    //
-    //     }
-    //
-    // }
     useEffect(()=>{
         console.log("선택된 스터디 아이디:", InsertToDoStudyId);
     },[InsertToDoStudyId]);
 
     return (
         <form className="TodoInsert" onSubmit={onSubmit}>
-            {/*<select id="todo-select" onChange={selectStudy} value={InsertToDoTitle}>*/}
-            {/*    <option value="전체">전체</option>*/}
-            {/*    {studyTitles.map((item, index) => (*/}
-            {/*        <option key={index} value={item}>{item}</option>*/}
-
-            {/*    ))}*/}
-            {/*</select>*/}
             <input id={"insert-input"} onChange={onChange}
                    value={TaskValue}
                    placeholder="할 일을 입력하세요"/>

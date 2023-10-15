@@ -31,7 +31,7 @@ const ToDoList = ({sideheader}) => {
 
 
     const [InsertToDoTitle, setInsertToDoTitle] = useState("")
-    const [InsertToDoStudyId, setInsertToDoStudyId] = useState("")
+    const [InsertToDoStudyId, setInsertToDoStudyId] = useState("0")
     const [InsertToDoStudy, setInsertToDoStudy] = useState([]); //선택한 스터디 객체
     const studyIdAsNumber = parseFloat(InsertToDoStudyId);
 
@@ -76,7 +76,6 @@ const ToDoList = ({sideheader}) => {
         setSelectedTodo(todo);
     };
 
-    // const [todos, setTodos] = useState({}); //투두만
     const [todoswithAssignee, setTodoswithAssignee] = useState({}); //투두랑 담당자 함친 객체 배열 state
 
     //새로운 일정 추가
@@ -84,7 +83,7 @@ const ToDoList = ({sideheader}) => {
 
     //달력에서 선택한 날짜
     const dateKey = selectedDate.toDateString();
-    // console.log(`dateKey: ${dateKey}`);
+
 
     //할일 추가 함수
     const onInsert = useCallback((title, task, studyId) => {
@@ -184,9 +183,10 @@ const ToDoList = ({sideheader}) => {
 
     //체크 버튼 바꾸는 함수
     const onToggle = useCallback(async (id, todo_status) => {
-        const postDataResponse = await axios.post(`http://localhost:8080/todo/${id}/status`, {
-            status: todo_status
-        }, {
+        console.log("체크 전 상태",todo_status);
+        console.log("체크 후 상태",!todo_status);
+        const postDataResponse = await axios.post(`http://localhost:8080/todo/${id}/status`, null, {
+            params: {status: !todo_status},
             withCredentials: true, headers: {
                 'Authorization': `Bearer ${accessToken}`
             }
@@ -197,6 +197,9 @@ const ToDoList = ({sideheader}) => {
             Object.keys(updatedTodos).forEach((dateKey) => {
                 updatedTodos[dateKey] = updatedTodos[dateKey].map((todo) => todo.toDo.id === id ? {
                     ...todo,
+                    toDo:{
+                        ...todo.toDo,
+                    },
                     toDoStatus: !todo.toDoStatus
                 } : todo);
             });
@@ -216,7 +219,7 @@ const ToDoList = ({sideheader}) => {
 
     //전체 스터디의 투두 가져오기
     useEffect(() => {
-        if(InsertToDoStudyId === "0") {
+        if (InsertToDoStudyId === "0") {
             axios.get(`http://localhost:8080/todo/all`, {
                 params: {
                     year: selectedDate.getFullYear(), month: selectedDate.getMonth() + 1,
@@ -241,7 +244,7 @@ const ToDoList = ({sideheader}) => {
             }).catch((error) => {
                 console.log('전체 스터디 투두리스트 가져오기 실패:', error);
             })
-        }else{
+        } else {
             axios.get(`http://localhost:8080/todo/user/${studyIdAsNumber}`, {
                 params: {
                     year: selectedDate.getFullYear(), month: selectedDate.getMonth() + 1,
@@ -267,7 +270,7 @@ const ToDoList = ({sideheader}) => {
                 console.log('스터디별 투두리스트 가져오기 실패:', error);
             })
         }
-    }, [InsertToDoStudyId,studyIdAsNumber]);
+    }, [InsertToDoStudyId, studyIdAsNumber]);
 
 
     const selectStudy = (e) => {
@@ -313,7 +316,8 @@ const ToDoList = ({sideheader}) => {
                             </select>
                         </div>
                         <ToDoInsert onInsert={onInsert} dueDate={selectedDate} Inserttodostudyid={InsertToDoStudyId}
-                                    Inserttodotitle={InsertToDoTitle} Inserttodostudy={InsertToDoStudy} studyidasnumber={studyIdAsNumber}/>
+                                    Inserttodotitle={InsertToDoTitle} Inserttodostudy={InsertToDoStudy}
+                                    studyidasnumber={studyIdAsNumber}/>
                         <ul className="TodoList">
                             {filteredTodos.length === 0 && (<div className="alert_empty_todo">
                                 <span>할 일이 없습니다.<br/>  할 일을 입력해주세요.</span>

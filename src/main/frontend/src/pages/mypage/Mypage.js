@@ -39,6 +39,16 @@ const Mypage = ({ sideheader }) => {
   const Month = today.getMonth() + 1;
   const Dates = today.getDate()
 
+  const formatDatetime = (datetime) => {
+    const date = new Date(datetime);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    const hours = String(date.getHours()).padStart(2, "0");
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+    const formattedDatetime = `${year}-${month}-${day} ${hours}:${minutes}`;
+    return formattedDatetime;
+  };
 
   //todo
   useEffect(() => {
@@ -118,27 +128,6 @@ const Mypage = ({ sideheader }) => {
         });
   }, []);
 
-  //api 사용하기
-  // const getData = async () => {
-  //   const res = await fetch(
-  //     "https://jsonplaceholder.typicode.com/comments"
-  //   ).then((res) => res.json());
-  //
-  //   const initDate = res.slice(0, 10).map((it) => {
-  //     return {
-  //       tag: it.email,
-  //       author: it.email,
-  //       day: it.postId,
-  //       title: it.name,
-  //       last: 5,
-  //       created_date: new Date().getTime(),
-  //       id: dataId.current++,
-  //     };
-  //   });
-  //   setState(initDate);
-  //   console.log(initDate);
-  // };
-
   const scrapstory = () => {
     return (
         <>
@@ -150,23 +139,19 @@ const Mypage = ({ sideheader }) => {
               <th>닉네임</th>
               <th>날짜</th>
               <th>조회수</th>
-              <th>공감수</th>
-              <th>스크랩수</th>
               {scrapedPosts.map((post) => (
                   <tr className="post_list">
-                    {/*<td className="community_category">{posts.category}</td>*/}
-                    {/*<Link to={`/postdetail/${posts.id}`}*/}
-                    {/*      style={{*/}
-                    {/*        textDecoration: "none",*/}
-                    {/*        color: "inherit",*/}
-                    {/*      }}>*/}
-                    {/*  <td className="community_title">{posts.title}</td>*/}
-                    {/*</Link>*/}
-                    {/*<td className="community_nickname">{posts.member.nickname}</td>*/}
-                    {/*<td className="community_datetime">{formatDatetime(posts.createdAt)}</td>*/}
-                    {/*<td>{posts.viewCount}</td>*/}
-                    {/*<td>{posts.starCount}</td>*/}
-                    {/*<td>{posts.scrapCount}</td>*/}
+                    <td className="community_category">{post.category}</td>
+                    <Link to={`/postdetail/${post.id}`}
+                          style={{
+                            textDecoration: "none",
+                            color: "inherit",
+                          }}>
+                      <td className="community_title">{post.title}</td>
+                    </Link>
+                    <td className="community_nickname">{post.member.nickname}</td>
+                    <td className="community_datetime">{formatDatetime(post.createdAt)}</td>
+                    <td>{post.viewCount}</td>
                   </tr>
               ))}
             </table>
