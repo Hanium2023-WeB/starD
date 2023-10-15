@@ -99,7 +99,7 @@ const Schedule = ({sideheader}) => {
                 title: title,
                 startDate: formattedDate,
             };
-            axios.post("http://localhost:8080/schedule", schedule,{
+            axios.post("http://localhost:8080/schedule", schedule, {
                 params: {
                     studyId: studyIdAsNumber
                 },
@@ -115,7 +115,6 @@ const Schedule = ({sideheader}) => {
 
             setSchedules([...schedules, schedule]);
             console.log("newSchedules: ", schedule);
-            //시작일부터 끝까지 반복문
             // while (startDay <= endDay) {
             //     const dateKey = startDay.toDateString();
             //     const endKey = endDay.toDateString();
@@ -136,7 +135,7 @@ const Schedule = ({sideheader}) => {
             //
             //     startDay.setDate(startDay.getDate() + 1); // Move to the next day
             // }
-             nextId.current += 1;
+            nextId.current += 1;
             // setMeetings(newMeetings);
             // console.log("setMeetings: ", meetings);
             // handleToggle(end_date);
