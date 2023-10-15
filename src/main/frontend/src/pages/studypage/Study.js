@@ -41,6 +41,12 @@ const Study = () => {
     // localStorage에 저장된 로그인한 사용자 Id 추출
     let isLoggedInUserId = localStorage.getItem('isLoggedInUserId');
 
+    //페이징관련 코드
+    const [page, setPage] = useState(1);
+    const [count, setCount] = useState(0);
+    const [itemsPerPage, setItemsPerPage] = useState(9);
+
+
     useEffect(() => {
         if (studiesChanged) {
             localStorage.setItem("studies", JSON.stringify(studies));
@@ -54,35 +60,37 @@ const Study = () => {
     }, [studiesChanged, studies, scrapStates, likeStates]);
 
     //TODO 스크랩, 공감 서버 전송
-    useEffect(() => {
-        if (accessToken && isLoggedInUserId) {
-            axios.get("http://localhost:8080/study/stars", { // 공감
-                withCredentials: true,
-                headers: {
-                    'Authorization': `Bearer ${accessToken}`
-                }
-            })
-                .then(response => {
-                    setLikeStates(response.data);
-                })
-                .catch(error => {
-                    console.log("공감 불러오기 실패", error);
-                });
-
-            axios.get("http://localhost:8080/study/scraps", { // 스크랩
-                withCredentials: true,
-                headers: {
-                    'Authorization': `Bearer ${accessToken}`
-                }
-            })
-                .then(response => {
-                    setScrapStates(response.data);
-                })
-                .catch(error => {
-                    console.log("스크랩 불러오기 실패", error);
-                });
-        }
-    }, []);
+    // useEffect(() => {
+    //     if (accessToken && isLoggedInUserId) {
+    //         axios.get("http://localhost:8080/study/stars", { // 공감
+    //             withCredentials: true,
+    //             headers: {
+    //                 'Authorization': `Bearer ${accessToken}`
+    //             }
+    //         })
+    //             .then(response => {
+    //                 console.log("공감 응답 결과 : ", response.data);
+    //                 setLikeStates(response.data);
+    //             })
+    //             .catch(error => {
+    //                 console.log("공감 불러오기 실패", error);
+    //             });
+    //
+    //         axios.get("http://localhost:8080/study/scraps", { // 스크랩
+    //             withCredentials: true,
+    //             headers: {
+    //                 'Authorization': `Bearer ${accessToken}`
+    //             }
+    //         })
+    //             .then(response => {
+    //                 console.log("스크랩 응답 결과 : ", response.data);
+    //                 setScrapStates(response.data);
+    //             })
+    //             .catch(error => {
+    //                 console.log("스크랩 불러오기 실패", error);
+    //             });
+    //     }
+    // }, []);
 
 
     useEffect(() => {
@@ -128,7 +136,7 @@ const Study = () => {
             const studyId = newStudies[index].id;
             if (newStudies[index].scrap) { // true -> 활성화되어 있는 상태 -> 취소해야 함
                 axios.delete(`http://localhost:8080/scrap/study/${studyId}`, {
-                    params: { id: studyId },
+                    params: {id: studyId},
                     withCredentials: true,
                     headers: {
                         'Authorization': `Bearer ${accessToken}`
@@ -143,7 +151,7 @@ const Study = () => {
                     });
             } else {
                 axios.post(`http://localhost:8080/scrap/study/${studyId}`, null, {
-                    params: { id: studyId },
+                    params: {id: studyId},
                     withCredentials: true,
                     headers: {
                         'Authorization': `Bearer ${accessToken}`
@@ -157,7 +165,7 @@ const Study = () => {
                         console.log("스크랩 실패");
                     });
             }
-            newStudies[index] = { ...newStudies[index], scrap: !newStudies[index].scrap };
+            newStudies[index] = {...newStudies[index], scrap: !newStudies[index].scrap};
             setStudiesChanged(true); // Mark studies as changed
             return newStudies;
         });
@@ -174,7 +182,7 @@ const Study = () => {
             const studyId = newStudies[index].id;
             if (newStudies[index].like) { // true -> 활성화되어 있는 상태 -> 취소해야 함
                 axios.delete(`http://localhost:8080/star/study/${studyId}`, {
-                    params: { id: studyId },
+                    params: {id: studyId},
                     withCredentials: true,
                     headers: {
                         'Authorization': `Bearer ${accessToken}`
@@ -189,7 +197,7 @@ const Study = () => {
                     });
             } else {
                 axios.post(`http://localhost:8080/star/study/${studyId}`, null, {
-                    params: { id: studyId },
+                    params: {id: studyId},
                     withCredentials: true,
                     headers: {
                         'Authorization': `Bearer ${accessToken}`
@@ -203,7 +211,7 @@ const Study = () => {
                         console.log("공감 실패");
                     });
             }
-            newStudies[index] = { ...newStudies[index], like: !newStudies[index].like };
+            newStudies[index] = {...newStudies[index], like: !newStudies[index].like};
             setStudiesChanged(true); // Mark studies as changed
             return newStudies;
         });
@@ -217,11 +225,6 @@ const Study = () => {
         "framework"
     ]
 
-    //페이징관련 코드
-    const [page, setPage] = useState(1);
-    const [count, setCount] = useState(0);
-    const [itemsPerPage, setItemsPerPage] = useState(9);
-
 
     const handlePageChange = (selectedPage) => {
         // 페이지 번호를 업데이트하고 해당 페이지의 데이터를 가져오도록 설정
@@ -231,6 +234,7 @@ const Study = () => {
     useEffect(() => {
         // 데이터를 가져오는 함수
         const fetchStudies = (pageNumber) => {
+            console.log("페이지 번호 : ", pageNumber);
             // 해당 페이지의 데이터를 가져와서 업데이트
             axios.get("http://localhost:8080/api/v2/studies/all", {
                 params: {
@@ -243,7 +247,7 @@ const Study = () => {
                     setCount(response.data.totalElements);
 
                     if (accessToken && isLoggedInUserId) {
-                        const res_like = axios.get("http://localhost:8080/study/stars", {
+                        axios.get("http://localhost:8080/study/stars", {
                             params: {
                                 page: page,
                             },
@@ -251,9 +255,17 @@ const Study = () => {
                             headers: {
                                 'Authorization': `Bearer ${accessToken}`
                             }
-                        });
+                        })
+                            .then(response => {
+                                console.log("공감 응답 결과 : ", response.data);
+                                setScrapStates(response.data);
+                                setLikeTwoStates(response.data);
+                            })
+                            .catch(error => {
+                                console.log("공감 불러오기 실패", error);
+                            });
 
-                        const res_scrap = axios.get("http://localhost:8080/study/scraps", {
+                        axios.get("http://localhost:8080/study/scraps", {
                             params: {
                                 page: page,
                             },
@@ -261,10 +273,14 @@ const Study = () => {
                             headers: {
                                 'Authorization': `Bearer ${accessToken}`
                             }
-                        });
-
-                        setLikeTwoStates(res_like.data);
-                        setScrapTwoStates(res_scrap.data);
+                        }).then(response => {
+                            console.log("스크랩 응답 결과 : ", response.data);
+                            setScrapStates(response.data);
+                            setScrapTwoStates(response.data);
+                        })
+                            .catch(error => {
+                                console.log("스크랩 불러오기 실패", error);
+                            });
 
                         const studyList = response.data.content;
 
@@ -285,7 +301,7 @@ const Study = () => {
 
         // 페이지 번호 변경 시 데이터 가져오기
         fetchStudies(page);
-    }, [page, likeStates, scrapStates]);
+    }, [page]);
 
 
     return (
@@ -307,22 +323,23 @@ const Study = () => {
                         <StudyInsert
                             updateStudies={updateStudies}
                             onClose={handleStudyInsertClose}
-                            study ={studies}
+                            study={studies}
                         />
                     )}
                     {!showStudyInsert && (
                         <div>
-                        <div>  <SearchBar searchItems={searchItems}/>
-                        </div>
-                        <div className="content_container">
-
-                            <div className="study_list">
-                                {studies.map((d, index) => (
-                                    <StudyListItem studies={d} toggleLike={toggleLike} toggleScrap={toggleScrap} d={d}
-                                                   index={index} key={d.id}/>
-                                ))}
+                            <div><SearchBar searchItems={searchItems}/>
                             </div>
-                        </div>
+                            <div className="content_container">
+
+                                <div className="study_list">
+                                    {studies.map((d, index) => (
+                                        <StudyListItem studies={d} toggleLike={toggleLike} toggleScrap={toggleScrap}
+                                                       d={d}
+                                                       index={index} key={d.id}/>
+                                    ))}
+                                </div>
+                            </div>
                         </div>
                     )}
                     {!showStudyInsert && studies.length === 0 && <h3>스터디 리스트가 비었습니다.</h3>}
@@ -330,7 +347,8 @@ const Study = () => {
             </div>
             <div className={"paging"}>
                 {!showStudyInsert && (
-                    <Paging page={page} totalItemCount={count} itemsPerPage={itemsPerPage} handlePageChange={handlePageChange} />
+                    <Paging page={page} totalItemCount={count} itemsPerPage={itemsPerPage}
+                            handlePageChange={handlePageChange}/>
                 )}
             </div>
         </div>
