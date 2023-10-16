@@ -1,5 +1,6 @@
 package com.web.stard.chat_stomp;
 
+import com.web.stard.domain.Member;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,14 +12,15 @@ import lombok.Setter;
 @AllArgsConstructor
 public class ChatMessage {
     public enum MessageType {
-        ENTER, TALK
+        ENTER, EXIT, TALK
     }
 
     private MessageType type;
-    //채팅방 ID
+    //채팅방의 스터디 ID
     private Long studyId;
     //보내는 사람
     private String sender;
+    //private Member sender;
     //내용
     private String message;
 }

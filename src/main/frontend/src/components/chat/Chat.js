@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { Client } from '@stomp/stompjs';
 import axios from 'axios';
-import { Route } from 'react-router-dom';
-import { useLocation } from 'react-router-dom';
 
 class Chat extends Component {
     constructor(props) {
@@ -36,7 +34,6 @@ class Chat extends Component {
 
     componentDidMount() {
         this.setConnected(false);
-        this.fetchUserNickname();
 
         const searchParams = new URLSearchParams(window.location.search);
         const studyId = searchParams.get('studyId');
@@ -60,9 +57,9 @@ class Chat extends Component {
         this.disconnect();
     }
 
+    // 스터디 ID를 기반으로 해당 채팅방을 구독
     subscribeToChatRoom(studyId) {
-        // 스터디 ID를 기반으로 해당 채팅방을 구독
-        this.stompClient.subscribe(`/chat/room/${studyId}`, (greeting) => {
+        this.stompClient.subscribe(`/topic/greetings/${studyId}`, (greeting) => {
             this.showGreeting(JSON.parse(greeting.body).content);
         });
     }
@@ -91,9 +88,10 @@ class Chat extends Component {
                 })
                 .then((response) => {
                     const member = response.data;
-                    this.setState({
-                        userNickname: member.nickname,
-                    });
+                    this.userNickname = member.nickname;
+                    console.log("닉네임:", this.userNickname);
+                    // 닉네임 가져오고 입장 메시지 출력
+                    this.sendEnterMessage();
                 })
                 .catch((error) => {
                     console.error('서버에서 닉네임을 가져오는 중 에러 발생:', error);
@@ -102,11 +100,13 @@ class Chat extends Component {
     };
 
     onConnect = (frame) => {
+        const { studyId } = this.state;
         this.setConnected(true);
         console.log('Connected: ' + frame);
-        this.stompClient.subscribe('/topic/greetings', (greeting) => {
+        this.stompClient.subscribe(`/topic/greetings/${studyId}`, (greeting) => {
             this.showGreeting(JSON.parse(greeting.body).content);
         });
+        this.fetchUserNickname();
     };
 
     onWebSocketError = (error) => {
@@ -126,7 +126,7 @@ class Chat extends Component {
 
     connect = () => {
         const accessToken = localStorage.getItem('accessToken');
-
+        const { userNickname, studyId } = this.state;
         if (accessToken) {
             const headers = {
                 Authorization: `Bearer ${accessToken}`,
@@ -151,15 +151,32 @@ class Chat extends Component {
         this.stompClient.deactivate();
         this.setConnected(false);
         console.log('Disconnected');
+        this.sendExitMessage();
     };
 
-    sendName = () => {
-        const { message, userNickname } = this.state;
-        const messageWithNickname = `${userNickname}:  ${message}`;
-
+    // 입장 메시지
+    sendEnterMessage = () => {
+        const { studyId } = this.state;
         this.stompClient.publish({
-            destination: '/app/hello',
-            body: JSON.stringify({ 'name': messageWithNickname }),
+            destination: `/app/enter/${studyId}`,
+            body: JSON.stringify({ type: 'ENTER', studyId: studyId, sender: this.userNickname }),
+        });
+    };
+
+    // 퇴장 메시지
+    sendExitMessage = () => {
+        const { studyId } = this.state;
+        this.stompClient.publish({
+            destination: `/app/exit/${studyId}`,
+            body: JSON.stringify({ type: 'EXIT', studyId: studyId, sender: this.userNickname }),
+        });
+    };
+
+    sendMessage = () => {
+        const { message, studyId } = this.state;
+        this.stompClient.publish({
+            destination: `/app/chat/${studyId}`,
+            body: JSON.stringify({ type: 'TALK', studyId: studyId, sender: this.userNickname, message: `${message}` }),
         });
 
         // 메시지 전송 후 입력창 비우기
@@ -171,7 +188,7 @@ class Chat extends Component {
     // 엔터 치면 메시지 전송
     onKeyDown = (e) => {
         if (e.key === 'Enter') {
-            this.sendName();
+            this.sendMessage();
         }
     };
 
@@ -196,7 +213,7 @@ class Chat extends Component {
                         onKeyDown={this.onKeyDown} // onKeyDown 핸들러 추가
                         placeholder="내용을 입력하세요"
                     />
-                    <button onClick={this.sendName}>Send</button>
+                    <button onClick={this.sendMessage}>Send</button>
                 </div>
                 <div>
                     <table>

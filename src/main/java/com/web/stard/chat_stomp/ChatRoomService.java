@@ -10,7 +10,7 @@ import java.util.*;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class ChatService {
+public class ChatRoomService {
 
     private final ChatRoomRepository chatRoomRepository;
     private Map<String, ChatRoom> chatRooms;

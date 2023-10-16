@@ -1,18 +1,15 @@
 package com.web.stard.chat_stomp;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/chat")
 public class ChatRoomController {
-    private final ChatService chatService;
+    private final ChatRoomService chatService;
 
     // 채팅방 생성
     @PostMapping("/room")
