@@ -60,7 +60,22 @@ const SearchResult = () => {
     //TODO 스크랩, 공감 서버 전송
     useEffect(() => {
         if (accessToken && isLoggedInUserId) {
-            axios.get("http://localhost:8080/study/stars", { // 공감
+            let starScrapUrl = "";
+
+            if (selectOption == "제목") {
+                starScrapUrl = "http://localhost:8080/study/search/title/star-scrap";
+            } else if (selectOption == "내용") {
+                starScrapUrl = "http://localhost:8080/study/search/content/star-scrap";
+            } else {
+                starScrapUrl = "http://localhost:8080/study/search/recruiter/star-scrap";
+            }
+
+            axios.get(starScrapUrl, { // 공감
+                params: {
+                    page: page,
+                    keyword: searchQuery,
+                    type: "star"
+                },
                 withCredentials: true,
                 headers: {
                     'Authorization': `Bearer ${accessToken}`
@@ -73,7 +88,12 @@ const SearchResult = () => {
                     console.log("공감 불러오기 실패", error);
                 });
 
-            axios.get("http://localhost:8080/study/scraps", { // 스크랩
+            axios.get(starScrapUrl, { // 스크랩
+                params: {
+                    page: page,
+                    keyword: searchQuery,
+                    type: "scrap"
+                },
                 withCredentials: true,
                 headers: {
                     'Authorization': `Bearer ${accessToken}`
@@ -86,7 +106,7 @@ const SearchResult = () => {
                     console.log("스크랩 불러오기 실패", error);
                 });
         }
-    }, []);
+    }, [page]);
 
 
     useEffect(() => {
@@ -252,41 +272,6 @@ const SearchResult = () => {
                     setCount(response.data.totalElements);
 
                     if (accessToken && isLoggedInUserId) {
-                        axios.get("http://localhost:8080/study/stars", {
-                            params: {
-                                page: page,
-                            },
-                            withCredentials: true,
-                            headers: {
-                                'Authorization': `Bearer ${accessToken}`
-                            }
-                        })
-                            .then(response => {
-                                console.log("공감 응답 결과 : ", response.data);
-                                setScrapStates(response.data);
-                                setLikeTwoStates(response.data);
-                            })
-                            .catch(error => {
-                                console.log("공감 불러오기 실패", error);
-                            });
-
-                        axios.get("http://localhost:8080/study/scraps", {
-                            params: {
-                                page: page,
-                            },
-                            withCredentials: true,
-                            headers: {
-                                'Authorization': `Bearer ${accessToken}`
-                            }
-                        }).then(response => {
-                            console.log("스크랩 응답 결과 : ", response.data);
-                            setScrapStates(response.data);
-                            setScrapTwoStates(response.data);
-                        })
-                            .catch(error => {
-                                console.log("스크랩 불러오기 실패", error);
-                            });
-
                         const studyList = response.data.content;
 
                         const updateStudies = studyList.map((study, index) => {
@@ -303,7 +288,7 @@ const SearchResult = () => {
         };
         // 페이지 번호 변경 시 데이터 가져오기
         fetchStudies(page);
-    }, [page]);
+    }, [page, likeStates, scrapStates]);
 
 
     return (

@@ -35,7 +35,7 @@ public class LocationService {
     public Location getRecommendedPlaceAll(Long studyId) throws Exception {
         List<Member> participants = new ArrayList<>();
         List<StudyMember> studyMembers = studyService.findStudyMember(studyId, null);
-        List<Location> participantsLocation = new ArrayList<>();
+        List<Location> participantsLocation = null;
 
         for (StudyMember sm : studyMembers) {
             participants.add(sm.getMember());
@@ -43,7 +43,12 @@ public class LocationService {
 
         // 겹치는 주소 가중치 부여
         for (Member m : participants) {
-            if (m.getCity() != null && m.getDistrict() != null) { // 입력되어 있는 사용자만 추출
+            if (m.getCity() != null && m.getDistrict() != null
+                    && !m.getCity().equals("") && !m.getDistrict().equals("")) { // 입력되어 있는 사용자만 추출
+                if (participantsLocation == null) {
+                    participantsLocation = new ArrayList<>();
+                }
+
                 String address = m.getCity() + " " + m.getDistrict();
 
                 boolean exists = false;
@@ -58,6 +63,15 @@ public class LocationService {
                     participantsLocation.add(new Location(address, 1));
                 }
             }
+        }
+
+        if (participantsLocation == null) { // 아무도 주소 등록을 해두지 않은 경우 서울 시청 기본
+            Location location = new Location();
+
+            location.setLatitude(126.9779);
+            location.setLongitude(37.5665);
+
+            return location;
         }
 
         for (Location location : participantsLocation) {
@@ -76,7 +90,7 @@ public class LocationService {
         List<Member> participants = new ArrayList<>();
         String[] participantsSplit = participantsStr.split(",");
         List<StudyMember> studyMembers = studyService.findStudyMember(studyId, null);
-        List<Location> participantsLocation = new ArrayList<>();
+        List<Location> participantsLocation = null;
 
         for (String s : participantsSplit) {
             if (studyMembers.stream()
@@ -88,7 +102,12 @@ public class LocationService {
 
         // 겹치는 주소 가중치 부여
         for (Member m : participants) {
-            if (m.getCity() != null && m.getDistrict() != null) { // 입력되어 있는 사용자만 추출
+            if (m.getCity() != null && m.getDistrict() != null
+                    && !m.getCity().equals("") && !m.getDistrict().equals("")) { // 입력되어 있는 사용자만 추출
+                if (participantsLocation == null) {
+                    participantsLocation = new ArrayList<>();
+                }
+
                 String address = m.getCity() + " " + m.getDistrict();
 
                 boolean exists = false;
@@ -103,6 +122,15 @@ public class LocationService {
                     participantsLocation.add(new Location(address, 1));
                 }
             }
+        }
+
+        if (participantsLocation == null) { // 아무도 주소 등록을 해두지 않은 경우 서울 시청 기본
+            Location location = new Location();
+
+            location.setLatitude(126.9779);
+            location.setLongitude(37.5665);
+
+            return location;
         }
 
         for (Location location : participantsLocation) {

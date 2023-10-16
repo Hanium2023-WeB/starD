@@ -158,4 +158,30 @@ public class StarScrapController {
                                                   @RequestParam String status, @RequestParam String type) {
         return starScrapService.getMyPageStudyStarScrap(page, authentication, status, type);
     }
+
+    /* 스터디 검색 결과 (제목) - 공감, 스크랩 조회 */
+    @GetMapping("/study/search/title/star-scrap")
+    public List<Boolean> getStudySearchTitleStarScraps(@RequestParam(value = "page", defaultValue = "1", required = false) int page,
+                                                  Authentication authentication,
+                                                  @RequestParam String keyword, @RequestParam String type) {
+        return starScrapService.getStudySearchStarScraps(page, authentication, "title", keyword, type);
+    }
+
+    /* 스터디 검색 결과 (내용) - 공감, 스크랩 조회 */
+    @GetMapping("/study/search/content/star-scrap")
+    public List<Boolean> getStudySearchContentStarScraps(@RequestParam(value = "page", defaultValue = "1", required = false) int page,
+                                                  Authentication authentication,
+                                                  @RequestParam String keyword, @RequestParam String type) {
+        return starScrapService.getStudySearchStarScraps(page, authentication, "content", keyword, type);
+    }
+
+    /* 스터디 검색 결과 (작성자) - 공감, 스크랩 조회 */
+    @GetMapping("/study/search/recruiter/star-scrap")
+    public List<Boolean> getStudySearchRecruiterStarScraps(@RequestParam(value = "page", defaultValue = "1", required = false) int page,
+                                                         Authentication authentication,
+                                                         @RequestParam String keyword, @RequestParam String type) {
+        return starScrapService.getStudySearchStarScraps(page, authentication, "recruiter", keyword, type);
+    }
+
+
 }
