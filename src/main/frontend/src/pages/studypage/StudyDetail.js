@@ -13,7 +13,6 @@ import axios from "axios";
 import StudyApplyList  from "../../pages/studypage/StudyApplyList";
 
 
-
 const StudyDetail = ({sideheader}) => {
 
     const location = useLocation();
