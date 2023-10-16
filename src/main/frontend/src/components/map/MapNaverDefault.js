@@ -87,7 +87,7 @@ const MapNaverDefault = ({studyId}) => {
             const location = new naver.maps.LatLng(mapLng, mapLat);
             const mapOptions = {
                 center: location,
-                zoom: 10,
+                zoom: 16,
                 zoomControl: true,
             };
 
