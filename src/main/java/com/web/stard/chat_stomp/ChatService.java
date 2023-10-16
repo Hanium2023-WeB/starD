@@ -22,12 +22,12 @@ public class ChatService {
     }
 
     //채팅방 하나 불러오기
-    public ChatRoom findById(String roomId) {
-        return chatRooms.get(roomId);
+    public ChatRoom findByStudyId(Long studyId) {
+        return chatRoomRepository.findByStudyId(studyId);
     }
 
     //채팅방 생성
-    public ChatRoom createRoom(long studyId) {
+    public ChatRoom createRoom(Long studyId) {
         ChatRoom chatRoom = new ChatRoom(studyId);
         chatRoomRepository.save(chatRoom);
         return chatRoom;

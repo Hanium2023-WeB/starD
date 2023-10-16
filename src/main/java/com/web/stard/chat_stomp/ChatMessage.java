@@ -16,7 +16,7 @@ public class ChatMessage {
 
     private MessageType type;
     //채팅방 ID
-    private String roomId;
+    private Long studyId;
     //보내는 사람
     private String sender;
     //내용

@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Client } from '@stomp/stompjs';
 import axios from 'axios';
+import { Route } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 class Chat extends Component {
     constructor(props) {
@@ -10,7 +12,8 @@ class Chat extends Component {
             connected: false,
             message: '',
             greetings: [],
-            userNickname: '', // 사용자 닉네임 상태 변수 추가
+            userNickname: '',
+            studyId: null,
         };
 
         this.stompClient = new Client({
@@ -22,10 +25,58 @@ class Chat extends Component {
         this.stompClient.onStompError = this.onStompError;
     }
 
+    state = {
+        connected: false,
+        message: '',
+        greetings: [],
+        userNickname: '',
+        newMessage: '',
+        studyId: null,
+    };
+
     componentDidMount() {
         this.setConnected(false);
-        this.fetchUserNickname(); // 사용자 닉네임 가져오기
+        this.fetchUserNickname();
+
+        const searchParams = new URLSearchParams(window.location.search);
+        const studyId = searchParams.get('studyId');
+        if (studyId) {
+            this.setState({ studyId });
+
+            this.connect()
+                .then(() => {
+                    if (this.stompClient.connected) {
+                        this.subscribeToChatRoom(studyId);
+                    }
+                })
+                .catch((error) => {
+                    console.error('Failed to connect:', error);
+                });
+        }
     }
+
+    componentWillUnmount() {
+        // 컴포넌트가 마운트 해제될 때 웹소켓 연결을 끊음
+        this.disconnect();
+    }
+
+    subscribeToChatRoom(studyId) {
+        // 스터디 ID를 기반으로 해당 채팅방을 구독
+        this.stompClient.subscribe(`/chat/room/${studyId}`, (greeting) => {
+            this.showGreeting(JSON.parse(greeting.body).content);
+        });
+    }
+
+    findRoom = () => {
+        const { studyId } = this.state;
+        axios.get(`http://localhost:8080/chat/room/${studyId}`)
+            .then(response => {
+                this.setState({ room: response.data });
+            })
+            .catch(error => {
+                console.error('Error fetching chat room:', error);
+            });
+    };
 
     // 사용자 닉네임 가져오는 함수
     fetchUserNickname = () => {
@@ -81,9 +132,18 @@ class Chat extends Component {
                 Authorization: `Bearer ${accessToken}`,
             };
 
-            this.stompClient.activate({ headers });
+            return new Promise((resolve, reject) => {
+                this.stompClient.activate({ headers })
+                    .then(() => {
+                        resolve(); // 연결에 성공하면 프로미스를 해결합니다.
+                    })
+                    .catch((error) => {
+                        reject(error); // 연결 실패 시 프로미스를 거부합니다.
+                    });
+            });
         } else {
             console.error('Access token not found.');
+            return Promise.reject(new Error('Access token not found.'));
         }
     };
 
@@ -101,6 +161,18 @@ class Chat extends Component {
             destination: '/app/hello',
             body: JSON.stringify({ 'name': messageWithNickname }),
         });
+
+        // 메시지 전송 후 입력창 비우기
+        this.setState({
+            message: '',
+        });
+    };
+
+    // 엔터 치면 메시지 전송
+    onKeyDown = (e) => {
+        if (e.key === 'Enter') {
+            this.sendName();
+        }
     };
 
     showGreeting = (message) => {
@@ -113,13 +185,7 @@ class Chat extends Component {
         return (
             <div>
                 <div>
-                    <label>WebSocket connection:</label>
-                    <button onClick={this.connect} disabled={this.state.connected}>
-                        Connect
-                    </button>
-                    <button onClick={this.disconnect} disabled={!this.state.connected}>
-                        Disconnect
-                    </button>
+                    <h2>{this.state.studyId} 팀의 채팅방</h2><br/><br/>
                 </div>
                 <div>
                     <label>채팅 보내기</label>
@@ -127,6 +193,7 @@ class Chat extends Component {
                         type="text"
                         value={this.state.message}
                         onChange={(e) => this.setState({ message: e.target.value })}
+                        onKeyDown={this.onKeyDown} // onKeyDown 핸들러 추가
                         placeholder="내용을 입력하세요"
                     />
                     <button onClick={this.sendName}>Send</button>

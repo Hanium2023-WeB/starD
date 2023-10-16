@@ -64,7 +64,7 @@ const TeamBlog = () => {
                         <li>TODO</li>
                         <li>일정</li>
                         <li>
-                            <Link to="/chat">실시간 채팅</Link>
+                            <Link to={`/chat?studyId=${studyId}`}>실시간 채팅</Link>
                         </li>
                     </ul>
                 </div>
