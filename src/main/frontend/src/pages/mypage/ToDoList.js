@@ -299,7 +299,8 @@ const ToDoList = ({sideheader}) => {
         <div className="container">
             <Category/>
             <div className="main_container">
-                <p id={"main-container-title"}>투두 리스트 & 일정</p>
+                <Backarrow subname={"투두 리스트 & 일정"}/>
+                {/*<p id={"main-container-title"}>투두 리스트 & 일정</p>*/}
                 <div className="sub_container" id="todo_sub">
                     <div className="todo_container">
                         <div className="today">

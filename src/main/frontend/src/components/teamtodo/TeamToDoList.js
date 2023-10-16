@@ -158,24 +158,42 @@ const TeamToDoList = ({studyId, Member, selectStudy}) => {
         console.log("todoss: ", todoswithAssignee);
     }, [studyMems, selectedDate, studies, todoswithAssignee]);
 
-
-    //체크 버튼 바꾸는 함수
+    //체크버튼 바꾸는 함수
     const onToggle = useCallback(async (assignees, id, todo_status) => {
         console.log("assignees,", assignees);
-        console.log("현재 상태,",todo_status);
-        assignees.map(async (item) => {
-            const status = item.toDoStatus;
-            console.log("상태:: ", !status);
-            const postDataResponse = await axios.put(`http://localhost:8080/todo/${item.toDo.id}/status`, {
-                status: !status
-            }, {
-                withCredentials: true, headers: {
-                    'Authorization': `Bearer ${accessToken}`
+        const postDataPromises = assignees.map(async (item) => {
+            console.log("체크 전 상태",item.toDoStatus);
+            console.log("체크 후 상태",!item.toDoStatus);
+            const status = !item.toDoStatus;
+            console.log("item:", item);
+            return axios.post(
+                `http://localhost:8080/todo/${item.toDo.id}/status`,
+                 null ,
+                {
+                    params: {status: status},
+                    withCredentials: true,
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`
+                    }
                 }
-            });
-            console.log("체크 성공:", postDataResponse.data);
-        })
+            );
+        });
 
+        try {
+            const postDataResponses = await Promise.all(postDataPromises);
+            console.log("체크 성공:", postDataResponses);
+            // Handle responses or update your state as needed
+        } catch (error) {
+            console.error("Error:", error);
+            // Handle the error
+        }
+        // const postDataResponse = await axios.post(`http://localhost:8080/todo/${id}/status`, null, {
+        //     params: {status: !todo_status},
+        //     withCredentials: true, headers: {
+        //         'Authorization': `Bearer ${accessToken}`
+        //     }
+        // });
+        // console.log("체크 성공:", postDataResponse.data);
         setTodoswithAssignee((prevTodos) => {
             const updatedTodos = {...prevTodos};
             Object.keys(updatedTodos).forEach((dateKey) => {
