@@ -324,7 +324,7 @@ const Study = () => {
             <div className="study_detail_container" style={{width: "70%"}}>
                 <h1>STAR TOUR STORY</h1>
                 <div className="arrow_left">
-                    <Backarrow/>
+                    <Backarrow subname={"STAR TOUR STORY"}/>
                     {!showStudyInsert && (
                         <button onClick={handleMoveToStudyInsert} className="openStudy">
                             스터디 개설
