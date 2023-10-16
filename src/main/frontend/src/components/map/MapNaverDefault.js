@@ -34,10 +34,10 @@ const MapNaverDefault = ({studyId}) => {
         if (!mapElement.current || !naver) return;
 
         if (naver.maps) {
-            const location = new naver.maps.LatLng(mapLat, mapLng);
+            const location = new naver.maps.LatLng(mapLng, mapLat);
             const mapOptions = {
                 center: location,
-                zoom: 10,
+                zoom: 16,
                 zoomControl: true,
             };
 
