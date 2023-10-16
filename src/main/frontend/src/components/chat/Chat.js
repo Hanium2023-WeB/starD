@@ -54,7 +54,8 @@ class Chat extends Component {
 
     componentWillUnmount() {
         // 컴포넌트가 마운트 해제될 때 웹소켓 연결을 끊음
-        this.disconnect();
+        //this.disconnect();
+        this.sendExitMessage();
     }
 
     // 스터디 ID를 기반으로 해당 채팅방을 구독
@@ -151,7 +152,7 @@ class Chat extends Component {
         this.stompClient.deactivate();
         this.setConnected(false);
         console.log('Disconnected');
-        this.sendExitMessage();
+        //this.sendExitMessage();
     };
 
     // 입장 메시지
@@ -166,10 +167,13 @@ class Chat extends Component {
     // 퇴장 메시지
     sendExitMessage = () => {
         const { studyId } = this.state;
-        this.stompClient.publish({
-            destination: `/app/exit/${studyId}`,
-            body: JSON.stringify({ type: 'EXIT', studyId: studyId, sender: this.userNickname }),
-        });
+        if (this.stompClient.connected) {
+            this.stompClient.publish({
+                destination: `/app/exit/${studyId}`,
+                body: JSON.stringify({ type: 'EXIT', studyId: studyId, sender: this.userNickname }),
+            });
+        }
+        this.disconnect();
     };
 
     sendMessage = () => {
