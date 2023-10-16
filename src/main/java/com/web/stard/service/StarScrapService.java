@@ -471,4 +471,50 @@ public class StarScrapService {
 
         return starScraps;
     }
+
+    public List<Boolean> getStudySearchStarScraps(int page, Authentication authentication,
+                                                  String status, String keyword, String type) {
+        // status = 제목, 내용, 작성자
+        // type = star, scrap
+
+        Page<Study> studies = null;
+        List<Boolean> starScraps = null;
+        Member member = memberService.find(authentication.getName());
+
+        if (status.equals("title")) {
+            studies = studyService.findByTitleContainingOrderByRecruitStatus(keyword, page);
+        } else if (status.equals("content")) {
+            studies = studyService.findByContentContainingOrderByRecruitStatus(keyword, page);
+        } else {
+            studies = studyService.findByRecruiter_NicknameContainingOrderByRecruitStatus(keyword, page);
+        }
+
+        if (type.equals("star")) { // star
+            for (Study study : studies.getContent()) {
+                if (starScraps == null) {
+                    starScraps = new ArrayList<>();
+                }
+
+                if (existsStudyStar(member, study) == null) {
+                    starScraps.add(false);
+                } else {
+                    starScraps.add(true);
+                }
+            }
+        } else { // scrap
+            for (Study study : studies.getContent()) {
+                if (starScraps == null) {
+                    starScraps = new ArrayList<>();
+                }
+
+                if (existsStudyScrap(member, study) == null) {
+                    starScraps.add(false);
+                } else {
+                    starScraps.add(true);
+                }
+            }
+        }
+
+        return starScraps;
+    }
 }
