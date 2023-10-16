@@ -148,6 +148,7 @@ const Home = () => {
             {isLogin && user ?
                 <div className={"wrap-01"}>
                     <div className="dashboard">
+                        <div className={"dashboard_contents"}>
                         <div className="user_wrap">
                             <div className="dashboard_tag_wrap">
                                 <p id={"tag-title"}>STAR_D의 요즘 뜨는 태그</p>
@@ -204,7 +205,7 @@ const Home = () => {
                                 </div>
                             )}
                         </div>
-
+                        </div>
                     </div>
                 </div>
                 : <div>

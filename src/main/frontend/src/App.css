@@ -29,7 +29,8 @@ body {
 }
 
 .main_wrap{
-	height: 3369px;
+	/*height: 3369px;*/
+	height: fit-content;
 }
 #study.main_wrap,
 #community.main_wrap{
@@ -105,7 +106,7 @@ header {
 	align-items: center;
 	width: 100%;
 	margin: auto;
-	z-index: 13;
+	z-index: 150;
 	position: fixed;
 	height: 68px;
 }
@@ -311,12 +312,18 @@ input::placeholder{
 }
 .user_wrap{
 	width: 17.5%;
-	border: 3px solid #0d0d2a;
+	border: 1px solid #0d0d2a;
 	margin-left: 10px;
 	font-family: 'Pretendard-Regular';
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
+}
+.dashboard_contents{
+	width: 100%;
+	margin-top: 10px;
+	display: flex;
+	flex-direction: row;
 }
 
 .dashboard_tag_wrap{
@@ -367,7 +374,6 @@ input::placeholder{
 	flex-direction: row;
 	/*justify-content: space-between;*/
 	height: 350px;
-	margin-top: 10px;
 	margin-left: 10px;
 	margin-bottom: 30px;
 }
@@ -375,7 +381,7 @@ input::placeholder{
 .dashboard_todo{
 	width: 30%;
 	font-size: 20px;
-	border: 3px solid #0d0d2a;
+	border: 1px solid #0d0d2a;
 	padding: 10px;
 	margin-left: 10px;
 	font-family: 'Pretendard-Regular';
@@ -388,15 +394,17 @@ input::placeholder{
 	font-weight: bold;
 }
 button#todo_more{
-	background-color: white;
 	border-style: none;
-	color: #99a3af;
+	color: black;
+	background-color: #F6FFDE;
 	cursor: pointer;
 	margin-left: 9vw;
+	position: relative;
+	bottom: 10px;
 }
 .dashboard_detail{
 	width: 45%;
-	border: 3px solid #0d0d2a;
+	border: 1px solid #0d0d2a;
 	margin-left: 10px;
 	font-family: 'Pretendard-Regular';
 
@@ -484,6 +492,7 @@ button#todo_more{
 	font-size: 20px;
 	font-weight: bolder;
 }
+
 
 /*올인원에 관한 설명이 들어가는 부분 css*/
 .wrap-02{

@@ -70,10 +70,10 @@ const TeamBlog = () => {
                     </ul>
                 </div>
                 <div className="content">
-                    <div>
+                    <div className={"TeamToDo"}>
                         <TeamToDoList studyId={studyId} Member={Member} selectStudy={selectStudy}/>
                     </div>
-                    <div>
+                    <div className={"FindMiddlePlace"}>
                         <MapNaverDefault studyId={studyId}/>
                     </div>
             {/*        <div className="left">*/}

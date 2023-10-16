@@ -231,7 +231,7 @@ const TeamToDoList = ({studyId, Member, selectStudy}) => {
     return (<div>
         <div className="container">
             <div className="main_container">
-                <p id={"main-container-title"}>투두 리스트 & 일정</p>
+                <p id={"main-container-title"}>팀 투두 리스트</p>
                 <div className="sub_container" id="todo_sub">
                     <div className="todo_container">
                         <div className="today">
