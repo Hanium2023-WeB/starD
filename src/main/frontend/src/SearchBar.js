@@ -53,7 +53,7 @@ const SearchBar = (props) => {
 
 			<div className="searchbar">
 				<div className="searchinput">
-					<input
+					<input className="input_padding"
 						type="text"
 						value={search}
 						onChange={onChange}
