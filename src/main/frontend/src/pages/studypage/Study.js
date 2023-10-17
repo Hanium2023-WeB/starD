@@ -330,6 +330,12 @@ const Study = () => {
                         <div>
                             <div><SearchBar searchItems={searchItems}/>
                             </div>
+
+                            {/*TODO css 수정 필요*/}
+                            <div className="study_count">
+                                총 {count} 건
+                            </div>
+
                             <div className="content_container">
 
                                 <div className="study_list">

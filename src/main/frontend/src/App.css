@@ -932,3 +932,8 @@ footer p {
 		bottom: 3px;
 	}
 }
+
+.study_count {
+	font-size: 16px;
+	margin-left: 30px;
+}
