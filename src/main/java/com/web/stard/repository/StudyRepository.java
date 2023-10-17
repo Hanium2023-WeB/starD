@@ -4,10 +4,15 @@ import com.web.stard.domain.Member;
 import com.web.stard.domain.RecruitStatus;
 import com.web.stard.domain.Study;
 import com.web.stard.domain.StudyType;
+import com.web.stard.dto.response.Top5Dto;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import java.util.List;
+import java.util.Map;
 
 public interface StudyRepository extends JpaRepository<Study, Long> {
 
@@ -23,7 +28,6 @@ public interface StudyRepository extends JpaRepository<Study, Long> {
 
     Page<Study> findByRecruiter_NicknameContainingOrderByRecruitStatus(String keyword, Pageable pageable);
 
-
     Page<Study> findByRecruitStatus(RecruitStatus recruitStatus, Pageable pageable);
 
     Page<Study> findByTitleContainingAndRecruitStatus(String keyword, RecruitStatus recruitStatus, Pageable pageable);
@@ -31,5 +35,9 @@ public interface StudyRepository extends JpaRepository<Study, Long> {
     Page<Study> findByContentContainingAndRecruitStatus(String keyword, RecruitStatus recruitStatus, Pageable pageable);
 
     Page<Study> findByRecruiterContainingAndRecruitStatus(String keyword, RecruitStatus recruitStatus, Pageable pageable);
+
+
+    @Query("SELECT new com.web.stard.dto.response.Top5Dto(s.field, COUNT(s.field)) FROM Study AS s GROUP BY s.field ORDER BY COUNT(s.field) DESC")
+    List<Top5Dto> findTop5();
 
 }
