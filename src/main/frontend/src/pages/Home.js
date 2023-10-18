@@ -101,7 +101,7 @@ const Home = () => {
     useEffect(() => {
         axios.get("http://localhost:8080/api/v2/studies/study-ranking")
             .then((res) => {
-                setTop5Field(res.data.data);
+                setTop5Field(res.data.data.slice(0, 5));
                 setFirstRow(res.data.data.slice(0, 3));
                 setSecondRow(res.data.data.slice(3, 5));
             }).catch(error => {
@@ -180,14 +180,14 @@ const Home = () => {
                         <div className="dashboard">
                             <div className="user_wrap">
                                 <div className="dashboard_tag_wrap">
-                                    <p id={"tag-title"}>STAR_D의 요즘 뜨는 태그</p>
+                                    <p id={"tag-title"}>STAR_D의 요즘 뜨는 분야</p>
                                     <p id={"tag-subtitle"}>TOP 5</p>
                                     <div className="dashboard_Tags">
-                                        {tags.map((item) => {
+                                        {top5Field.map((item, index) => {
                                             return (
-                                                <div className={"dashboard_tagname_wrap"}>
-                                                    <p id={"ranking"}>{item.id}</p>
-                                                    <button id={"dashboard_tagbtn"} value={item.tagname}></button>
+                                                <div className={"dashboard_tagname_wrap"} data-aos="fade-down">
+                                                    <p id={"ranking"}>{index + 1}</p>
+                                                    <button id={"dashboard_tagbtn"} value={item.field}>{item.field}</button>
                                                 </div>
                                             )
                                         })
