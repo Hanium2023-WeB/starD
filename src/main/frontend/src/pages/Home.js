@@ -1,24 +1,33 @@
 import React, {useEffect, useRef, useState} from "react";
 import styled from "styled-components";
-import Fade from "react-reveal/Fade";
-import Header from "../components/repeat_etc/Header";
+import AOS from "aos";
+import "aos/dist/aos.css";
 import LOGO from "../images/Logo.png";
+import Header from "../components/repeat_etc/Header";
 import SearchBar from "../SearchBar";
-import Slide from 'react-reveal/Slide';
-import Zoom from 'react-reveal/Zoom';
-import Flip from 'react-reveal/Flip';
 import HomeDashBoard from "../components/study/HomeDashBoard";
 import {Link} from "react-router-dom";
 import checkbox from "../images/check.png";
 import uncheckbox from "../images/unchecked.png";
+import Zoom from "react-reveal/Zoom";
+import Flip from "react-reveal/Flip";
+import Slide from "react-reveal/Slide";
+import Fade from "react-reveal/Fade";
 import scheduleimg from "../images/schedule.png";
 import checktodo from "../images/free-icon-to-do-list.png";
 import mapicon from "../images/free-icon-map.png";
 import chaticon from "../images/free-icon-chat.png";
 import axios from "axios";
 
+const CenteredDiv = styled.div`
+  display: flex;
+  flex-direction: column; // 요소들을 가로로 정렬
+  align-items: center; // 가운데 정렬
+  justify-content: center; // 가운데 정렬
 
-const Home_animation = () => {
+`;
+
+const Home = () => {
 
     const dataId = useRef(0);
     const [state, setState] = useState([]);
@@ -128,44 +137,43 @@ const Home_animation = () => {
         //해당 태그가 있는 스터디 리스트 링크로 넘어갈 수 있도록
     }
 
+    useEffect(() => {
+        AOS.init();
+    }, []);
 
     return (
-
-
         <div className="main_wrap">
             <Header showSideCenter={true}/>
             <div className="main_content_wrap">
                 <div className="subground">
-                    <div className={"intro"}>
-                        <Fade top>
-                        <span id={"intro-main"}>
-                    STAR D<br/>
-                    한방에 모든 것을,<br/>
-                    All In One 스터디 웹 플랫폼 <br/>
-                </span>
-                        </Fade>
-                        <Slide right>
-                            <div className="LOGO">
-                                <img src={LOGO} alt="LOGO" width="250px"/>
+                    <CenteredDiv>
+                        <div className={"display-test"}>
+                            <div id={"intro-main"} data-aos="fade-right"
+                                 data-aos-offset="300"
+                                 data-aos-easing="ease-in-sine">
+                                STAR D<br/>
+                                한방에 모든 것을,<br/>
+                                All In One 스터디 웹 플랫폼 <br/>
                             </div>
-                        </Slide>
-
-                    </div>
-                    <div className={"below_intro"}>
-                        <span id={"intro-sub"}>
-                            “STAR D는 여러분의 모든 요구를 한 곳에서 해결하는 통합 온라인 플랫폼입니다.<br/>
+                            <div className="LOGO" data-aos="fade-left"
+                                 data-aos-offset="300"
+                                 data-aos-easing="ease-in-sine">
+                                <img src={LOGO} alt="LOGO" width="200px"/>
+                            </div>
+                        </div>
+                        <div className={"below_intro"} data-aos="flip-up">
+                        <span id={"intro-sub"} >
+                            STAR D는 여러분의 모든 요구를 한 곳에서 해결하는 통합 온라인 플랫폼입니다.<br/>
                             스터디 그룹 구성부터 일정 관리에 이르기까지, 필요한 모든 기능을 한 곳에서 제공합니다.
                         </span>
-                    </div>
-                    <SearchBar/>
-
-                    <Fade bottom>
-                        <div className={"welcome"}>
-                            <span id={"welcome-text"}>“STAR D는 당신의 앞날을 응원합니다.” </span>
                         </div>
-                    </Fade>
-                </div>
+                        <SearchBar/>
+                    </CenteredDiv>
 
+                    <div className={"welcome"}>
+                        <span id={"welcome-text"}>“STAR D는 당신의 앞날을 응원합니다.” </span>
+                    </div>
+                </div>
                 {/*로그인 했을 때 안했을 때 화면 바꾸기*/}
                 {isLogin && user ?
                     <div className={"wrap-01"}>
@@ -179,8 +187,7 @@ const Home_animation = () => {
                                             return (
                                                 <div className={"dashboard_tagname_wrap"}>
                                                     <p id={"ranking"}>{item.id}</p>
-                                                    <button id={"dashboard_tagbtn"} value={item.tagname}
-                                                            onClick={handleontag}>{item.tagname}</button>
+                                                    <button id={"dashboard_tagbtn"} value={item.tagname}></button>
                                                 </div>
                                             )
                                         })
@@ -231,23 +238,23 @@ const Home_animation = () => {
                     </div>
                     : <div>
                         <div className="wrap-01">
-                            <div className="tag_wrap">
-                                <Zoom top>
+                            <div className="tag_wrap" data-aos="fade-up">
+                                <div data-aos="fade-up">
                                     {/*<p>지금 가장 핫한 TOP 5 태그<br/>*/}
                                     {/*    한 눈에 확인해보세요!</p>*/}
                                     <p>지금 가장 핫한 TOP 5 분야<br/>
                                         한 눈에 확인해보세요!</p>
-                                </Zoom>
+                                </div>
                                 <div className="firstRow-tags">
                                     {firstRow.map((item, index) => {
                                         return (
-                                            <Flip top duration={2000}>
-                                                <div className={"tagname_wrap"}>
-                                                    <span id={"tag-grade"}>TOP {index + 1}</span>
-                                                    <button id={"tagbtn"} value={item.field}
-                                                            onClick={handleontag}>{item.field}</button>
-                                                </div>
-                                            </Flip>
+
+                                            <div className={"tagname_wrap"} data-aos="flip-left">
+                                                <span id={"tag-grade"}>TOP {index + 1}</span>
+                                                <button id={"tagbtn"} value={item.field}
+                                                        onClick={handleontag}>{item.field}</button>
+                                            </div>
+
                                         )
                                     })
                                     }
@@ -255,13 +262,11 @@ const Home_animation = () => {
                                 <div className="secondRow-tags">
                                     {secondRow.map((item, index) => {
                                         return (
-                                            <Flip top duration={2000}>
-                                                <div className={"tagname_wrap"}>
-                                                    <span id={"tag-grade"}>TOP {index + 4}</span>
-                                                    <button id={"tagbtn"} value={item.field}
-                                                            onClick={handleontag}>{item.field}</button>
-                                                </div>
-                                            </Flip>
+                                            <div className={"tagname_wrap"} data-aos="flip-left">
+                                                <span id={"tag-grade"}>TOP {index + 4}</span>
+                                                <button id={"tagbtn"} value={item.field}
+                                                        onClick={handleontag}>{item.field}</button>
+                                            </div>
                                         )
                                     })
                                     }
@@ -272,84 +277,76 @@ const Home_animation = () => {
                         <div className="wrap-02">
                             <div className="wrap_content">
                                 <div className={"content_show"}>
-                                    <Slide top>
+                                    <div data-aos="zoom-in">
                                         <p id={"content-title"}>올인원</p>
                                         <p id={"content-detail"}>스터디의 A to Z까지<br/>
                                             STAR D가 함께합니다.</p>
                                         <p id={"content-detail_info"}>
                                             스터디를 계획하고 실행하는 것이 이제는 어렵지 않습니다.<br/>
                                             스터디 모집부터 참여, 팀블로그 작성 및 채팅까지 한 번에 처리하세요.</p>
-                                    </Slide>
+                                    </div>
                                     <div className={"introduce_content_detail"}>
-                                        <Fade right duration={800}>
-                                            <div id={"detail-01"}>
-                                                <div id={"detail-title"}>
-                                                    <p>스터디<br/>모집,신청,참여</p>
-                                                </div>
-                                                <div id={"detail-info"}>
-                                                    <p>STAR D와 함께<br/>
-                                                        스터디 모집부터 신청, 그리고 참여까지!<br/>
-                                                        당신의 이상적인 스터디를 찾아보세요.</p>
-                                                </div>
-                                                <div id={"detail-img-btn"}>
-                                                    <button>
-                                                        스터디 모집하기
-                                                    </button>
-                                                </div>
+                                        <div id={"detail-01"} data-aos="fade-left">
+                                            <div id={"detail-title"}>
+                                                <p>스터디<br/>모집,신청,참여</p>
+                                            </div>
+                                            <div id={"detail-info"}>
+                                                <p>STAR D와 함께<br/>
+                                                    스터디 모집부터 신청, 그리고 참여까지!<br/>
+                                                    당신의 이상적인 스터디를 찾아보세요.</p>
+                                            </div>
+                                            <div id={"detail-img-btn"}>
+                                                <button>
+                                                    스터디 모집하기
+                                                </button>
+                                            </div>
 
+                                        </div>
+                                        <div id={"detail-02"} data-aos="fade-left">
+                                            <div id={"detail-title"}>
+                                                <p>일정, 투두 관리</p>
                                             </div>
-                                        </Fade>
-                                        <Fade right duration={900}>
-                                            <div id={"detail-02"}>
-                                                <div id={"detail-title"}>
-                                                    <p>일정, 투두 관리</p>
-                                                </div>
-                                                <div id={"detail-info"}>
-                                                    <p>일정부터 투두리스트까지,<br/>
-                                                        모든 것을 STAR D에서 한번에 관리하세요!<br/>
-                                                        우아하고 효율적인 학습 경험을 선사합니다.</p>
-                                                </div>
-                                                <div id={"detail-img-btn"}>
-                                                    <img src={scheduleimg} width={"41px"}/>
-                                                    <img src={checktodo} width={"50px"}/>
-                                                </div>
+                                            <div id={"detail-info"}>
+                                                <p>일정부터 투두리스트까지,<br/>
+                                                    모든 것을 STAR D에서 한번에 관리하세요!<br/>
+                                                    우아하고 효율적인 학습 경험을 선사합니다.</p>
                                             </div>
-                                        </Fade>
-                                        <Fade right duration={1000}>
-                                            <div id={"detail-03"}>
-                                                <div id={"detail-title"}>
-                                                    <p>실시간 채팅 &<br/>
-                                                        중간장소 찾기</p>
-                                                </div>
-                                                <div id={"detail-info"}>
-                                                    <p>스터디원들과 실시간 채팅을 즐기며,<br/>
-                                                        중간장소 찾기로 각자의 거리를 고려한<br/>
-                                                        최적의 장소를 선택하세요!</p>
-                                                </div>
-                                                <div id={"detail-img-btn"}>
-                                                    <img src={mapicon} width={"41px"} height={"41px"}/>
-                                                    <img src={chaticon} width={"41px"} height={"41px"}/>
-                                                </div>
+                                            <div id={"detail-img-btn"}>
+                                                <img src={scheduleimg} width={"41px"}/>
+                                                <img src={checktodo} width={"50px"}/>
                                             </div>
-                                        </Fade>
-                                        <Fade right duration={1100}>
-                                            <div id={"detail-04"}>
-                                                <div id={"detail-title"}>
-                                                    <p>팀원 평가 &<br/>
-                                                        개인 신뢰도</p>
-                                                </div>
-                                                <div id={"detail-info"}>
-                                                    <p>팀원 평가를 통해 협업의 질을 높이고,<br/>
-                                                        개인 신뢰도를 통해<br/>
-                                                        안정적인 스터디 환경을 구축하세요.</p>
-                                                </div>
-                                                <div id={"detail-img-btn"}>
-                                                    <button>
-                                                        스터디 모집하기
-                                                    </button>
-                                                </div>
+                                        </div>
+                                        <div id={"detail-03"} data-aos="fade-left">
+                                            <div id={"detail-title"}>
+                                                <p>실시간 채팅 &<br/>
+                                                    중간장소 찾기</p>
                                             </div>
-                                        </Fade>
+                                            <div id={"detail-info"}>
+                                                <p>스터디원들과 실시간 채팅을 즐기며,<br/>
+                                                    중간장소 찾기로 각자의 거리를 고려한<br/>
+                                                    최적의 장소를 선택하세요!</p>
+                                            </div>
+                                            <div id={"detail-img-btn"}>
+                                                <img src={mapicon} width={"41px"} height={"41px"}/>
+                                                <img src={chaticon} width={"41px"} height={"41px"}/>
+                                            </div>
+                                        </div>
+                                        <div id={"detail-04"} data-aos="fade-left">
+                                            <div id={"detail-title"}>
+                                                <p>팀원 평가 &<br/>
+                                                    개인 신뢰도</p>
+                                            </div>
+                                            <div id={"detail-info"}>
+                                                <p>팀원 평가를 통해 협업의 질을 높이고,<br/>
+                                                    개인 신뢰도를 통해<br/>
+                                                    안정적인 스터디 환경을 구축하세요.</p>
+                                            </div>
+                                            <div id={"detail-img-btn"}>
+                                                <button>
+                                                    스터디 모집하기
+                                                </button>
+                                            </div>
+                                        </div>
                                     </div>
 
                                 </div>
@@ -357,10 +354,9 @@ const Home_animation = () => {
                         </div>
                         <div className="wrap-03">
                             <div className="tag_wrap">
-                                <Flip bottom>
-                                    <p>서로를 돕고 함께 성장하는<br/>
-                                        스터디 커뮤니티</p>
-                                </Flip>
+                                <p data-aos="fade-up"
+                                   data-aos-anchor-placement="center-center">서로를 돕고 함께 성장하는<br/>
+                                    스터디 커뮤니티</p>
                                 <div className="firstRow-tags">
                                     {firstRow.map((item) => {
                                         return (
@@ -377,10 +373,12 @@ const Home_animation = () => {
                         </div>
                         <div className="wrap-04">
                             <div className="tag_wrap">
-                                <Fade bottom>
-                                    <p>학습은 개인적인 여정이지만,<br/>
-                                        함께 나누면 그 가치가 배가 됩니다.</p>
-                                </Fade>
+
+                                <p data-aos="fade-zoom-in"
+                                   data-aos-easing="ease-in-back"
+                                   data-aos-delay="300"
+                                   data-aos-offset="0">학습은 개인적인 여정이지만,<br/>
+                                    함께 나누면 그 가치가 배가 됩니다.</p>
                                 <div className="firstRow-tags">
                                     {firstRow.map((item) => {
                                         return (
@@ -404,4 +402,4 @@ const Home_animation = () => {
     );
 };
 
-export default Home_animation;
+export default Home;
