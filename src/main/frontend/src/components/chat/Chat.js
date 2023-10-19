@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { Client } from '@stomp/stompjs';
+import React, {Component} from 'react';
+import {Client} from '@stomp/stompjs';
 import axios from 'axios';
 
 class Chat extends Component {
@@ -10,7 +10,6 @@ class Chat extends Component {
             connected: false,
             message: '',
             greetings: [],
-            userNickname: '',
             studyId: null,
         };
 
@@ -27,7 +26,6 @@ class Chat extends Component {
         connected: false,
         message: '',
         greetings: [],
-        userNickname: '',
         newMessage: '',
         studyId: null,
     };
@@ -61,41 +59,29 @@ class Chat extends Component {
     // 스터디 ID를 기반으로 해당 채팅방을 구독
     subscribeToChatRoom(studyId) {
         this.stompClient.subscribe(`/topic/greetings/${studyId}`, (greeting) => {
-            this.showGreeting(JSON.parse(greeting.body).content);
+            this.showGreeting(JSON.parse(greeting.body));
         });
     }
-
-    findRoom = () => {
-        const { studyId } = this.state;
-        axios.get(`http://localhost:8080/chat/room/${studyId}`)
-            .then(response => {
-                this.setState({ room: response.data });
-            })
-            .catch(error => {
-                console.error('Error fetching chat room:', error);
-            });
-    };
-
-    // 사용자 닉네임 가져오는 함수
-    fetchUserNickname = () => {
+    
+    // 이전 채팅 내역을 가져오기
+    fetchChatHistory = () => {
         const accessToken = localStorage.getItem('accessToken');
+        const { studyId } = this.state;
         if (accessToken) {
-            axios
-                .get('http://localhost:8080/member/find-nickname', {
-                    withCredentials: true,
-                    headers: {
-                        Authorization: `Bearer ${accessToken}`,
-                    },
-                })
-                .then((response) => {
-                    const member = response.data;
-                    this.userNickname = member.nickname;
-                    console.log("닉네임:", this.userNickname);
-                    // 닉네임 가져오고 입장 메시지 출력
+            axios.get(`http://localhost:8080/chat/history/${studyId}`,{
+                withCredentials: true,
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            })
+                .then(response => {
+                    // 가져온 채팅 내역 저장
+                    this.setState({greetings: response.data});
+                    console.log("####: ", response.data);
                     this.sendEnterMessage();
                 })
-                .catch((error) => {
-                    console.error('서버에서 닉네임을 가져오는 중 에러 발생:', error);
+                .catch(error => {
+                    console.error('Error fetching chat history:', error);
                 });
         }
     };
@@ -105,9 +91,11 @@ class Chat extends Component {
         this.setConnected(true);
         console.log('Connected: ' + frame);
         this.stompClient.subscribe(`/topic/greetings/${studyId}`, (greeting) => {
-            this.showGreeting(JSON.parse(greeting.body).content);
+            this.showGreeting(JSON.parse(greeting.body));
         });
-        this.fetchUserNickname();
+
+        // 이전 채팅 내역 가져오기
+        this.fetchChatHistory();
     };
 
     onWebSocketError = (error) => {
@@ -127,7 +115,7 @@ class Chat extends Component {
 
     connect = () => {
         const accessToken = localStorage.getItem('accessToken');
-        const { userNickname, studyId } = this.state;
+
         if (accessToken) {
             const headers = {
                 Authorization: `Bearer ${accessToken}`,
@@ -136,10 +124,10 @@ class Chat extends Component {
             return new Promise((resolve, reject) => {
                 this.stompClient.activate({ headers })
                     .then(() => {
-                        resolve(); // 연결에 성공하면 프로미스를 해결합니다.
+                        resolve();
                     })
                     .catch((error) => {
-                        reject(error); // 연결 실패 시 프로미스를 거부합니다.
+                        reject(error);
                     });
             });
         } else {
@@ -157,36 +145,65 @@ class Chat extends Component {
 
     // 입장 메시지
     sendEnterMessage = () => {
+        const accessToken = localStorage.getItem('accessToken');
         const { studyId } = this.state;
-        this.stompClient.publish({
-            destination: `/app/enter/${studyId}`,
-            body: JSON.stringify({ type: 'ENTER', studyId: studyId, sender: this.userNickname }),
-        });
+
+        if (accessToken) {
+            const headers = {
+                Authorization: `${accessToken}`,
+            };
+            this.stompClient.publish({
+                destination: `/app/enter/${studyId}`,
+                body: JSON.stringify({ type: 'GREETING', studyId: studyId }),
+                headers: headers,
+            });
+        } else {
+            console.error('Access token not found.');
+        }
     };
 
     // 퇴장 메시지
     sendExitMessage = () => {
+        const accessToken = localStorage.getItem('accessToken');
         const { studyId } = this.state;
-        if (this.stompClient.connected) {
+
+        if (this.stompClient.connected && accessToken) {
+            const headers = {
+                Authorization: `${accessToken}`,
+            };
             this.stompClient.publish({
                 destination: `/app/exit/${studyId}`,
-                body: JSON.stringify({ type: 'EXIT', studyId: studyId, sender: this.userNickname }),
+                body: JSON.stringify({ type: 'GREETING', studyId: studyId }),
+                headers: headers,
             });
+        } else {
+            console.error('Access token not found.');
         }
         this.disconnect();
     };
 
     sendMessage = () => {
-        const { message, studyId } = this.state;
-        this.stompClient.publish({
-            destination: `/app/chat/${studyId}`,
-            body: JSON.stringify({ type: 'TALK', studyId: studyId, sender: this.userNickname, message: `${message}` }),
-        });
+        const accessToken = localStorage.getItem('accessToken');
 
-        // 메시지 전송 후 입력창 비우기
-        this.setState({
-            message: '',
-        });
+        if (accessToken) {
+            const headers = {
+                Authorization: `${accessToken}`,
+            };
+            const { message, studyId } = this.state;
+
+            this.stompClient.publish({
+                destination: `/app/chat/${studyId}`,
+                body: JSON.stringify({ type: 'TALK', studyId: studyId, message: `${message}` }),
+                headers: headers,
+            });
+
+            // 메시지 전송 후 입력창 비우기
+            this.setState({
+                message: '',
+            });
+        } else {
+            console.error('Access token not found.');
+        }
     };
 
     // 엔터 치면 메시지 전송
@@ -202,6 +219,17 @@ class Chat extends Component {
         }));
     };
 
+    // 날짜, 시간 포맷팅("yyyy-MM-dd HH:mm" 형식)
+    formatDatetime = (datetime) => {
+        const date = new Date(datetime);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const day = String(date.getDate()).padStart(2, "0");
+        const hours = String(date.getHours()).padStart(2, "0");
+        const minutes = String(date.getMinutes()).padStart(2, "0");
+        return `${year}-${month}-${day} ${hours}:${minutes}`;
+    };
+
     render() {
         return (
             <div>
@@ -214,7 +242,7 @@ class Chat extends Component {
                         type="text"
                         value={this.state.message}
                         onChange={(e) => this.setState({ message: e.target.value })}
-                        onKeyDown={this.onKeyDown} // onKeyDown 핸들러 추가
+                        onKeyDown={this.onKeyDown}
                         placeholder="내용을 입력하세요"
                     />
                     <button onClick={this.sendMessage}>Send</button>
@@ -229,7 +257,15 @@ class Chat extends Component {
                         <tbody>
                         {this.state.greetings.map((greeting, index) => (
                             <tr key={index}>
-                                <td>{greeting}</td>
+                                <td>
+                                    {greeting.type === "GREETING" ? (
+                                        greeting.message
+                                    ) : (
+                                        <span>
+                                            {greeting.member ? greeting.member.nickname : 'Unknown'}: {greeting.message} [{this.formatDatetime(greeting.createdAt)}]
+                                        </span>
+                                    )}
+                                </td>
                             </tr>
                         ))}
                         </tbody>
