@@ -240,7 +240,6 @@ const StudyApplyList = () => {
                         
                         navigate(`/${id}/teamblog`, {
                             state: {
-                                "acceptedMembers":acceptedMembers,
                                 "studyId":id,
                              }
                         })

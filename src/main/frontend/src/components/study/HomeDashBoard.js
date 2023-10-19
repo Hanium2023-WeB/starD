@@ -275,10 +275,10 @@ const HomeDashBoard = () => {
     }, [accessToken, likeStates, scrapStates]);
 
     const goNextTeamBlog=(item)=>{
-        console.log("팀블로그에 넘겨주는 item:", item);
+        console.log("팀블로그에 넘겨주는 item:", item.study.id);
         navigate(`/${item.study.id}/teamblog`, {
             state:{
-                MyParticipate: item
+                studyId: item.study.id
             }
         });
     }
