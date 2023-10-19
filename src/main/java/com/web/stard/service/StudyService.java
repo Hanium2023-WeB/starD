@@ -3,6 +3,7 @@ package com.web.stard.service;
 
 import com.web.stard.domain.*;
 import com.web.stard.dto.StudyDto;
+import com.web.stard.dto.response.Top5Dto;
 import com.web.stard.repository.ApplicantRepository;
 import com.web.stard.repository.StudyMemberRepository;
 import com.web.stard.repository.StudyRepository;
@@ -12,11 +13,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -414,4 +417,9 @@ public class StudyService {
     }
 
 
+
+    public List<Top5Dto> findStudyRanking() {
+        return studyRepository.findTop5();
+
+    }
 }

@@ -32,14 +32,19 @@ const Home_animation = () => {
         {id: 2, tagname: "자소서"}, {id: 3, tagname: "프로그래밍"},
         {id: 4, tagname: "독서"}, {id: 5, tagname: "여행"}]);
     const [isTag, setIsTag] = useState("");
+    const [top5Field, setTop5Field] = useState([]);
 
     const Year = today.getFullYear();
     const Month = today.getMonth() + 1;
     const Dates = today.getDate();
     const tags = tag;
+
     //인기있는 태그 배치
-    const firstRow = tags.slice(0, 3);
-    const secondRow = tags.slice(3, 5);
+    // const firstRow = tags.slice(0, 3);
+    // const secondRow = tags.slice(3, 5);
+
+    const [firstRow, setFirstRow] = useState([]);
+    const [secondRow, setSecondRow] = useState([]);
 
     useEffect(() => {
         localStorage.removeItem('studies');
@@ -80,6 +85,19 @@ const Home_animation = () => {
         setIsLogin(isLogin);
         setUser(user);
         console.log(tags);
+    }, []);
+
+
+    // TODO 가장 인기 있는 분야 Top 5
+    useEffect(() => {
+        axios.get("http://localhost:8080/api/v2/studies/study-ranking")
+            .then((res) => {
+                setTop5Field(res.data.data);
+                setFirstRow(res.data.data.slice(0, 3));
+                setSecondRow(res.data.data.slice(3, 5));
+            }).catch(error => {
+            console.log('Top 5 전송 실패', error);
+        });
     }, []);
 
     //tag 서버 전달
@@ -160,7 +178,7 @@ const Home_animation = () => {
                                         {tags.map((item) => {
                                             return (
                                                 <div className={"dashboard_tagname_wrap"}>
-                                                    <p id={"ranking"}>{item.id + 1}</p>
+                                                    <p id={"ranking"}>{item.id}</p>
                                                     <button id={"dashboard_tagbtn"} value={item.tagname}
                                                             onClick={handleontag}>{item.tagname}</button>
                                                 </div>
@@ -215,17 +233,19 @@ const Home_animation = () => {
                         <div className="wrap-01">
                             <div className="tag_wrap">
                                 <Zoom top>
-                                    <p>지금 가장 핫한 TOP 5 태그<br/>
+                                    {/*<p>지금 가장 핫한 TOP 5 태그<br/>*/}
+                                    {/*    한 눈에 확인해보세요!</p>*/}
+                                    <p>지금 가장 핫한 TOP 5 분야<br/>
                                         한 눈에 확인해보세요!</p>
                                 </Zoom>
                                 <div className="firstRow-tags">
-                                    {firstRow.map((item) => {
+                                    {firstRow.map((item, index) => {
                                         return (
                                             <Flip top duration={2000}>
                                                 <div className={"tagname_wrap"}>
-                                                    <span id={"tag-grade"}>TOP {item.id}</span>
-                                                    <button id={"tagbtn"} value={item.tagname}
-                                                            onClick={handleontag}>{item.tagname}</button>
+                                                    <span id={"tag-grade"}>TOP {index + 1}</span>
+                                                    <button id={"tagbtn"} value={item.field}
+                                                            onClick={handleontag}>{item.field}</button>
                                                 </div>
                                             </Flip>
                                         )
@@ -233,13 +253,13 @@ const Home_animation = () => {
                                     }
                                 </div>
                                 <div className="secondRow-tags">
-                                    {secondRow.map((item) => {
+                                    {secondRow.map((item, index) => {
                                         return (
                                             <Flip top duration={2000}>
                                                 <div className={"tagname_wrap"}>
-                                                    <span id={"tag-grade"}>TOP{item.id}</span>
-                                                    <button id={"tagbtn"} value={item.tagname}
-                                                            onClick={handleontag}>{item.tagname}</button>
+                                                    <span id={"tag-grade"}>TOP {index + 4}</span>
+                                                    <button id={"tagbtn"} value={item.field}
+                                                            onClick={handleontag}>{item.field}</button>
                                                 </div>
                                             </Flip>
                                         )
