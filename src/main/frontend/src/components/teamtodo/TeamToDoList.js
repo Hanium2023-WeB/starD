@@ -69,7 +69,7 @@ const TeamToDoList = ({studyId, Member, selectStudy}) => {
 
     //할일 추가 함수
     const onInsert = useCallback(async (task, studyId, formattedDate, StringAssignees) => {
-        console.log("//// ", selectStudy);
+
         const todoData = {
             task: task,
             dueDate: formattedDate,
