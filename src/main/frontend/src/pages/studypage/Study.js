@@ -51,41 +51,6 @@ const Study = () => {
     const [count, setCount] = useState(0);
     const [itemsPerPage, setItemsPerPage] = useState(9);
 
-
-    //TODO 스크랩, 공감 서버 전송
-    // useEffect(() => {
-    //     if (accessToken && isLoggedInUserId) {
-    //         axios.get("http://localhost:8080/study/stars", { // 공감
-    //             withCredentials: true,
-    //             headers: {
-    //                 'Authorization': `Bearer ${accessToken}`
-    //             }
-    //         })
-    //             .then(response => {
-    //                 console.log("공감 응답 결과 : ", response.data);
-    //                 setLikeStates(response.data);
-    //             })
-    //             .catch(error => {
-    //                 console.log("공감 불러오기 실패", error);
-    //             });
-    //
-    //         axios.get("http://localhost:8080/study/scraps", { // 스크랩
-    //             withCredentials: true,
-    //             headers: {
-    //                 'Authorization': `Bearer ${accessToken}`
-    //             }
-    //         })
-    //             .then(response => {
-    //                 console.log("스크랩 응답 결과 : ", response.data);
-    //                 setScrapStates(response.data);
-    //             })
-    //             .catch(error => {
-    //                 console.log("스크랩 불러오기 실패", error);
-    //             });
-    //     }
-    // }, []);
-
-
     useEffect(() => {
         const storedStudies = JSON.parse(localStorage.getItem("studies"));
         if (storedStudies) {
