@@ -23,8 +23,8 @@ const TeamToDoList = ({studyId, Member, selectStudy}) => {
     const [studyTitles, setStudyTitles] = useState([]); //참여 중인 스터디 제목
     const [studyIds, setStudyIds] = useState([]); //참여 중인 스터디 아이디
     const [studyMems, setStudyMems] = useState([]); //참여 멤버
-
-
+    const [selectedAssignees, setSelectedAssignees] = useState([]);
+    const [tmpMember, setTmpMember] =useState(Member);
     const [Assignees, setAssignees] = useState([]); //담당자
     const studyIdAsNumber = parseFloat(studyId);
 
@@ -264,6 +264,7 @@ const TeamToDoList = ({studyId, Member, selectStudy}) => {
                                     <div
                                         className="assignee-name"
                                         data-assign-name={item.member.name}
+                                        value={item}
                                         onClick={handleAddAssignees}
                                     >
                                         {item.member.name}
