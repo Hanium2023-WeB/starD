@@ -7,24 +7,8 @@ import RenderCells from "./RenderCells";
 import Calender_css from "../../css/calender_css/Calender.css";
 import ToDoList from "../../pages/mypage/ToDoList";
 
-export const Calender = ({todo, onDateClick}) => {
-    const [currentMonth, setCurrentMonth] = useState(new Date());
+export const Calender = ({todo, onDateClick,prevMonth,nextMonth,currentMonth}) => {
     const [selectedDate, setSelectedDate] = useState(new Date());
-
-    const prevMonth = () => {
-        setCurrentMonth(subMonths(currentMonth, 1));
-
-    };
-    const nextMonth = () => {
-        setCurrentMonth(addMonths(currentMonth, 1));
-
-    };
-    const handleDateClick = (day) => {
-        setSelectedDate(new Date(day));
-        console.log("클릭한 날짜");
-        console.log(selectedDate);
-        onDateClick(new Date(day)); //부모 컴포넌트로 선택한 날짜 전달하기
-    };
     return (
         <div className="calendar">
             <RenderHeader

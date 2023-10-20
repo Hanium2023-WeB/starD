@@ -17,7 +17,7 @@ const TeamToDoList = ({studyId, Member, selectStudy}) => {
     const [selectedDate, setSelectedDate] = useState(new Date()); // 추가: 선택한 날짜 상태
     const accessToken = localStorage.getItem('accessToken');
     const Year = selectedDate.getFullYear();
-    const Month = selectedDate.getMonth() + 1;
+    let Month = selectedDate.getMonth() + 1;
     const Dates = selectedDate.getDate();
     const [studies, setStudy] = useState([]);
     const [studyMems, setStudyMems] = useState([]); //참여 멤버
@@ -226,11 +226,25 @@ const TeamToDoList = ({studyId, Member, selectStudy}) => {
         console.log("setTodoswithAssignee_Member:", member); //스터디 참여멤버들 출력
     }, [todoswithAssignee, Member, onUpdate]);
 
+    // 달력 다음달 저번달 옮기기
+    const [currentMonth, setCurrentMonth] = useState(new Date());
+
+    const prevMonth = () => {
+        setCurrentMonth(subMonths(currentMonth, 1));
+    };
+
+    const nextMonth = () => {
+        setCurrentMonth(addMonths(currentMonth, 1));
+    };
+    useEffect(() => {
+        Month = format(currentMonth, "M")
+    }, [currentMonth]);
+
     //해당 스터디의 투두 가져오기
     useEffect(() => {
         axios.get(`http://localhost:8080/todo/${studyIdAsNumber}`, {
             params: {
-                year: selectedDate.getFullYear(), month: selectedDate.getMonth() + 1,
+                year: Year, month: Month,
             }, headers: {
                 Authorization: `Bearer ${accessToken}`,
             },
@@ -252,7 +266,7 @@ const TeamToDoList = ({studyId, Member, selectStudy}) => {
         }).catch((error) => {
             console.log('스터디별 투두리스트 가져오기 실패:', error);
         })
-    }, [studyIdAsNumber]);
+    }, [studyIdAsNumber,currentMonth]);
 
 
     return (<div>
@@ -319,7 +333,7 @@ const TeamToDoList = ({studyId, Member, selectStudy}) => {
                         {insertToggle && (<TeamToDoEdit selectedTodo={selectedTodo} onUpdate={onUpdate} Member={Member}
                                                         Assignees={Assignees}/>)}
                     </div>
-                    <Calender todo={todoswithAssignee} onDateClick={handleDateClick}/>
+                    <Calender todo={todoswithAssignee} onDateClick={handleDateClick} prevMonth={prevMonth} nextMonth={nextMonth} currentMonth={currentMonth}/>
                 </div>
             </div>
         </div>
