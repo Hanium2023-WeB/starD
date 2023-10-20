@@ -12,6 +12,14 @@ const StudyInsert = ({updateStudies, onClose}) => {
     const [dataId, setDataId] = useState(0);
     const navigate = useNavigate();
 
+    // [2023-10-17 by 지륜] input date 최소 값을 오늘 날짜로 지정
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear(); // 현재 연도
+    const currentMonth = currentDate.getMonth() + 1; // 현재 월 (0부터 시작하므로 +1)
+    const currentDay = currentDate.getDate(); // 현재 일
+
+    const formattedCurrentDate = `${currentYear}-${currentMonth}-${currentDay}`;
+
     const [showSelect, setShowSelect] = useState(false); //온 오프 선택 지역 컴포넌트 호출 여부 관리 상태
     const [selectedOption, setSelectedOption] = useState(null);
     const [studies, setStudies] = useState([]);
@@ -32,7 +40,10 @@ const StudyInsert = ({updateStudies, onClose}) => {
         deadline: "",
         startDate: "",
         endDate: "",
-        description: "",
+
+        // [2023-10-17 by 지륜] 모집 내용 default 값으로 value 초기 설정
+        description: value,
+
         tag: "",
         created_date: new Date(),
         current: current,
@@ -326,13 +337,13 @@ const StudyInsert = ({updateStudies, onClose}) => {
                             <span>스터디 시작일</span>
                             <input type="date" name="startDate" value={formData.startDate}
                                    onChange={handleInputChange}
-                                   className="inputbox" placeholder="스터디 시작일을 선택해주세요"/>
+                                   min={formattedCurrentDate} className="inputbox" placeholder="스터디 시작일을 선택해주세요"/>
                         </div>
                         <div>
                             <span>모집 마감일</span>
                             <input type="date" name="deadline" value={formData.deadline}
                                    onChange={handleInputChange}
-                                   className="inputbox" placeholder="스터디 모집 마감일을 선택해주세요"/>
+                                   min={formattedCurrentDate} className="inputbox" placeholder="스터디 모집 마감일을 선택해주세요"/>
                         </div>
                     </div>
                     <div className="right">
@@ -364,7 +375,7 @@ const StudyInsert = ({updateStudies, onClose}) => {
                         <div>
                             <span>스터디 종료일</span>
                             <input type="date" name="endDate" value={formData.endDate} onChange={handleInputChange}
-                                   className="inputbox" placeholder="스터디 종료일을 선택해주세요"/>
+                                   min={formattedCurrentDate} className="inputbox" placeholder="스터디 종료일을 선택해주세요"/>
                         </div>
 
                     </div>
@@ -372,7 +383,7 @@ const StudyInsert = ({updateStudies, onClose}) => {
                 <div className="study_open_detail">
                     <span>상세 내용</span>
                     <textarea value={formData.description} name="description" onChange={handleInputChange}
-                              placeholder={value} defaultValue={value}/>
+                              placeholder={value}/>
                 </div>
                 <div className="study_tag">
                     <span>스터디 태그</span>

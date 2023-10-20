@@ -12,10 +12,9 @@ import MapNaverDefault from "../../components/map/MapNaverDefault";
 import TeamSchedule from "../../components/teamschedules/TeamSchedule";
 const TeamBlog = () => {
     const accessToken = localStorage.getItem('accessToken');
-    const Study = useLocation();
-    console.log("받아온 Study",Study.state.MyParticipate.study);
-    const selectStudy = Study.state.MyParticipate.study;
-    const studyId = Study.state.MyParticipate.study.id;
+    const study = useLocation();
+    const {studyId} = study.state;
+    console.log("받아온 Study",study);
 
     if (studyId !== undefined) {
         console.log("Study ID:", studyId);
@@ -25,6 +24,7 @@ const TeamBlog = () => {
 
     const id = parseFloat(studyId);
     const [Member,setMember]= useState([]);
+    const [studyItem, setStudyItem] = useState([]);
 
     //TODO 참여멤버 리스트 가지고오기
     useEffect(() => {
@@ -46,6 +46,19 @@ const TeamBlog = () => {
                 console.error("참여멤버 get 실패:", error);
             });
 
+        // 스터디 id로 스터디 객체 가져오기
+        axios.get(`http://localhost:8080/api/v2/studies/${id}`, {
+            withCredentials: true,
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
+        }).then((res) => {
+            setStudyItem(res.data);
+        })
+            .catch((error) => {
+                console.error("스터디 세부 데이터 가져오기 실패:", error);
+            });
+
     }, [accessToken]);
 
     return (
@@ -56,7 +69,7 @@ const TeamBlog = () => {
                 <div className="img_wrapper">
                     {/*<img src={BgImg}/>*/}
                     <div className="team_info">
-                        <h2 className="study_title">{Study.state.MyParticipate.study.title}</h2>
+                        <h2 className="study_title">{studyItem.title}</h2>
                         <h3 className="study_duration">2023. 09. 15 ~ 2023. 10. 14</h3>
                     </div>
                 </div>
@@ -66,11 +79,13 @@ const TeamBlog = () => {
                         <li>TODO</li>
                         <li>일정</li>
                         <li>
-                            <Link to="/chat">실시간 채팅</Link>
+                            <Link to={`/chat?studyId=${studyId}`}>실시간 채팅</Link>
                         </li>
                     </ul>
                 </div>
                 <div className="content">
+                    <div>
+                        <TeamToDoList studyId={studyId} Member={Member} selectStudy={studyItem}/>
                     <div className={"TeamToDo"}>
                         <TeamToDoList studyId={studyId} Member={Member} selectStudy={selectStudy}/>
                     </div>

@@ -4,6 +4,7 @@ import com.web.stard.domain.Applicant;
 import com.web.stard.domain.RecruitStatus;
 import com.web.stard.domain.Study;
 import com.web.stard.dto.StudyDto;
+import com.web.stard.dto.response.Top5Dto;
 import com.web.stard.service.StudyService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -200,6 +201,20 @@ public class StudyController {
             return ResponseEntity.badRequest().body(result);
         }
     }
+
+    @GetMapping("/study-ranking")       // [R] 스터디 참여자 리스트 Select
+    public ResponseEntity<Map<String, Object>> findStudyRanking() {
+        Map<String, Object> result = new HashMap<>();
+        try{
+            result.put("data", studyService.findStudyRanking());
+            return ResponseEntity.ok().body(result);
+        }catch (Exception e) {
+            System.out.println(e);
+            result.put("data", "스터디 분야 Top 5 가져오기 실패");
+            return ResponseEntity.badRequest().body(result);
+        }
+    }
+
 
 
 }

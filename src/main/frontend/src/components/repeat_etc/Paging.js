@@ -2,12 +2,11 @@
 import {useState} from "react";
 // import Pagination from "./Pagination";
 import Pagination from "react-js-pagination";
-const Paging = ({page,totalItemCount,itemsPerPage}) => {
+const Paging = ({page,totalItemCount,itemsPerPage, handlePageChange }) => {
      const [currentpage, setCurrentPage] = useState(page);
-    const handlePageChange = () => {
-        setCurrentPage(page); // Update the page state with the selected page number
-        // You can also perform any other actions you need here.
-    }
+    const handleLocalPageChange = (selectedPage) => {
+        handlePageChange(selectedPage);
+    };
 
     return (
         <Pagination
@@ -17,7 +16,7 @@ const Paging = ({page,totalItemCount,itemsPerPage}) => {
             pageRangeDisplayed={10} // paginator의 페이지 범위
             prevPageText={"‹"} // "이전"을 나타낼 텍스트
             nextPageText={"›"} // "다음"을 나타낼 텍스트
-            onChange={handlePageChange}/> // 페이지 변경을 핸들링하는 함수
+            onChange={handleLocalPageChange}/> // 페이지 변경을 핸들링하는 함수
     );
 };
 export default Paging;

@@ -6,7 +6,7 @@ import RenderDays from "../calender/RenderDays";
 import RenderScheduleCells from "./RenderScheduleCells";
 import ScheduleCalender_CSS from "../../css/schedule_css/ScheduleCalender.css";
 
-const ScheduleCalender = ({ onDateClick ,meetings, onUpdate,onRemove}) => {
+const ScheduleCalender = ({studies, studyTitles,onDateClick ,meetings, schedules,onUpdate,onRemove}) => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(new Date());
  
@@ -33,10 +33,13 @@ const ScheduleCalender = ({ onDateClick ,meetings, onUpdate,onRemove}) => {
       />
       <RenderDays/>
       <RenderScheduleCells
+          studies={studies}
+          studyTitles={studyTitles}
         currentMonth={currentMonth}
         selectedDate={selectedDate}
         onDateClick={handleToggle}
         meetings={meetings}
+        schedules={schedules}
         onUpdate={onUpdate}
         onRemove ={onRemove}
       />
