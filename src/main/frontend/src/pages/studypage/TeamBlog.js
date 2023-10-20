@@ -87,7 +87,7 @@ const TeamBlog = () => {
                     <div>
                         <TeamToDoList studyId={studyId} Member={Member} selectStudy={studyItem}/>
                     <div className={"TeamToDo"}>
-                        <TeamToDoList studyId={studyId} Member={Member} selectStudy={selectStudy}/>
+                        <TeamToDoList studyId={studyId} Member={Member} selectStudy={studyItem}/>
                     </div>
                     <div className={"FindMiddlePlace"}>
                         <MapNaverDefault studyId={studyId} Member={Member}/>
@@ -150,6 +150,7 @@ const TeamBlog = () => {
             {/*        </div>*/}
                 </div>
             </div>
+        </div>
         </div>
     );
 }

@@ -1,8 +1,11 @@
 //페이징
-import {useState} from "react";
+import {useEffect, useState} from "react";
 // import Pagination from "./Pagination";
 import Pagination from "react-js-pagination";
 const Paging = ({page,totalItemCount,itemsPerPage, handlePageChange }) => {
+    useEffect(() => {
+        console.log("pagessss:",page);
+    }, []);
      const [currentpage, setCurrentPage] = useState(page);
     const handleLocalPageChange = (selectedPage) => {
         handlePageChange(selectedPage);
