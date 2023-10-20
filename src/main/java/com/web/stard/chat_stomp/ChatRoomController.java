@@ -1,15 +1,19 @@
 package com.web.stard.chat_stomp;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/chat")
 public class ChatRoomController {
+
     private final ChatRoomService chatService;
+    private final ChatMessageRepository chatMessageRepository;
 
     // 채팅방 생성
     @PostMapping("/room")
@@ -26,6 +30,12 @@ public class ChatRoomController {
     @ResponseBody
     public ChatRoom getRoom(@PathVariable Long studyid) {
         return chatService.findByStudyId(studyid);
+    }
+
+    // 채팅 내역
+    @GetMapping("/history/{studyId}")
+    public List<ChatMessage> getChatHistory(@PathVariable Long studyId) {
+        return chatMessageRepository.findByStudyId(studyId);
     }
 
 }
