@@ -57,7 +57,8 @@ public class Study extends BaseEntity {
 
     @CreatedDate
     @Column(name = "recruitment_start", updatable = false)
-    private LocalDateTime recruitmentStart;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate recruitmentStart;
 
     @NotNull @Column(name = "recruitment_deadline")
     @DateTimeFormat(pattern = "yyyy-MM-dd")

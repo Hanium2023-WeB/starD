@@ -1,6 +1,7 @@
 package com.web.stard.service;
 
 
+import ch.qos.logback.core.net.SyslogOutputStream;
 import com.web.stard.domain.*;
 import com.web.stard.dto.StudyDto;
 import com.web.stard.dto.response.Top5Dto;
@@ -18,6 +19,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -40,17 +43,6 @@ public class StudyService {
             return null;
         return result.get();
 
-    }
-
-    @Transactional
-    public Page<Study> findAll(int page) {
-
-        Sort sort = Sort.by(new Sort.Order(Sort.Direction.DESC, "createdAt"));
-        Pageable pageable = PageRequest.of(page - 1, 10, sort);
-
-        Page<Study> studies = studyRepository.findAll(pageable);
-
-        return studies;
     }
 
     @Transactional
@@ -262,11 +254,6 @@ public class StudyService {
         return result;
     }
 
-    public Long count() {
-        return studyRepository.count();
-    }
-
-
     @Transactional
     public Study createApplicant(long id, String apply_reason, Authentication authentication) {
 
@@ -416,10 +403,27 @@ public class StudyService {
         return studyMemberRepository.findByStudy(study);
     }
 
-
-
     public List<Top5Dto> findStudyRanking() {
         return studyRepository.findTop5();
+    }
+
+    // 스터디 모집 마감일이 지나면 "모집 중" -> "모집 완료"로 상태 변경
+    @Transactional
+    public void checkStudyRecruitmentDeadline() {
+        LocalDate localDate = LocalDate.now();
+        List<Study> result = studyRepository.findByRecruitmentDeadlineBefore(localDate);
+        for (Study s : result)
+            s.setRecruitStatus(RecruitStatus.RECRUITMENT_COMPLETE);
 
     }
+
+    // 스터디 활동 마감일이 지나면 "진행 중" -> "진행 완료"로 상태 변경
+    @Transactional
+    public void checkStudyActivityDeadline() {
+        LocalDate localDate = LocalDate.now();
+        List<Study> result = studyRepository.findByActivityDeadlineBefore(localDate);
+        for (Study s : result)
+            s.setProgressStatus(ProgressStatus.WRAP_UP);
+    }
+
 }
