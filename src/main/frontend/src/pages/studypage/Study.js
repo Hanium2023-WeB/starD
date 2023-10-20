@@ -26,16 +26,7 @@ const Study = () => {
     const location = useLocation();
     const pageparams = location.state ? location.state.page : 1;
 
-    // 각 스터디 스크랩, 공감 상태 저장
-    // (위에 scrapStates, likeStates 사용하면 의존성 배열 때문에 useEffect 무한 반복,,)
-//    const [scrapTwoStates, setScrapTwoStates] = useState([]);
-//    const [likeTwoStates, setLikeTwoStates] = useState([]);
-
     const [showStudyInsert, setShowStudyInsert] = useState(false);
-
-    // 각 스터디 리스트 항목의 스크랩 상태를 저장하는 배열
-//    const [scrapStates, setScrapStates] = useState(false);
-//    const [likeStates, setLikeStates] = useState(false);
 
     const [studiesChanged, setStudiesChanged] = useState(false);
     let [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -50,6 +41,7 @@ const Study = () => {
     const [page, setPage] = useState(pageparams);
     const [count, setCount] = useState(0);
     const [itemsPerPage, setItemsPerPage] = useState(9);
+
 
     useEffect(() => {
         const storedStudies = JSON.parse(localStorage.getItem("studies"));
@@ -181,6 +173,7 @@ const Study = () => {
         navigate(`/study/page=${selectedPage}`);
     };
 
+    // 공감, 스크랩 가져오는 함수
     const fetchLikeScrap = (pageNumber) => {
         if (accessToken && isLoggedInUserId) {
             const res_like = axios.get("http://localhost:8080/study/stars", {
