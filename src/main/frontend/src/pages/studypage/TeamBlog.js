@@ -57,7 +57,7 @@ const TeamBlog = () => {
             .catch((error) => {
                 console.error("스터디 세부 데이터 가져오기 실패:", error);
             });
-        
+
     }, [accessToken]);
 
     return (
@@ -87,64 +87,64 @@ const TeamBlog = () => {
                         <TeamToDoList studyId={studyId} Member={Member} selectStudy={studyItem}/>
                     </div>
                     <div>
-                        <MapNaverDefault studyId={studyId}/>
+                        <MapNaverDefault studyId={studyId} Member={Member} />
                     </div>
-            {/*        <div className="left">*/}
-            {/*            <div className="team_todo team">*/}
-            {/*                <p>오늘의 할 일&nbsp;&nbsp;<span>&gt;</span></p>*/}
-            {/*                <div className="team_todo_content">*/}
-            {/*                    <div>*/}
-            {/*                        <h4 className="manager">김솜솜</h4>*/}
-            {/*                        <ul>*/}
-            {/*                            <li>해야할 일 1</li>*/}
-            {/*                            <li>해야할 일 2</li>*/}
-            {/*                        </ul>*/}
-            {/*                    </div>*/}
-            {/*                    <div>*/}
-            {/*                        <h4 className="manager">박솜솜</h4>*/}
-            {/*                        <ul>*/}
-            {/*                            <li>해야할 일 1</li>*/}
-            {/*                            <li>해야할 일 2</li>*/}
-            {/*                        </ul>*/}
-            {/*                    </div>*/}
-            {/*                </div>*/}
-            {/*            </div>*/}
-            {/*            <div className="team_schedule team">*/}
-            {/*                <p>일정&nbsp;&nbsp;<span>&gt;</span></p>*/}
-            {/*                <div className="team_schedule_content">*/}
-            {/*                    일정입니다*/}
-            {/*                </div>*/}
-            {/*            </div>*/}
-            {/*            <div className="team_progress team">*/}
-            {/*                <p>스터디 진행률&nbsp;&nbsp;<span>&gt;</span></p>*/}
-            {/*                <div className="team_progress_content">*/}
-            {/*                    스터디 진행률입니다*/}
-            {/*                </div>*/}
-            {/*            </div>*/}
-            {/*        </div>*/}
-            {/*        <div className="team_chatting team">*/}
-            {/*            <p>실시간 채팅&nbsp;&nbsp;<span>&gt;</span></p>*/}
-            {/*            <div className="team_chatting_content">*/}
-            {/*                <div className="chatting_title">솜솜이 채팅방</div>*/}
-            {/*                <div className="chatting_content">*/}
-            {/*                    <div>*/}
-            {/*                        <span className="nickname">김솜솜</span>*/}
-            {/*                        <span className="chat">우리 오늘 할 일 정해보자</span>*/}
-            {/*                    </div>*/}
-            {/*                    <div style={{textAlign:"right"}}>*/}
-            {/*                        <span className="chat me">ㅇㅋ 지금 어디까지 했지?</span>*/}
-            {/*                    </div>*/}
-            {/*                    <div>*/}
-            {/*                        <span className="nickname">이솜솜</span>*/}
-            {/*                        <span className="chat">기다려봐 내가 한번 보고 올게</span>*/}
-            {/*                    </div>*/}
-            {/*                </div>*/}
-            {/*                <div className="chat_input">*/}
-            {/*                    <input type="text" />*/}
-            {/*                    <button className="chat_submit_btn">전송</button>*/}
-            {/*                </div>*/}
-            {/*            </div>*/}
-            {/*        </div>*/}
+                    {/*        <div className="left">*/}
+                    {/*            <div className="team_todo team">*/}
+                    {/*                <p>오늘의 할 일&nbsp;&nbsp;<span>&gt;</span></p>*/}
+                    {/*                <div className="team_todo_content">*/}
+                    {/*                    <div>*/}
+                    {/*                        <h4 className="manager">김솜솜</h4>*/}
+                    {/*                        <ul>*/}
+                    {/*                            <li>해야할 일 1</li>*/}
+                    {/*                            <li>해야할 일 2</li>*/}
+                    {/*                        </ul>*/}
+                    {/*                    </div>*/}
+                    {/*                    <div>*/}
+                    {/*                        <h4 className="manager">박솜솜</h4>*/}
+                    {/*                        <ul>*/}
+                    {/*                            <li>해야할 일 1</li>*/}
+                    {/*                            <li>해야할 일 2</li>*/}
+                    {/*                        </ul>*/}
+                    {/*                    </div>*/}
+                    {/*                </div>*/}
+                    {/*            </div>*/}
+                    {/*            <div className="team_schedule team">*/}
+                    {/*                <p>일정&nbsp;&nbsp;<span>&gt;</span></p>*/}
+                    {/*                <div className="team_schedule_content">*/}
+                    {/*                    일정입니다*/}
+                    {/*                </div>*/}
+                    {/*            </div>*/}
+                    {/*            <div className="team_progress team">*/}
+                    {/*                <p>스터디 진행률&nbsp;&nbsp;<span>&gt;</span></p>*/}
+                    {/*                <div className="team_progress_content">*/}
+                    {/*                    스터디 진행률입니다*/}
+                    {/*                </div>*/}
+                    {/*            </div>*/}
+                    {/*        </div>*/}
+                    {/*        <div className="team_chatting team">*/}
+                    {/*            <p>실시간 채팅&nbsp;&nbsp;<span>&gt;</span></p>*/}
+                    {/*            <div className="team_chatting_content">*/}
+                    {/*                <div className="chatting_title">솜솜이 채팅방</div>*/}
+                    {/*                <div className="chatting_content">*/}
+                    {/*                    <div>*/}
+                    {/*                        <span className="nickname">김솜솜</span>*/}
+                    {/*                        <span className="chat">우리 오늘 할 일 정해보자</span>*/}
+                    {/*                    </div>*/}
+                    {/*                    <div style={{textAlign:"right"}}>*/}
+                    {/*                        <span className="chat me">ㅇㅋ 지금 어디까지 했지?</span>*/}
+                    {/*                    </div>*/}
+                    {/*                    <div>*/}
+                    {/*                        <span className="nickname">이솜솜</span>*/}
+                    {/*                        <span className="chat">기다려봐 내가 한번 보고 올게</span>*/}
+                    {/*                    </div>*/}
+                    {/*                </div>*/}
+                    {/*                <div className="chat_input">*/}
+                    {/*                    <input type="text" />*/}
+                    {/*                    <button className="chat_submit_btn">전송</button>*/}
+                    {/*                </div>*/}
+                    {/*            </div>*/}
+                    {/*        </div>*/}
                 </div>
             </div>
         </div>

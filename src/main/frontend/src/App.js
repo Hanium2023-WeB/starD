@@ -125,7 +125,7 @@ function App() {
                         }
                     />
                     <Route
-                        path="/study"
+                        path="/study/:page"
                         element={
                             <Study/>
                         }

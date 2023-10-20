@@ -17,14 +17,11 @@ const TeamToDoList = ({studyId, Member, selectStudy}) => {
     const [selectedDate, setSelectedDate] = useState(new Date()); // 추가: 선택한 날짜 상태
     const accessToken = localStorage.getItem('accessToken');
     const Year = selectedDate.getFullYear();
-    const Month = selectedDate.getMonth() + 1;
+    let Month = selectedDate.getMonth() + 1;
     const Dates = selectedDate.getDate();
     const [studies, setStudy] = useState([]);
-    const [studyTitles, setStudyTitles] = useState([]); //참여 중인 스터디 제목
-    const [studyIds, setStudyIds] = useState([]); //참여 중인 스터디 아이디
     const [studyMems, setStudyMems] = useState([]); //참여 멤버
-
-
+    const [member, setMember] = useState(Member);
     const [Assignees, setAssignees] = useState([]); //담당자
     const studyIdAsNumber = parseFloat(studyId);
 
@@ -54,12 +51,21 @@ const TeamToDoList = ({studyId, Member, selectStudy}) => {
         const assignName = e.target.getAttribute('data-assign-name');
         const updatedAssignees = [...Assignees, assignName];
         setAssignees(updatedAssignees);
+        //선택하면 화면에서 사라짐
+        const updatedMember = Member.filter((item) => item.member.name !== assignName);
+        setMember(updatedMember);
     };
     //담당자 삭제 함수
     const handleRemoveAssignees = (e) => {
         const removeAssignName = Assignees.filter((item) => item !== e.target.value);
         setAssignees(removeAssignName);
         console.log("삭제 완료: ", Assignees);
+        //삭제하면 다시 담당자 부분에 생성됨
+        const assigneeToAddBack = Member.find((item) => item.member.name === removeAssignName);
+        if (assigneeToAddBack) {
+            const updatedMember = [...Member, assigneeToAddBack];
+            setMember(updatedMember);
+        }
     };
 
     useEffect(() => {
@@ -74,23 +80,25 @@ const TeamToDoList = ({studyId, Member, selectStudy}) => {
             task: task,
             dueDate: formattedDate,
         };
-
-        const postDataResponse = await axios.post(`http://localhost:8080/todo`, todoData, {
-            params: {
-                studyId: studyId,
-                assigneeStr: StringAssignees,
-            },
-            withCredentials: true,
-            headers: {
-                'Authorization': `Bearer ${accessToken}`
-            }
-        });
-
-        console.log("전송 성공:", postDataResponse); //담당자 잘 전송되는 듯
-
-        setTodoswithAssignee((prevTodos) => ({ //날짜 기준으로 세팅
-            ...prevTodos, [dateKey]: [...(prevTodos[dateKey] || []), postDataResponse.data],
-        }));
+        if (StringAssignees) {
+            const postDataResponse = await axios.post(`http://localhost:8080/todo`, todoData, {
+                params: {
+                    studyId: studyId,
+                    assigneeStr: StringAssignees,
+                },
+                withCredentials: true,
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`
+                }
+            });
+            console.log("전송 성공:", postDataResponse); //담당자 잘 전송되는 듯
+            setTodoswithAssignee((prevTodos) => ({ //날짜 기준으로 세팅
+                ...prevTodos, [dateKey]: [...(prevTodos[dateKey] || []), postDataResponse.data],
+            }));
+        } else {
+            alert("담당자를 지정해주세요.");
+            return;
+        }
         nextId.current++;
 
     }, [selectedDate, studies, todoswithAssignee]);
@@ -162,13 +170,13 @@ const TeamToDoList = ({studyId, Member, selectStudy}) => {
     const onToggle = useCallback(async (assignees, id, todo_status) => {
         console.log("assignees,", assignees);
         const postDataPromises = assignees.map(async (item) => {
-            console.log("체크 전 상태",item.toDoStatus);
-            console.log("체크 후 상태",!item.toDoStatus);
+            console.log("체크 전 상태", item.toDoStatus);
+            console.log("체크 후 상태", !item.toDoStatus);
             const status = !item.toDoStatus;
             console.log("item:", item);
             return axios.post(
                 `http://localhost:8080/todo/${item.toDo.id}/status`,
-                 null ,
+                null,
                 {
                     params: {status: status},
                     withCredentials: true,
@@ -213,15 +221,30 @@ const TeamToDoList = ({studyId, Member, selectStudy}) => {
 
     useEffect(() => {
         //불러온 투두리스트
+        setMember(Member);
         console.log("setTodoswithAssignee_TODOLIST:", todoswithAssignee); //스터디 별 투두리스트 출력
-        console.log("setTodoswithAssignee_Member:", Member); //스터디 참여멤버들 출력
+        console.log("setTodoswithAssignee_Member:", member); //스터디 참여멤버들 출력
     }, [todoswithAssignee, Member, onUpdate]);
+
+    // 달력 다음달 저번달 옮기기
+    const [currentMonth, setCurrentMonth] = useState(new Date());
+
+    const prevMonth = () => {
+        setCurrentMonth(subMonths(currentMonth, 1));
+    };
+
+    const nextMonth = () => {
+        setCurrentMonth(addMonths(currentMonth, 1));
+    };
+    useEffect(() => {
+        Month = format(currentMonth, "M")
+    }, [currentMonth]);
 
     //해당 스터디의 투두 가져오기
     useEffect(() => {
         axios.get(`http://localhost:8080/todo/${studyIdAsNumber}`, {
             params: {
-                year: selectedDate.getFullYear(), month: selectedDate.getMonth() + 1,
+                year: Year, month: Month,
             }, headers: {
                 Authorization: `Bearer ${accessToken}`,
             },
@@ -243,13 +266,13 @@ const TeamToDoList = ({studyId, Member, selectStudy}) => {
         }).catch((error) => {
             console.log('스터디별 투두리스트 가져오기 실패:', error);
         })
-    }, [studyIdAsNumber]);
+    }, [studyIdAsNumber,currentMonth]);
 
 
     return (<div>
         <div className="container">
             <div className="main_container">
-                <p id={"main-container-title"}>투두 리스트 & 일정</p>
+                <p id={"main-container-title"}>팀 투두 리스트</p>
                 <div className="sub_container" id="todo_sub">
                     <div className="todo_container">
                         <div className="today">
@@ -259,11 +282,12 @@ const TeamToDoList = ({studyId, Member, selectStudy}) => {
                         {/*담당자 선택*/}
                         <div className={"select_assignee"}>
                             <p>담당자</p>
-                            {Array.isArray(Member) && Member.length > 0 && Member.map((item, index) => (
+                            {Array.isArray(member) && member.length > 0 && member.map((item, index) => (
                                 <div className={"assignees"} key={index}>
                                     <div
                                         className="assignee-name"
                                         data-assign-name={item.member.name}
+                                        value={item}
                                         onClick={handleAddAssignees}
                                     >
                                         {item.member.name}
@@ -309,7 +333,7 @@ const TeamToDoList = ({studyId, Member, selectStudy}) => {
                         {insertToggle && (<TeamToDoEdit selectedTodo={selectedTodo} onUpdate={onUpdate} Member={Member}
                                                         Assignees={Assignees}/>)}
                     </div>
-                    <Calender todo={todoswithAssignee.todo} onDateClick={handleDateClick}/>
+                    <Calender todo={todoswithAssignee} onDateClick={handleDateClick} prevMonth={prevMonth} nextMonth={nextMonth} currentMonth={currentMonth}/>
                 </div>
             </div>
         </div>

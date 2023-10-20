@@ -22,7 +22,7 @@ const ToDoList = ({sideheader}) => {
     const [selectedDate, setSelectedDate] = useState(new Date()); // 추가: 선택한 날짜 상태
     const accessToken = localStorage.getItem('accessToken');
     const Year = selectedDate.getFullYear();
-    const Month = selectedDate.getMonth() + 1;
+    let Month = selectedDate.getMonth() + 1;
     const Dates = selectedDate.getDate();
     const [studies, setStudy] = useState([]);
     const [studyTitles, setStudyTitles] = useState([]); //참여 중인 스터디 제목
@@ -217,12 +217,27 @@ const ToDoList = ({sideheader}) => {
         console.log("setTodoswithAssignee_TODOLIST:", todoswithAssignee);
     }, [todoswithAssignee]);
 
+
+    // 달력 다음달 저번달 옮기기
+    const [currentMonth, setCurrentMonth] = useState(new Date());
+
+    const prevMonth = () => {
+        setCurrentMonth(subMonths(currentMonth, 1));
+    };
+    const nextMonth = () => {
+        setCurrentMonth(addMonths(currentMonth, 1));
+    };
+
+    useEffect(() => {
+        Month = format(currentMonth, "M")
+    }, [currentMonth]);
+
     //전체 스터디의 투두 가져오기
     useEffect(() => {
         if (InsertToDoStudyId === "0") {
             axios.get(`http://localhost:8080/todo/all`, {
                 params: {
-                    year: selectedDate.getFullYear(), month: selectedDate.getMonth() + 1,
+                    year: Year, month: Month,
                 }, headers: {
                     Authorization: `Bearer ${accessToken}`,
                 },
@@ -270,7 +285,7 @@ const ToDoList = ({sideheader}) => {
                 console.log('스터디별 투두리스트 가져오기 실패:', error);
             })
         }
-    }, [InsertToDoStudyId, studyIdAsNumber]);
+    }, [InsertToDoStudyId, studyIdAsNumber,currentMonth]);
 
 
     const selectStudy = (e) => {
@@ -293,6 +308,10 @@ const ToDoList = ({sideheader}) => {
         console.log("studyIdAsNumber_투두리스트:::", studyIdAsNumber);
 
     }, [InsertToDoStudyId, studyIdAsNumber]);
+
+
+
+
     return (<div>
         <Header showSideCenter={true}/>
         {/*<Backarrow subname={"투두 리스트 & 일정"}/>*/}
@@ -340,7 +359,7 @@ const ToDoList = ({sideheader}) => {
                         {insertToggle && (<ToDoEdit selectedTodo={selectedTodo} onUpdate={onUpdate}
                                                     participatedstudies={studies}/>)}
                     </div>
-                    <Calender todo={todoswithAssignee.todo} onDateClick={handleDateClick}/>
+                    <Calender todo={todoswithAssignee} onDateClick={handleDateClick} prevMonth={prevMonth} nextMonth={nextMonth} currentMonth={currentMonth}/>
                 </div>
             </div>
         </div>

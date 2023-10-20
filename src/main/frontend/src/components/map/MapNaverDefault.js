@@ -1,13 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 import axios from "axios";
 
-const MapNaverDefault = ({studyId}) => {
+const MapNaverDefault = ({studyId,Member}) => {
 
     const accessToken = localStorage.getItem('accessToken');
 
 	const [mapLat, setMapLat] = useState(null); // 위도
 	const [mapLng, setMapLng] = useState(null); // 위도
-
+    const [currentLocation, setCurrentLocation] = useState({});
     const mapElement = useRef(null);
     const { naver } = window;
 
@@ -28,8 +28,9 @@ const MapNaverDefault = ({studyId}) => {
                 console.error("위도, 경도 불러오기 실패", error);
             });
 
-    }, [studyId]);
+    }, []);
 
+    //지도 보여주기
     useEffect(() => {
         if (!mapElement.current || !naver) return;
 
@@ -50,9 +51,15 @@ const MapNaverDefault = ({studyId}) => {
     }, [mapLat, mapLng, naver]);
 
     return (
-        <>
-            <div ref={mapElement} style={{ height: '400px', width: '400px' }} />
-        </>
+        <div className={"map_content"}>
+            <div id={"input-location"}>
+                <p>중간 장소 찾기</p>
+                {Member.map((member,index)=>(
+                    <input value={"장소를 입력하세요"}></input>
+                ))}
+            </div>
+            <div ref={mapElement} style={{ height: '350px', width: '350px' }} id={"naver-map"}/>
+        </div>
     );
 };
 

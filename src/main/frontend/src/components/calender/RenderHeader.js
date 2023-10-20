@@ -3,7 +3,7 @@ import { BsFillArrowLeftCircleFill } from "react-icons/bs";
 import { BsFillArrowRightCircleFill } from "react-icons/bs";
 //달력의 헤더부분
 const RenderHeader = ({ currentMonth, prevMonth, nextMonth }) => {
-  return (
+    return (
     <div className="header row">
       <div className="col col-start"> {/*오늘이 속한 월, 오늘이 속한 년도*/}
         <span className="text_today">

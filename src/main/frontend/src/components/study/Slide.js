@@ -16,8 +16,6 @@ const Slide = ({ state }) => {
     const [likeStates, setLikeStates] = useState([]);
     const [studiesChanged, setStudiesChanged] = useState(false);
 
-  console.log(slidePx);
-
   let accessToken = localStorage.getItem('accessToken');
 
   useEffect(() => {

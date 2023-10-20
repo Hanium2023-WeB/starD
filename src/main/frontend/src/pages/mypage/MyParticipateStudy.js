@@ -12,31 +12,6 @@ import ScrapButton from "../../components/repeat_etc/ScrapButton";
 import Paging from "../../components/repeat_etc/Paging";
 
 const MyParticipateStudy = ({sideheader}) => {
-    // const dataId = useRef(0);
-    // const [state, setState] = useState([]);
-
-    // const getData = async () => {
-    // 	const res = await fetch(
-    // 		"https://jsonplaceholder.typicode.com/comments"
-    // 	).then((res) => res.json());
-    // 	const initDate = res.slice(0, 10).map((it) => {
-    // 		return {
-    // 			tag: it.email,
-    // 			author: it.email,
-    // 			day: it.postId,
-    // 			title: it.name,
-    // 			last: 5,
-    // 			created_date: new Date().getTime(),
-    // 			id: dataId.current++,
-    // 		};
-    // 	});
-    // 	setState(initDate);
-    // 	console.log(initDate);
-    // };
-    // useEffect(() => {
-    // 	getData();
-    // }, []);
-
     const accessToken = localStorage.getItem('accessToken');
     const [ApplyMemberList, setApplyMemberList] = useState([]); //참여멤버
     const [ApplyStudyList, setApplyStudyList] = useState([]);
@@ -82,13 +57,7 @@ const MyParticipateStudy = ({sideheader}) => {
                 return newState;
             });
         }
-        // 	localStorage.setItem("acceptedMembers", Accepted_Members);
-        // }
-        // if (location.state && location.state.studyId != null) {
-        // 	const Study_Id = location.state.studyId;
-        // 	console.log("멤버들이 속한 스터디 아이디:",Study_Id);
-        // 	localStorage.setItem("ParticipatedStudyId", Study_Id);
-        // }
+
     }, []);
 
     function calculateDateDifference(startDate, endDate) {
@@ -329,7 +298,7 @@ const MyParticipateStudy = ({sideheader}) => {
         console.log("팀블로그에 넘겨주는 item:", item);
         navigate(`/${item.study.id}/teamblog`, {
             state: {
-                MyParticipate: item
+                studyId: item.study.id
             }
         });
     }
@@ -339,7 +308,6 @@ const MyParticipateStudy = ({sideheader}) => {
             <div className="study_list">
                 {studies.map((d, index) => (
                     <div className="list" key={d.study.id}>
-
                         <div className="list_header">
                             <div className="list_sub_header">
                                 <div className="list_day">
@@ -382,39 +350,6 @@ const MyParticipateStudy = ({sideheader}) => {
                         {/*</Link>*/}
                     </div>
                 ))}
-
-
-                {/*{state.map((d) => (*/}
-                {/*	<div className="list">*/}
-                {/*		<Link*/}
-                {/*			to={`/studydetail/${d.id}`}*/}
-                {/*			style={{*/}
-                {/*				textDecoration: "none",*/}
-                {/*				color: "inherit",*/}
-                {/*			}}*/}
-                {/*		>*/}
-                {/*			<div className="list_header">*/}
-                {/*				<div className="list_sub_header">*/}
-                {/*					<div className="list_day">*/}
-                {/*						{d.id}일간의 우주여행*/}
-                {/*					</div>*/}
-                {/*					<div className="list_status">진행중</div>*/}
-                {/*				</div>*/}
-                {/*				<div className="list_like">*/}
-                {/*					<FontAwesomeIcon icon={faStar} />*/}
-                {/*				</div>*/}
-                {/*			</div>*/}
-                {/*			<div className="list_deadline">*/}
-                {/*				마감일 | {d.created_date}*/}
-                {/*			</div>*/}
-                {/*			<div className="list_title">{d.title}</div>*/}
-                {/*			<div className="list_tag">{d.tag}</div>*/}
-                {/*			<div className="list_onoff">{d.tag}</div>*/}
-                {/*			<div className="stroke"></div>*/}
-                {/*			<div className="list_founder">{d.author}</div>*/}
-                {/*		</Link>*/}
-                {/*	</div>*/}
-                {/*))}*/}
             </div>
         );
     };

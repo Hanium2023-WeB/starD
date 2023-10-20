@@ -4,9 +4,8 @@ import searchicon from "./images/search.png";
 import axios from "axios";
 
 
-const SearchBar = (props) => {
+const SearchBar = () => {
 
-	const items = props.searchItems;
 	const [search, setSearch] = useState("");
 	const [selectOption, setSelectOption] = useState("제목");
 	const navigate = useNavigate();
