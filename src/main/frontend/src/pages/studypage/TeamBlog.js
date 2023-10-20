@@ -85,7 +85,6 @@ const TeamBlog = () => {
                 </div>
                 <div className="content">
                     <div>
-                        <TeamToDoList studyId={studyId} Member={Member} selectStudy={studyItem}/>
                     <div className={"TeamToDo"}>
                         <TeamToDoList studyId={studyId} Member={Member} selectStudy={studyItem}/>
                     </div>

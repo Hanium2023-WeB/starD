@@ -224,6 +224,7 @@ const Study = () => {
             },
         })
             .then((response) => {
+                console.log("페이징 성공");
                 setStudies(response.data.content);
                 setItemsPerPage(response.data.pageable.pageSize);
                 setCount(response.data.totalElements);

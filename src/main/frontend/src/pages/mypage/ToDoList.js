@@ -340,7 +340,7 @@ const ToDoList = ({sideheader}) => {
                         {insertToggle && (<ToDoEdit selectedTodo={selectedTodo} onUpdate={onUpdate}
                                                     participatedstudies={studies}/>)}
                     </div>
-                    <Calender todo={todoswithAssignee.todo} onDateClick={handleDateClick}/>
+                    <Calender todo={todoswithAssignee} onDateClick={handleDateClick}/>
                 </div>
             </div>
         </div>

@@ -309,7 +309,7 @@ const TeamToDoList = ({studyId, Member, selectStudy}) => {
                         {insertToggle && (<TeamToDoEdit selectedTodo={selectedTodo} onUpdate={onUpdate} Member={Member}
                                                         Assignees={Assignees}/>)}
                     </div>
-                    <Calender todo={todoswithAssignee.todo} onDateClick={handleDateClick}/>
+                    <Calender todo={todoswithAssignee} onDateClick={handleDateClick}/>
                 </div>
             </div>
         </div>
