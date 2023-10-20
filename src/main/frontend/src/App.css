@@ -57,6 +57,12 @@ body {
 	flex-direction: row;
 	justify-content: center;
 }
+
+.display-test {
+	display: flex;
+	flex-direction: row;
+}
+
 .intro > #intro-main{
 	color: #FFF;
 	font-family: Inter;
@@ -65,17 +71,30 @@ body {
 	font-weight: 700;
 	line-height: normal;
 }
+
+.display-test > #intro-main{
+	color: #FFF;
+	font-family: Inter;
+	font-size: 40px;
+	font-style: normal;
+	font-weight: 700;
+	line-height: normal;
+	padding: 20px 0px 20px 0px;
+}
 .LOGO{
-	display: flex;
-	justify-content: center;
+	/*display: flex;*/
+	/*justify-content: center;*/
 	filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
 }
 .below_intro{
-	display: flex;
-	justify-content: center;
-	position: relative;
-	right: 85px;
-	bottom: 50px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	text-align: center;
+	/*display: flex;*/
+	/*justify-content: center;*/
+	/*position: relative;*/
+	/*right: 85px;*/
+	/*bottom: 50px;*/
 }
 #intro-sub{
 	color: #FFF;
