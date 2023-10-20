@@ -20,11 +20,8 @@ const TeamToDoList = ({studyId, Member, selectStudy}) => {
     const Month = selectedDate.getMonth() + 1;
     const Dates = selectedDate.getDate();
     const [studies, setStudy] = useState([]);
-    const [studyTitles, setStudyTitles] = useState([]); //참여 중인 스터디 제목
-    const [studyIds, setStudyIds] = useState([]); //참여 중인 스터디 아이디
     const [studyMems, setStudyMems] = useState([]); //참여 멤버
-    const [selectedAssignees, setSelectedAssignees] = useState([]);
-    const [tmpMember, setTmpMember] =useState(Member);
+    const [member, setMember] = useState(Member);
     const [Assignees, setAssignees] = useState([]); //담당자
     const studyIdAsNumber = parseFloat(studyId);
 
@@ -54,12 +51,21 @@ const TeamToDoList = ({studyId, Member, selectStudy}) => {
         const assignName = e.target.getAttribute('data-assign-name');
         const updatedAssignees = [...Assignees, assignName];
         setAssignees(updatedAssignees);
+        //선택하면 화면에서 사라짐
+        const updatedMember = Member.filter((item) => item.member.name !== assignName);
+        setMember(updatedMember);
     };
     //담당자 삭제 함수
     const handleRemoveAssignees = (e) => {
         const removeAssignName = Assignees.filter((item) => item !== e.target.value);
         setAssignees(removeAssignName);
         console.log("삭제 완료: ", Assignees);
+        //삭제하면 다시 담당자 부분에 생성됨
+        const assigneeToAddBack = Member.find((item) => item.member.name === removeAssignName);
+        if (assigneeToAddBack) {
+            const updatedMember = [...Member, assigneeToAddBack];
+            setMember(updatedMember);
+        }
     };
 
     useEffect(() => {
@@ -74,23 +80,25 @@ const TeamToDoList = ({studyId, Member, selectStudy}) => {
             task: task,
             dueDate: formattedDate,
         };
-
-        const postDataResponse = await axios.post(`http://localhost:8080/todo`, todoData, {
-            params: {
-                studyId: studyId,
-                assigneeStr: StringAssignees,
-            },
-            withCredentials: true,
-            headers: {
-                'Authorization': `Bearer ${accessToken}`
-            }
-        });
-
-        console.log("전송 성공:", postDataResponse); //담당자 잘 전송되는 듯
-
-        setTodoswithAssignee((prevTodos) => ({ //날짜 기준으로 세팅
-            ...prevTodos, [dateKey]: [...(prevTodos[dateKey] || []), postDataResponse.data],
-        }));
+        if (StringAssignees) {
+            const postDataResponse = await axios.post(`http://localhost:8080/todo`, todoData, {
+                params: {
+                    studyId: studyId,
+                    assigneeStr: StringAssignees,
+                },
+                withCredentials: true,
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`
+                }
+            });
+            console.log("전송 성공:", postDataResponse); //담당자 잘 전송되는 듯
+            setTodoswithAssignee((prevTodos) => ({ //날짜 기준으로 세팅
+                ...prevTodos, [dateKey]: [...(prevTodos[dateKey] || []), postDataResponse.data],
+            }));
+        } else {
+            alert("담당자를 지정해주세요.");
+            return;
+        }
         nextId.current++;
 
     }, [selectedDate, studies, todoswithAssignee]);
@@ -162,13 +170,13 @@ const TeamToDoList = ({studyId, Member, selectStudy}) => {
     const onToggle = useCallback(async (assignees, id, todo_status) => {
         console.log("assignees,", assignees);
         const postDataPromises = assignees.map(async (item) => {
-            console.log("체크 전 상태",item.toDoStatus);
-            console.log("체크 후 상태",!item.toDoStatus);
+            console.log("체크 전 상태", item.toDoStatus);
+            console.log("체크 후 상태", !item.toDoStatus);
             const status = !item.toDoStatus;
             console.log("item:", item);
             return axios.post(
                 `http://localhost:8080/todo/${item.toDo.id}/status`,
-                 null ,
+                null,
                 {
                     params: {status: status},
                     withCredentials: true,
@@ -213,8 +221,9 @@ const TeamToDoList = ({studyId, Member, selectStudy}) => {
 
     useEffect(() => {
         //불러온 투두리스트
+        setMember(Member);
         console.log("setTodoswithAssignee_TODOLIST:", todoswithAssignee); //스터디 별 투두리스트 출력
-        console.log("setTodoswithAssignee_Member:", Member); //스터디 참여멤버들 출력
+        console.log("setTodoswithAssignee_Member:", member); //스터디 참여멤버들 출력
     }, [todoswithAssignee, Member, onUpdate]);
 
     //해당 스터디의 투두 가져오기
@@ -259,7 +268,7 @@ const TeamToDoList = ({studyId, Member, selectStudy}) => {
                         {/*담당자 선택*/}
                         <div className={"select_assignee"}>
                             <p>담당자</p>
-                            {Array.isArray(Member) && Member.length > 0 && Member.map((item, index) => (
+                            {Array.isArray(member) && member.length > 0 && member.map((item, index) => (
                                 <div className={"assignees"} key={index}>
                                     <div
                                         className="assignee-name"
