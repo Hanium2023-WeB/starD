@@ -57,6 +57,9 @@ const Study = () => {
     useEffect(() => {
         if (accessToken && isLoggedInUserId) {
             axios.get("http://localhost:8080/study/stars", { // 공감
+                params:{
+                    page: "1",
+                },
                 withCredentials: true,
                 headers: {
                     'Authorization': `Bearer ${accessToken}`

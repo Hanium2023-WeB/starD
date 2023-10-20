@@ -9,6 +9,7 @@ import TeamBlogcss from  "../../css/study_css/TeamBlog.css";
 import {useLocation} from "react-router-dom";
 import TeamToDoList from "../../components/teamtodo/TeamToDoList";
 import MapNaverDefault from "../../components/map/MapNaverDefault";
+import TeamSchedule from "../../components/teamschedules/TeamSchedule";
 const TeamBlog = () => {
     const accessToken = localStorage.getItem('accessToken');
     const Study = useLocation();
@@ -74,7 +75,7 @@ const TeamBlog = () => {
                         <TeamToDoList studyId={studyId} Member={Member} selectStudy={selectStudy}/>
                     </div>
                     <div className={"FindMiddlePlace"}>
-                        <MapNaverDefault studyId={studyId}/>
+                        <MapNaverDefault studyId={studyId} Member={Member}/>
                     </div>
             {/*        <div className="left">*/}
             {/*            <div className="team_todo team">*/}

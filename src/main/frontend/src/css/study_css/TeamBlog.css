@@ -57,7 +57,7 @@
 
 .team_blog .content{
     margin: 0 auto;
-    width:80%;
+    width:90%;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -80,7 +80,9 @@
     border-radius: 10px;
     margin-bottom: 30px;
 }
-
+.TeamToDo{
+    width: 100%;
+}
 .team_todo_content > div:nth-last-of-type(1){
     margin-bottom: 10px;
 }
@@ -152,4 +154,36 @@
     font-size: 15px;
     padding: 15px 20px;
     cursor: pointer;
+}
+/*중간 장소 찾기*/
+/*.FindMiddlePlace{*/
+/*    display: flex;*/
+/*    flex-direction: column;*/
+/*}*/
+.map_content{
+    display: flex;
+    flex-direction: row;
+    margin-top: 38px;
+}
+#input-location{
+    display: flex;
+    flex-direction: column;
+}
+#input-location > p{
+    font-size: 25px;
+    font-family: inter;
+    font-weight: bolder;
+    position: relative;
+    left: 15px;
+}
+#input-location > input{
+    width: 200px;
+    height: 30px;
+    border-radius: 10px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+#naver-map{
+    position: relative;
+    top: 60px;
 }
