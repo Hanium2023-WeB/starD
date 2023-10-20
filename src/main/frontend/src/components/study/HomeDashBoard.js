@@ -37,14 +37,6 @@ const HomeDashBoard = () => {
     const [itemsPerPage, setItemsPerPage] = useState(9);
     const navigate = useNavigate();
 
-    // //TODO 모집완료 시 신청한 스터디멤버의 이름이 모인 배열
-    // useEffect(() => {
-    //     if (location.state && location.state.acceptedMembers != null) {
-    //         const ll = location.state.acceptedMembers;
-    //         console.log(ll);
-    //     }
-    // }, []);
-
     function calculateDateDifference(startDate, endDate) {
         const start = new Date(startDate);
         const end = new Date(endDate);
