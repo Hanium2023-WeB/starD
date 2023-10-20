@@ -426,4 +426,13 @@ public class StudyService {
             s.setProgressStatus(ProgressStatus.WRAP_UP);
     }
 
+    // 스터디 활동 시작일이 시작되면 "진행 중"로 상태 변경
+    @Transactional
+    public void checkStudyActivityStart() {
+        LocalDate localDate = LocalDate.now();
+        List<Study> result = studyRepository.findByActivityStartGreaterThanEqual(localDate);
+        for (Study s : result)
+            s.setProgressStatus(ProgressStatus.IN_PROGRESS);
+    }
+
 }

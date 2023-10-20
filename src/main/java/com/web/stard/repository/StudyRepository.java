@@ -45,5 +45,7 @@ public interface StudyRepository extends JpaRepository<Study, Long> {
 
     List<Study> findByActivityDeadlineBefore(LocalDate localDate);
 
+    List<Study> findByActivityStartGreaterThanEqual(LocalDate localDate);
+
 
 }

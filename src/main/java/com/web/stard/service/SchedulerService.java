@@ -18,6 +18,7 @@ public class SchedulerService {
     public void updateStudyState() {
         log.info("매일 자정 스터디 모집 및 진행 상태 관련 스케쥴러 실행");
         studyService.checkStudyActivityDeadline();
+        studyService.checkStudyActivityStart();
         studyService.checkStudyRecruitmentDeadline();
         log.info("매일 자정 스터디 모집 및 진행 상태 관련 스케쥴러 실행 완료");
     }
