@@ -31,6 +31,8 @@ const PostDetail = () => {
     let accessToken = localStorage.getItem('accessToken');
     let isLoggedInUserId = localStorage.getItem('isLoggedInUserId');
 
+    const [isWriter, setIsWriter] = useState(false);
+
     useEffect(() => {
         if (accessToken && isLoggedInUserId) {
             axios.get(`http://localhost:8080/star/post/${id}`, { // 공감
@@ -42,7 +44,7 @@ const PostDetail = () => {
             })
                 .then(response => {
                     setLikeStates(response.data);
-                    setInitiallyLikeStates(response.data);
+                    setInitiallyLikeStates(true);
                 })
                 .catch(error => {
                     console.log("공감 불러오기 실패", error);
@@ -57,11 +59,14 @@ const PostDetail = () => {
             })
                 .then(response => {
                     setScrapStates(response.data);
-                    setInitiallyScrapStates(response.data);
+                    setInitiallyScrapStates(true);
                 })
                 .catch(error => {
                     console.log("스크랩 불러오기 실패", error);
                 });
+        } else {
+            setInitiallyLikeStates(true);
+            setInitiallyScrapStates(true);
         }
     }, [id]);
 
@@ -76,13 +81,18 @@ const PostDetail = () => {
             config.headers['Authorization'] = `Bearer ${accessToken}`;
         }
 
-        axios.get(`http://localhost:8080/com/${id}`, config)
-            .then((res) => {
-                setPostItem(res.data);
-            })
-                .catch((error) => {
-                    console.error("커뮤니티 게시글 세부 데이터 가져오기 실패:", error);
-        });
+        if (initiallyLikeStates && initiallyScrapStates) {
+            axios.get(`http://localhost:8080/com/${id}`, config)
+                .then((res) => {
+                    setPostItem(res.data);
+                    if (res.data.member.id === isLoggedInUserId) { // 자신의 글인지
+                        setIsWriter(true);
+                    }
+                })
+                    .catch((error) => {
+                        console.error("커뮤니티 게시글 세부 데이터 가져오기 실패:", error);
+            });
+        }
     }, [id, accessToken, isLoggedInUserId, initiallyLikeStates, initiallyScrapStates]);
 
     const toggleLike = () => {
@@ -274,10 +284,12 @@ const PostDetail = () => {
                                 <div className="post_title">
                                     {postItem.title}
                                 </div>
-                                <div className="button">
-                                    <button style={{marginRight:"5px"}} onClick={handleEditClick}>수정</button>
-                                    <button onClick={handlePostDelete}>삭제</button>
-                                </div>
+                                {isWriter && (
+                                    <div className="button">
+                                        <button style={{marginRight:"5px"}} onClick={handleEditClick}>수정</button>
+                                        <button onClick={handlePostDelete}>삭제</button>
+                                    </div>
+                                )}
                             </div>
                             <div className="post_info">
                                 <div className="left">
