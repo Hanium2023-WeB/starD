@@ -1,9 +1,6 @@
 package com.web.stard.repository;
 
-import com.web.stard.domain.Member;
-import com.web.stard.domain.RecruitStatus;
-import com.web.stard.domain.Study;
-import com.web.stard.domain.StudyType;
+import com.web.stard.domain.*;
 import com.web.stard.dto.response.Top5Dto;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
@@ -43,9 +40,9 @@ public interface StudyRepository extends JpaRepository<Study, Long> {
 
     List<Study> findByRecruitmentDeadlineBefore(LocalDate localDate);
 
-    List<Study> findByActivityDeadlineBefore(LocalDate localDate);
+    List<Study> findByActivityDeadlineBeforeAndProgressStatus(LocalDate localDate, ProgressStatus progressStatus);
 
-    List<Study> findByActivityStartGreaterThanEqual(LocalDate localDate);
+    List<Study> findByActivityStartGreaterThanEqualAndProgressStatus(LocalDate localDate, ProgressStatus progressStatus);
 
 
 }
