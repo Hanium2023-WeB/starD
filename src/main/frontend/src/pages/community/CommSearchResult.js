@@ -1,6 +1,6 @@
 import Header from "../../components/repeat_etc/Header";
 import React, {useEffect, useState} from "react";
-import {Link, useNavigate} from "react-router-dom";
+import {Link, useNavigate, useLocation} from "react-router-dom";
 
 import "../../css/community_css/Community.css";
 import SearchBar from "../../components/community/CommSearchBar";
@@ -9,6 +9,11 @@ import PostListItem from "../../components/community/PostListItem";
 import axios from "axios";
 
 const Community = () => {
+    const location = useLocation();
+    const searchQuery = new URLSearchParams(location.search).get("q");
+    const selectOption = new URLSearchParams(location.search).get("select");
+    const categoryOption = new URLSearchParams(location.search).get("category");
+
     const navigate = useNavigate();
     const [posts, setPosts] = useState([]);
     const [showPostInsert, setShowPostInsert] = useState(false);
@@ -30,7 +35,12 @@ const Community = () => {
     };
 
     useEffect(() => {
-        axios.get("http://localhost:8080/com")
+        axios.get("http://localhost:8080/com/search", {
+            params: {
+                searchType: "title",
+                searchWord: searchQuery
+            }
+        })
             .then((res) => {
                 setPosts(res.data);
             })

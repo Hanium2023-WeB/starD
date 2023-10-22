@@ -31,6 +31,8 @@ import StudyApplyList from "./pages/studypage/StudyApplyList";
 import TeamBlog from "./pages/studypage/TeamBlog";
 import Community from "./pages/community/Community";
 import PostDetail from "./pages/community/PostDetail";
+import CommSearchBar from "./components/community/CommSearchBar";
+import CommSearchResult from "./pages/community/CommSearchResult";
 import Chat from "./components/chat/Chat";
 import FindedID from "./pages/userpage/FindedID.js";
 import TeamToDoList from "./pages/TeamToDo/TeamToDoList";
@@ -163,6 +165,13 @@ function App() {
                             <PostDetail/>
                         }
                     />
+                    <Route
+                        path="/comm/search"
+                        element={
+                            <CommSearchResult/>
+                        }
+                    />
+                    <Route path="/comm/search" component={CommSearchResult} />
                     <Route
                         path="/chat"
                         element={
