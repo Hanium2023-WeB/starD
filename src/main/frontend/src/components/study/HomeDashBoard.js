@@ -264,7 +264,7 @@ const HomeDashBoard = () => {
                 console.error("모집완료된 스터디 가져오기 실패:", error);
             });
 
-    }, [accessToken, likeStates, scrapStates]);
+    }, []);
 
     const goNextTeamBlog=(item)=>{
         console.log("팀블로그에 넘겨주는 item:", item.study.id);

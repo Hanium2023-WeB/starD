@@ -9,9 +9,11 @@
 }
 .team_blog .img_wrapper{
     position: relative;
+    margin-top: 20px;
     padding-bottom: 10px;
     border-bottom: 1px solid #dbdbdb;
     height: 100px;
+    background-color: #BBDF9F;
 }
 .team_blog .img_wrapper img {
     width: 100%;
@@ -23,16 +25,17 @@
     top:50%;
     transform: translate(-50%, -50%);
     text-align: center;
+
 }
 .team_blog .team_info .study_title{
     font-size: 23px;
-    color:#000;
+    color:white;
     margin:0 0 15px;
     font-family: 'Pretendard-Regular';
 }
 .team_blog .team_info .study_duration{
     font-size: 18px;
-    color:#000;
+    color:white;
     margin:0;
     /*font-family: 'Pretendard-Regular';*/
     font-family: Inter;
@@ -40,7 +43,6 @@
 
 .team_blog .gnb_bg{
     margin:10px 0 50px;
-    background: #BBDF9F;
     border-radius: 10px;
     padding:10px 0;
 }
@@ -52,6 +54,11 @@
 }
 .team_blog .gnb_bg .gnb li{
     font-size: 18px;
+    cursor: pointer;
+}
+.team_blog .gnb_bg .gnb li:hover{
+    font-size: 18px;
+    font-weight: bolder;;
     cursor: pointer;
 }
 

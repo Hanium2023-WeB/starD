@@ -53,6 +53,7 @@ const TeamBlog = () => {
             }
         }).then((res) => {
             setStudyItem(res.data);
+            console.error("스터디 세부 데이터 가져오기 성공:", res.data);
         })
             .catch((error) => {
                 console.error("스터디 세부 데이터 가져오기 실패:", error);
@@ -69,7 +70,7 @@ const TeamBlog = () => {
                     {/*<img src={BgImg}/>*/}
                     <div className="team_info">
                         <h2 className="study_title">{studyItem.title}</h2>
-                        <h3 className="study_duration">2023. 09. 15 ~ 2023. 10. 14</h3>
+                        <h3 className="study_duration">{studyItem.activityStart} ~ {studyItem.activityDeadline}</h3>
                     </div>
                 </div>
                 <div className="gnb_bg">

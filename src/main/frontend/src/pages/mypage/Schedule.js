@@ -28,7 +28,6 @@ const Schedule = ({sideheader}) => {
         })
             .then((res) => {
                 console.log("모집완료된 스터디, 참여멤버 전송 성공 : ", res.data);
-
                 const studyList = res.data.content;
                 setStudy(studyList);
                 //console.log("모집완료 ? :", studies);
@@ -38,10 +37,6 @@ const Schedule = ({sideheader}) => {
                 setStudyIds(studiesIds);
                 const ParticipatedStudiesMem = studyList.map(item => item.member.id);
                 setStudyMems(ParticipatedStudiesMem);
-                console.log("참여 스터디 아이디", studiesIds);
-                console.log("참여 스터디 제목", studiesTitle);
-                console.log("참여중인 스터디", studyList);
-                console.log("참여멤버", ParticipatedStudiesMem);
 
             })
             .catch((error) => {

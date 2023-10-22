@@ -10,7 +10,6 @@ import TeamToDoEdit from "../../components/teamtodo/TeamToDoEdit";
 import TeamToDoListItem from "../../components/teamtodo/TeamToDoListItem";
 import TeamToDoList_css from "../../css/todo_css/TeamToDoList.css";
 
-
 const TeamToDoList = ({studyId, Member, selectStudy}) => {
     const [selectedTodo, setSelectedTodo] = useState(null);
     const [insertToggle, setInsertToggle] = useState(false);
@@ -195,13 +194,7 @@ const TeamToDoList = ({studyId, Member, selectStudy}) => {
             console.error("Error:", error);
             // Handle the error
         }
-        // const postDataResponse = await axios.post(`http://localhost:8080/todo/${id}/status`, null, {
-        //     params: {status: !todo_status},
-        //     withCredentials: true, headers: {
-        //         'Authorization': `Bearer ${accessToken}`
-        //     }
-        // });
-        // console.log("체크 성공:", postDataResponse.data);
+
         setTodoswithAssignee((prevTodos) => {
             const updatedTodos = {...prevTodos};
             Object.keys(updatedTodos).forEach((dateKey) => {
@@ -266,7 +259,7 @@ const TeamToDoList = ({studyId, Member, selectStudy}) => {
         }).catch((error) => {
             console.log('스터디별 투두리스트 가져오기 실패:', error);
         })
-    }, [studyIdAsNumber,currentMonth]);
+    }, [studyIdAsNumber, currentMonth]);
 
 
     return (<div>
@@ -333,7 +326,8 @@ const TeamToDoList = ({studyId, Member, selectStudy}) => {
                         {insertToggle && (<TeamToDoEdit selectedTodo={selectedTodo} onUpdate={onUpdate} Member={Member}
                                                         Assignees={Assignees}/>)}
                     </div>
-                    <Calender todo={todoswithAssignee} onDateClick={handleDateClick} prevMonth={prevMonth} nextMonth={nextMonth} currentMonth={currentMonth}/>
+                    <Calender todo={todoswithAssignee} onDateClick={handleDateClick} prevMonth={prevMonth}
+                              nextMonth={nextMonth} currentMonth={currentMonth}/>
                 </div>
             </div>
         </div>

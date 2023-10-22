@@ -183,8 +183,8 @@ const ToDoList = ({sideheader}) => {
 
     //체크 버튼 바꾸는 함수
     const onToggle = useCallback(async (id, todo_status) => {
-        console.log("체크 전 상태",todo_status);
-        console.log("체크 후 상태",!todo_status);
+        console.log("체크 전 상태", todo_status);
+        console.log("체크 후 상태", !todo_status);
         const postDataResponse = await axios.post(`http://localhost:8080/todo/${id}/status`, null, {
             params: {status: !todo_status},
             withCredentials: true, headers: {
@@ -197,7 +197,7 @@ const ToDoList = ({sideheader}) => {
             Object.keys(updatedTodos).forEach((dateKey) => {
                 updatedTodos[dateKey] = updatedTodos[dateKey].map((todo) => todo.toDo.id === id ? {
                     ...todo,
-                    toDo:{
+                    toDo: {
                         ...todo.toDo,
                     },
                     toDoStatus: !todo.toDoStatus
@@ -285,7 +285,7 @@ const ToDoList = ({sideheader}) => {
                 console.log('스터디별 투두리스트 가져오기 실패:', error);
             })
         }
-    }, [InsertToDoStudyId, studyIdAsNumber,currentMonth]);
+    }, [InsertToDoStudyId, studyIdAsNumber, currentMonth]);
 
 
     const selectStudy = (e) => {
@@ -309,16 +309,13 @@ const ToDoList = ({sideheader}) => {
 
     }, [InsertToDoStudyId, studyIdAsNumber]);
 
-
-
-
     return (<div>
         <Header showSideCenter={true}/>
         {/*<Backarrow subname={"투두 리스트 & 일정"}/>*/}
         <div className="container">
             <Category/>
             <div className="main_container">
-                <Backarrow subname={"투두 리스트 & 일정"}/>
+                <Backarrow subname={"투두 리스트"}/>
                 {/*<p id={"main-container-title"}>투두 리스트 & 일정</p>*/}
                 <div className="sub_container" id="todo_sub">
                     <div className="todo_container">
@@ -359,7 +356,8 @@ const ToDoList = ({sideheader}) => {
                         {insertToggle && (<ToDoEdit selectedTodo={selectedTodo} onUpdate={onUpdate}
                                                     participatedstudies={studies}/>)}
                     </div>
-                    <Calender todo={todoswithAssignee} onDateClick={handleDateClick} prevMonth={prevMonth} nextMonth={nextMonth} currentMonth={currentMonth}/>
+                    <Calender todo={todoswithAssignee} onDateClick={handleDateClick} prevMonth={prevMonth}
+                              nextMonth={nextMonth} currentMonth={currentMonth}/>
                 </div>
             </div>
         </div>

@@ -107,20 +107,20 @@ const Home = () => {
 
     //tag 서버 전달
     // TODO 태그 (로그인 전)
-    useEffect(() => {
-        axios.post("", {
-            data: tag
-        }).then((res) => {
-            console.log("태그 전송");
-            console.log(res.data);
-        }).catch(error => {
-            console.log('전송 실패', error);
-            //태그 인기 순으로 5개 순위 매겨서 객체배열 형식으로
-            // 프론트에 넘겨주시면 map을 사용해서 화면에 출력
-        });
-
-
-    }, []);
+    // useEffect(() => {
+    //     axios.post("", {
+    //         data: tag
+    //     }).then((res) => {
+    //         console.log("태그 전송");
+    //         console.log(res.data);
+    //     }).catch(error => {
+    //         console.log('전송 실패', error);
+    //         //태그 인기 순으로 5개 순위 매겨서 객체배열 형식으로
+    //         // 프론트에 넘겨주시면 map을 사용해서 화면에 출력
+    //     });
+    //
+    //
+    // }, []);
 
 
     const getTodoItemClassName = (checked) => {
