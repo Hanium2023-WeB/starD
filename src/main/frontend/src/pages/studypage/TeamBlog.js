@@ -196,7 +196,7 @@ const TeamBlog = () => {
                             <Chat studyId ={studyId}/>
                             </div>
                             <div className={"schedule_content"}>
-                                <TeamSchedule/>
+                                <TeamSchedule studyIdAsNumber={studyIdAsNumber}/>
                             </div>
                         </div>
                     </div>

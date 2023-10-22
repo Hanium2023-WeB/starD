@@ -74,7 +74,7 @@ const TeamAddSchedule = ({studies,studyTitles, selectedDate, onInsert, onClose }
           <h2>{localDateString}</h2>
           <div className="selectstudy">
             <p>스터디 선택:</p>
-            <select onChange={selectScehduleStudy}>
+            <select onChange={selectScehduleStudy} disabled>
               {studyTitles.map((item, index) => (
                   <option key={index} value={item}>{item}</option>
               ))}
