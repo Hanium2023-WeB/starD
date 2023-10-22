@@ -268,7 +268,8 @@ const ToDoList = ({sideheader}) => {
                 },
             }).then((response) => {
                 console.log('스터디별 투두리스트 가져오기 성공:', response.data);
-
+                const maxId = Math.max(...response.data.map(schedule => schedule.id));
+                nextId.current = maxId + 1;
                 const groupedTodos = {};
                 response.data.forEach((todoItem) => {
                     const dueDate = new Date(todoItem.toDo.dueDate).toDateString();

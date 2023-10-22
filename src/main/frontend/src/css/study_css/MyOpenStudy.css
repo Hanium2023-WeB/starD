@@ -182,7 +182,25 @@ html {
 .study_list .stroke {
 	border-bottom: 1px solid #c6c6c6;
 }
-
+#go-teamblog{
+	border-radius: 5px;
+	border-style: none;
+	background-color: #BBDF9F;
+	color: white;
+	padding: 2px;
+	position: relative;
+	left: 140px;
+}
+#go-teamblog:hover{
+	border-radius: 5px;
+	border-style: none;
+	background-color: #7A8E6D;
+	color: white;
+	padding: 2px;
+	position: relative;
+	left: 140px;
+	font-weight: bolder;
+}
 
 .paging{
 	display: flex;

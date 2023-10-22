@@ -209,7 +209,10 @@ const Mypage = ({sideheader}) => {
                             <div id="detail">
                                 <span id="today">{`${Year}. ${Month}. ${Dates}`}</span>
                                 <hr/>
-                                {filtereMeetings ? (
+                                {filtereMeetings.length === 0 ? (
+                                    <div className="empty_today_todo">
+                                        <span>일정이 없습니다. 일정을 입력해주세요.</span>
+                                    </div>) : (
                                     <ul id="todocontent">
                                         {filtereMeetings.map((meetings) => (
                                                 <li key={meetings.id}>
@@ -226,10 +229,6 @@ const Mypage = ({sideheader}) => {
                                             )
                                         )}
                                     </ul>
-                                ) : (
-                                    <div className="empty_today_todo">
-                                        <span>일정이 없습니다. 일정을 입력해주세요.</span>
-                                    </div>
                                 )}
                             </div>
                         </div>
@@ -250,7 +249,14 @@ const Mypage = ({sideheader}) => {
                             <div id="detail">
                                 <span id="today">{`${Year}. ${Month}. ${Dates}`}</span>
                                 <hr/>
-                                {filteredToDo ? (
+                                {filteredToDo.length === 0 ? (
+                                    <div className="empty_today_todo">
+                                          <span>
+                                            할 일이 없습니다.<br/> 할 일을 입력해주세요.
+                                          </span>
+                                    </div>
+
+                                ) : (
                                     <ul id="todocontent">
                                         {filteredToDo.map((todo) => (
                                             <li
@@ -267,12 +273,6 @@ const Mypage = ({sideheader}) => {
                                             </li>
                                         ))}
                                     </ul>
-                                ) : (
-                                    <div className="empty_today_todo">
-                                          <span>
-                                            할 일이 없습니다.<br/> 할 일을 입력해주세요.
-                                          </span>
-                                    </div>
                                 )}
                             </div>
                         </div>

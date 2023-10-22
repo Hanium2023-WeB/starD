@@ -36,6 +36,7 @@ import CommSearchResult from "./pages/community/CommSearchResult";
 import Chat from "./components/chat/Chat";
 import FindedID from "./pages/userpage/FindedID.js";
 import TeamToDoList from "./pages/TeamToDo/TeamToDoList";
+import TeamSchedule from "./pages/TeamSchedule/TeamSchedule";
 
 function App() {
     return (
@@ -153,6 +154,9 @@ function App() {
                             <TeamToDoList/>
                            }
                     />
+                    <Route path="/:id/teamblog/TeamSchedule"
+                           element={<TeamSchedule/>} />
+
                     <Route
                         path="/community"
                         element={

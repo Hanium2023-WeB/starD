@@ -58,7 +58,8 @@ const MapNaverDefault = ({studyId,Member}) => {
                     <input value={"장소를 입력하세요"}></input>
                 ))}
             </div>
-            <div ref={mapElement} style={{ height: '250px', width: '400px' }} id={"naver-map"}/>
+            <button>찾기</button>
+            <div ref={mapElement} style={{ height: '250px', width: '580px' }} id={"naver-map"}/>
         </div>
     );
 };

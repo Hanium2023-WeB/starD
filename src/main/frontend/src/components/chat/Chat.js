@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, useRef} from 'react';
 import {Client} from '@stomp/stompjs';
 import chatting from "../../css/study_css/chatting.css";
 import axios from 'axios';
@@ -12,6 +12,7 @@ class Chat extends Component {
             message: '',
             greetings: [],
             studyId: this.props.studyId,
+            studyTitle: this.props.studyTitle,
         };
 
         this.stompClient = new Client({
@@ -21,6 +22,8 @@ class Chat extends Component {
         this.stompClient.onConnect = this.onConnect;
         this.stompClient.onWebSocketError = this.onWebSocketError;
         this.stompClient.onStompError = this.onStompError;
+
+        this.messageEndRef = React.createRef();
     }
 
     state = {
@@ -51,7 +54,13 @@ class Chat extends Component {
         //this.disconnect();
         this.sendExitMessage();
     }
-
+    //스크롤 가장 아래로 내리기
+    scrollChatToBottom() {
+        const chatBox = document.querySelector('.chattingbox');
+        if (chatBox) {
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+    }
     // 스터디 ID를 기반으로 해당 채팅방을 구독
     subscribeToChatRoom(studyId) {
         this.stompClient.subscribe(`/topic/greetings/${studyId}`, (greeting) => {
@@ -195,7 +204,7 @@ class Chat extends Component {
                     body: JSON.stringify({type: 'TALK', studyId: studyId, message: `${message}`}),
                     headers: headers,
                 });
-
+                this.scrollChatToBottom();
                 // 메시지 전송 후 입력창 비우기
                 this.setState({
                     message: '',
@@ -216,7 +225,9 @@ class Chat extends Component {
     showGreeting = (message) => {
         this.setState((prevState) => ({
             greetings: [...prevState.greetings, message],
-        }));
+        }),()=>{
+            this.scrollChatToBottom();
+        });
     };
 
     // 날짜, 시간 포맷팅("yyyy-MM-dd HH:mm" 형식)
@@ -230,34 +241,27 @@ class Chat extends Component {
         return `${year}-${month}-${day} ${hours}:${minutes}`;
     };
 
+
+
+
+
     render() {
         return (
-            <div>
+            <div className={"chat_wrap"}>
                 <div className={"studyTitle"}>
-                    <h2>{this.state.studyId} 팀의 채팅방</h2><br/><br/>
+                    <h2>채팅방</h2><br/><br/>
                 </div>
-                <div>
-                    <label>채팅 보내기</label>
-                    <input
-                        type="text"
-                        value={this.state.message}
-                        onChange={(e) => this.setState({ message: e.target.value })}
-                        onKeyDown={this.onKeyDown}
-                        placeholder="내용을 입력하세요"
-                    />
-                    <button onClick={this.sendMessage}>Send</button>
-                </div>
-                <div>
-                    <table>
+                <div className={"chattingbox"}>
+                    <table className={"chatting"}>
                         <thead>
                         <tr>
                             <th>Messages</th>
                         </tr>
                         </thead>
-                        <tbody>
+                        <tbody id={"message"}>
                         {this.state.greetings.map((greeting, index) => (
                             <tr key={index}>
-                                <td>
+                                <td  id={"message-detail"}>
                                     {greeting.type === "GREETING" ? (
                                         greeting.message
                                     ) : (
@@ -268,8 +272,22 @@ class Chat extends Component {
                                 </td>
                             </tr>
                         ))}
+                        <tr>
+                            <td ref={this.messageEndRef}></td>
+                        </tr>
                         </tbody>
                     </table>
+                </div>
+                <div className={"input_chat"}>
+                    <label>채팅 보내기</label>
+                    <input
+                        type="text"
+                        value={this.state.message}
+                        onChange={(e) => this.setState({ message: e.target.value })}
+                        onKeyDown={this.onKeyDown}
+                        placeholder="내용을 입력하세요"
+                    />
+                    <button onClick={this.sendMessage}>Send</button>
                 </div>
             </div>
         );

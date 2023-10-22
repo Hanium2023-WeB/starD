@@ -13,7 +13,7 @@ import checkbox from "../../images/check.png";
 import uncheckbox from "../../images/unchecked.png";
 import Category from "../../components/repeat_etc/Category";
 import Chat from "../../components/chat/Chat";
-import TeamSchedule from "../../components/teamschedules/TeamSchedule";
+import TeamSchedule from "../TeamSchedule/TeamSchedule";
 
 
 const TeamBlog = () => {
@@ -22,6 +22,7 @@ const TeamBlog = () => {
     const navigate = useNavigate();
     const {studyId} = study.state;
     const [parsedTodos, setParsedTodos] = useState([]);
+    const [parsedSchedules, setParsedSchedules] = useState([]);
     const [today, setToday] = useState(new Date());
     const Year = today.getFullYear();
     const Month = today.getMonth() + 1;
@@ -51,6 +52,17 @@ const TeamBlog = () => {
                 }
             })
     }
+    const ShowAllSchedule = () => {
+        navigate(`/${studyIdAsNumber}/teamblog/TeamSchedule`, {
+            state: {
+                studyId: studyId,
+                Member: Member,
+                selectStudy: studyItem,
+            }
+        })
+
+    }
+
 
     //TODO 참여멤버 리스트 가지고오기
     useEffect(() => {
@@ -120,6 +132,36 @@ const TeamBlog = () => {
         }
     }, [parsedTodos]);
 
+    //스터디별 일정 가져오기
+    useEffect(() => {
+        axios.get(`http://localhost:8080/schedule/${studyIdAsNumber}`, {
+            params: {
+                year: Year, month: Month,
+            }, withCredentials: true, headers: {
+                'Authorization': `Bearer ${accessToken}`, 'Content-Type': 'application/json'
+            }
+        }).then((response) => {
+            console.log("스터디별 일정 가져오기 성공", response.data);
+            setParsedSchedules(response.data);
+        }).catch((error) => {
+            console.error("스터디별 일정 가져오기 실패", error.response.data); // Log the response data
+        });
+    }, []);
+    const [filteredSchedule, setFilteredSchedule] = useState([]);
+    useEffect(() => {
+        if (Array.isArray(parsedSchedules)) {
+            const filteredSchedule = parsedSchedules.filter((item) => {
+                const startDate = new Date(item.startDate).toDateString();
+                const todayDate = today.toDateString();
+                return startDate === todayDate;
+            });
+            console.log("filteredSchedule: ", filteredSchedule);
+            setFilteredSchedule(filteredSchedule);
+        } else {
+            console.error("parsedTodos is not an array.");
+        }
+    }, [parsedSchedules]);
+
     return (
         <div>
             <Header showSideCenter={true}/>
@@ -144,6 +186,7 @@ const TeamBlog = () => {
                     </div>
                     <div className="content">
                         <div className={"content-left"}>
+                            <div className={"todoAndSchedule"}>
                             <div className={"todo_content"}>
                                 <div className="todos">
                                     <div className="tag">
@@ -153,32 +196,53 @@ const TeamBlog = () => {
                                     <div id="detail">
                                         <span id="today">{`${Year}. ${Month}. ${Dates}`}</span>
                                         <hr/>
-                                        {filteredToDo ? (
+                                        {filteredToDo.length === 0 ? (
+                                            <div className="empty_today_todo">
+                                                    <span>
+                                                        할 일이 없습니다.<br/> 할 일을 입력해주세요.
+                                                    </span>
+                                          </div>
+                                        ) : (
                                             <ul id="todocontent">
                                                 {filteredToDo.map((todo) => (
-                                                    <li
-                                                        key={todo.id}
-                                                        // className={getTodoItemClassName(todo.toDoStatus)}
-                                                    >
-                                                        {/*{todo.toDoStatus ? (*/}
-                                                        {/*    <img src={checkbox} alt="checked" width="20px"/>*/}
-                                                        {/*) : (*/}
-                                                        {/*    <img src={uncheckbox} alt="unchecked" width="20px"/>*/}
-                                                        {/*)}*/}
+                                                    <li key={todo.id}>
                                                         <div id="todotext">{todo.study.title} |</div>
                                                         <div id="todotext">{todo.task}</div>
                                                     </li>
                                                 ))}
                                             </ul>
-                                        ) : (
-                                            <div className="empty_today_todo">
-                                          <span>
-                                            할 일이 없습니다.<br/> 할 일을 입력해주세요.
-                                          </span>
-                                            </div>
                                         )}
                                     </div>
                                 </div>
+                            </div>
+                            <div className={"schedule_content"}>
+                                <div className="todos">
+                                    <div className="tag">
+                                        <p>오늘의 일정</p>
+                                        <button id="more" onClick={ShowAllSchedule}>전체보기</button>
+                                    </div>
+                                    <div id="detail">
+                                        <span id="today">{`${Year}. ${Month}. ${Dates}`}</span>
+                                        <hr/>
+                                        {filteredSchedule.length === 0 ? (
+                                            <div className="empty_today_todo">
+                                                    <span>
+                                                        일정이 없습니다.<br/> 일정을 입력해 주세요.
+                                                    </span>
+                                            </div>
+                                        ) : (
+                                            <ul id="todocontent">
+                                                {filteredSchedule.map((item) => (
+                                                    <li key={item.id}>
+                                                        <div id="todotext">{item.study.title} |</div>
+                                                        <div id="todotext">{item.title}</div>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
                             </div>
                             <div className={"location_content"}>
                                 <div className="location">
@@ -193,13 +257,16 @@ const TeamBlog = () => {
                         </div>
                         <div className={"content_right"}>
                             <div className={"chat_content"}>
-                            <Chat studyId ={studyId}/>
-                            </div>
-                            <div className={"schedule_content"}>
-                                <TeamSchedule studyIdAsNumber={studyIdAsNumber}/>
+                                <Chat studyId={studyId} studyTitle={studyItem.title}/>
                             </div>
                         </div>
                     </div>
+                    {/*<div className={"content-bottom"}>*/}
+                    {/*    <div className={"schedule_content"}>*/}
+                    {/*        <p>스터디 일정</p>*/}
+                    {/*        <TeamSchedule studyIdAsNumber={studyIdAsNumber}/>*/}
+                    {/*    </div>*/}
+                    {/*</div>*/}
                 </div>
             </div>
         </div>

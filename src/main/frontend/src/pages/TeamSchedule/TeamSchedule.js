@@ -3,23 +3,24 @@ import Category from "../../components/repeat_etc/Category.js";
 import Backarrow from "../../components/repeat_etc/Backarrow.js";
 import Header from "../../components/repeat_etc/Header";
 import axios from "axios";
-import TeamRenderScheduleCells from "./TeamRenderScheduleCells";
-import TeamAddSchedule from "./TeamAddSchedule";
-import TeamScheduleCalender from "./TeamScheduleCalender";
+import TeamRenderScheduleCells from "../../components/teamschedules/TeamRenderScheduleCells";
+import TeamAddSchedule from "../../components/teamschedules/TeamAddSchedule";
+import TeamScheduleCalender from "../../components/teamschedules/TeamScheduleCalender";
+import {useLocation} from "react-router-dom";
 
-const TeamSchedule = ({studyIdAsNumber}) => {
+const TeamSchedule = () => {
     const [meetings, setMeetings] = useState({});
     const [selectedDate, setSelectedDate] = useState(new Date()); // 추가: 선택한 날짜 상태
     const [addToggle, setAddToggle] = useState(false); //일정 추가 +토글버튼 상태
     const accessToken = localStorage.getItem('accessToken');
+    const location = useLocation();
+    const {studyId, Member, selecteStudy} = location.state;
 
     const [studies, setStudy] = useState([]);
     const [studyTitles, setStudyTitles] = useState([]); //참여 중인 스터디 제목
     const [studyIds, setStudyIds] = useState([]); //참여 중인 스터디 아이디
     const [studyMems, setStudyMems] = useState([]); //참여 멤버
     const nextId = useRef(1);
-
-
     // TODO 백엔드 연동
     //참여스터디
     useEffect(() => {
@@ -50,7 +51,7 @@ const TeamSchedule = ({studyIdAsNumber}) => {
 
     //스터디별 일정 가져오기
     useEffect(() => {
-        axios.get(`http://localhost:8080/schedule/${studyIdAsNumber}`, {
+        axios.get(`http://localhost:8080/schedule/${studyId}`, {
             params: {
                 year: selectedDate.getFullYear(), month: selectedDate.getMonth() + 1,
             }, withCredentials: true, headers: {
@@ -64,7 +65,7 @@ const TeamSchedule = ({studyIdAsNumber}) => {
         }).catch((error) => {
             console.error("스터디별 일정 가져오기 실패", error.response.data); // Log the response data
         });
-    }, []);
+    }, [studyId]);
 
     const handleToggle = (day) => {
         setSelectedDate(new Date(day));
@@ -75,7 +76,7 @@ const TeamSchedule = ({studyIdAsNumber}) => {
 
 
     useEffect(() => {
-        console.log("sche",schedules);
+        console.log("sche", schedules);
     }, [schedules]);
     //일정 추가 함수
 
@@ -145,24 +146,34 @@ const TeamSchedule = ({studyIdAsNumber}) => {
     };
 
     return (<div>
-        <TeamScheduleCalender
-            studies={studies}
-            studyTitles={studyTitles}
-            onDateClick={handleToggle}
-            meetings={meetings}
-            schedules={schedules}
-            onUpdate={onUpdate}
-            onRemove={onRemove}
-        />
-        {addToggle && (<TeamAddSchedule
-            studies={studies}
-            studyTitles={studyTitles}
-            selectedDate={selectedDate}
-            onInsert={onInsert}
-            onClose={() => {
-                setAddToggle(false);
-            }}
-        />)}
+        <Header showSideCenter={true}/>
+
+        <div className="container">
+            <Category/>
+            <div className="main_schedule_container">
+                <Backarrow subname={"스터디 모임 일정"}/>
+                <div className="sub_container" id="todo_sub">
+                    <TeamScheduleCalender
+                        studies={studies}
+                        studyTitles={studyTitles}
+                        onDateClick={handleToggle}
+                        meetings={meetings}
+                        schedules={schedules}
+                        onUpdate={onUpdate}
+                        onRemove={onRemove}
+                    />
+                </div>
+                {addToggle && (<TeamAddSchedule
+                    studies={studies}
+                    studyTitles={studyTitles}
+                    selectedDate={selectedDate}
+                    onInsert={onInsert}
+                    onClose={() => {
+                        setAddToggle(false);
+                    }}
+                />)}
+            </div>
+        </div>
     </div>);
 };
 export default TeamSchedule;

@@ -337,7 +337,7 @@ const MyParticipateStudy = ({sideheader}) => {
                         {/*		color: "inherit",*/}
                         {/*	}}*/}
                         {/*>*/}
-                        <div className={"contnet"} onClick={() => goNextTeamBlog(d)}>
+                        <div className={"contnet"}>
                             <div className="list_deadline">
                                 마감일 | {d.study.recruitmentDeadline}
                             </div>
@@ -346,7 +346,9 @@ const MyParticipateStudy = ({sideheader}) => {
                             <div className="list_onoff">{d.study.onOff}</div>
                             <div className="stroke"></div>
                             <div className="list_founder">{d.study.recruiter.nickname}</div>
+                            <button id="go-teamblog"onClick={() => goNextTeamBlog(d)} >팀블로그 가기</button>
                         </div>
+
                         {/*</Link>*/}
                     </div>
                 ))}

@@ -69,9 +69,10 @@
 
 .team_blog .content{
     margin: 0 auto;
-    width:90%;
+    width:95%;
     display: flex;
     flex-direction: row;
+    margin-bottom: 20px;
 
 }
 .team_blog .content .left{
@@ -95,14 +96,21 @@
 #more:hover{
     font-weight: bolder;
 }
-
-.todo_content{
-    width: 400px;
+.content-left{
+    width: 600px;
+}
+.todoAndSchedule{
+    display: flex;
+    justify-content: space-between;
+}
+.todo_content, .schedule_content{
+    width: 270px;
     height: 200px;
     border: 1px solid black;
     border-radius: 5px;
     padding: 10px;
 }
+
 .TeamToDo{
     width: 100%;
 }
@@ -183,8 +191,18 @@
     flex-direction: column;
     margin-top: 38px;
 }
+.map_content button{
+    width: 60px;
+    border-style: none;
+    border-radius: 5px;
+    background-color: #7A8E6D;
+    color: white;
+    position: relative;
+    bottom: 15px;
+
+}
 .location_content{
-    width: 400px;
+    width: 580px;
     height: fit-content;
     border: 1px solid black;
     border-radius: 5px;
@@ -220,4 +238,12 @@
 
 .content_right{
     margin-left: 20px;
+}
+.content-bottom{
+    margin: 0 auto;
+    width:60%;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 10px;
+    margin-top: 10px;
 }
