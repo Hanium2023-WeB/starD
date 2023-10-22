@@ -1,6 +1,7 @@
 package com.web.stard.service;
 
 
+import ch.qos.logback.core.net.SyslogOutputStream;
 import com.web.stard.domain.*;
 import com.web.stard.dto.StudyDto;
 import com.web.stard.dto.response.Top5Dto;
@@ -18,6 +19,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -40,17 +43,6 @@ public class StudyService {
             return null;
         return result.get();
 
-    }
-
-    @Transactional
-    public Page<Study> findAll(int page) {
-
-        Sort sort = Sort.by(new Sort.Order(Sort.Direction.DESC, "createdAt"));
-        Pageable pageable = PageRequest.of(page - 1, 10, sort);
-
-        Page<Study> studies = studyRepository.findAll(pageable);
-
-        return studies;
     }
 
     @Transactional
@@ -262,11 +254,6 @@ public class StudyService {
         return result;
     }
 
-    public Long count() {
-        return studyRepository.count();
-    }
-
-
     @Transactional
     public Study createApplicant(long id, String apply_reason, Authentication authentication) {
 
@@ -401,6 +388,13 @@ public class StudyService {
 
                 studyMemberRepository.save(studyMember);
 
+//                LocalDate localDate = LocalDate.now();
+////              현재 날짜 기준으로, 스터디 활동 시작일이 현재 날짜보다 같거나 작다면 "진행 중" 상태로
+//                if (localDate.isAfter(study.getActivityStart()) || localDate.equals(study.getActivityStart()))
+//                    study.setProgressStatus(ProgressStatus.valueOf("IN_PROGRESS"));
+//                else
+//                    study.setProgressStatus(ProgressStatus.valueOf("BEFORE_PROCEEDING"));
+
                 study.setProgressStatus(ProgressStatus.valueOf("IN_PROGRESS"));
                 study.setRecruitStatus(RecruitStatus.valueOf("RECRUITMENT_COMPLETE"));
             }
@@ -416,10 +410,39 @@ public class StudyService {
         return studyMemberRepository.findByStudy(study);
     }
 
-
-
     public List<Top5Dto> findStudyRanking() {
         return studyRepository.findTop5();
-
     }
+
+    // 스터디 모집 마감일이 지나면 "모집 중" -> "모집 완료"로 상태 변경
+    @Transactional
+    public void checkStudyRecruitmentDeadline() {
+        LocalDate localDate = LocalDate.now();
+        List<Study> result = studyRepository.findByRecruitmentDeadlineBefore(localDate);
+        for (Study s : result)
+            s.setRecruitStatus(RecruitStatus.RECRUITMENT_COMPLETE);
+    }
+
+    // 스터디 활동 마감일이 지나면 "진행 중" -> "진행 완료"로 상태 변경
+    @Transactional
+    public void checkStudyActivityDeadline() {
+        LocalDate localDate = LocalDate.now();
+        ProgressStatus progressStatus = ProgressStatus.IN_PROGRESS;
+
+//        활동 진행 상태가 "진행 중"인 것 중에 마감일이 지난 스터디 리스트 추출
+        List<Study> result = studyRepository.findByActivityDeadlineBeforeAndProgressStatus(localDate, progressStatus);
+        for (Study s : result)
+            s.setProgressStatus(ProgressStatus.WRAP_UP);
+    }
+
+//    스터디 활동 시작일이 시작되면 "진행 중"로 상태 변경
+//    @Transactional
+//    public void checkStudyActivityStart() {
+//        LocalDate localDate = LocalDate.now();
+//        ProgressStatus progressStatus = ProgressStatus.BEFORE_PROCEEDING;
+//        List<Study> result = studyRepository.findByActivityStartGreaterThanEqualAndProgressStatus(localDate, progressStatus);
+//        for (Study s : result)
+//            s.setProgressStatus(ProgressStatus.IN_PROGRESS);
+//    }
+
 }

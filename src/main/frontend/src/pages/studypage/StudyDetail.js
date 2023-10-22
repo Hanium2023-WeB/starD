@@ -182,6 +182,7 @@ const StudyDetail = ({sideheader}) => {
                                     study={studyItem}
                                     handleEditClick={handleEditClick}
                                     handleStudyDelete={handleStudyDelete}
+                                    isRecruiter = {isRecruiter}
                                 />
                                 <div className="study_intro">
                                     <div style={{fontWeight:"bold"}}>스터디 소개</div>
