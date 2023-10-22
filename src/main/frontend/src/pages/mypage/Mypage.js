@@ -50,35 +50,6 @@ const Mypage = ({sideheader}) => {
         return formattedDatetime;
     };
 
-    //Schedule
-    // useEffect(() => {
-    //     // Load todos from localStorage when the component mounts
-    //     const todayKey = today.toDateString();
-    //     setTodayKey(todayKey);
-    //
-    //     const storedMeetings = localStorage.getItem("schedule");
-    //     if (storedMeetings) {
-    //         const parsed = JSON.parse(storedMeetings);
-    //         setParsedMeetings(parsed);
-    //         console.log("parsedsssss:", parsedmeetings[todayKey]);
-    //
-    //         if (parsedmeetings.hasOwnProperty(todayKey)) {
-    //             const todaySchedule = parsedmeetings[todayKey];
-    //
-    //             // Extract study values from todaySchedule object
-    //             const studyValues = Object.keys(todaySchedule);
-    //             console.log("ScrapStudySlide Values:", studyValues);
-    //
-    //             for (const studyKey in todaySchedule) {
-    //                 console.log(`Study: ${studyKey}`);
-    //                 todaySchedule[studyKey].forEach((meeting) => {
-    //                     console.log(`  id: ${meeting.id}, title: ${meeting.title}`);
-    //                 });
-    //             }
-    //         }
-    //     }
-    // }, []);
-
     const getTodoItemClassName = (checked) => {
         return checked ? "checked" : "unchecked";
     };

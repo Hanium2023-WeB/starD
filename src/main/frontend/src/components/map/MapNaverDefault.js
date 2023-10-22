@@ -53,12 +53,12 @@ const MapNaverDefault = ({studyId,Member}) => {
     return (
         <div className={"map_content"}>
             <div id={"input-location"}>
-                <p>중간 장소 찾기</p>
+                {/*<p>중간 장소 찾기</p>*/}
                 {Member.map((member,index)=>(
                     <input value={"장소를 입력하세요"}></input>
                 ))}
             </div>
-            <div ref={mapElement} style={{ height: '350px', width: '350px' }} id={"naver-map"}/>
+            <div ref={mapElement} style={{ height: '250px', width: '400px' }} id={"naver-map"}/>
         </div>
     );
 };

@@ -112,3 +112,12 @@ svg{
     height:2px;
     margin: 0px;
 }
+
+/*팀블로그 일정*/
+.TeamSchedulecalendar {
+    width: 90%;
+    height: auto;
+    position: relative;
+    left: 40px;
+    margin-top: 10px;
+}

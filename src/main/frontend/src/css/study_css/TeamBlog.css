@@ -1,6 +1,11 @@
+.main_content{
+    display: flex;
+}
 .team_blog{
     width:95%;
     margin:0 auto;
+    position: relative;
+    right: 80px;
 }
 .team_blog .page_title{
     font-size: 30px;
@@ -67,7 +72,7 @@
     width:90%;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+
 }
 .team_blog .content .left{
     margin-right:30px;
@@ -86,6 +91,17 @@
     border: 1px solid #dbdbdb;
     border-radius: 10px;
     margin-bottom: 30px;
+}
+#more:hover{
+    font-weight: bolder;
+}
+
+.todo_content{
+    width: 400px;
+    height: 200px;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 10px;
 }
 .TeamToDo{
     width: 100%;
@@ -162,16 +178,20 @@
     padding: 15px 20px;
     cursor: pointer;
 }
-/*중간 장소 찾기*/
-/*.FindMiddlePlace{*/
-/*    display: flex;*/
-/*    flex-direction: column;*/
-/*}*/
 .map_content{
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     margin-top: 38px;
 }
+.location_content{
+    width: 400px;
+    height: fit-content;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 10px;
+    margin-top: 15px;
+}
+
 #input-location{
     display: flex;
     flex-direction: column;
@@ -182,6 +202,7 @@
     font-weight: bolder;
     position: relative;
     left: 15px;
+
 }
 #input-location > input{
     width: 200px;
@@ -189,8 +210,14 @@
     border-radius: 10px;
     margin-right: 10px;
     margin-bottom: 10px;
+    position: relative;
+    bottom: 30px;
 }
 #naver-map{
     position: relative;
-    top: 60px;
+    bottom: 10px;
+}
+
+.content_right{
+    margin-left: 20px;
 }

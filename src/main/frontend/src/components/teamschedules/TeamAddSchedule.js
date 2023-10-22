@@ -52,14 +52,12 @@ const TeamAddSchedule = ({studies,studyTitles, selectedDate, onInsert, onClose }
       (e) => {
         if (title != "") {
           console.log("addschedule:", endDate.toDateString());
-          onInsert(startDate, endDate, title, content, color, studyIdAsNumber,InsertStudy);
+          onInsert(startDate, title, color, studyIdAsNumber);
         } else {
           alert("모두 입력해주세요.");
           // return;
         }
         setTitle("");
-        setEndDate("");
-        setContent("");
         // setStudy(""); //value 초기화
         //기본이벤트(새로고침) 방지
         e.preventDefault();
@@ -93,16 +91,6 @@ const TeamAddSchedule = ({studies,studyTitles, selectedDate, onInsert, onClose }
                   placeholder="시작 날짜 선택"
               />
             </div>
-            <div className="selectendDay">
-              <p>끝나는 날짜:</p>
-              <DatePicker
-                  selected={endDate}
-                  onChange={(date) => setEndDate(date)}
-                  dateFormat="yyyy-MM-dd"
-                  placeholder="끝나는 날짜 선택"
-                  minDate={startDate}
-              />
-            </div>
           </div>
           <div className="selecttitle">
             <p>일정 이름:</p>
@@ -110,14 +98,6 @@ const TeamAddSchedule = ({studies,studyTitles, selectedDate, onInsert, onClose }
                 onChange={onChangeTitle}
                 value={title}
                 placeholder="일정 이름을 입력하세요"
-            />
-          </div>
-          <div className="selectcontent">
-            <p>일정 내용:</p>
-            <textarea
-                onChange={onChangeContent}
-                value={content}
-                placeholder="일정 내용을 입력하세요"
             />
           </div>
           <div className="selectcolor">

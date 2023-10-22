@@ -33,28 +33,12 @@ import Community from "./pages/community/Community";
 import PostDetail from "./pages/community/PostDetail";
 import Chat from "./components/chat/Chat";
 import FindedID from "./pages/userpage/FindedID.js";
+import TeamToDoList from "./pages/TeamToDo/TeamToDoList";
 
 function App() {
-
-    // const Home = lazy(() => import('./pages/Home'));
-    // const Login = lazy(() => import('./pages/Login'));
-    // const Signup = lazy(() => import('./pages/Signup'));
     return (
         <BrowserRouter>
             <div className="App">
-
-                {/*<Suspense fallback={<div>Loading...</div>}>*/}
-                {/*    <Routes>*/}
-                {/*        <Route path="/" element={<Home sideheader={rendsidecenter()} />} />*/}
-                {/*        <Route path="/login" element={<Login sideheader={nosidecenter()} />} />*/}
-                {/*    </Routes>*/}
-                {/*</Suspense>*/}
-
-                {/*<Suspense fallback={<div>Loading...</div>}>*/}
-                {/*    <Routes>*/}
-                {/*        <Route path="/signup" element={<Signup sideheader={nosidecenter()} />} />*/}
-                {/*    </Routes>*/}
-                {/*</Suspense>*/}
 
                 <Routes>
                     <Route
@@ -162,11 +146,11 @@ function App() {
                              <StudyApplyList/>
                         }
                     />
-                    {/*<Route path={"/:id/teamblog/TeamToDoList"}*/}
-                    {/*       element={*/}
-                    {/*        <TeamToDoList/>*/}
-                    {/*       }*/}
-                    {/*/>*/}
+                    <Route path={"/:id/teamblog/TeamToDoList"}
+                           element={
+                            <TeamToDoList/>
+                           }
+                    />
                     <Route
                         path="/community"
                         element={

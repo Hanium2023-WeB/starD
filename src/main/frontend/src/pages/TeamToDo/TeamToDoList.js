@@ -9,8 +9,9 @@ import TeamToDoInsert from "../../components/teamtodo/TeamToDoInsert";
 import TeamToDoEdit from "../../components/teamtodo/TeamToDoEdit";
 import TeamToDoListItem from "../../components/teamtodo/TeamToDoListItem";
 import TeamToDoList_css from "../../css/todo_css/TeamToDoList.css";
+import Category from "../../components/repeat_etc/Category";
 
-const TeamToDoList = ({studyId, Member, selectStudy}) => {
+const TeamToDoList = () => {
     const [selectedTodo, setSelectedTodo] = useState(null);
     const [insertToggle, setInsertToggle] = useState(false);
     const [selectedDate, setSelectedDate] = useState(new Date()); // 추가: 선택한 날짜 상태
@@ -18,11 +19,14 @@ const TeamToDoList = ({studyId, Member, selectStudy}) => {
     const Year = selectedDate.getFullYear();
     let Month = selectedDate.getMonth() + 1;
     const Dates = selectedDate.getDate();
+    const location = useLocation();
+    const {studyId, Member, selecteStudy} = location.state;
     const [studies, setStudy] = useState([]);
     const [studyMems, setStudyMems] = useState([]); //참여 멤버
     const [member, setMember] = useState(Member);
     const [Assignees, setAssignees] = useState([]); //담당자
     const studyIdAsNumber = parseFloat(studyId);
+
 
     const onInsertToggle = () => {
         if (selectedTodo) {
@@ -263,7 +267,9 @@ const TeamToDoList = ({studyId, Member, selectStudy}) => {
 
 
     return (<div>
+        <Header showSideCenter={true}/>
         <div className="container">
+            <Category/>
             <div className="main_container">
                 <p id={"main-container-title"}>팀 투두 리스트</p>
                 <div className="sub_container" id="todo_sub">

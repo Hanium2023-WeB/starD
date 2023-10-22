@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Client} from '@stomp/stompjs';
+import chatting from "../../css/study_css/chatting.css";
 import axios from 'axios';
 
 class Chat extends Component {
@@ -10,8 +11,8 @@ class Chat extends Component {
             connected: false,
             message: '',
             greetings: [],
-            studyId: null,
         };
+        const studyId = props.studyId;
 
         this.stompClient = new Client({
             brokerURL: 'ws://localhost:8080/gs-guide-websocket',
@@ -115,7 +116,7 @@ class Chat extends Component {
 
     connect = () => {
         const accessToken = localStorage.getItem('accessToken');
-
+        const { studyId } = studyId;
         if (accessToken) {
             const headers = {
                 Authorization: `Bearer ${accessToken}`,
@@ -189,8 +190,8 @@ class Chat extends Component {
             const headers = {
                 Authorization: `${accessToken}`,
             };
-            const { message, studyId } = this.state;
-
+            const { message } = this.state.message;
+            const studyId = studyId;
             this.stompClient.publish({
                 destination: `/app/chat/${studyId}`,
                 body: JSON.stringify({ type: 'TALK', studyId: studyId, message: `${message}` }),
@@ -233,7 +234,7 @@ class Chat extends Component {
     render() {
         return (
             <div>
-                <div>
+                <div className={"studyTitle"}>
                     <h2>{this.state.studyId} 팀의 채팅방</h2><br/><br/>
                 </div>
                 <div>

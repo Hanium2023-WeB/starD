@@ -1,20 +1,23 @@
-import React, { useState, useRef, useCallback, useEffect } from "react";
-import { startOfMonth, endOfMonth, startOfWeek, endOfWeek } from "date-fns";
-import { isSameMonth, isSameDay, addDays, parse, format } from "date-fns";
-import { CgAddR } from "react-icons/cg";
-import { Link } from "react-router-dom";
-import TeamEditSchedule from "./TeamEditSchedule.js";
-import { useNavigate } from "react-router-dom";
+import React, {useState, useRef, useCallback, useEffect} from "react";
+import {startOfMonth, endOfMonth, startOfWeek, endOfWeek} from "date-fns";
+import {isSameMonth, isSameDay, addDays, parse, format} from "date-fns";
+import {CgAddR} from "react-icons/cg";
+import {Link} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
+import {parseISO} from 'date-fns';
+import TeamEditSchedule from "./TeamEditSchedule";
 
-// import { EditSchedule } from "./EditSchedule.js";
+
 const TeamRenderScheduleCells = ({
-  currentMonth,
-  selectedDate,
-  onDateClick,
-  meetings,
-  onUpdate,
-  onRemove,
-}) => {
+                               studies, studyTitles,
+                               currentMonth,
+                               selectedDate,
+                               onDateClick,
+                               meetings,
+                               schedules,
+                               onUpdate,
+                               onRemove,
+                             }) => {
   const monthStart = startOfMonth(currentMonth); //오늘이 속한 달의 시작일
   const monthEnd = endOfMonth(monthStart); //오늘이 속한 달의 마지막일
   const startDate = startOfWeek(monthStart); //monthStart가 속한 주의 시작일
@@ -24,113 +27,93 @@ const TeamRenderScheduleCells = ({
   let days = []; //일월화수목금토 (한 주)
   let day = startDate;
   let formattedDate = "";
-  const [editScheduleData, setEditScheduleData] = useState();
-
+  const [editScheduleData, setEditScheduleData] = useState("");
+  const [editdata, setEditDate]= useState({});
   const navigate = useNavigate();
 
-  useEffect(() => {
-    console.log(`editScheduleData => ${JSON.stringify(editScheduleData)}`);
-  }, [editScheduleData]);
-
-  const openEditSchedule = (meeting) => {
-    setEditScheduleData(meeting);
-    console.log(`editScheduleData => ${JSON.stringify(editScheduleData)}`);
+  const openEditSchedule = (id,item) => {
+    console.log("edit", id);
+    setEditScheduleData(id);
+    setEditDate(item);
   };
-  // const handleCheckEdit = ()=>{
-  //   setEditScheduleData('');
-  // }
-
- 
+  useEffect(()=>{
+    console.log("sss:",editdata );
+  },[editdata]);
 
   while (day <= endDate) {
     for (let i = 0; i < 7; i++) {
       formattedDate = format(day, "d");
       const cloneDay = new Date(
-        day.getFullYear(),
-        day.getMonth(),
-        day.getDate()
+          day.getFullYear(),
+          day.getMonth(),
+          day.getDate()
       );
 
       days.push(
-        <div
-          className={`col cell ${
-            !isSameMonth(day, monthStart) //두개의 날짜가 같은 달에 속하는지 확인하는 함수
-              ? "disabled"
-              : isSameDay(day, selectedDate) //두개의 날짜 같은지 확인하는 함수
-              ? "selected"
-              : format(currentMonth, "M") !== format(day, "M")
-              ? "not-valid"
-              : "valid"
-          }`}
-          key={day}
-        >
-          <span
-            className={
-              format(currentMonth, "M") !== format(day, "M")
-                ? "text not-valid"
-                : ""
-            }
+          <div
+              className={`col cell ${
+                  !isSameMonth(day, monthStart) //두개의 날짜가 같은 달에 속하는지 확인하는 함수
+                      ? "disabled"
+                      : isSameDay(day, selectedDate) //두개의 날짜 같은지 확인하는 함수
+                          ? "selected"
+                          : format(currentMonth, "M") !== format(day, "M")
+                              ? "not-valid"
+                              : "valid"
+              }`}
+              key={day}
           >
-            <CgAddR onClick={() => onDateClick(cloneDay)} />
+          <span
+              className={
+                format(currentMonth, "M") !== format(day, "M")
+                    ? "text not-valid"
+                    : ""
+              }
+          >
+            <CgAddR onClick={() => onDateClick(cloneDay)}/>
             {formattedDate}
           </span>
-          <div className="meeting_wrap">
-          {meetings[day.toDateString()] &&
-              Object.keys(meetings[day.toDateString()]).map((study) =>
-                meetings[day.toDateString()][study].map((meeting) => {
-                  const startDay = new Date(meeting.start_date);
-                  const endDay = new Date(meeting.end_date);
-                  return (
-                    <div
-                      key={meeting.id}
-                      className="event"
-                      // style={{ backgroundColor: meeting.color }}
-                      onClick={() => {
-                        openEditSchedule({ meeting });
-                      }}
-                    >
-                      {/* handleEditpage({item:meeting})
-                       */}
-                       <div id="meeting_detail">
-                        <p
-                          id="line"
-                          style={{ backgroundColor: meeting.color }}
-                        ></p>
-                        <p>
-                          {meeting.study} :
-                          {meeting.title}
-                        </p>
+            <div className="meeting_wrap">
+              {Array.isArray(schedules) && schedules
+                  .filter((item) => isSameDay(parseISO(item.startDate), cloneDay))
+                  .map((item) => (
+                      <div key={item.id} className="event" style={{backgroundColor: item.color}}
+                           onClick={() => {
+                             openEditSchedule(item.id, item)
+                           }}>
+                        <div id="meeting_detail">
+                          {item.study && <p>{item.study.title}</p>}
+                          <p>{item.title}</p>
+                        </div>
                       </div>
-                    </div>
-                  );
-                })
-              )} 
+                  ))}
+            </div>
           </div>
-        </div>
       );
       day = addDays(day, 1);
     }
     rows.push(
-      <div className="Schedulerow" key={day}>
-        {days}
-      </div>
+        <div className="Schedulerow" key={day}>
+          {days}
+        </div>
     );
     days = [];
   }
   return (
-    <div className="SchedulerContainer">
-      {rows}
-      {editScheduleData && (
-        <TeamEditSchedule
-          editScheduleData={editScheduleData}
-          onUpdate={onUpdate}
-          onRemove={onRemove}
-          onClose={() => {
-            setEditScheduleData(null);
-          }}
-        />
-      )}
-    </div>
+      <div className="SchedulerContainer">
+        {rows}
+        {editScheduleData && (
+            <TeamEditSchedule
+                studies={studies}
+                studyTitles={studyTitles}
+                editdata={editdata}
+                onUpdate={onUpdate}
+                onRemove={onRemove}
+                onClose={() => {
+                  setEditScheduleData(null);
+                }}
+            />
+        )}
+      </div>
   );
 };
 
