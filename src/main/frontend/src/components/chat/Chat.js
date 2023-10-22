@@ -11,8 +11,8 @@ class Chat extends Component {
             connected: false,
             message: '',
             greetings: [],
+            studyId: this.props.studyId,
         };
-        const studyId = props.studyId;
 
         this.stompClient = new Client({
             brokerURL: 'ws://localhost:8080/gs-guide-websocket',
@@ -28,27 +28,22 @@ class Chat extends Component {
         message: '',
         greetings: [],
         newMessage: '',
-        studyId: null,
+        studyId: this.props.studyId,
     };
 
     componentDidMount() {
         this.setConnected(false);
 
-        const searchParams = new URLSearchParams(window.location.search);
-        const studyId = searchParams.get('studyId');
-        if (studyId) {
-            this.setState({ studyId });
+        this.connect()
+            .then(() => {
+                if (this.stompClient.connected) {
+                    this.subscribeToChatRoom(this.state.studyId);
+                }
+            })
+            .catch((error) => {
+                console.error('Failed to connect:', error);
+            });
 
-            this.connect()
-                .then(() => {
-                    if (this.stompClient.connected) {
-                        this.subscribeToChatRoom(studyId);
-                    }
-                })
-                .catch((error) => {
-                    console.error('Failed to connect:', error);
-                });
-        }
     }
 
     componentWillUnmount() {
@@ -63,7 +58,7 @@ class Chat extends Component {
             this.showGreeting(JSON.parse(greeting.body));
         });
     }
-    
+
     // 이전 채팅 내역을 가져오기
     fetchChatHistory = () => {
         const accessToken = localStorage.getItem('accessToken');
@@ -116,7 +111,7 @@ class Chat extends Component {
 
     connect = () => {
         const accessToken = localStorage.getItem('accessToken');
-        const { studyId } = studyId;
+
         if (accessToken) {
             const headers = {
                 Authorization: `Bearer ${accessToken}`,
@@ -185,23 +180,27 @@ class Chat extends Component {
 
     sendMessage = () => {
         const accessToken = localStorage.getItem('accessToken');
+        const { message, studyId } = this.state;
+
 
         if (accessToken) {
             const headers = {
                 Authorization: `${accessToken}`,
             };
-            const { message } = this.state.message;
-            const studyId = studyId;
-            this.stompClient.publish({
-                destination: `/app/chat/${studyId}`,
-                body: JSON.stringify({ type: 'TALK', studyId: studyId, message: `${message}` }),
-                headers: headers,
-            });
+            if (message.length === 0) {
+                alert('메시지를 입력하세요.');
+            } else {
+                this.stompClient.publish({
+                    destination: `/app/chat/${studyId}`,
+                    body: JSON.stringify({type: 'TALK', studyId: studyId, message: `${message}`}),
+                    headers: headers,
+                });
 
-            // 메시지 전송 후 입력창 비우기
-            this.setState({
-                message: '',
-            });
+                // 메시지 전송 후 입력창 비우기
+                this.setState({
+                    message: '',
+                });
+            }
         } else {
             console.error('Access token not found.');
         }
