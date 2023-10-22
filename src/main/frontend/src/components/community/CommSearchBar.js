@@ -66,8 +66,7 @@ const CommSearchBar = () => {
 	const searchItem = (item)=>{
 		console.log("타깃",item)
 		setSearch(item);
-		const queryParams = `?q=${encodeURIComponent(item)}&category=${categoryOption}
-		    &select=${encodeURIComponent(selectOption)}`;
+		const queryParams = `?q=${encodeURIComponent(item)}&category=${encodeURIComponent(categoryOption)}&select=${encodeURIComponent(selectOption)}`;
 		navigate(`/comm/search${queryParams}`);
 	}
 
@@ -76,7 +75,7 @@ const CommSearchBar = () => {
 			<div className="select_search">
 			    <select id="sub" value={categoryOption} onChange={onHandleCategory}>
                     {tagoptions.map((category, idx) =>
-                        <option key={idx} value={category.value}>{category.name}</option>
+                        <option value={category.value}>{category.name}</option>
                     )}
 			    </select>
 				<select id="sub" value={selectOption} onChange={onHandleselect}>

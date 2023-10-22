@@ -35,12 +35,26 @@ const Community = () => {
     };
 
     useEffect(() => {
-        axios.get("http://localhost:8080/com/search", {
-            params: {
-                searchType: "title",
+        let base_url = "";
+        let params = {};
+
+        if (categoryOption == "전체") {
+            base_url = "http://localhost:8080/com/search";
+            params = {
+                searchType: selectOption,
                 searchWord: searchQuery
-            }
-        })
+            };
+        }
+        else {
+            base_url = "http://localhost:8080/com/search/category";
+            params = {
+                searchType: selectOption,
+                category: categoryOption,
+                searchWord: searchQuery
+            };
+        }
+
+        axios.get(base_url, { params })
             .then((res) => {
                 setPosts(res.data);
             })
@@ -67,19 +81,22 @@ const Community = () => {
                         </div>
                         <div className="community">
                             <div>
-                                <table className="post_table" key={posts.id}>
-                                    <th>카테고리</th>
-                                    <th>제목</th>
-                                    <th>닉네임</th>
-                                    <th>날짜</th>
-                                    <th>조회수</th>
-                                    <th>공감수</th>
-                                    <th>스크랩수</th>
-                                    {posts.map((d, index) => (
-                                        <PostListItem setPosts={setPosts} posts={d} d={d}
-                                                      index={index} key={d.id}/>
-                                    ))}
-                                </table>
+                                {posts.length === 0 && <h3>검색 결과가 없습니다.</h3>}
+                                {posts.length > 0 && (
+                                    <table className="post_table" key={posts.id}>
+                                        <th>카테고리</th>
+                                        <th>제목</th>
+                                        <th>닉네임</th>
+                                        <th>날짜</th>
+                                        <th>조회수</th>
+                                        <th>공감수</th>
+                                        <th>스크랩수</th>
+                                        {posts.map((d, index) => (
+                                            <PostListItem setPosts={setPosts} posts={d} d={d}
+                                                          index={index} key={d.id}/>
+                                        ))}
+                                    </table>
+                                )}
                             </div>
                         </div>
                     </div>
