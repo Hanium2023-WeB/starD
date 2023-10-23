@@ -13,6 +13,11 @@ import scheduleimg from "../images/schedule.png";
 import checktodo from "../images/free-icon-to-do-list.png";
 import mapicon from "../images/free-icon-map.png";
 import chaticon from "../images/free-icon-chat.png";
+import TeamBlog from "../images/TeamBlog.png";
+import Chatting from "../images/Chatting.png";
+import community from "../images/community.png";
+import communityfield from "../images/communityfield.png";
+import communityscrap from "../images/communityscrap.png";
 import axios from "axios";
 
 const CenteredDiv = styled.div`
@@ -51,36 +56,12 @@ const Home = () => {
     const [firstRow, setFirstRow] = useState([]);
     const [secondRow, setSecondRow] = useState([]);
 
-    useEffect(() => {
-        localStorage.removeItem('studies');
-        // localStorage.removeItem('todos');
-        localStorage.removeItem('selectedSido');
-        localStorage.removeItem('selectedGugun');
-    }, []);
-
-    useEffect(() => {
-        // Load todos from localStorage when the component mounts
-        const savedTodos = localStorage.getItem("todos");
-        if (savedTodos) {
-            const parsed = JSON.parse(savedTodos);
-            setParsedTodos(parsed);
-            console.log(parsedTodos);
-
-
-            const todayKey = today.toDateString();
-            setTodayKey(todayKey);
-
-            console.log(todayKey);
-            if (parsedTodos.hasOwnProperty(todayKey)) {
-                const todayTodos = parsedTodos[todayKey];
-
-                todayTodos.forEach((todo) => {
-                    console.log(todo.text);
-                    console.log(todo.checked);
-                });
-            }
-        }
-    }, []);
+    // useEffect(() => {
+    //     localStorage.removeItem('studies');
+    //     // localStorage.removeItem('todos');
+    //     localStorage.removeItem('selectedSido');
+    //     localStorage.removeItem('selectedGugun');
+    // }, []);
 
     useEffect(() => {
         // Load todos from localStorage when the component mounts
@@ -104,23 +85,6 @@ const Home = () => {
             console.log('Top 5 전송 실패', error);
         });
     }, []);
-
-    //tag 서버 전달
-    // TODO 태그 (로그인 전)
-    // useEffect(() => {
-    //     axios.post("", {
-    //         data: tag
-    //     }).then((res) => {
-    //         console.log("태그 전송");
-    //         console.log(res.data);
-    //     }).catch(error => {
-    //         console.log('전송 실패', error);
-    //         //태그 인기 순으로 5개 순위 매겨서 객체배열 형식으로
-    //         // 프론트에 넘겨주시면 map을 사용해서 화면에 출력
-    //     });
-    //
-    //
-    // }, []);
 
 
     const getTodoItemClassName = (checked) => {
@@ -158,7 +122,7 @@ const Home = () => {
                             </div>
                         </div>
                         <div className={"below_intro"} data-aos="flip-up">
-                        <span id={"intro-sub"} >
+                        <span id={"intro-sub"}>
                             STAR D는 여러분의 모든 요구를 한 곳에서 해결하는 통합 온라인 플랫폼입니다.<br/>
                             스터디 그룹 구성부터 일정 관리에 이르기까지, 필요한 모든 기능을 한 곳에서 제공합니다.
                         </span>
@@ -183,7 +147,8 @@ const Home = () => {
                                             return (
                                                 <div className={"dashboard_tagname_wrap"} data-aos="fade-down">
                                                     <p id={"ranking"}>{index + 1}</p>
-                                                    <button id={"dashboard_tagbtn"} value={item.field}>{item.field}</button>
+                                                    <button id={"dashboard_tagbtn"}
+                                                            value={item.field}>{item.field}</button>
                                                 </div>
                                             )
                                         })
@@ -192,9 +157,6 @@ const Home = () => {
                                 </div>
                             </div>
                             <div className="dashboard_detail">
-                                {/*참여하고있는 스터디 보여주기*/}
-                                {/*<br/>*/}
-                                {/*클릭 시 팀블로그로 넘어가도록*/}
                                 <HomeDashBoard/>
                             </div>
                             <div className="dashboard_todo">
@@ -236,8 +198,6 @@ const Home = () => {
                         <div className="wrap-01">
                             <div className="tag_wrap" data-aos="fade-up">
                                 <div data-aos="fade-up">
-                                    {/*<p>지금 가장 핫한 TOP 5 태그<br/>*/}
-                                    {/*    한 눈에 확인해보세요!</p>*/}
                                     <p>지금 가장 핫한 TOP 5 분야<br/>
                                         한 눈에 확인해보세요!</p>
                                 </div>
@@ -353,39 +313,35 @@ const Home = () => {
                                 <p data-aos="fade-up"
                                    data-aos-anchor-placement="center-center">서로를 돕고 함께 성장하는<br/>
                                     스터디 커뮤니티</p>
-                                <div className="firstRow-tags">
-                                    {firstRow.map((item) => {
-                                        return (
-                                            <div className={"tagname_wrap"}>
-                                                <span id={"tag-grade"}>TOP {item.id}</span>
-                                                <button id={"tagbtn"} value={item.tagname}
-                                                        onClick={handleontag}>{item.tagname}</button>
-                                            </div>
-                                        )
-                                    })
-                                    }
+                                <div id={"detail-images"}>
+                                    <div className="CommunityScreenShot">
+                                        <img src={community} width="400px" data-aos="flip-left"/>
+                                        <img id="c-field" src={communityfield} width="200px" data-aos="flip-left"/>
+                                        <img id="c-scrap" src={communityscrap} width="200px" height={"80px"} data-aos="flip-left"/>
+                                    </div>
+                                    <span id={"c-info"}>다양한 관심사를 가진 사람들과 <br/>
+                                            풍부한 소통의 장을 열수 있어요<br/></span>
                                 </div>
                             </div>
                         </div>
                         <div className="wrap-04">
                             <div className="tag_wrap">
-
+                                <span id={"content-title"}>팀블로그</span>
                                 <p data-aos="fade-zoom-in"
                                    data-aos-easing="ease-in-back"
                                    data-aos-delay="300"
                                    data-aos-offset="0">학습은 개인적인 여정이지만,<br/>
                                     함께 나누면 그 가치가 배가 됩니다.</p>
-                                <div className="firstRow-tags">
-                                    {firstRow.map((item) => {
-                                        return (
-                                            <div className={"tagname_wrap"}>
-                                                <span id={"tag-grade"}>TOP {item.id}</span>
-                                                <button id={"tagbtn"} value={item.tagname}
-                                                        onClick={handleontag}>{item.tagname}</button>
-                                            </div>
-                                        )
-                                    })
-                                    }
+                                <div id={"detail-images"}>
+                                    <div className="TeamBlogScreenShot">
+                                        <img src={TeamBlog} width="400px" height="400px" data-aos="fade-up"/>
+                                    </div>
+                                    <div className="TeamBlogScreenShot">
+                                        <img src={Chatting} width="200px" data-aos="fade-up"/>
+                                    </div>
+
+                                    <span>스터디원들과의 실시간 채팅과<br/>
+                                    할 일, 일정들을 한 눈에 확인할 수 있어요</span>
                                 </div>
                             </div>
                         </div>

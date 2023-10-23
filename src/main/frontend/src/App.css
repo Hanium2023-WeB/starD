@@ -638,18 +638,57 @@ button#todo_more{
 }
 
 .wrap-03{
-	height: 650px;
+	height: 700px;
 	background-color:#EDFDC1;
 }
 .wrap-03 .tag_wrap > p{
 	color: #000000;
 }
+#c-field, #c-scrap{
+	position: relative;
+	top: 20px;
+	right: 50px;
+	height: 80px;
+	border-radius: 10px;
+}
+#c-scrap{
+	top: 40px;
+}
+#c-info {
+	position: relative;
+	bottom: 100px;
+}
 .wrap-04{
-	height: 650px;
+	height: 700px;
 	background-color:#FFFFFF;
 }
 .wrap-04 .tag_wrap > p{
 	color: #000000;
+}
+.wrap-04 .tag_wrap > #content-title{
+	color: #99A98F;
+	font-family: Inter;
+	font-weight: bolder;
+	font-size: 20px;
+	margin: 0 auto;
+	position: relative;
+	top: 90px;
+}
+#detail-images{
+	margin: 0 auto;
+	display: flex;
+	flex-direction: row;
+}
+#detail-images > span{
+	color: #7C7C7C;
+	font-size: 20px;
+	font-family: Inter;
+	font-style: normal;
+	font-weight: 400;
+	line-height: normal;
+	position: relative;
+	top: 150px;
+	left: 20px;
 }
 /* 푸터 */
 footer{
