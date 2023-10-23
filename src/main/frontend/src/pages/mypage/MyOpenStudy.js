@@ -10,6 +10,7 @@ import ScrapButton from "../../components/repeat_etc/ScrapButton";
 import Paging from "../../components/repeat_etc/Paging";
 import Pagination from "../../css/study_css/Pagination.css";
 import axios from "axios";
+import Backarrow from "../../components/repeat_etc/Backarrow";
 
 const MyOpenStudy = ({sideheader}) => {
     const [studies, setStudies] = useState([]);
@@ -356,7 +357,8 @@ const MyOpenStudy = ({sideheader}) => {
             <div className="container">
                 <Category/>
                 <div className="main_container">
-                    <h2>스터디 개설 내역</h2>
+                    <p id={"entry-path"}> 홈 > 스터디 개설 내역 </p>
+                    <Backarrow subname={"스터디 개설 내역"}/>
                     <div className="content_container">
                         {mypartistudylist()}
                     </div>

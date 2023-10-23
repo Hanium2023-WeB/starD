@@ -10,6 +10,7 @@ import axios from "axios";
 import LikeButton from "../../components/repeat_etc/LikeButton";
 import ScrapButton from "../../components/repeat_etc/ScrapButton";
 import Paging from "../../components/repeat_etc/Paging";
+import Backarrow from "../../components/repeat_etc/Backarrow";
 
 const MyParticipateStudy = ({sideheader}) => {
     const accessToken = localStorage.getItem('accessToken');
@@ -330,13 +331,6 @@ const MyParticipateStudy = ({sideheader}) => {
                                 </div>
                             </div>
                         </div>
-                        {/*<Link*/}
-                        {/*	to={`/${d.study.id}/teamblog/`}*/}
-                        {/*	style={{*/}
-                        {/*		textDecoration: "none",*/}
-                        {/*		color: "inherit",*/}
-                        {/*	}}*/}
-                        {/*>*/}
                         <div className={"contnet"}>
                             <div className="list_deadline">
                                 마감일 | {d.study.recruitmentDeadline}
@@ -349,7 +343,6 @@ const MyParticipateStudy = ({sideheader}) => {
                             <button id="go-teamblog"onClick={() => goNextTeamBlog(d)} >팀블로그 가기</button>
                         </div>
 
-                        {/*</Link>*/}
                     </div>
                 ))}
             </div>
@@ -361,7 +354,8 @@ const MyParticipateStudy = ({sideheader}) => {
             <div className="container">
                 <Category/>
                 <div className="main_container">
-                    <h2>스터디 참여 내역</h2>
+                    <p id={"entry-path"}> 홈 > 스터디 참여 내역 </p>
+                    <Backarrow subname={"스터디 참여 내역"}/>
                     <div className="content_container">
                         {mypartistudylist()}
                     </div>

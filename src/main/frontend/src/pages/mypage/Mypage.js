@@ -20,6 +20,7 @@ import Header from "../../components/repeat_etc/Header";
 import "../../css/mypage_css/Mypage.css";
 import Footer from "../../components/repeat_etc/Footer";
 import axios from "axios";
+import Backarrow from "../../components/repeat_etc/Backarrow";
 
 const Mypage = ({sideheader}) => {
     const dataId = useRef(0);
@@ -183,7 +184,8 @@ const Mypage = ({sideheader}) => {
             <div className="container">
                 <Category/>
                 <div className="main_container">
-                    <p id={"main-container-title"}>마이페이지</p>
+                    <p id={"entry-path"}> 홈 > 마이페이지 </p>
+                    <Backarrow subname={"마이페이지"}/>
                     <div className="sub_container">
                         <div className="reliability">
                             <div className="tag">

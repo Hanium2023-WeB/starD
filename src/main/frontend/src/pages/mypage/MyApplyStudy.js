@@ -8,6 +8,7 @@ import {faStar} from "@fortawesome/free-solid-svg-icons";
 import LikeButton from "../../components/repeat_etc/LikeButton";
 import ScrapButton from "../../components/repeat_etc/ScrapButton";
 import axios from "axios";
+import Backarrow from "../../components/repeat_etc/Backarrow";
 
 const MyApplyStudy = ({sideheader}) => {
 
@@ -349,7 +350,8 @@ const MyApplyStudy = ({sideheader}) => {
             <div className="container">
                 <Category/>
                 <div className="main_container">
-                    <h2>스터디 신청 내역</h2>
+                    <p id={"entry-path"}> 홈 > 스터디 신청 내역 </p>
+                    <Backarrow subname={"스터디 신청 내역"}/>
                     <div className="content_container">
                         {myapplystudylist()}
                     </div>

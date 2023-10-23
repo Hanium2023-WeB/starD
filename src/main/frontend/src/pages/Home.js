@@ -315,12 +315,15 @@ const Home = () => {
                                     스터디 커뮤니티</p>
                                 <div id={"detail-images"}>
                                     <div className="CommunityScreenShot">
-                                        <img src={community} width="400px" data-aos="flip-left"/>
+                                        <img id="community_main" src={community} width="400px" data-aos="flip-left"/>
+                                        <div className={"community-field_scrap"}>
                                         <img id="c-field" src={communityfield} width="200px" data-aos="flip-left"/>
                                         <img id="c-scrap" src={communityscrap} width="200px" height={"80px"} data-aos="flip-left"/>
-                                    </div>
-                                    <span id={"c-info"}>다양한 관심사를 가진 사람들과 <br/>
+                                        </div>
+                                        <span id={"c-info"}>다양한 관심사를 가진 사람들과 <br/>
                                             풍부한 소통의 장을 열수 있어요<br/></span>
+                                        </div>
+
                                 </div>
                             </div>
                         </div>
@@ -329,7 +332,6 @@ const Home = () => {
                                 <span id={"content-title"}>팀블로그</span>
                                 <p data-aos="fade-zoom-in"
                                    data-aos-easing="ease-in-back"
-                                   data-aos-delay="300"
                                    data-aos-offset="0">학습은 개인적인 여정이지만,<br/>
                                     함께 나누면 그 가치가 배가 됩니다.</p>
                                 <div id={"detail-images"}>

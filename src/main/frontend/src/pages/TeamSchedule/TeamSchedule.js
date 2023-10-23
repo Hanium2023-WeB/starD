@@ -151,6 +151,7 @@ const TeamSchedule = () => {
         <div className="container">
             <Category/>
             <div className="main_schedule_container">
+                <p id={"entry-path"}> 스터디 참여내역 > 팀블로그 > 팀 스터디 일정</p>
                 <Backarrow subname={"스터디 모임 일정"}/>
                 <div className="sub_container" id="todo_sub">
                     <TeamScheduleCalender

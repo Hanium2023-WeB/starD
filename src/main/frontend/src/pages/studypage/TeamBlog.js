@@ -14,6 +14,7 @@ import uncheckbox from "../../images/unchecked.png";
 import Category from "../../components/repeat_etc/Category";
 import Chat from "../../components/chat/Chat";
 import TeamSchedule from "../TeamSchedule/TeamSchedule";
+import Backarrow from "../../components/repeat_etc/Backarrow";
 
 
 const TeamBlog = () => {
@@ -168,9 +169,9 @@ const TeamBlog = () => {
             <div className={"main_content"}>
                 <Category/>
                 <div className="team_blog">
-                    <h1 className="page_title">STUDY TEAM BLOG</h1>
+                    <p id={"entry-path"}> 스터디 참여 내역 > 팀 블로그 </p>
+                    <Backarrow subname={"STUDY TEAM BLOG"}/>
                     <div className="img_wrapper">
-                        {/*<img src={BgImg}/>*/}
                         <div className="team_info">
                             <h2 className="study_title">{studyItem.title}</h2>
                             <h3 className="study_duration">{studyItem.activityStart} ~ {studyItem.activityDeadline}</h3>

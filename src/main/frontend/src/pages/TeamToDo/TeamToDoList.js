@@ -272,7 +272,8 @@ const TeamToDoList = () => {
         <div className="container">
             <Category/>
             <div className="main_container">
-                <p id={"main-container-title"}>팀 투두 리스트</p>
+                <p id={"entry-path"}> 스터디 참여내역 > 팀블로그 > 팀 투두 리스트 </p>
+                <Backarrow subname={"팀 투두 리스트"}/>
                 <div className="sub_container" id="todo_sub">
                     <div className="todo_container">
                         <div className="today">

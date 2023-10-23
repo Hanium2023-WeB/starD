@@ -7,6 +7,7 @@ import SearchBar from "../../components/community/CommSearchBar";
 import PostInsert from "../../components/community/PostInsert";
 import PostListItem from "../../components/community/PostListItem";
 import axios from "axios";
+import Backarrow from "../../components/repeat_etc/Backarrow";
 
 const Community = () => {
     const navigate = useNavigate();
@@ -43,7 +44,8 @@ const Community = () => {
         <div className={"main_wrap"} id={"community"}>
             <Header showSideCenter={true}/>
             <div className="community_container">
-                <h1>COMMUNITY LIST</h1>
+                <p id={"entry-path"}> 커뮤니티 </p>
+                <Backarrow subname={"COMMUNITY LIST"}/>
                 {showPostInsert && (
                     <PostInsert />
                 )}

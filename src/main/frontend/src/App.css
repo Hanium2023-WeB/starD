@@ -638,25 +638,44 @@ button#todo_more{
 }
 
 .wrap-03{
-	height: 700px;
+	height: 650px;
 	background-color:#EDFDC1;
 }
 .wrap-03 .tag_wrap > p{
 	color: #000000;
 }
+.CommunityScreenShot{
+	display: flex;
+}
+.community-field_scrap{
+	display: flex;
+	flex-direction: column;
+	position: relative;
+	bottom: 5px;
+}
+#community_main{
+	border-radius: 10px;
+}
 #c-field, #c-scrap{
 	position: relative;
-	top: 20px;
-	right: 50px;
-	height: 80px;
+	top: 5px;
+	left: 20px;
+	height: 70px;
 	border-radius: 10px;
 }
 #c-scrap{
 	top: 40px;
 }
 #c-info {
+	color: #7C7C7C;
+	font-size: 20px;
+	font-family: Inter;
+	font-style: normal;
+	font-weight: 400;
+	line-height: normal;
 	position: relative;
-	bottom: 100px;
+	top: 50px;
+	left: 50px;
 }
 .wrap-04{
 	height: 700px;
@@ -690,6 +709,7 @@ button#todo_more{
 	top: 150px;
 	left: 20px;
 }
+
 /* 푸터 */
 footer{
 	/* margin-left: 10px;
@@ -806,6 +826,12 @@ footer p {
 	.dashboard_todo #today{
 		font-size: 0.6vw;
 	}
+}
+/*진입경로*/
+#entry-path{
+	width: fit-content;
+	margin-bottom: 20px;
+	margin-left: 40px;
 }
 
 /* 투두리스트, 대시보드 세로로 배치하기 */
