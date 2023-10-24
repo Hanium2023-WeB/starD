@@ -33,6 +33,7 @@ const Logout = ({sideheader}) => {
                 localStorage.removeItem('selectedSido');
                 localStorage.removeItem('selectedGugun');
                 localStorage.removeItem('tags');
+                localStorage.removeItem('studies');
 
                 alert("로그아웃 성공");
                 navigate('/');
