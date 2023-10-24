@@ -50,25 +50,21 @@ class Chat extends Component {
     }
 
     componentWillUnmount() {
-        // 컴포넌트가 마운트 해제될 때 웹소켓 연결을 끊음
-        //this.disconnect();
         this.sendExitMessage();
     }
-    //스크롤 가장 아래로 내리기
+
     scrollChatToBottom() {
         const chatBox = document.querySelector('.chattingbox');
         if (chatBox) {
             chatBox.scrollTop = chatBox.scrollHeight;
         }
     }
-    // 스터디 ID를 기반으로 해당 채팅방을 구독
     subscribeToChatRoom(studyId) {
         this.stompClient.subscribe(`/topic/greetings/${studyId}`, (greeting) => {
             this.showGreeting(JSON.parse(greeting.body));
         });
     }
 
-    // 이전 채팅 내역을 가져오기
     fetchChatHistory = () => {
         const accessToken = localStorage.getItem('accessToken');
         const { studyId } = this.state;
@@ -80,7 +76,6 @@ class Chat extends Component {
                 },
             })
                 .then(response => {
-                    // 가져온 채팅 내역 저장
                     this.setState({greetings: response.data});
                     console.log("####: ", response.data);
                     this.sendEnterMessage();
@@ -98,8 +93,6 @@ class Chat extends Component {
         this.stompClient.subscribe(`/topic/greetings/${studyId}`, (greeting) => {
             this.showGreeting(JSON.parse(greeting.body));
         });
-
-        // 이전 채팅 내역 가져오기
         this.fetchChatHistory();
     };
 
@@ -148,7 +141,6 @@ class Chat extends Component {
         //this.sendExitMessage();
     };
 
-    // 입장 메시지
     sendEnterMessage = () => {
         const accessToken = localStorage.getItem('accessToken');
         const { studyId } = this.state;
@@ -167,7 +159,6 @@ class Chat extends Component {
         }
     };
 
-    // 퇴장 메시지
     sendExitMessage = () => {
         const accessToken = localStorage.getItem('accessToken');
         const { studyId } = this.state;
@@ -205,7 +196,6 @@ class Chat extends Component {
                     headers: headers,
                 });
                 this.scrollChatToBottom();
-                // 메시지 전송 후 입력창 비우기
                 this.setState({
                     message: '',
                 });
@@ -215,7 +205,6 @@ class Chat extends Component {
         }
     };
 
-    // 엔터 치면 메시지 전송
     onKeyDown = (e) => {
         if (e.key === 'Enter') {
             this.sendMessage();
@@ -230,7 +219,6 @@ class Chat extends Component {
         });
     };
 
-    // 날짜, 시간 포맷팅("yyyy-MM-dd HH:mm" 형식)
     formatDatetime = (datetime) => {
         const date = new Date(datetime);
         const year = date.getFullYear();

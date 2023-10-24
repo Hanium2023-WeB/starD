@@ -34,16 +34,9 @@ const CommSearchBar = () => {
         { value: "건축", name: "건축" },
         { value: "환경", name: "환경" },
         {value: "블로그 운영", name: "블로그 운영"},
-        // Add more categories as needed
     ];
-
-	//엔터를 치면 해당 검색페이지로 넘어갑니다
 	const handleKeyDown = (e) => {
-		// 엔터 키의 키 코드는 13입니다.
 		if (e.keyCode === 13) {
-			// 엔터 키를 눌렀을 때 할 작업을 여기에 추가합니다.
-			console.log("엔터 키를 눌렀습니다.");
-			// 예시: 입력한 내용을 상태에 저장하고 폼을 제출합니다.
 			setSearch(e.target.value);
 			searchItem(e.target.value);
 		}
@@ -62,9 +55,7 @@ const CommSearchBar = () => {
         setCategoryOption(e.target.value);
 	}
 
-	//url 동적으로 바꾸기 선택한 옵션과 검색내용이 url안으로 들어갑니다
 	const searchItem = (item)=>{
-		console.log("타깃",item)
 		setSearch(item);
 		const queryParams = `?q=${encodeURIComponent(item)}&category=${encodeURIComponent(categoryOption)}&select=${encodeURIComponent(selectOption)}`;
 		navigate(`/comm/search${queryParams}`);

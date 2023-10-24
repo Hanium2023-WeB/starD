@@ -39,26 +39,21 @@ const TeamToDoList = () => {
         setSelectedTodo(todo);
     };
 
-    // const [todos, setTodos] = useState({}); //투두만
     const [todoswithAssignee, setTodoswithAssignee] = useState({}); //투두랑 담당자 함친 객체 배열 state
 
-    //새로운 일정 추가
     const nextId = useRef(1);
 
-    //달력에서 선택한 날짜
     const dateKey = selectedDate.toDateString();
-    // console.log(`dateKey: ${dateKey}`);
+    ;
 
-    //담당자 선택 함수
     const handleAddAssignees = (e) => {
         const assignName = e.target.getAttribute('data-assign-name');
         const updatedAssignees = [...Assignees, assignName];
         setAssignees(updatedAssignees);
-        //선택하면 화면에서 사라짐
         const updatedMember = Member.filter((item) => item.member.name !== assignName);
         setMember(updatedMember);
     };
-    //담당자 삭제 함수
+
     const handleRemoveAssignees = (e) => {
         const removeAssignName = Assignees.filter((item) => item !== e.target.value);
         setAssignees(removeAssignName);
@@ -71,12 +66,7 @@ const TeamToDoList = () => {
         }
     };
 
-    useEffect(() => {
-        console.log("선택 담당자:", Assignees.toString());
-    }, [Assignees]);
 
-
-    //할일 추가 함수
     const onInsert = useCallback(async (task, studyId, formattedDate, StringAssignees) => {
 
         const todoData = {
@@ -94,8 +84,8 @@ const TeamToDoList = () => {
                     'Authorization': `Bearer ${accessToken}`
                 }
             });
-            console.log("전송 성공:", postDataResponse); //담당자 잘 전송되는 듯
-            setTodoswithAssignee((prevTodos) => ({ //날짜 기준으로 세팅
+            console.log("전송 성공:", postDataResponse);
+            setTodoswithAssignee((prevTodos) => ({
                 ...prevTodos, [dateKey]: [...(prevTodos[dateKey] || []), postDataResponse.data],
             }));
         } else {
@@ -108,10 +98,9 @@ const TeamToDoList = () => {
 
     const filteredTodos = todoswithAssignee[dateKey] || [];
 
-    //삭제 함수
-    const onRemove = useCallback( //todos.todo의 id
+
+    const onRemove = useCallback(
         async (id) => {
-            console.log("id", id);
             alert("삭제하시겠습니까?");
 
             const deleteDataResponse = await axios.delete(`http://localhost:8080/todo/${id}`, {
@@ -129,12 +118,11 @@ const TeamToDoList = () => {
             });
         }, []);
 
-    //수정 함수
+
     const onUpdate = useCallback(async (UpdatedToDo) => {
         console.log("selectedTodo..:", UpdatedToDo);
         onInsertToggle();
         const assigneeStr = UpdatedToDo.assignees.toString();
-        console.log("assigneeStr..:", assigneeStr);
         const todoData = {
             task: UpdatedToDo.toDo.task, dueDate: UpdatedToDo.toDo.dueDate,
         };
@@ -166,17 +154,12 @@ const TeamToDoList = () => {
             };
             return updatedTodos;
         });
-        console.log("todoss: ", todoswithAssignee);
     }, [studyMems, selectedDate, studies, todoswithAssignee]);
 
-    //체크버튼 바꾸는 함수
+
     const onToggle = useCallback(async (assignees, id, todo_status) => {
-        console.log("assignees,", assignees);
         const postDataPromises = assignees.map(async (item) => {
-            console.log("체크 전 상태", item.toDoStatus);
-            console.log("체크 후 상태", !item.toDoStatus);
             const status = !item.toDoStatus;
-            console.log("item:", item);
             return axios.post(
                 `http://localhost:8080/todo/${item.toDo.id}/status`,
                 null,
@@ -193,10 +176,9 @@ const TeamToDoList = () => {
         try {
             const postDataResponses = await Promise.all(postDataPromises);
             console.log("체크 성공:", postDataResponses);
-            // Handle responses or update your state as needed
         } catch (error) {
             console.error("Error:", error);
-            // Handle the error
+
         }
 
         setTodoswithAssignee((prevTodos) => {
@@ -213,17 +195,13 @@ const TeamToDoList = () => {
 
     const handleDateClick = (day) => {
         setSelectedDate(new Date(day));
-        console.log(`선택한 날짜 : ${day}`);
     };
 
     useEffect(() => {
-        //불러온 투두리스트
         setMember(Member);
-        console.log("setTodoswithAssignee_TODOLIST:", todoswithAssignee); //스터디 별 투두리스트 출력
-        console.log("setTodoswithAssignee_Member:", member); //스터디 참여멤버들 출력
     }, [todoswithAssignee, Member, onUpdate]);
 
-    // 달력 다음달 저번달 옮기기
+
     const [currentMonth, setCurrentMonth] = useState(new Date());
 
     const prevMonth = () => {
@@ -237,7 +215,6 @@ const TeamToDoList = () => {
         Month = format(currentMonth, "M")
     }, [currentMonth]);
 
-    //해당 스터디의 투두 가져오기
     useEffect(() => {
         axios.get(`http://localhost:8080/todo/${studyIdAsNumber}`, {
             params: {
@@ -280,7 +257,6 @@ const TeamToDoList = () => {
                             {" "}
                             <span>{`오늘은 ${Year}년 ${Month}월 ${Dates}일입니다.`}</span>
                         </div>
-                        {/*담당자 선택*/}
                         <div className={"select_assignee"}>
                             <p>담당자</p>
                             {Array.isArray(member) && member.length > 0 && member.map((item, index) => (
@@ -289,8 +265,7 @@ const TeamToDoList = () => {
                                         className="assignee-name"
                                         data-assign-name={item.member.name}
                                         value={item}
-                                        onClick={handleAddAssignees}
-                                    >
+                                        onClick={handleAddAssignees}>
                                         {item.member.name}
                                     </div>
                                 </div>

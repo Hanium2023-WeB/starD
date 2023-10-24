@@ -7,7 +7,6 @@ import EditSchedule from "./EditSchedule.js";
 import {useNavigate} from "react-router-dom";
 import {parseISO} from 'date-fns';
 
-// import { EditSchedule } from "./EditSchedule.js";
 const RenderScheduleCells = ({
                                  studies, studyTitles,
                                  currentMonth,
@@ -18,27 +17,22 @@ const RenderScheduleCells = ({
                                  onUpdate,
                                  onRemove,
                              }) => {
-    const monthStart = startOfMonth(currentMonth); //오늘이 속한 달의 시작일
-    const monthEnd = endOfMonth(monthStart); //오늘이 속한 달의 마지막일
-    const startDate = startOfWeek(monthStart); //monthStart가 속한 주의 시작일
-    const endDate = endOfWeek(monthEnd); //monthEnd가 속한 주의 마지막일
+    const monthStart = startOfMonth(currentMonth);
+    const monthEnd = endOfMonth(monthStart);
+    const startDate = startOfWeek(monthStart);
+    const endDate = endOfWeek(monthEnd);
 
-    const rows = []; //일월화수목금토(한 주) * 4주 or 5주
-    let days = []; //일월화수목금토 (한 주)
+    const rows = [];
+    let days = [];
     let day = startDate;
     let formattedDate = "";
     const [editScheduleData, setEditScheduleData] = useState("");
     const [editdata, setEditDate]= useState({});
-    const navigate = useNavigate();
 
     const openEditSchedule = (id,item) => {
-        console.log("edit", id);
         setEditScheduleData(id);
         setEditDate(item);
     };
-    useEffect(()=>{
-        console.log("sss:",editdata );
-    },[editdata]);
 
     while (day <= endDate) {
         for (let i = 0; i < 7; i++) {
@@ -52,9 +46,9 @@ const RenderScheduleCells = ({
             days.push(
                 <div
                     className={`col cell ${
-                        !isSameMonth(day, monthStart) //두개의 날짜가 같은 달에 속하는지 확인하는 함수
+                        !isSameMonth(day, monthStart)
                             ? "disabled"
-                            : isSameDay(day, selectedDate) //두개의 날짜 같은지 확인하는 함수
+                            : isSameDay(day, selectedDate) 
                                 ? "selected"
                                 : format(currentMonth, "M") !== format(day, "M")
                                     ? "not-valid"

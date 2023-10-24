@@ -30,7 +30,6 @@ const MapNaverDefault = ({studyId,Member}) => {
 
     }, []);
 
-    //지도 보여주기
     useEffect(() => {
         if (!mapElement.current || !naver) return;
 
@@ -53,7 +52,6 @@ const MapNaverDefault = ({studyId,Member}) => {
     return (
         <div className={"map_content"}>
             <div id={"input-location"}>
-                {/*<p>중간 장소 찾기</p>*/}
                 {Member.map((member,index)=>(
                     <input value={"장소를 입력하세요"}></input>
                 ))}

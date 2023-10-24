@@ -10,13 +10,13 @@ import Backarrow from "../../components/repeat_etc/Backarrow";
 import Comment from "../../components/comment/Comment";
 import {useLocation} from "react-router-dom";
 import axios from "axios";
-import StudyApplyList  from "../../pages/studypage/StudyApplyList";
+import StudyApplyList from "../../pages/studypage/StudyApplyList";
 
 
 const StudyDetail = ({sideheader}) => {
 
     const location = useLocation();
-    let studyId = location.state;     // StudyListItem.js 파일에서 스터디 id 값을 get
+    let studyId = location.state;
     console.log("studyId : ", studyId);
 
     const [studyItem, setStudyItem] = useState();
@@ -27,7 +27,7 @@ const StudyDetail = ({sideheader}) => {
 
     const [studies, setStudies] = useState([]);
     const [editing, setEditing] = useState(false);
-    const [studyDetail, setStudyDetail] = useState([]);// 스터디 상세 정보를 상태로 관리
+    const [studyDetail, setStudyDetail] = useState([]);
     const [isApply, setIsApply] = useState(false);
     const accessToken = localStorage.getItem('accessToken');
     const isLoggedInUserId = localStorage.getItem('isLoggedInUserId');
@@ -40,17 +40,15 @@ const StudyDetail = ({sideheader}) => {
             studyId = id;
         }
 
-        // 백엔드 REST API 호출 코드
         axios.get(`http://localhost:8080/api/v2/studies/${studyId}`, {
             withCredentials: true,
             headers: {
                 'Authorization': `Bearer ${accessToken}`
             }
         }).then((res) => {
-            // console.log("전송 성공 : ", res.data);
             setStudyItem(res.data);
             if (res.data.recruiter.id === isLoggedInUserId) {
-                console.log("자기 자신의 글",res.data);
+                console.log("자기 자신의 글", res.data);
                 setIsRecruiter(true);
             }
         })
@@ -60,16 +58,14 @@ const StudyDetail = ({sideheader}) => {
                 console.error("스터디 세부 데이터 가져오기 실패:", error);
             });
 
-        // 백엔드 REST API 호출 코드
         axios.get(`http://localhost:8080/api/v2/studies/${studyId}/apply-reason`, {
             withCredentials: true,
             headers: {
                 'Authorization': `Bearer ${accessToken}`
             }
         }).then((res) => {
-            // console.log("스터디 지원 여부 데이터 전송 성공 : ", res.data);
             const result = res.data;
-            if (result.length !== 0 ) {   // 지원했으면 true
+            if (result.length !== 0) {   // 지원했으면 true
                 console.log("지원 O");
                 setIsApply(true);
                 setApplyReason(res.data.applyReason);
@@ -78,7 +74,7 @@ const StudyDetail = ({sideheader}) => {
             .catch((error) => {
                 console.error("스터디 지원 여부 데이터 가져오기 실패:", error);
             });
-    }, [id]); // 빈 종속성 배열을 사용하여 컴포넌트가 처음 렌더링될 때만 실행
+    }, [id]);
 
 
     const handleEditClick = () => {
@@ -90,25 +86,23 @@ const StudyDetail = ({sideheader}) => {
     }
 
     const handleStudyUpdate = (updatedStudy) => {
-        console.log("수정될 데이터?:",updatedStudy);
+        console.log("수정될 데이터?:", updatedStudy);
         setEditing(false);
         const accessToken = localStorage.getItem('accessToken');
 
         axios.put(`http://localhost:8080/api/v2/studies/${updatedStudy.id}`,
             {
                 title: updatedStudy.title,
-                field: updatedStudy.field,  // 분야
-                capacity: updatedStudy.capacity, // 모집 인원
-                onOff: updatedStudy.onOff,  // 온/온라인/무관
-                city: updatedStudy.city,    // 시
-                district: updatedStudy.district,   // 구
-                recruitmentDeadline: updatedStudy.recruitmentDeadline,    // 모집 마감
-                activityStart: updatedStudy.activityStart, // 활동 시작
-                activityDeadline: updatedStudy.activityDeadline, // 활동 마감
-                content: updatedStudy.content, // 내용
-                tags: updatedStudy.tags,    // 태그
-                // scrap: studies.scrap,
-                // like:studies.like,
+                field: updatedStudy.field,
+                capacity: updatedStudy.capacity,
+                onOff: updatedStudy.onOff,
+                city: updatedStudy.city,
+                district: updatedStudy.district,
+                recruitmentDeadline: updatedStudy.recruitmentDeadline,
+                activityStart: updatedStudy.activityStart,
+                activityDeadline: updatedStudy.activityDeadline,
+                content: updatedStudy.content,
+                tags: updatedStudy.tags,
             },
             {
                 withCredentials: true,
@@ -118,17 +112,11 @@ const StudyDetail = ({sideheader}) => {
             })
             .then((res) => {
                 console.log("API Response:", res.data);
-                console.log("수정 성공");
-                // console.log(res.data);
-                //성공하면
-                // navigate("/myopenstudy", {state: formData});
             }).catch((error) => {
-            console.log('수정 실패', error);
+            console.log(error);
         })
 
         setStudyDetail(updatedStudy);
-        console.log("updatedStudies",studyDetail);
-
         const updatedStudies = studies.map(study =>
             study.id === updatedStudy.id ? updatedStudy : study
         );
@@ -145,20 +133,6 @@ const StudyDetail = ({sideheader}) => {
             window.location.href = "/myopenstudy";
         }
     }
-
-    // useEffect(() => {
-    //     const filteredStudyDetail = studies.filter(study => study.id == Number(id));
-    //     setStudyDetail(filteredStudyDetail); //해당 페이지의 스터디 상세 정보 랜더링에 사용
-    // }, [studies, id]);
-    //
-    // useEffect(() => {
-    //     if (studyDetail.length > 0 && studyDetail[0].reason) {
-    //         setIsApply(true);
-    //     } else {
-    //         setIsApply(false);
-    //     }
-    // }, [studyDetail]);
-    console.log("isApply3 : ", isApply);
 
     return (
         <div>
@@ -182,10 +156,10 @@ const StudyDetail = ({sideheader}) => {
                                     study={studyItem}
                                     handleEditClick={handleEditClick}
                                     handleStudyDelete={handleStudyDelete}
-                                    isRecruiter = {isRecruiter}
+                                    isRecruiter={isRecruiter}
                                 />
                                 <div className="study_intro">
-                                    <div style={{fontWeight:"bold"}}>스터디 소개</div>
+                                    <div style={{fontWeight: "bold"}}>스터디 소개</div>
                                     {studyItem && (
                                         <div
                                             dangerouslySetInnerHTML={{

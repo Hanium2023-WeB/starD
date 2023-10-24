@@ -25,7 +25,6 @@ const StudyInfo = ({study, handleEditClick, handleStudyDelete, isRecruiter}) => 
         }
     }
 
-    // 날짜, 시간 포맷팅("yyyy-MM-dd HH:mm" 형식)
     const formatDatetime = (datetime) => {
         const date = new Date(datetime);
         const year = date.getFullYear();

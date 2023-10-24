@@ -11,31 +11,26 @@ const formatDatetime = (datetime) => {
   const formattedDatetime = `${year}-${month}-${day} ${hours}:${minutes}`;
   return formattedDatetime;
 };
-
 const CommentList = ({ comments, onEditClick, onRemoveClick, onReplySubmit, userNickname }) => {
-  const [showReportModal, setShowReportModal] = useState(false); // 모달 상태 변수 추가
-  const [reportCommentId, setReportCommentId] = useState(null); // 신고할 댓글 ID 상태 변수 추가
+  const [showReportModal, setShowReportModal] = useState(false);
+  const [reportCommentId, setReportCommentId] = useState(null);
 
-  // 모달 열기 핸들러 함수
+
   const handleOpenReportModal = (commentId) => {
     setReportCommentId(commentId);
     setShowReportModal(true);
   };
 
-  // 모달 닫기 핸들러 함수
   const handleCloseReportModal = () => {
     setReportCommentId(null);
     setShowReportModal(false);
   };
 
-  // 모달에서 신고 사유를 처리하는 함수
+
   const handleReportSubmit = (reportReason) => {
-    // reportReason을 처리하는 로직을 추가하세요.
     console.log("신고 사유:", reportReason);
   };
 
-  console.log("^comments: ",comments);
- // 댓글 목록이 비어있을 때 빈 배열로 대체
   if (!comments) {
     comments = [];
   }
@@ -46,7 +41,6 @@ const CommentList = ({ comments, onEditClick, onRemoveClick, onReplySubmit, user
           <li key={index} className="comment">
             <strong>{comment.author}</strong>
             <div style={{ float: "right" }}>
-              {/* 댓글 작성자와 현재 로그인한 사용자를 비교하여 버튼 표시 여부 결정 */}
               {comment.author === userNickname && (
                 <>
                   <span className="comment_edit_btn" onClick={() => onEditClick(comment.id)}>
@@ -61,7 +55,7 @@ const CommentList = ({ comments, onEditClick, onRemoveClick, onReplySubmit, user
             </div>
             <p>{comment.content}</p>
             <span>{formatDatetime(comment.createdAt)}</span>
-            {comment.createdAt !== comment.updatedAt && ( // createdAt과 updatedAt이 다른 경우에만 표시
+            {comment.createdAt !== comment.updatedAt && (
               <>
                 <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
                 <span>( 수정: {formatDatetime(comment.updatedAt)} )</span>
@@ -81,7 +75,7 @@ const CommentList = ({ comments, onEditClick, onRemoveClick, onReplySubmit, user
           show={showReportModal}
           handleClose={handleCloseReportModal}
           onReportSubmit={handleReportSubmit}
-          targetId={reportCommentId} // targetId 전달
+          targetId={reportCommentId}
       />
     </div>
   );

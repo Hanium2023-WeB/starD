@@ -49,25 +49,14 @@ const Home = () => {
     const Dates = today.getDate();
     const tags = tag;
 
-    //인기있는 태그 배치
-    // const firstRow = tags.slice(0, 3);
-    // const secondRow = tags.slice(3, 5);
-
     const [firstRow, setFirstRow] = useState([]);
     const [secondRow, setSecondRow] = useState([]);
 
-    // useEffect(() => {
-    //     localStorage.removeItem('studies');
-    //     // localStorage.removeItem('todos');
-    //     localStorage.removeItem('selectedSido');
-    //     localStorage.removeItem('selectedGugun');
-    // }, []);
 
     useEffect(() => {
         // Load todos from localStorage when the component mounts
         const isLogin = localStorage.getItem("accessToken");
         const user = localStorage.getItem("isLoggedInUserId");
-        //로그인 accessToken, user을 로컬스토리지에서 불러옴
         setIsLogin(isLogin);
         setUser(user);
         console.log(tags);
@@ -94,7 +83,6 @@ const Home = () => {
     const handleontag = (e) => {
         console.log(e.target.value);
         setIsTag(e.target.value);
-        //해당 태그가 있는 스터디 리스트 링크로 넘어갈 수 있도록
     }
 
     useEffect(() => {
@@ -134,7 +122,6 @@ const Home = () => {
                         <span id={"welcome-text"}>“STAR D는 당신의 앞날을 응원합니다.” </span>
                     </div>
                 </div>
-                {/*로그인 했을 때 안했을 때 화면 바꾸기*/}
                 {isLogin && user ?
                     <div className={"wrap-01"}>
                         <div className="dashboard">

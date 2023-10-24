@@ -1,8 +1,6 @@
 import {Link} from "react-router-dom";
 
 const PostListItem = ({posts, setPosts}) => {
-
-    // 날짜, 시간 포맷팅("yyyy-MM-dd HH:mm" 형식)
     const formatDatetime = (datetime) => {
       const date = new Date(datetime);
       const year = date.getFullYear();

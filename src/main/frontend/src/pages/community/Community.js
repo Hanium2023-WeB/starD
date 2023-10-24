@@ -13,11 +13,7 @@ const Community = () => {
     const navigate = useNavigate();
     const [posts, setPosts] = useState([]);
     const [showPostInsert, setShowPostInsert] = useState(false);
-
-    // localStorage에 저장된 accessToken 추출
     let accessToken = localStorage.getItem('accessToken');
-
-    // localStorage에 저장된 로그인한 사용자 Id 추출
     let isLoggedInUserId = localStorage.getItem('isLoggedInUserId');
 
     const handleMoveToStudyInsert = (e) => {

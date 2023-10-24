@@ -12,7 +12,6 @@ script.src = `https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${cli
 script.async = true;
 
 script.onload = () => {
-    // 스크립트가 로드된 후에 React 애플리케이션을 시작
     root.render(
         <React.StrictMode>
             <App />

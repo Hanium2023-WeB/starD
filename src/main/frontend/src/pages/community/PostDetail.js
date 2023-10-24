@@ -26,7 +26,7 @@ const PostDetail = () => {
 
     const [posts, setPosts] = useState([]);
     const [editing, setEditing] = useState(false);
-    const [postDetail, setPostDetail] = useState([]);// 게시글 상세 정보를 상태로 관리
+    const [postDetail, setPostDetail] = useState([]);
 
     let accessToken = localStorage.getItem('accessToken');
     let isLoggedInUserId = localStorage.getItem('isLoggedInUserId');
@@ -35,7 +35,7 @@ const PostDetail = () => {
 
     useEffect(() => {
         if (accessToken && isLoggedInUserId) {
-            axios.get(`http://localhost:8080/star/post/${id}`, { // 공감
+            axios.get(`http://localhost:8080/star/post/${id}`, {
                 params: { id: id },
                 withCredentials: true,
                 headers: {
@@ -50,7 +50,7 @@ const PostDetail = () => {
                     console.log("공감 불러오기 실패", error);
                 });
 
-            axios.get(`http://localhost:8080/scrap/post/${id}`, { // 스크랩
+            axios.get(`http://localhost:8080/scrap/post/${id}`, {
                 params: { id: id },
                 withCredentials: true,
                 headers: {
@@ -77,7 +77,6 @@ const PostDetail = () => {
         };
 
         if (accessToken && isLoggedInUserId) {
-            // 로그인한 사용자인 경우 인증 토큰을 헤더에 추가
             config.headers['Authorization'] = `Bearer ${accessToken}`;
         }
 
@@ -248,8 +247,6 @@ const PostDetail = () => {
             navigate("/community");
         }
     }
-
-    // 날짜, 시간 포맷팅("yyyy-MM-dd HH:mm" 형식)
     const formatDatetime = (datetime) => {
       const date = new Date(datetime);
       const year = date.getFullYear();

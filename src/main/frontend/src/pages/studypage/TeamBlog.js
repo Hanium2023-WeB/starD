@@ -29,7 +29,7 @@ const TeamBlog = () => {
     const Month = today.getMonth() + 1;
     const Dates = today.getDate()
     const studyIdAsNumber = parseFloat(studyId);
-    console.log("받아온 Study", study);
+
 
     if (studyId !== undefined) {
         console.log("Study ID:", studyId);
@@ -65,7 +65,6 @@ const TeamBlog = () => {
     }
 
 
-    //TODO 참여멤버 리스트 가지고오기
     useEffect(() => {
         axios.get(`http://localhost:8080/api/v2/studies/${id}/study-member`, {
             withCredentials: true,
@@ -85,7 +84,7 @@ const TeamBlog = () => {
                 console.error("참여멤버 get 실패:", error);
             });
 
-        // 스터디 id로 스터디 객체 가져오기
+
         axios.get(`http://localhost:8080/api/v2/studies/${id}`, {
             withCredentials: true,
             headers: {
@@ -100,7 +99,7 @@ const TeamBlog = () => {
             });
 
     }, [accessToken]);
-    //해당 스터디의 투두 가져오기
+
     useEffect(() => {
         axios.get(`http://localhost:8080/todo/${studyIdAsNumber}`, {
             params: {
@@ -117,7 +116,6 @@ const TeamBlog = () => {
         })
     }, [studyIdAsNumber]);
 
-    //마이페이지 투두 연동
     const [filteredToDo, setFilteredToDo] = useState([]);
     useEffect(() => {
         if (Array.isArray(parsedTodos)) {
@@ -133,7 +131,6 @@ const TeamBlog = () => {
         }
     }, [parsedTodos]);
 
-    //스터디별 일정 가져오기
     useEffect(() => {
         axios.get(`http://localhost:8080/schedule/${studyIdAsNumber}`, {
             params: {
@@ -188,62 +185,62 @@ const TeamBlog = () => {
                     <div className="content">
                         <div className={"content-left"}>
                             <div className={"todoAndSchedule"}>
-                            <div className={"todo_content"}>
-                                <div className="todos">
-                                    <div className="tag">
-                                        <p>오늘의 할 일</p>
-                                        <button id="more" onClick={ShowAllToDo}>전체보기</button>
-                                    </div>
-                                    <div id="detail">
-                                        <span id="today">{`${Year}. ${Month}. ${Dates}`}</span>
-                                        <hr/>
-                                        {filteredToDo.length === 0 ? (
-                                            <div className="empty_today_todo">
+                                <div className={"todo_content"}>
+                                    <div className="todos">
+                                        <div className="tag">
+                                            <p>오늘의 할 일</p>
+                                            <button id="more" onClick={ShowAllToDo}>전체보기</button>
+                                        </div>
+                                        <div id="detail">
+                                            <span id="today">{`${Year}. ${Month}. ${Dates}`}</span>
+                                            <hr/>
+                                            {filteredToDo.length === 0 ? (
+                                                <div className="empty_today_todo">
                                                     <span>
                                                         할 일이 없습니다.<br/> 할 일을 입력해주세요.
                                                     </span>
-                                          </div>
-                                        ) : (
-                                            <ul id="todocontent">
-                                                {filteredToDo.map((todo) => (
-                                                    <li key={todo.id}>
-                                                        <div id="todotext">{todo.study.title} |</div>
-                                                        <div id="todotext">{todo.task}</div>
-                                                    </li>
-                                                ))}
-                                            </ul>
-                                        )}
+                                                </div>
+                                            ) : (
+                                                <ul id="todocontent">
+                                                    {filteredToDo.map((todo) => (
+                                                        <li key={todo.id}>
+                                                            <div id="todotext">{todo.study.title} |</div>
+                                                            <div id="todotext">{todo.task}</div>
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            )}
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div className={"schedule_content"}>
-                                <div className="todos">
-                                    <div className="tag">
-                                        <p>오늘의 일정</p>
-                                        <button id="more" onClick={ShowAllSchedule}>전체보기</button>
-                                    </div>
-                                    <div id="detail">
-                                        <span id="today">{`${Year}. ${Month}. ${Dates}`}</span>
-                                        <hr/>
-                                        {filteredSchedule.length === 0 ? (
-                                            <div className="empty_today_todo">
+                                <div className={"schedule_content"}>
+                                    <div className="todos">
+                                        <div className="tag">
+                                            <p>오늘의 일정</p>
+                                            <button id="more" onClick={ShowAllSchedule}>전체보기</button>
+                                        </div>
+                                        <div id="detail">
+                                            <span id="today">{`${Year}. ${Month}. ${Dates}`}</span>
+                                            <hr/>
+                                            {filteredSchedule.length === 0 ? (
+                                                <div className="empty_today_todo">
                                                     <span>
                                                         일정이 없습니다.<br/> 일정을 입력해 주세요.
                                                     </span>
-                                            </div>
-                                        ) : (
-                                            <ul id="todocontent">
-                                                {filteredSchedule.map((item) => (
-                                                    <li key={item.id}>
-                                                        <div id="todotext">{item.study.title} |</div>
-                                                        <div id="todotext">{item.title}</div>
-                                                    </li>
-                                                ))}
-                                            </ul>
-                                        )}
+                                                </div>
+                                            ) : (
+                                                <ul id="todocontent">
+                                                    {filteredSchedule.map((item) => (
+                                                        <li key={item.id}>
+                                                            <div id="todotext">{item.study.title} |</div>
+                                                            <div id="todotext">{item.title}</div>
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            )}
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
                             </div>
                             <div className={"location_content"}>
                                 <div className="location">
@@ -262,12 +259,6 @@ const TeamBlog = () => {
                             </div>
                         </div>
                     </div>
-                    {/*<div className={"content-bottom"}>*/}
-                    {/*    <div className={"schedule_content"}>*/}
-                    {/*        <p>스터디 일정</p>*/}
-                    {/*        <TeamSchedule studyIdAsNumber={studyIdAsNumber}/>*/}
-                    {/*    </div>*/}
-                    {/*</div>*/}
                 </div>
             </div>
         </div>

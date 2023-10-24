@@ -19,31 +19,16 @@ const SearchResult = () => {
     const location = useLocation();
     const searchQuery = new URLSearchParams(location.search).get("q");
     const selectOption = new URLSearchParams(location.search).get("select");
-
-    //페이징관련 코드
     const [page, setPage] = useState(1);
     const [count, setCount] = useState(0);
     const [itemsPerPage, setItemsPerPage] = useState(9);
-
     const navigate = useNavigate();
     const [studies, setStudies] = useState([]);
     const [scrapStates, setScrapStates] = useState([]);
     const [likeStates, setLikeStates] = useState([]);
-
-    // 각 스터디 스크랩, 공감 상태 저장
-    // (위에 scrapStates, likeStates 사용하면 의존성 배열 때문에 useEffect 무한 반복,,)
-    const [scrapTwoStates, setScrapTwoStates] = useState([]);
-    const [likeTwoStates, setLikeTwoStates] = useState([]);
-
     const [showStudyInsert, setShowStudyInsert] = useState(false);
-
-    // 각 스터디 리스트 항목의 스크랩 상태를 저장하는 배열
-//    const [scrapStates, setScrapStates] = useState(false);
-//    const [likeStates, setLikeStates] = useState(false);
-
     const [studiesChanged, setStudiesChanged] = useState(false);
 
-    // localStorage에 저장된 accessToken, 로그인한 사용자 ID 추출
     let accessToken = localStorage.getItem('accessToken');
     let isLoggedInUserId = localStorage.getItem('isLoggedInUserId');
 
@@ -52,25 +37,23 @@ const SearchResult = () => {
             localStorage.setItem("studies", JSON.stringify(studies));
             localStorage.setItem("ScrapStudies", JSON.stringify(scrapStates));
             localStorage.setItem("LikeStates", JSON.stringify(likeStates));
-            // Reset studiesChanged to false
             setStudiesChanged(false);
         }
     }, [studiesChanged, studies, scrapStates, likeStates]);
 
-    //TODO 스크랩, 공감 서버 전송
     useEffect(() => {
         if (accessToken && isLoggedInUserId) {
             let starScrapUrl = "";
 
-            if (selectOption == "제목") {
+            if (selectOption === "제목") {
                 starScrapUrl = "http://localhost:8080/study/search/title/star-scrap";
-            } else if (selectOption == "내용") {
+            } else if (selectOption === "내용") {
                 starScrapUrl = "http://localhost:8080/study/search/content/star-scrap";
             } else {
                 starScrapUrl = "http://localhost:8080/study/search/recruiter/star-scrap";
             }
 
-            axios.get(starScrapUrl, { // 공감
+            axios.get(starScrapUrl, {
                 params: {
                     page: page,
                     keyword: searchQuery,
@@ -88,7 +71,7 @@ const SearchResult = () => {
                     console.log("공감 불러오기 실패", error);
                 });
 
-            axios.get(starScrapUrl, { // 스크랩
+            axios.get(starScrapUrl, {
                 params: {
                     page: page,
                     keyword: searchQuery,
@@ -139,8 +122,6 @@ const SearchResult = () => {
         setShowStudyInsert(!showStudyInsert);
     };
 
-    // 각 스터디 리스트 항목의 스크랩 상태를 토글하는 함수
-
     const toggleScrap = (index) => {
         if (!(accessToken && isLoggedInUserId)) {
             alert("로그인 해주세요");
@@ -150,9 +131,9 @@ const SearchResult = () => {
         setStudies((prevStudies) => {
             const newStudies = [...prevStudies];
             const studyId = newStudies[index].id;
-            if (newStudies[index].scrap) { // true -> 활성화되어 있는 상태 -> 취소해야 함
+            if (newStudies[index].scrap) {
                 axios.delete(`http://localhost:8080/scrap/study/${studyId}`, {
-                    params: { id: studyId },
+                    params: {id: studyId},
                     withCredentials: true,
                     headers: {
                         'Authorization': `Bearer ${accessToken}`
@@ -167,7 +148,7 @@ const SearchResult = () => {
                     });
             } else {
                 axios.post(`http://localhost:8080/scrap/study/${studyId}`, null, {
-                    params: { id: studyId },
+                    params: {id: studyId},
                     withCredentials: true,
                     headers: {
                         'Authorization': `Bearer ${accessToken}`
@@ -181,8 +162,8 @@ const SearchResult = () => {
                         console.log("스크랩 실패");
                     });
             }
-            newStudies[index] = { ...newStudies[index], scrap: !newStudies[index].scrap };
-            setStudiesChanged(true); // Mark studies as changed
+            newStudies[index] = {...newStudies[index], scrap: !newStudies[index].scrap};
+            setStudiesChanged(true);
             return newStudies;
         });
     };
@@ -196,9 +177,9 @@ const SearchResult = () => {
         setStudies((prevStudies) => {
             const newStudies = [...prevStudies];
             const studyId = newStudies[index].id;
-            if (newStudies[index].like) { // true -> 활성화되어 있는 상태 -> 취소해야 함
+            if (newStudies[index].like) {
                 axios.delete(`http://localhost:8080/star/study/${studyId}`, {
-                    params: { id: studyId },
+                    params: {id: studyId},
                     withCredentials: true,
                     headers: {
                         'Authorization': `Bearer ${accessToken}`
@@ -213,7 +194,7 @@ const SearchResult = () => {
                     });
             } else {
                 axios.post(`http://localhost:8080/star/study/${studyId}`, null, {
-                    params: { id: studyId },
+                    params: {id: studyId},
                     withCredentials: true,
                     headers: {
                         'Authorization': `Bearer ${accessToken}`
@@ -227,8 +208,8 @@ const SearchResult = () => {
                         console.log("공감 실패");
                     });
             }
-            newStudies[index] = { ...newStudies[index], like: !newStudies[index].like };
-            setStudiesChanged(true); // Mark studies as changed
+            newStudies[index] = {...newStudies[index], like: !newStudies[index].like};
+            setStudiesChanged(true);
             return newStudies;
         });
     };
@@ -242,7 +223,6 @@ const SearchResult = () => {
     ]
 
     const handlePageChange = (selectedPage) => {
-        // 페이지 번호를 업데이트하고 해당 페이지의 데이터를 가져오도록 설정
         setPage(selectedPage);
     };
 
@@ -250,16 +230,15 @@ const SearchResult = () => {
 
     useEffect(() => {
 
-        if (selectOption == "제목")
+        if (selectOption === "제목")
             base_url = "http://localhost:8080/api/v2/studies/search-by-title";
-        else if (selectOption == "내용")
+        else if (selectOption === "내용")
             base_url = "http://localhost:8080/api/v2/studies/search-by-content";
         else
             base_url = "http://localhost:8080/api/v2/studies/search-by-recruiter";
 
         const fetchStudies = (pageNumber) => {
             console.log("페이지 번호 : ", pageNumber);
-            // 해당 페이지의 데이터를 가져와서 업데이트
             axios.get(base_url, {
                 params: {
                     page: pageNumber,
@@ -286,7 +265,6 @@ const SearchResult = () => {
                     console.error("데이터 가져오기 실패:", error);
                 });
         };
-        // 페이지 번호 변경 시 데이터 가져오기
         fetchStudies(page);
     }, [page, likeStates, scrapStates]);
 
@@ -310,15 +288,14 @@ const SearchResult = () => {
                         <StudyInsert
                             updateStudies={updateStudies}
                             onClose={handleStudyInsertClose}
-                            study ={studies}
+                            study={studies}
                         />
                     )}
                     {!showStudyInsert && (
                         <div>
-                            <div>  <SearchBar searchItems={searchItems}/>
+                            <div><SearchBar searchItems={searchItems}/>
                             </div>
 
-                            {/*TODO css 수정 필요*/}
                             <div className="study_count">
                                 총 {count} 건
                             </div>

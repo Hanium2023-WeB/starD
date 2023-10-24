@@ -22,22 +22,12 @@ const Study = () => {
     const [likeStates, setLikeStates] = useState([]);
     const [isScrapStates, setIsScrapStates] = useState(false);
     const [isLikeStates, setIsLikeStates] = useState(false);
-
     const location = useLocation();
     const pageparams = location.state ? location.state.page : 1;
-
     const [showStudyInsert, setShowStudyInsert] = useState(false);
-
     const [studiesChanged, setStudiesChanged] = useState(false);
-    let [isLoggedIn, setIsLoggedIn] = useState(false);
-
-    // localStorage에 저장된 accessToken 추출
     let accessToken = localStorage.getItem('accessToken');
-
-    // localStorage에 저장된 로그인한 사용자 Id 추출
     let isLoggedInUserId = localStorage.getItem('isLoggedInUserId');
-
-    //페이징관련 코드
     const [page, setPage] = useState(pageparams);
     const [count, setCount] = useState(0);
     const [itemsPerPage, setItemsPerPage] = useState(9);
@@ -73,7 +63,6 @@ const Study = () => {
         setShowStudyInsert(!showStudyInsert);
     };
 
-    // 각 스터디 리스트 항목의 스크랩 상태를 토글하는 함수
 
     const toggleScrap = (index) => {
         if (!(accessToken && isLoggedInUserId)) {
@@ -84,7 +73,7 @@ const Study = () => {
         setStudies((prevStudies) => {
             const newStudies = [...prevStudies];
             const studyId = newStudies[index].id;
-            if (newStudies[index].scrap) { // true -> 활성화되어 있는 상태 -> 취소해야 함
+            if (newStudies[index].scrap) {
                 axios.delete(`http://localhost:8080/scrap/study/${studyId}`, {
                     params: {id: studyId},
                     withCredentials: true,
@@ -116,7 +105,7 @@ const Study = () => {
                     });
             }
             newStudies[index] = {...newStudies[index], scrap: !newStudies[index].scrap};
-            setStudiesChanged(true); // Mark studies as changed
+            setStudiesChanged(true);
             return newStudies;
         });
     };
@@ -130,7 +119,7 @@ const Study = () => {
         setStudies((prevStudies) => {
             const newStudies = [...prevStudies];
             const studyId = newStudies[index].id;
-            if (newStudies[index].like) { // true -> 활성화되어 있는 상태 -> 취소해야 함
+            if (newStudies[index].like) {
                 axios.delete(`http://localhost:8080/star/study/${studyId}`, {
                     params: {id: studyId},
                     withCredentials: true,
@@ -162,18 +151,16 @@ const Study = () => {
                     });
             }
             newStudies[index] = {...newStudies[index], like: !newStudies[index].like};
-            setStudiesChanged(true); // Mark studies as changed
+            setStudiesChanged(true);
             return newStudies;
         });
     };
 
     const handlePageChange = (selectedPage) => {
-        // 페이지 번호를 업데이트하고 해당 페이지의 데이터를 가져오도록 설정
         setPage(selectedPage);
         navigate(`/study/page=${selectedPage}`);
     };
 
-    // 공감, 스크랩 가져오는 함수
     const fetchLikeScrap = (pageNumber) => {
         if (accessToken && isLoggedInUserId) {
             const res_like = axios.get("http://localhost:8080/study/stars", {
@@ -187,11 +174,10 @@ const Study = () => {
             }).then((response) => {
                 setLikeStates(response.data);
                 setIsLikeStates(true);
-                console.log("공감 가져오기 성공");
             })
-            .catch((error) => {
-                console.error("공감 가져오기 실패:", error);
-            });
+                .catch((error) => {
+                    console.error("공감 가져오기 실패:", error);
+                });
 
             const res_scrap = axios.get("http://localhost:8080/study/scraps", {
                 params: {
@@ -206,24 +192,19 @@ const Study = () => {
                 setIsScrapStates(true);
                 console.log("스크랩 가져오기 성공");
             })
-            .catch((error) => {
-                console.error("스크랩 가져오기 실패:", error);
-            });
+                .catch((error) => {
+                    console.error("스크랩 가져오기 실패:", error);
+                });
         }
     };
 
-
-    // 데이터를 가져오는 함수
     const fetchStudies = (pageNumber) => {
-        console.log("페이지 번호 : ", pageNumber);
-        // 해당 페이지의 데이터를 가져와서 업데이트
         axios.get("http://localhost:8080/api/v2/studies/all", {
             params: {
                 page: pageNumber,
             },
         })
             .then((response) => {
-                console.log("페이징 성공");
                 setStudies(response.data.content);
                 setItemsPerPage(response.data.pageable.pageSize);
                 setCount(response.data.totalElements);
@@ -235,7 +216,7 @@ const Study = () => {
                 console.error("데이터 가져오기 실패:", error);
             });
     };
-    // 페이지 번호 변경 시 데이터 가져오기
+
     useEffect(() => {
         setStudiesInitialized(false);
         setIsLikeStates(false);
@@ -266,7 +247,7 @@ const Study = () => {
         <div className={"main_wrap"} id={"study"}>
             <Header showSideCenter={true}/>
             <div className="study_detail_container" style={{width: "70%"}}>
-                    <h1>STAR TOUR STORY</h1>
+                <h1>STAR TOUR STORY</h1>
                 <div className="arrow_left">
                     <p id={"entry-path"}> 홈 > 스터디 리스트 </p>
                     <Backarrow subname={"STAR TOUR STORY"}/>

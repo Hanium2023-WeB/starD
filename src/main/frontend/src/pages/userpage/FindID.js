@@ -12,7 +12,7 @@ const FindID = () => {
             phone: "",
         }
     );
-    const [findId, setFindId]= useState();
+    const [findId, setFindId] = useState();
     const inputemail = useRef();
     const inputphone = useRef();
 
@@ -23,56 +23,50 @@ const FindID = () => {
             ...state,
             [e.target.name]: e.target.value.toString(),
         });
-            };
+    };
 
-const receiveCertificate=()=>{
-    // 이메일 정규식 검증
-    // if (!isEmail(state.email)) {
-    //     inputemail.current.focus();
-    //     alert("유효한 이메일 주소를 입력해 주세요.");
-    //     return;
-    // }
-    // 전화번호 검증
-    if (state.phone.length < 7) {
-        inputphone.current.focus();
-        alert("전화번호는 7자 이상이어야 합니다.");
-        return;
-    }
-    try {
-        axios.get("http://localhost:8080/member/find-id", {
-            params: {
-                "email": state.Email,
-                "phone": state.phone,
-            }
-        }).then((response)=>{
+    const receiveCertificate = () => {
 
-            console.log("인증번호 받기 성공: ",response.data);
-            setFindId(response.data.id);
-
-            navigate("/login/findedID",{
-                state:{
-                    findId:response.data.id
+        if (state.phone.length < 7) {
+            inputphone.current.focus();
+            alert("전화번호는 7자 이상이어야 합니다.");
+            return;
+        }
+        try {
+            axios.get("http://localhost:8080/member/find-id", {
+                params: {
+                    "email": state.Email,
+                    "phone": state.phone,
                 }
-            } )
+            }).then((response) => {
 
-        }).catch((error)=>{
-            console.log("인증번호 받기 실패", error);
-        })
+                console.log("인증번호 받기 성공: ", response.data);
+                setFindId(response.data.id);
 
-    } catch (error) {
-        console.error("Error:", error);
+                navigate("/login/findedID", {
+                    state: {
+                        findId: response.data.id
+                    }
+                })
+
+            }).catch((error) => {
+                console.log("인증번호 받기 실패", error);
+            })
+
+        } catch (error) {
+            console.error("Error:", error);
+        }
+
+
     }
-
-
-}
 
 
     return (
         <div>
             <Header showSideCenter={false}/>
-           <div className={"page_title"}>
-               <p id={"find-id"}>아이디 찾기</p>
-           </div>
+            <div className={"page_title"}>
+                <p id={"find-id"}>아이디 찾기</p>
+            </div>
             <div className="findwrap">
                 <div className={"container_findwrap"}>
                     <div className="container_find" id="logs">

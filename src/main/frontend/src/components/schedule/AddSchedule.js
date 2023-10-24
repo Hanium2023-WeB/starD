@@ -11,26 +11,20 @@ const AddSchedule = ({studies,studyTitles, selectedDate, onInsert, onClose }) =>
   const [endDate, setEndDate] = useState(new Date(selectedDate));
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  // const [study, setStudy] = useState("My");
   const [color, setColor] = useState("");
   const [InsertToDoTitle, setInsertToDoTitle] = useState("")
   const [InsertStudyId, setInsertStudyId] = useState(studies[0].study.id) // 초기값 : 첫 번째 스터디 (기본 선택값)
   const [InsertStudy, setInsertStudy] = useState([]); //선택한 스터디 객체
   const studyIdAsNumber = parseFloat(InsertStudyId);
 
-  const [schedule, setSchedule] = useState({});
   const onChangeTitle = useCallback((e) => {
     setTitle(e.target.value);
   }, []);
   const onChangeContent = useCallback((e) => {
     setContent(e.target.value);
   }, []);
-  // const onChangeStudy = useCallback((e) => {
-  //   setStudy(e.target.value);
-  //   console.log(e.target.value);
-  // }, []);
 
-  //스터디 고를 때
+
   const selectScehduleStudy = (e) => {
     setInsertToDoTitle(e.target.value)
     const selectedStudy = studies.find((study) => study.study.title === e.target.value);
@@ -48,7 +42,6 @@ const AddSchedule = ({studies,studyTitles, selectedDate, onInsert, onClose }) =>
 
 
   const onSubmit = useCallback(
-      //나중에 todos 배열에 새 데이터(객체)를 추가하는 함수를 추가해줄겁니다!
       (e) => {
         if (title != "") {
           console.log("addschedule:", endDate.toDateString());
@@ -58,8 +51,6 @@ const AddSchedule = ({studies,studyTitles, selectedDate, onInsert, onClose }) =>
           // return;
         }
         setTitle("");
-        // setStudy(""); //value 초기화
-        //기본이벤트(새로고침) 방지
         e.preventDefault();
       },
       [content, color]
@@ -67,8 +58,6 @@ const AddSchedule = ({studies,studyTitles, selectedDate, onInsert, onClose }) =>
 
 
   return (
-      // <div>
-      // {showForm &&(
       <div className="background">
         <form className="Scheduleedit_insert">
           <h2>{localDateString}</h2>
@@ -87,7 +76,6 @@ const AddSchedule = ({studies,studyTitles, selectedDate, onInsert, onClose }) =>
                   selected={startDate}
                   onChange={(date) => setStartDate(date)}
                   dateFormat="yyyy-MM-dd"
-                  // readOnly
                   placeholder="시작 날짜 선택"
               />
             </div>

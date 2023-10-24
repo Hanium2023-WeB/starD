@@ -55,9 +55,8 @@ const Mypage = ({sideheader}) => {
         return checked ? "checked" : "unchecked";
     };
 
-    //스크랩 커뮤니티
+
     useEffect(() => {
-        // API 또는 데이터 원본에서 스크랩한 게시물을 가져옵니다.
         axios.get("http://localhost:8080/scrap/post", {
             withCredentials: true,
             headers: {
@@ -146,7 +145,7 @@ const Mypage = ({sideheader}) => {
         });
     }, []);
 
-    //마이페이지 투두 연동
+
     const [filteredToDo, setFilteredToDo] = useState([]);
     useEffect(() => {
         if (Array.isArray(parsedTodos)) {
@@ -161,7 +160,7 @@ const Mypage = ({sideheader}) => {
             console.error("parsedTodos is not an array.");
         }
     }, [parsedTodos]);
-    //마이페이지 일정 연동
+
     const [filtereMeetings, setFilteredMeetings] = useState([]);
     useEffect(() => {
         if (Array.isArray(parsedmeetings)) {

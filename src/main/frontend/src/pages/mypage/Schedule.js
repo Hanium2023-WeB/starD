@@ -8,18 +8,15 @@ import axios from "axios";
 
 const Schedule = ({sideheader}) => {
     const [meetings, setMeetings] = useState({});
-    const [selectedDate, setSelectedDate] = useState(new Date()); // 추가: 선택한 날짜 상태
-    const [addToggle, setAddToggle] = useState(false); //일정 추가 +토글버튼 상태
+    const [selectedDate, setSelectedDate] = useState(new Date());
+    const [addToggle, setAddToggle] = useState(false);
     const accessToken = localStorage.getItem('accessToken');
 
     const [studies, setStudy] = useState([]);
-    const [studyTitles, setStudyTitles] = useState([]); //참여 중인 스터디 제목
-    const [studyIds, setStudyIds] = useState([]); //참여 중인 스터디 아이디
-    const [studyMems, setStudyMems] = useState([]); //참여 멤버
+    const [studyTitles, setStudyTitles] = useState([]);
+    const [studyIds, setStudyIds] = useState([]);
+    const [studyMems, setStudyMems] = useState([]);
 
-
-    // TODO 백엔드 연동
-    //참여스터디
     useEffect(() => {
         axios.get("http://localhost:8080/user/mypage/studying", {
             withCredentials: true, headers: {
@@ -73,7 +70,7 @@ const Schedule = ({sideheader}) => {
     };
     const nextId = useRef(1);
 
-    //일정 추가 함수
+
     const onInsert = useCallback((start_date, title, color, studyIdAsNumber) => {
 
         const startDay = new Date(start_date);
@@ -92,12 +89,12 @@ const Schedule = ({sideheader}) => {
             console.log("전송 성공", res.data);
             setSchedules([...schedules, res.data]);
         }).catch((error) => {
-            console.error("전송 실패", error.response.data); // Log the response data
+            console.error("전송 실패", error.response.data);
         });
         nextId.current += 1;
     }, [meetings, selectedDate]);
 
-    //일정 수정 함수
+
     const onUpdate = (id, start_date, newTitle, newColor) => {
         console.log("title:", newTitle);
         console.log("COLOR:", newColor);
@@ -106,7 +103,7 @@ const Schedule = ({sideheader}) => {
             params: {
                 title: newTitle, color: newColor,
             }, withCredentials: true, headers: {
-                'Authorization': `Bearer ${accessToken}`, // 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`,
             }
         }).then((res) => {
             console.log("전송 성공", res.data);

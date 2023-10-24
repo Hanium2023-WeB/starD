@@ -10,14 +10,9 @@ const SearchBar = () => {
 	const [selectOption, setSelectOption] = useState("제목");
 	const navigate = useNavigate();
 
-
-	//엔터를 치면 해당 검색페이지로 넘어갑니다
 	const handleKeyDown = (e) => {
-		// 엔터 키의 키 코드는 13입니다.
 		if (e.keyCode === 13) {
-			// 엔터 키를 눌렀을 때 할 작업을 여기에 추가합니다.
 			console.log("엔터 키를 눌렀습니다.");
-			// 예시: 입력한 내용을 상태에 저장하고 폼을 제출합니다.
 			setSearch(e.target.value);
 			searchItem(e.target.value);
 		}
@@ -32,7 +27,6 @@ const SearchBar = () => {
 		console.log(`value = ${e.target.value}`)
 	}
 
-	//url 동적으로 바꾸기 선택한 옵션과 검색내용이 url안으로 들어갑니다
 	const searchItem = (item)=>{
 		console.log("타깃",item)
 		setSearch(item);

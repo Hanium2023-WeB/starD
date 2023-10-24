@@ -21,7 +21,7 @@ const TeamScheduleCalender = ({studies, studyTitles,onDateClick ,meetings, sched
         setSelectedDate(new Date(day));
         console.log("클릭한 날짜");
         console.log(new Date(day));
-        onDateClick(new Date(day)); //부모 컴포넌트로 선택한 날짜 전달하기
+        onDateClick(new Date(day));
     },[selectedDate]);
 
     return (
