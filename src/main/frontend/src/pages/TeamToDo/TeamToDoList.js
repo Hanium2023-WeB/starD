@@ -14,7 +14,7 @@ import Category from "../../components/repeat_etc/Category";
 const TeamToDoList = () => {
     const [selectedTodo, setSelectedTodo] = useState(null);
     const [insertToggle, setInsertToggle] = useState(false);
-    const [selectedDate, setSelectedDate] = useState(new Date()); // 추가: 선택한 날짜 상태
+    const [selectedDate, setSelectedDate] = useState(new Date());
     const accessToken = localStorage.getItem('accessToken');
     const Year = selectedDate.getFullYear();
     let Month = selectedDate.getMonth() + 1;
@@ -22,9 +22,9 @@ const TeamToDoList = () => {
     const location = useLocation();
     const {studyId, Member, selecteStudy} = location.state;
     const [studies, setStudy] = useState([]);
-    const [studyMems, setStudyMems] = useState([]); //참여 멤버
+    const [studyMems, setStudyMems] = useState([]);
     const [member, setMember] = useState(Member);
-    const [Assignees, setAssignees] = useState([]); //담당자
+    const [Assignees, setAssignees] = useState([]);
     const studyIdAsNumber = parseFloat(studyId);
 
 
@@ -39,7 +39,7 @@ const TeamToDoList = () => {
         setSelectedTodo(todo);
     };
 
-    const [todoswithAssignee, setTodoswithAssignee] = useState({}); //투두랑 담당자 함친 객체 배열 state
+    const [todoswithAssignee, setTodoswithAssignee] = useState({});
 
     const nextId = useRef(1);
 
@@ -58,7 +58,6 @@ const TeamToDoList = () => {
         const removeAssignName = Assignees.filter((item) => item !== e.target.value);
         setAssignees(removeAssignName);
         console.log("삭제 완료: ", Assignees);
-        //삭제하면 다시 담당자 부분에 생성됨
         const assigneeToAddBack = Member.find((item) => item.member.name === removeAssignName);
         if (assigneeToAddBack) {
             const updatedMember = [...Member, assigneeToAddBack];
@@ -145,7 +144,7 @@ const TeamToDoList = () => {
                         return {
                             ...todo,
                             task: UpdatedToDo.toDo.task,
-                            assignees: postDataResponse.data.assignees, // Update the assignees
+                            assignees: postDataResponse.data.assignees,
                         };
                     } else {
                         return todo;
