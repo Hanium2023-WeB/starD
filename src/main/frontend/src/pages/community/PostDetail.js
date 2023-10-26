@@ -23,14 +23,16 @@ const PostDetail = () => {
 
     const [posts, setPosts] = useState([]);
     const [editing, setEditing] = useState(false);
-    const [postDetail, setPostDetail] = useState([]);// 게시글 상세 정보를 상태로 관리
+    const [postDetail, setPostDetail] = useState([]);
 
     const accessToken = localStorage.getItem('accessToken');
     const isLoggedInUserId = localStorage.getItem('isLoggedInUserId');
 
+    const [isWriter, setIsWriter] = useState(false);
+
     useEffect(() => {
         if (accessToken && isLoggedInUserId) {
-            axios.get(`http://localhost:8080/star/post/${id}`, { // 공감
+            axios.get(`http://localhost:8080/star/post/${id}`, {
                 params: { id: id },
                 withCredentials: true,
                 headers: {
@@ -39,13 +41,13 @@ const PostDetail = () => {
             })
                 .then(response => {
                     setLikeStates(response.data);
-                    setInitiallyLikeStates(response.data);
+                    setInitiallyLikeStates(true);
                 })
                 .catch(error => {
                     console.log("공감 불러오기 실패", error);
                 });
 
-            axios.get(`http://localhost:8080/scrap/post/${id}`, { // 스크랩
+            axios.get(`http://localhost:8080/scrap/post/${id}`, {
                 params: { id: id },
                 withCredentials: true,
                 headers: {
@@ -54,11 +56,14 @@ const PostDetail = () => {
             })
                 .then(response => {
                     setScrapStates(response.data);
-                    setInitiallyScrapStates(response.data);
+                    setInitiallyScrapStates(true);
                 })
                 .catch(error => {
                     console.log("스크랩 불러오기 실패", error);
                 });
+        } else {
+            setInitiallyLikeStates(true);
+            setInitiallyScrapStates(true);
         }
     }, [id]);
 
@@ -69,17 +74,21 @@ const PostDetail = () => {
         };
 
         if (accessToken && isLoggedInUserId) {
-            // 로그인한 사용자인 경우 인증 토큰을 헤더에 추가
             config.headers['Authorization'] = `Bearer ${accessToken}`;
         }
 
-        axios.get(`http://localhost:8080/com/${id}`, config)
-            .then((res) => {
-                setPostItem(res.data);
-            })
-                .catch((error) => {
-                    console.error("커뮤니티 게시글 세부 데이터 가져오기 실패:", error);
-        });
+        if (initiallyLikeStates && initiallyScrapStates) {
+            axios.get(`http://localhost:8080/com/${id}`, config)
+                .then((res) => {
+                    setPostItem(res.data);
+                    if (res.data.member.id === isLoggedInUserId) { // 자신의 글인지
+                        setIsWriter(true);
+                    }
+                })
+                    .catch((error) => {
+                        console.error("커뮤니티 게시글 세부 데이터 가져오기 실패:", error);
+            });
+        }
     }, [id, accessToken, isLoggedInUserId, initiallyLikeStates, initiallyScrapStates]);
 
     const toggleLike = () => {
@@ -234,8 +243,6 @@ const PostDetail = () => {
                 });
         }
     }
-
-    // 날짜, 시간 포맷팅("yyyy-MM-dd HH:mm" 형식)
     const formatDatetime = (datetime) => {
       const date = new Date(datetime);
       const year = date.getFullYear();
@@ -251,7 +258,7 @@ const PostDetail = () => {
         <div>
             <Header showSideCenter={true}/>
             <div className="community_container">
-                <h1>COMMUNITY LIST</h1>
+                <Backarrow subname={"COMMUNITY LIST"}/>
                 {editing ? (
                         <PostEdit
                             post={postItem}
@@ -270,10 +277,12 @@ const PostDetail = () => {
                                 <div className="post_title">
                                     {postItem.title}
                                 </div>
-                                <div className="button">
-                                    <button style={{marginRight:"5px"}} onClick={handleEditClick}>수정</button>
-                                    <button onClick={handlePostDelete}>삭제</button>
-                                </div>
+                                {isWriter && (
+                                    <div className="button">
+                                        <button style={{marginRight:"5px"}} onClick={handleEditClick}>수정</button>
+                                        <button onClick={handlePostDelete}>삭제</button>
+                                    </div>
+                                )}
                             </div>
                             <div className="post_info">
                                 <div className="left">

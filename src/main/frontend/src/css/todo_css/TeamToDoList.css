@@ -14,13 +14,13 @@
     /*font-family: 'Pretendard-Regular';*/
 }
 /*담당자 선택란*/
-.select_assignee{
+.select_assignee, .selected-assignees{
     display: flex;
     width: 90%;
 
     border-radius: 2px;
 }
-.select_assignee > p{
+.select_assignee > p .selected-assignees > p{
     padding: 2px;
     margin:  0px;
     font-size: 12px;
@@ -33,11 +33,13 @@
     cursor: pointer;
     background-color: rgba(242, 241, 238, 0.6);
 }
-.select_assignee button{
+.selected-assignees button{
     background-color: rgba(242, 241, 238, 0.6);
     margin-left: 5px;
     color: #767678;
     border-style: none;
     font-size: 10px;
     cursor: pointer;
+    position: relative;
+    bottom: 3px;
 }

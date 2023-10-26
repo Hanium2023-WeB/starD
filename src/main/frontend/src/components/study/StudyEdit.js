@@ -83,7 +83,7 @@ const StudyEdit = ({study, onUpdateStudy, onCancel}) => {
     }
 
     const handleTagChange = (selectedTag) => {
-        setTags(selectedTag); // 변경된 부분: 태그 정보를 배열로 변환하여 설정
+        setTags(selectedTag);
     };
 
     useEffect(()=>{
@@ -153,8 +153,6 @@ const StudyEdit = ({study, onUpdateStudy, onCancel}) => {
                 </div>
                 <div className="study_open_detail">
                     <span>상세 내용</span>
-                    {/*<textarea name="description" onChange={handleInputChange}*/}
-                    {/*          defaultValue={updatedStudy.content}/>*/}
                     <textarea name="content" onChange={handleInputChange}
                               value={updatedStudy.content}/>
                 </div>

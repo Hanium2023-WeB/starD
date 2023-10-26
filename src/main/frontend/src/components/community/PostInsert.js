@@ -13,7 +13,6 @@ const PostInsert = () => {
         created_date:new Date(),
     })
 
-    //관심분야 옵션들
     const tagoptions = [
         { value: "취업", name: "취업" },
         { value: "자소서", name: "자소서" },
@@ -35,10 +34,8 @@ const PostInsert = () => {
         { value: "건축", name: "건축" },
         { value: "환경", name: "환경" },
         {value: "블로그 운영", name: "블로그 운영"},
-        // Add more categories as needed
     ];
 
-    //입력데이터 상태관리
     const handleInputChange = (e) => {
         const {name, value} = e.target;
         setFormData({
@@ -77,10 +74,9 @@ const PostInsert = () => {
             formData.title.trim() === '' &&
             formData.content.trim() === ''
         ) {
-            // 하나라도 비어있으면 알림을 표시하거나 다른 처리를 수행할 수 있습니다.
             alert('게시글 정보를 입력해주세요.');
 
-            return; // 창이 넘어가지 않도록 중단
+            return;
         }
         if (formData.title.trim() === '') {
             alert("제목을 입력해주세요.");
@@ -90,13 +86,9 @@ const PostInsert = () => {
             alert("내용을 입력해주세요.");
             return;
         }
-
         setFormData(onInsertPost(formData));
-        console.log(`ffffffffformData: ${JSON.stringify(formData)}`)
-
         const accessToken = localStorage.getItem('accessToken');
 
-        //TODO 게시글 작성 서버 전송 (스크랩, 공감 제외)
         const response = axios.post("http://localhost:8080/com",
             {
                 title:formData.title,
@@ -110,15 +102,10 @@ const PostInsert = () => {
                 }
             })
             .then((res) => {
-                // console.log("전송 성공");
-                // console.log(res.data);
-                // 성공하면
-                // navigate("/myopenstudy", {state: formData});
-
+                 console.log(res.data);
             }).catch((error) => {
                 console.log('전송 실패', error);
             })
-        console.log("response : ", response);
         e.preventDefault();
         navigate("/");
     }, [formData])

@@ -7,7 +7,6 @@ import Header from "../../components/repeat_etc/Header";
 const Login = () => {
 
     const navigate = useNavigate();
-    //useNavigate 훅을 사용하여 navigate 함수를 가져옴
 
     const inputID = useRef();
     const inputPW = useRef();
@@ -21,19 +20,17 @@ const Login = () => {
             ...state,
             [e.target.name]: e.target.value,
         });
-        // console.log(e.target.name); // ID
-        // console.log(e.target.value); // PW
     };
 
     //엔터키 눌렀을 때
     const handleKeyDown = (event) => {
-        if (event.keyCode === 13) { // 엔터 키의 키 코드는 13입니다.
+        if (event.keyCode === 13) {
             handleSubmit();
         }
     };
     const handleSubmit = () => {
 
-        if (state.ID.length < 3) {      // TODO 아이디 및 비밀번호 입력값 최소 길이 수정 필요
+        if (state.ID.length < 3) {
             inputID.current.focus();
             return;
         }
@@ -54,36 +51,24 @@ const Login = () => {
                 withCredentials: true
             })
             .then((res) => {
-                console.log('전송 성공');
-                console.log(res.data);
-
                 if (res.data.state === 400) {
                     alert("입력값을 확인해주세요.\n로그인 실패");
                 } else {
                     const accessToken = res.data.data.accessToken;
 
-                    // 로그인 성공 시 localstorage에 accessToken, 사용자 Id 값 저장
                     localStorage.setItem('accessToken', accessToken);
                     localStorage.setItem('isLoggedInUserId', state.ID);
 
-                    // 로그인 성공 시 메인 페이지로 리다이렉트
                     navigate('/'); // useNavigate를 사용하여 페이지를 이동
                 }
             })
             .catch(error => {
                 console.log('전송 실패', error);
-
-                // 로그인 실패 시 현재 페이지 다시 로드
-                // window.location.reload();
-
                 alert("입력값을 확인해주세요.\n로그인 실패");
             });
     };
     return (
         <div>
-
-            {/* <LogoButton /> */}
-            {/* <div className ="Logo"> STAR D </div> */}
             <Header showSideCenter={false}/>
             <div className="containers" id="log">
                 <div className="login_info">
@@ -106,7 +91,7 @@ const Login = () => {
                     <div className="subinfo">비밀번호</div>
                     <div>
                         <input
-                            style={{marginLeft:"0"}}
+                            style={{marginLeft: "0"}}
                             ref={inputPW}
                             placeholder="비밀번호를 입력해주세요"
                             name={"PW"}

@@ -5,9 +5,7 @@ import "../../css/report_css/Report.css";
 const Report = ({ show, handleClose, onReportSubmit, targetId }) => {
     const [selectedReason, setSelectedReason] = useState(null);
     const [customReason, setCustomReason] = useState(null);
-
     const accessToken = localStorage.getItem('accessToken');
-
     const handleReportReasonClick = (reason) => {
         setSelectedReason(reason);
         if (reason === "ETC") {
@@ -39,7 +37,7 @@ const Report = ({ show, handleClose, onReportSubmit, targetId }) => {
                 .catch((error) => {
                     if (error.response) {
                         if (error.response.data && error.response.data.message) {
-                            alert(error.response.data.message); // 서버에서 반환한 메시지를 보여줌
+                            alert(error.response.data.message);
                         } else {
                             console.error("Error reporting:", error);
                         }

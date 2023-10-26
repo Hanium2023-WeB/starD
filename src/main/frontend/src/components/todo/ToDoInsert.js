@@ -7,14 +7,14 @@ import {useLocation} from "react-router-dom";
 //추가할 부분: 서버에서 참여 중인 스터디 내역, 참여 멤버 가지고 오기
 //투두리스트 데이터 구조 변경 -> 아이디,스터디 ,할 일,날짜, 담당자
 
-const ToDoInsert = ({onInsert, dueDate, Inserttodostudyid,Inserttodotitle,Inserttodostudy,studyidasnumber}) => {
+const ToDoInsert = ({onInsert, dueDate, Inserttodostudyid, Inserttodotitle, Inserttodostudy, studyidasnumber}) => {
     const accessToken = localStorage.getItem('accessToken');
     const [studies, setStudy] = useState([]);//참여 중인 스터디 리스트
     const [studyTitles, setStudyTitles] = useState([]); //참여 중인 스터디 제목
     const [studyIds, setStudyIds] = useState([]); //참여 중인 스터디 아이디
     const [studyMems, setStudyMems] = useState(""); //참여 멤버
     const [responseData, setResponseData] = useState([]);
-
+    const isInputDisabled = Inserttodostudyid === "0"; //전체보기일때 input창을 막아두기 위한 변수
 
     const inputDate = new Date(dueDate);
 
@@ -27,8 +27,6 @@ const ToDoInsert = ({onInsert, dueDate, Inserttodostudyid,Inserttodotitle,Insert
     const month = inputDate.getMonth() + 1;
     const formattedDate = inputDate.toISOString();
 
-    // console.log("formattedDate >>", formattedDate);
-
 
     // TODO 서버에서 참여스터디와 참여멤버 가져오기
     useEffect(() => {
@@ -40,7 +38,6 @@ const ToDoInsert = ({onInsert, dueDate, Inserttodostudyid,Inserttodotitle,Insert
         })
             .then((res) => {
                 console.log("모집완료된 스터디, 참여멤버 전송 성공 : ", res.data);
-
                 const studyList = res.data.content;
                 setStudy(studyList);
                 // console.log("모집완료 ? :", studies);
@@ -82,7 +79,7 @@ const ToDoInsert = ({onInsert, dueDate, Inserttodostudyid,Inserttodotitle,Insert
         async (e) => {
             if (TaskValue !== '') {
                 onInsert(InsertToDoTitle, TaskValue, studyIdAsNumber);
-                nextId.current +=1;
+                nextId.current += 1;
             } else {
                 alert("할 일을 입력해 주세요.");
                 return;
@@ -144,39 +141,16 @@ const ToDoInsert = ({onInsert, dueDate, Inserttodostudyid,Inserttodotitle,Insert
         console.log('투두리스트:', responseData);
     }, [responseData]);
 
-    // const selectStudy = (e) => {
-    //     setInsertToDoTitle(e.target.value)
-    //     if (e.target.value !== "전체") {
-    //         const selectedStudy = studies.find((study) => study.study.title === e.target.value);
-    //         const selectedId = selectedStudy.study.id;
-    //         setInsertToDoStudyId(selectedId);
-    //         setInsertToDoStudy(selectedStudy);
-    //         console.log(e.target.value);
-    //         console.log(selectedId);
-    //     }else if(e.target.value==="전체"){
-    //         const allselect = "0";
-    //         setInsertToDoStudyId(allselect);
-    //         console.log("전체 select: ",allselect);
-    //
-    //     }
-    //
-    // }
-    useEffect(()=>{
+    useEffect(() => {
         console.log("선택된 스터디 아이디:", InsertToDoStudyId);
-    },[InsertToDoStudyId]);
+    }, [InsertToDoStudyId]);
 
     return (
         <form className="TodoInsert" onSubmit={onSubmit}>
-            {/*<select id="todo-select" onChange={selectStudy} value={InsertToDoTitle}>*/}
-            {/*    <option value="전체">전체</option>*/}
-            {/*    {studyTitles.map((item, index) => (*/}
-            {/*        <option key={index} value={item}>{item}</option>*/}
-
-            {/*    ))}*/}
-            {/*</select>*/}
             <input id={"insert-input"} onChange={onChange}
                    value={TaskValue}
-                   placeholder="할 일을 입력하세요"/>
+                   placeholder="할 일을 입력하세요"
+                   disabled={isInputDisabled}/>
             <button type="submit">입력</button>
         </form>
     );

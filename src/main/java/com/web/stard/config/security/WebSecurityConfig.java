@@ -34,6 +34,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             "/swagger-ui.html",
             "/webjars/**",
 
+
             /* swagger v3 */
 //            "/v3/api-docs/**",
 //            "/swagger-ui/**"
@@ -61,10 +62,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             // 전체 스터디 게시글 조회 허용 O
             "/api/v2/studies/all",
 
+            "/api/v2/studies/study-ranking",
+
             "/api/v2/studies/search-by-title",
             "/api/v2/studies/search-by-content",
             "/api/v2/studies/search-by-recruiter",
             "/member/find-nickname",
+            "/member/find-id",
 
             "/com/**",
 

@@ -3,21 +3,18 @@ import React, {useEffect, useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
 
 import "../../css/community_css/Community.css";
-import SearchBar from "../../SearchBar";
+import SearchBar from "../../components/community/CommSearchBar";
 import PostInsert from "../../components/community/PostInsert";
 import PostListItem from "../../components/community/PostListItem";
 import axios from "axios";
+import Backarrow from "../../components/repeat_etc/Backarrow";
 
 const Community = () => {
     const navigate = useNavigate();
     const [posts, setPosts] = useState([]);
     const [showPostInsert, setShowPostInsert] = useState(false);
-
-    // localStorage에 저장된 accessToken 추출
-    const accessToken = localStorage.getItem('accessToken');
-
-    // localStorage에 저장된 로그인한 사용자 Id 추출
-    const isLoggedInUserId = localStorage.getItem('isLoggedInUserId');
+    let accessToken = localStorage.getItem('accessToken');
+    let isLoggedInUserId = localStorage.getItem('isLoggedInUserId');
 
     const handleMoveToStudyInsert = (e) => {
          if (accessToken && isLoggedInUserId) {
@@ -28,14 +25,6 @@ const Community = () => {
              navigate("/login");
          }
     };
-
-    const searchItems = [
-        "back-end",
-        "front-end",
-        "cloud",
-        "aws",
-        "framework"
-    ]
 
     useEffect(() => {
         axios.get("http://localhost:8080/com")
@@ -51,14 +40,15 @@ const Community = () => {
         <div className={"main_wrap"} id={"community"}>
             <Header showSideCenter={true}/>
             <div className="community_container">
-                <h1>COMMUNITY LIST</h1>
+                <p id={"entry-path"}> 커뮤니티 </p>
+                <Backarrow subname={"COMMUNITY LIST"}/>
                 {showPostInsert && (
                     <PostInsert />
                 )}
                 {!showPostInsert && (
                     <div>
                         <div className="community_header">
-                            <SearchBar searchItems={searchItems}/>
+                            <SearchBar/>
                             <button onClick={handleMoveToStudyInsert} className="new_post_btn">
                                 새 글 작성
                             </button>

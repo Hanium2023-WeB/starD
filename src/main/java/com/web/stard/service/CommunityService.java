@@ -93,9 +93,9 @@ public class CommunityService {
     public List<Post> searchCommPost(String searchType, String searchWord) {
         List<Post> posts;
 
-        if (searchType.equals("title")) {
+        if (searchType.equals("제목")) {
             posts = postRepository.findByTypeAndTitleContainingOrderByCreatedAtDesc(PostType.COMM, searchWord);
-        } else if (searchType.equals("content")) {
+        } else if (searchType.equals("내용")) {
             posts = postRepository.findByTypeAndContentContainingOrderByCreatedAtDesc(PostType.COMM, searchWord);
         } else {
             Member member = memberService.findByNickname(searchWord);
@@ -123,9 +123,9 @@ public class CommunityService {
         Sort sort = Sort.by(new Sort.Order(Sort.Direction.DESC, "createdAt"));
         Pageable pageable = PageRequest.of(page-1, 10, sort);
 
-        if (searchType.equals("title")) {
+        if (searchType.equals("제목")) {
             posts = postRepository.findByTypeAndTitleContaining(PostType.COMM, searchWord, pageable);
-        } else if (searchType.equals("content")) {
+        } else if (searchType.equals("내용")) {
             posts = postRepository.findByTypeAndContentContaining(PostType.COMM, searchWord, pageable);
         } else {
             Member member = memberService.findByNickname(searchWord);
@@ -150,9 +150,9 @@ public class CommunityService {
     public List<Post> searchCommPostByCategory(String searchType, String category, String searchWord) {
         List<Post> posts;
 
-        if (searchType.equals("title")) {
+        if (searchType.equals("제목")) {
             posts = postRepository.findByTypeAndCategoryAndTitleContainingOrderByCreatedAtDesc(PostType.COMM, category, searchWord);
-        } else if (searchType.equals("content")) {
+        } else if (searchType.equals("내용")) {
             posts = postRepository.findByTypeAndCategoryAndContentContainingOrderByCreatedAtDesc(PostType.COMM, category, searchWord);
         } else {
             Member member = memberService.findByNickname(searchWord);
@@ -180,9 +180,9 @@ public class CommunityService {
         Sort sort = Sort.by(new Sort.Order(Sort.Direction.DESC, "createdAt"));
         Pageable pageable = PageRequest.of(page-1, 10, sort);
 
-        if (searchType.equals("title")) {
+        if (searchType.equals("제목")) {
             posts = postRepository.findByTypeAndCategoryAndTitleContaining(PostType.COMM, category, searchWord, pageable);
-        } else if (searchType.equals("content")) {
+        } else if (searchType.equals("내용")) {
             posts = postRepository.findByTypeAndCategoryAndContentContaining(PostType.COMM, category, searchWord, pageable);
         } else {
             Member member = memberService.findByNickname(searchWord);
