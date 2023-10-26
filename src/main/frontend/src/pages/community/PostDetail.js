@@ -1,7 +1,4 @@
 import Header from "../../components/repeat_etc/Header";
-import Backarrow from "../../components/repeat_etc/Backarrow";
-import StudyEdit from "../../components/study/StudyEdit";
-import StudyInfo from "../../components/study/StudyInfo";
 import {Link, useParams, useNavigate} from "react-router-dom";
 import Comment from "../../components/comment/Comment";
 import React, {useState, useEffect} from "react";
@@ -28,8 +25,8 @@ const PostDetail = () => {
     const [editing, setEditing] = useState(false);
     const [postDetail, setPostDetail] = useState([]);// 게시글 상세 정보를 상태로 관리
 
-    let accessToken = localStorage.getItem('accessToken');
-    let isLoggedInUserId = localStorage.getItem('isLoggedInUserId');
+    const accessToken = localStorage.getItem('accessToken');
+    const isLoggedInUserId = localStorage.getItem('isLoggedInUserId');
 
     useEffect(() => {
         if (accessToken && isLoggedInUserId) {
@@ -89,6 +86,7 @@ const PostDetail = () => {
         if (!(accessToken && isLoggedInUserId)) {
             alert("로그인 해주세요");
             navigate("/login");
+            return;
         }
 
         if (likeStates) { // true -> 활성화되어 있는 상태 -> 취소해야 함
@@ -123,15 +121,15 @@ const PostDetail = () => {
                     console.error("Error:", error);
                     console.log("공감 실패");
                 });
-
-            setLikeStates(true);
         }
+        setLikeStates(!likeStates);
     };
 
     const toggleScrap = () => {
         if (!(accessToken && isLoggedInUserId)) {
             alert("로그인 해주세요");
             navigate("/login");
+            return;
         }
 
         if (scrapStates) { // true -> 활성화되어 있는 상태 -> 취소해야 함
@@ -166,9 +164,8 @@ const PostDetail = () => {
                     console.error("Error:", error);
                     console.log("스크랩 실패");
                 });
-
-            setScrapStates(true);
         }
+        setScrapStates(!scrapStates);
     };
 
     const handleEditClick = () => {
@@ -227,7 +224,7 @@ const PostDetail = () => {
 
                     const updatedPosts = posts.filter(post => post.id !== postDetail[0].id);
                     setPosts(updatedPosts);
-                    window.location.href = "/community";
+                    navigate("/community");
                 })
                 .catch(error => {
                     console.error("Error:", error);
@@ -235,7 +232,6 @@ const PostDetail = () => {
 
                     alert("삭제에 실패했습니다.");
                 });
-            navigate("/community");
         }
     }
 
