@@ -1,15 +1,25 @@
-const formatDatetime = (datetime) => { //날짜 시간 형식
-    const date = new Date(datetime);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-    const hours = String(date.getHours()).padStart(2, "0");
-    const minutes = String(date.getMinutes()).padStart(2, "0");
-    const formattedDatetime = `${year}-${month}-${day} ${hours}:${minutes}`;
-    return formattedDatetime;
-};
+import React, {useState} from "react";
+import Report from "../report/Report";
 
 const StudyInfo = ({study, handleEditClick, handleStudyDelete, isRecruiter}) => {
+    const [showReportModal, setShowReportModal] = useState(false);
+    const [reportStudyId, setReportStudyId] = useState(null);
+
+
+    const handleOpenReportModal = (studyId) => {
+        setReportStudyId(studyId);
+        setShowReportModal(true);
+    };
+
+    const handleCloseReportModal = () => {
+        setReportStudyId(null);
+        setShowReportModal(false);
+    };
+
+    const handleReportSubmit = (reportReason) => {
+        console.log("신고 사유:", reportReason);
+    };
+
     console.log("study:", study);
     console.log("자신의 글인가요? ", isRecruiter);
 
@@ -44,6 +54,14 @@ const StudyInfo = ({study, handleEditClick, handleStudyDelete, isRecruiter}) => 
                     <div className="study_author_info">
                         <p className="study_author">{study.recruiter.nickname}</p>
                         <p className="study_created_date">{formatDatetime(study.recruitmentStart)}</p>
+                        <p>&nbsp;&nbsp; | &nbsp;&nbsp;</p>
+                        <p className="report_btn" onClick={() => handleOpenReportModal(study.id)}>신고</p>
+                        <Report
+                            show={showReportModal}
+                            handleClose={handleCloseReportModal}
+                            onReportSubmit={handleReportSubmit}
+                            targetId={reportStudyId}
+                        />
                     </div>
                     {isRecruiter && (
                         <div className="study_detail_btn">

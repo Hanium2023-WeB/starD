@@ -41,17 +41,34 @@ public class ReportController {
         return reasonType;
     }
 
-    // TODO - post/study 신고 @RequestBody로 변경하기
     // Post 글 신고
     @PostMapping("/posts")
-    public ReportDetail createPostReport(@RequestParam Long postId, @RequestParam ReportReason reason, @RequestParam(required = false) String customReason, Authentication authentication) {
-        return reportService.createPostReport(postId, reason, customReason, authentication);
+    public ReportDetail createPostReport(@RequestBody Map<String, Object> requestPayload, Authentication authentication) {
+        Integer targetIdStr = (Integer) requestPayload.get("id");
+        //Integer replyId = Integer.parseInt(targetIdStr);
+
+        String reason = (String) requestPayload.get("reason");
+        String customReason = (String) requestPayload.get("customReason");
+
+        Long targetIdLong = targetIdStr.longValue();
+        ReportReason reasonType = reportReason(reason);
+
+        return reportService.createPostReport(targetIdLong, reasonType, customReason, authentication);
     }
 
     // Study 글 신고
     @PostMapping("/studies")
-    public ReportDetail createStudyReport(@RequestParam Long studyId, @RequestParam ReportReason reason, @RequestParam(required = false) String customReason, Authentication authentication) {
-        return reportService.createStudyReport(studyId, reason, customReason, authentication);
+    public ReportDetail createStudyReport(@RequestBody Map<String, Object> requestPayload, Authentication authentication) {
+        Integer targetIdStr = (Integer) requestPayload.get("id");
+        //Integer replyId = Integer.parseInt(targetIdStr);
+
+        String reason = (String) requestPayload.get("reason");
+        String customReason = (String) requestPayload.get("customReason");
+
+        Long targetIdLong = targetIdStr.longValue();
+        ReportReason reasonType = reportReason(reason);
+
+        return reportService.createStudyReport(targetIdLong, reasonType, customReason, authentication);
     }
 
     // 댓글 신고
