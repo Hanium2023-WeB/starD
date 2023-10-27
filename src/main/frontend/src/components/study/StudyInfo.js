@@ -3,10 +3,10 @@ import Report from "../report/Report";
 import CommentForm from "../comment/CommentForm";
 
 const StudyInfo = ({study, handleEditClick, handleStudyDelete, isRecruiter}) => {
+    let isLoggedInUserId = localStorage.getItem('isLoggedInUserId');
+
     const [showReportModal, setShowReportModal] = useState(false);
     const [reportStudyId, setReportStudyId] = useState(null);
-
-    console.log("**: ,", study.recruitStatus)
 
     const handleOpenReportModal = (studyId) => {
         setReportStudyId(studyId);
@@ -56,7 +56,7 @@ const StudyInfo = ({study, handleEditClick, handleStudyDelete, isRecruiter}) => 
                     <div className="study_author_info">
                         <p className="study_author">{study.recruiter.nickname}</p>
                         <p className="study_created_date">{formatDatetime(study.recruitmentStart)}</p>
-                        {study.recruitStatus !== 'RECRUITMENT_COMPLETE' && (
+                        {(study.recruitStatus !== 'RECRUITMENT_COMPLETE') | (study.recruiter !== isLoggedInUserId)  && (
                             <>
                                 <p>&nbsp;&nbsp; | &nbsp;&nbsp;</p>
                                 <p className="report_btn" onClick={() => handleOpenReportModal(study.id)}>신고</p>
