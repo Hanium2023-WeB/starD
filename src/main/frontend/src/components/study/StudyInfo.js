@@ -1,10 +1,12 @@
 import React, {useState} from "react";
 import Report from "../report/Report";
+import CommentForm from "../comment/CommentForm";
 
 const StudyInfo = ({study, handleEditClick, handleStudyDelete, isRecruiter}) => {
     const [showReportModal, setShowReportModal] = useState(false);
     const [reportStudyId, setReportStudyId] = useState(null);
 
+    console.log("**: ,", study.recruitStatus)
 
     const handleOpenReportModal = (studyId) => {
         setReportStudyId(studyId);
@@ -54,8 +56,12 @@ const StudyInfo = ({study, handleEditClick, handleStudyDelete, isRecruiter}) => 
                     <div className="study_author_info">
                         <p className="study_author">{study.recruiter.nickname}</p>
                         <p className="study_created_date">{formatDatetime(study.recruitmentStart)}</p>
-                        <p>&nbsp;&nbsp; | &nbsp;&nbsp;</p>
-                        <p className="report_btn" onClick={() => handleOpenReportModal(study.id)}>신고</p>
+                        {study.recruitStatus !== 'RECRUITMENT_COMPLETE' && (
+                            <>
+                                <p>&nbsp;&nbsp; | &nbsp;&nbsp;</p>
+                                <p className="report_btn" onClick={() => handleOpenReportModal(study.id)}>신고</p>
+                            </>
+                        )}
                         <Report
                             show={showReportModal}
                             handleClose={handleCloseReportModal}
