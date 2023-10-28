@@ -1,6 +1,6 @@
 import Header from "../../components/repeat_etc/Header";
 import React, {useEffect, useState} from "react";
-import {Link, useNavigate} from "react-router-dom";
+import {Link, useLocation, useNavigate} from "react-router-dom";
 
 import "../../css/community_css/Community.css";
 import SearchBar from "../../components/community/CommSearchBar";
@@ -16,6 +16,22 @@ const Community = () => {
     let accessToken = localStorage.getItem('accessToken');
     let isLoggedInUserId = localStorage.getItem('isLoggedInUserId');
 
+    const location = useLocation();
+    const currentPath = location.pathname;
+    const [type, setType] = useState(null);
+
+    useEffect(() => {
+        if (currentPath === "/community") {
+            setType("COMM");
+        } else if (currentPath === "/notice") {
+            setType("NOTICE");
+        }
+    }, [currentPath]);
+
+    console.log("*** ", currentPath);
+    console.log("* ", type);
+
+
     const handleMoveToStudyInsert = (e) => {
          if (accessToken && isLoggedInUserId) {
             e.preventDefault();
@@ -26,22 +42,36 @@ const Community = () => {
          }
     };
 
-    useEffect(() => {
-        axios.get("http://localhost:8080/com")
-            .then((res) => {
-                setPosts(res.data);
-            })
-            .catch((error) => {
-                console.error("데이터 가져오기 실패:", error);
-            });
-    }, []);
+    let url;
+    if (type === "COMM") {
+        url = "http://localhost:8080/com";
+    } else if (type === "NOTICE") {
+        url = `http://localhost:8080/notice`;
+    }
 
+    useEffect(() => {
+        if (type !== null) {
+            axios.get(url)
+                .then((res) => {
+                    setPosts(res.data);
+                })
+                .catch((error) => {
+                    console.error("데이터 가져오기 실패:", error);
+                });
+        }
+    }, [type]);
+
+    //TODO - notice 헤더 별도로 구현 (notice/faq 나뉘게)
     return (
         <div className={"main_wrap"} id={"community"}>
             <Header showSideCenter={true}/>
             <div className="community_container">
                 <p id={"entry-path"}> 커뮤니티 </p>
-                <Backarrow subname={"COMMUNITY LIST"}/>
+                {type === "COMM" ? (
+                    <Backarrow subname="Community List" />
+                ) : type === "NOTICE" ? (
+                    <Backarrow subname="Notice List" />
+                ) : null}
                 {showPostInsert && (
                     <PostInsert />
                 )}

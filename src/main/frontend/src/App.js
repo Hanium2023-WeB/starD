@@ -164,6 +164,12 @@ function App() {
                         }
                     />
                     <Route
+                        path="/notice"
+                        element={
+                            <Community/>
+                        }
+                    />
+                    <Route
                         path="/postdetail/:id"
                         element={
                             <PostDetail/>
