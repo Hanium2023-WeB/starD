@@ -61,7 +61,6 @@ const Community = () => {
         }
     }, [type]);
 
-    //TODO - notice 헤더 별도로 구현 (notice/faq 나뉘게)
     return (
         <div className={"main_wrap"} id={"community"}>
             <Header showSideCenter={true}/>

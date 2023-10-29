@@ -303,7 +303,11 @@ const PostDetail = () => {
         <div>
             <Header showSideCenter={true}/>
             <div className="community_container">
-                <Backarrow subname={"COMMUNITY LIST"}/>
+                {type === "COMM" ? (
+                    <Backarrow subname="Community List" />
+                ) : type === "NOTICE" ? (
+                    <Backarrow subname="Notice List" />
+                ) : null}
                 {editing ? (
                         <PostEdit
                             post={postItem}
@@ -333,7 +337,7 @@ const PostDetail = () => {
                                 <div className="left">
                                     <span className="post_nickname">{postItem.member.nickname}</span>
                                     <span className="post_created_date">{formatDatetime(postItem.createdAt)}</span>
-                                    {isLoggedInUserId !== postItem.member.id && (
+                                    {isLoggedInUserId !== postItem.member.id && type === "COMM" && (
                                         <>
                                         <span>&nbsp;&nbsp; | &nbsp;&nbsp;</span>
                                         <span className="report_btn" onClick={() => handleOpenReportModal(postItem.id)}>신고</span>
@@ -375,7 +379,7 @@ const PostDetail = () => {
                     )}
             </div>
             <div className="comment_container">
-                <Comment/>
+                {type === "COMM" && <Comment />}
             </div>
         </div>
     )
