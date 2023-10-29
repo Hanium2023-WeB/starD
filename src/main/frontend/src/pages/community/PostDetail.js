@@ -1,4 +1,5 @@
 import Header from "../../components/repeat_etc/Header";
+import Backarrow from "../../components/repeat_etc/Backarrow";
 import {Link, useParams, useNavigate} from "react-router-dom";
 import Comment from "../../components/comment/Comment";
 import React, {useState, useEffect} from "react";

@@ -6,9 +6,15 @@ import { useLocation } from "react-router-dom";
 import MemberEvaluateInsert from "../../components/evaluate/MemberEvaluateInsert";
 import "../../css/study_css/MyParticipateStudy.css";
 
+import axios from "axios";
+
 const MemberEvaluate = () => {
+    const accessToken = localStorage.getItem('accessToken');
+
     const [evaluation, setEvaluation] = useState([]);
     const [showEvaluateInsert, setShowEvaluateInsert] = useState(false);
+
+    const [Member, setMember] = useState([]);
 
     const study = useLocation();
     const { studyId } = study.state;
@@ -17,6 +23,28 @@ const MemberEvaluate = () => {
         e.preventDefault();
         setShowEvaluateInsert(!showEvaluateInsert); // Toggle the showEvaluateInsert state
     };
+
+
+    useEffect(() => {
+        axios.get(`http://localhost:8080/api/v2/studies/${studyId}/study-member`, {
+            withCredentials: true,
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
+        })
+            .then((res) => {
+                console.log("참여멤버 get 성공 : ", res.data);
+
+                const studymemberList = res.data;
+
+                setMember(studymemberList.data);
+
+            })
+            .catch((error) => {
+                console.error("참여멤버 get 실패:", error);
+            });
+
+    }, [accessToken]);
 
     return (
         <div>

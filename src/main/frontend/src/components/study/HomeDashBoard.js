@@ -262,9 +262,9 @@ const HomeDashBoard = () => {
                                 <div className="dashboard_day">
                                     {calculateDateDifference(d.study.activityStart, d.study.activityDeadline)}일간의 우주여행
                                 </div>
-                                {d.study.recruitStatus === "RECRUITING" ? (
-                                    <div className="list_status">모집중</div>
-                                ) : (<div className="list_status">진행중</div>)}
+                                {d.study.progressStatus === "IN_PROGRESS" ? (
+                                    <div className="list_status">진행중</div>
+                                ) : (<div className="list_status">진행 완료</div>)}
                             </div>
                             <div className="list_btn">
                                 <div className="list_like">
