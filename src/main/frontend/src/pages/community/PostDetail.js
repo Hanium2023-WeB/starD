@@ -6,6 +6,7 @@ import LikeButton from "../../components/repeat_etc/LikeButton";
 import ScrapButton from "../../components/repeat_etc/ScrapButton";
 import axios from "axios";
 import PostEdit from "../../components/community/PostEdit";
+import Report from "../../components/report/Report";
 
 const PostDetail = () => {
     const navigate = useNavigate();
@@ -243,6 +244,24 @@ const PostDetail = () => {
                 });
         }
     }
+
+    const [showReportModal, setShowReportModal] = useState(false);
+    const [reportPostId, setReportPostId] = useState(null);
+
+    const handleOpenReportModal = (postId) => {
+        setReportPostId(postId);
+        setShowReportModal(true);
+    };
+
+    const handleCloseReportModal = () => {
+        setReportPostId(null);
+        setShowReportModal(false);
+    };
+
+    const handleReportSubmit = (reportReason) => {
+        console.log("신고 사유:", reportReason);
+    };
+
     const formatDatetime = (datetime) => {
       const date = new Date(datetime);
       const year = date.getFullYear();
@@ -288,6 +307,18 @@ const PostDetail = () => {
                                 <div className="left">
                                     <span className="post_nickname">{postItem.member.nickname}</span>
                                     <span className="post_created_date">{formatDatetime(postItem.createdAt)}</span>
+                                    {isLoggedInUserId !== postItem.member.id && (
+                                        <>
+                                        <span>&nbsp;&nbsp; | &nbsp;&nbsp;</span>
+                                        <span className="report_btn" onClick={() => handleOpenReportModal(postItem.id)}>신고</span>
+                                        </>
+                                    )}
+                                    <Report
+                                        show={showReportModal}
+                                        handleClose={handleCloseReportModal}
+                                        onReportSubmit={handleReportSubmit}
+                                        targetId={reportPostId}
+                                    />
                                 </div>
                                 <div className="right">
                                     <span className="like_btn"><LikeButton like={likeStates}

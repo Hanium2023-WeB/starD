@@ -167,7 +167,12 @@ const Header = ({showSideCenter}) => {
                         >
                             <li>커뮤니티</li>
                         </Link>
+                        <Link
+                            to={"/notice"}
+                            style={{textDecoration: "none", color: "inherit"}}
+                        >
                         <li>공지사항</li>
+                        </Link>
                     </ul>
                 </nav>
             </div>

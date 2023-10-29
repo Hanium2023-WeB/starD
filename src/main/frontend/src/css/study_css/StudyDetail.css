@@ -150,6 +150,10 @@ html {
 	font-family: 'Pretendard-Regular';
 	cursor: pointer;
 }
+.report_btn {
+	cursor: pointer;
+	color: #a8a8a8;
+}
 
 .scrap_img, .like_img{
 	width:20px;
