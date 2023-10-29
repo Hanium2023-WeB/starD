@@ -145,6 +145,36 @@ public class LocationService {
         return Location.calculate(participantsLocation);
     }
 
+    public Location getFindMidpoint(List<String> placeList) throws Exception {
+        List<Location> participantsLocation = new ArrayList<>();
+
+        // 겹치는 주소 가중치 부여
+        for (String s : placeList) {
+            boolean exists = false;
+            for (Location location : participantsLocation) {
+                if (s.equals(location.getAddress())) { // 주소가 겹치면 가중치 증가
+                    exists = true;
+                    location.setWeight(location.getWeight() + 1);
+                }
+            }
+
+            if (!exists) { // 겹치지 않으면 새로 추가
+                participantsLocation.add(new Location(s, 1));
+            }
+        }
+
+        for (Location location : participantsLocation) {
+            Location geoLoc = geocoder(location);
+
+            location.setLatitude(geoLoc.getLatitude());
+            location.setLongitude(geoLoc.getLongitude());
+
+            System.out.println(location.toString());
+        }
+
+        return Location.calculate(participantsLocation);
+    }
+
     /* address를 위도, 경도로 변환 */
     public Location geocoder(Location loc) {
         Location location = new Location();

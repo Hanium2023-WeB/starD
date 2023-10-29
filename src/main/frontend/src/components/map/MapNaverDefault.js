@@ -80,7 +80,22 @@ const MapNaverDefault = ({studyId,Member}) => {
             return;
         }
 
-        // TODO : 서버 연동
+        axios.get("http://localhost:8080/location/find", {
+            params: {placeList: inputs.join(',')},
+            withCredentials: true,
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
+        })
+            .then((res) => {
+                console.log("Location : ", res.data);
+
+                setMapLat(res.data.latitude);
+                setMapLng(res.data.longitude);
+            })
+            .catch((error) => {
+                console.error("위도, 경도 불러오기 실패", error);
+            });
     }
 
     return (
