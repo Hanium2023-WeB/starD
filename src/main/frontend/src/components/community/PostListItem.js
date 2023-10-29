@@ -1,4 +1,5 @@
-import {Link} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
+import {useEffect, useState} from "react";
 
 const PostListItem = ({posts, setPosts}) => {
     const formatDatetime = (datetime) => {
@@ -12,10 +13,22 @@ const PostListItem = ({posts, setPosts}) => {
       return formattedDatetime;
     };
 
+    const location = useLocation();
+    const currentPath = location.pathname;
+    const [type, setType] = useState(null);
+
+    useEffect(() => {
+        if (currentPath === "/community") {
+            setType("COMM");
+        } else if (currentPath === "/notice") {
+            setType("NOTICE");
+        }
+    }, [currentPath]);
+    console.log("--- ", type);
     return (
         <tr className="post_list">
             <td className="community_category">{posts.category}</td>
-            <Link to={`/postdetail/${posts.id}`}
+            <Link to={`/postdetail/${posts.id}?type=${type}`}
                   style={{
                       textDecoration: "none",
                       color: "inherit",

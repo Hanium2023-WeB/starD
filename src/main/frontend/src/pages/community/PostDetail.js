@@ -2,7 +2,7 @@ import Header from "../../components/repeat_etc/Header";
 import Backarrow from "../../components/repeat_etc/Backarrow";
 import StudyEdit from "../../components/study/StudyEdit";
 import StudyInfo from "../../components/study/StudyInfo";
-import {Link, useParams, useNavigate} from "react-router-dom";
+import {Link, useParams, useNavigate, useLocation} from "react-router-dom";
 import Comment from "../../components/comment/Comment";
 import React, {useState, useEffect} from "react";
 import LikeButton from "../../components/repeat_etc/LikeButton";
@@ -33,6 +33,12 @@ const PostDetail = () => {
     let isLoggedInUserId = localStorage.getItem('isLoggedInUserId');
 
     const [isWriter, setIsWriter] = useState(false);
+
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
+    const type = searchParams.get("type");
+
+    console.log("**Type: ", type);
 
     useEffect(() => {
         if (accessToken && isLoggedInUserId) {
@@ -71,8 +77,14 @@ const PostDetail = () => {
         }
     }, [id]);
 
+    let url;
 
     useEffect(() => {
+        if (type === "COMM") {
+            url = `http://localhost:8080/com/${id}`;
+        } else if (type === "NOTICE") {
+            url = `http://localhost:8080/notice/${id}`;
+        }
         const config = {
             headers: {}
         };
@@ -81,8 +93,8 @@ const PostDetail = () => {
             config.headers['Authorization'] = `Bearer ${accessToken}`;
         }
 
-        if (initiallyLikeStates && initiallyScrapStates) {
-            axios.get(`http://localhost:8080/com/${id}`, config)
+        if (initiallyLikeStates && initiallyScrapStates && id !== null) {
+            axios.get(url, config)
                 .then((res) => {
                     setPostItem(res.data);
                     if (res.data.member.id === isLoggedInUserId) { // 자신의 글인지
@@ -195,7 +207,7 @@ const PostDetail = () => {
         console.log("수정 예정 : " + updatedPost.id + ", " + updatedPost.title + ", " + updatedPost.content
                     + ", " + updatedPost.category);
 
-        axios.post(`http://localhost:8080/com/${id}`, {
+        axios.post(url, {
             title: updatedPost.title,
             content: updatedPost.content,
             category: updatedPost.category
@@ -225,7 +237,7 @@ const PostDetail = () => {
         const confirmDelete = window.confirm("정말로 게시글을 삭제하시겠습니까?");
         if (confirmDelete) {
 
-            axios.delete(`http://localhost:8080/com/${id}`, {
+            axios.delete(url, {
                 params: { id: id },
                 withCredentials: true,
                 headers: {
