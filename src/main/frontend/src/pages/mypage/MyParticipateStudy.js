@@ -278,6 +278,14 @@ const MyParticipateStudy = ({sideheader}) => {
         });
     }
 
+    const goEvaluationPage = (item) => {
+        navigate(`/${item.study.id}/evaluate`, {
+            state: {
+                studyId: item.study.id
+            }
+        })
+    }
+
     const mypartistudylist = () => {
         return (
             <div className="study_list">
@@ -313,7 +321,12 @@ const MyParticipateStudy = ({sideheader}) => {
                             <div className="list_onoff">{d.study.onOff}</div>
                             <div className="stroke"></div>
                             <div className="list_founder">{d.study.recruiter.nickname}</div>
-                            <button id="go-teamblog"onClick={() => goNextTeamBlog(d)} >팀블로그 가기</button>
+                            <div className="buttons">
+                                <button id="go-teamblog"onClick={() => goNextTeamBlog(d)} >팀블로그 가기</button>
+                                {d.study.progressStatus === "WRAP_UP" ? (
+                                    <button className="evaluation_btn" study={d} onClick={()=>goEvaluationPage(d)}>팀원 평가</button>
+                                ) : null}
+                            </div>
                         </div>
 
                     </div>
