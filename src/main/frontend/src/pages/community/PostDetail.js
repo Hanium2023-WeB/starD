@@ -78,8 +78,6 @@ const PostDetail = () => {
         }
     }, [id]);
 
-    //let url;
-
     useEffect(() => {
         if (type === "COMM") {
             setUrl(`http://localhost:8080/com/${id}`);
@@ -366,7 +364,7 @@ const PostDetail = () => {
                         </div>
                     )}
                     <div className="btn">
-                        <Link to={"/community"}
+                        <Link to={type === "COMM" ? "/community" : type === "NOTICE" ? "/notice" : "/"}
                               style={{
                                   textDecoration: "none",
                                   color: "inherit",

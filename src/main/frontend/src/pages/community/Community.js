@@ -19,6 +19,8 @@ const Community = () => {
     const location = useLocation();
     const currentPath = location.pathname;
     const [type, setType] = useState(null);
+    const [url, setUrl] = useState([]);
+    const [userIsAdmin, setUserIsAdmin] = useState([false]);
 
     useEffect(() => {
         if (currentPath === "/community") {
@@ -27,10 +29,6 @@ const Community = () => {
             setType("NOTICE");
         }
     }, [currentPath]);
-
-    console.log("*** ", currentPath);
-    console.log("* ", type);
-
 
     const handleMoveToStudyInsert = (e) => {
          if (accessToken && isLoggedInUserId) {
@@ -42,15 +40,41 @@ const Community = () => {
          }
     };
 
-    let url;
-    if (type === "COMM") {
-        url = "http://localhost:8080/com";
-    } else if (type === "NOTICE") {
-        url = `http://localhost:8080/notice`;
-    }
+    // TODO 권한 조회
+    useEffect(() => {
+        axios
+            .get("http://localhost:8080/member/auth", {
+                withCredentials: true,
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`
+                }
+            })
+            .then((res) => {
+                const auth = res.data[0].authority;
+                console.log("auth :", auth);
+
+                if (auth === "ROLE_USER") {
+                    setUserIsAdmin(false);
+                }
+                else if (auth === "ROLE_ADMIN") {
+                    setUserIsAdmin(true);
+                }
+            })
+            .catch((error) => {
+                console.error("권한 조회 실패:", error);
+            });
+    }, [accessToken]);
+
+    console.log("isAdmin ", userIsAdmin);
 
     useEffect(() => {
         if (type !== null) {
+            if (type === "COMM") {
+                setUrl(`http://localhost:8080/com`);
+            } else if (type === "NOTICE") {
+                setUrl(`http://localhost:8080/notice`);
+            }
+
             axios.get(url)
                 .then((res) => {
                     setPosts(res.data);
@@ -59,7 +83,7 @@ const Community = () => {
                     console.error("데이터 가져오기 실패:", error);
                 });
         }
-    }, [type]);
+    });
 
     return (
         <div className={"main_wrap"} id={"community"}>
@@ -78,9 +102,11 @@ const Community = () => {
                     <div>
                         <div className="community_header">
                             <SearchBar/>
-                            <button onClick={handleMoveToStudyInsert} className="new_post_btn">
-                                새 글 작성
-                            </button>
+                            {type === "COMM" || (type === "NOTICE" && userIsAdmin) ? (
+                                <button onClick={handleMoveToStudyInsert} className="new_post_btn">
+                                    새 글 작성
+                                </button>
+                            ) : null}
                         </div>
                         <div className="community">
                             <div>

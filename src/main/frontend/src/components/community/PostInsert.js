@@ -116,12 +116,19 @@ const PostInsert = () => {
             .then((res) => {
                  console.log(res.data);
                  alert("게시글이 등록되었습니다.");
+
+                if (type === "COMM") {
+                    window.location.href = "/community";
+                }
+                else if (type === "NOTICE") {
+                    window.location.href = "/notice";
+                }
             }).catch((error) => {
                 console.log('전송 실패', error);
                 alert("게시글 등록 실패");
             })
         e.preventDefault();
-        navigate("/");
+        //navigate("/");
     }, [formData])
 
     return (
