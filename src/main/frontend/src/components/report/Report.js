@@ -6,6 +6,30 @@ const Report = ({ show, handleClose, onReportSubmit, targetId }) => {
     const [selectedReason, setSelectedReason] = useState(null);
     const [customReason, setCustomReason] = useState(null);
     const accessToken = localStorage.getItem('accessToken');
+    const [type, setType] = useState(null);
+
+    // TODO - 신고 대상 글 타입 알아오기
+    useEffect(() => {
+        if (targetId) {
+            axios
+                .get(`http://localhost:8080/replies/type/${targetId}`, {
+                    withCredentials: true,
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`
+                    }
+                })
+                .then((response) => {
+                    const type = response.data;
+                    setType(type);
+                    console.log("신고 게시글 id, 타입: ", targetId, type);
+                })
+                .catch((error) => {
+                    console.error("스터디 타입을 가져오는 중 에러 발생:", error);
+                });
+        }
+    }, [targetId, accessToken]);
+
+
     const handleReportReasonClick = (reason) => {
         setSelectedReason(reason);
         if (reason === "ETC") {
@@ -14,11 +38,20 @@ const Report = ({ show, handleClose, onReportSubmit, targetId }) => {
     };
 
     const handleReport = () => {
+        let url;
+        if (type === "QNA" || type === 'COMM') {
+            url = "http://localhost:8080/reports/posts";
+        } else if (type === "STUDY") {
+            url = "http://localhost:8080/reports/studies";
+        } else if (type === "REPLY") {
+            url = "http://localhost:8080/reports/replies";
+        }
+
         let reasonToSend = selectedReason;
 
         if (reasonToSend && accessToken) {
             axios.post(
-                "http://localhost:8080/reports/replies",
+                url,
                 {
                     id: targetId,
                     reason: reasonToSend,

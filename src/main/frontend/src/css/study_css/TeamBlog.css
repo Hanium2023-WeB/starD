@@ -212,7 +212,7 @@
 
 #input-location{
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
 }
 #input-location > p{
     font-size: 25px;
@@ -230,6 +230,10 @@
     margin-bottom: 10px;
     position: relative;
     bottom: 30px;
+}
+#input-location > button{
+    width: 35px;
+    height: 15px;
 }
 #naver-map{
     position: relative;

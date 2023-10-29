@@ -160,12 +160,12 @@ public class ReplyService {
         }
 
         // Reply 조회
-        Optional<Reply> replyOptional = replyRepository.findById(id);
+/*        Optional<Reply> replyOptional = replyRepository.findById(id);
         if (replyOptional.isPresent() && replyOptional.get().getContent() != null) {
             return replyOptional.get().getType();
-        }
+        }*/
 
-        return null;
+        return PostType.REPLY;
     }
 
 }

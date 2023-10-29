@@ -8,6 +8,8 @@ import lombok.Setter;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Getter @Setter
 @AllArgsConstructor
 @RestController
@@ -27,5 +29,13 @@ public class LocationController {
                                         Authentication authentication) throws Exception {
         // 해당 스터디(studyId)에서 모임에 참여하는 참여자들(participantsStr)로 중간 지점 구하기
         return locationService.getRecommendedPlace(id, participantsStr);
+    }
+
+    @GetMapping("/find")
+    public Location getFindMidpoint(@RequestParam List<String> placeList) throws Exception {
+        for (String s : placeList) {
+            System.out.println("장소 : " + s);
+        }
+        return locationService.getFindMidpoint(placeList);
     }
 }
