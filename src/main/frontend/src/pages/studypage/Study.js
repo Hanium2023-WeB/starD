@@ -4,15 +4,13 @@ import {Link, useNavigate, useParams, useLocation} from "react-router-dom";
 import Backarrow from "../../components/repeat_etc/Backarrow";
 import StudyInsert from "../../components/study/StudyInsert";
 import Header from "../../components/repeat_etc/Header";
-import ScrapButton from "../../components/repeat_etc/ScrapButton";
-import LikeButton from "../../components/repeat_etc/LikeButton";
-
 import "../../css/study_css/MyOpenStudy.css";
 import "../../css/study_css/StudyDetail.css";
 import SearchBar from "../../SearchBar";
 import axios from "axios";
 import StudyListItem from "../../components/study/StudyListItem";
 import Paging from "../../components/repeat_etc/Paging";
+import Loading from "../../components/repeat_etc/Loading";
 
 const Study = () => {
     const navigate = useNavigate();
@@ -31,14 +29,7 @@ const Study = () => {
     const [page, setPage] = useState(pageparams);
     const [count, setCount] = useState(0);
     const [itemsPerPage, setItemsPerPage] = useState(9);
-
-
-    useEffect(() => {
-        const storedStudies = JSON.parse(localStorage.getItem("studies"));
-        if (storedStudies) {
-            setStudies(storedStudies);
-        }
-    }, []);
+    const [loading, setLoading] = useState(true);
 
     const updateStudies = (updatedStudies) => {
         setStudies(updatedStudies);
@@ -59,9 +50,9 @@ const Study = () => {
         setShowStudyInsert(false);
     };
 
-    const handleSideHeaderButtonClick = () => {
-        setShowStudyInsert(!showStudyInsert);
-    };
+    // const handleSideHeaderButtonClick = () => {
+    //     setShowStudyInsert(!showStudyInsert);
+    // };
 
 
     const toggleScrap = (index) => {
@@ -199,6 +190,7 @@ const Study = () => {
     };
 
     const fetchStudies = (pageNumber) => {
+        setLoading(true);
         axios.get("http://localhost:8080/api/v2/studies/all", {
             params: {
                 page: pageNumber,
@@ -211,6 +203,7 @@ const Study = () => {
                 if (response.data.content != null) {
                     setStudiesInitialized(true);
                 }
+                setLoading(false);
             })
             .catch((error) => {
                 console.error("데이터 가져오기 실패:", error);
@@ -221,7 +214,6 @@ const Study = () => {
         setStudiesInitialized(false);
         setIsLikeStates(false);
         setIsScrapStates(false);
-
         fetchStudies(page);
         fetchLikeScrap(page);
     }, [page]);
@@ -266,12 +258,11 @@ const Study = () => {
                             study={studies}
                         />
                     )}
-                    {!showStudyInsert && (
+                    {!showStudyInsert && loading ? (
+                        <Loading/>) : (
                         <div>
                             <div><SearchBar/>
                             </div>
-
-                            {/*TODO css 수정 필요*/}
                             <div className="study_count">
                                 총 {count} 건
                             </div>
@@ -288,7 +279,7 @@ const Study = () => {
                             </div>
                         </div>
                     )}
-                    {!showStudyInsert && studies.length === 0 && <h3>스터디 리스트가 비었습니다.</h3>}
+                    {!showStudyInsert && studies.length === 0 && !loading && <h3>스터디 리스트가 비었습니다.</h3>}
                 </div>
             </div>
             <div className={"paging"}>
