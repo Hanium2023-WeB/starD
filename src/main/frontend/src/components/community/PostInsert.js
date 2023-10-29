@@ -118,6 +118,7 @@ const PostInsert = () => {
                  alert("게시글이 등록되었습니다.");
             }).catch((error) => {
                 console.log('전송 실패', error);
+                alert("게시글 등록 실패");
             })
         e.preventDefault();
         navigate("/");

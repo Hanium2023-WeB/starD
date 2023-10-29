@@ -37,6 +37,7 @@ const PostDetail = () => {
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
     const type = searchParams.get("type");
+    const [url, setUrl] = useState([]);
 
     console.log("**Type: ", type);
 
@@ -77,13 +78,13 @@ const PostDetail = () => {
         }
     }, [id]);
 
-    let url;
+    //let url;
 
     useEffect(() => {
         if (type === "COMM") {
-            url = `http://localhost:8080/com/${id}`;
+            setUrl(`http://localhost:8080/com/${id}`);
         } else if (type === "NOTICE") {
-            url = `http://localhost:8080/notice/${id}`;
+            setUrl(`http://localhost:8080/notice/${id}`);
         }
         const config = {
             headers: {}
@@ -219,7 +220,8 @@ const PostDetail = () => {
             }
         })
             .then(response => {
-                console.log("커뮤니티 게시글 수정 성공");
+                console.log("post 게시글 수정 성공");
+                alert("게시글이 수정되었습니다.");
 
                 setPostDetail(response.data);
                 const updatedPosts = posts.map(post =>
@@ -229,7 +231,8 @@ const PostDetail = () => {
             })
             .catch(error => {
                 console.error("Error:", error);
-                console.log("커뮤니티 게시글 수정 실패");
+                console.log("post 게시글 수정 실패");
+                alert("수정에 실패했습니다.");
             });
     }
 
@@ -245,19 +248,26 @@ const PostDetail = () => {
                 }
             })
                 .then(response => {
-                    console.log("커뮤니티 게시글 삭제 성공 ");
+                    console.log("post 게시글 삭제 성공 ");
+                    alert("게시글이 삭제되었습니다.");
 
                     const updatedPosts = posts.filter(post => post.id !== postDetail[0].id);
                     setPosts(updatedPosts);
-                    window.location.href = "/community";
+
+                    if (type === "COMM") {
+                        window.location.href = "/community";
+                    }
+                    else if (type === "NOTICE") {
+                        window.location.href = "/notice";
+                    }
                 })
                 .catch(error => {
                     console.error("Error:", error);
-                    console.log("커뮤니티 게시글 삭제 실패");
+                    console.log("post 게시글 삭제 실패");
 
                     alert("삭제에 실패했습니다.");
                 });
-            navigate("/community");
+            //navigate("/community");
         }
     }
 
