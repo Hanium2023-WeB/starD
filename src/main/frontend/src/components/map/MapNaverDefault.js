@@ -12,7 +12,6 @@ const MapNaverDefault = ({studyId,Member}) => {
     const { naver } = window;
 
     const [inputs, setInputs] = useState(["", ""]);
-    const [loc, setLoc] = useState([]);
 
     useEffect(() => {
         axios.get(`http://localhost:8080/location/${studyId}/all`, {
