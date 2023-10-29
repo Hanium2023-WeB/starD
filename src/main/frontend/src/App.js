@@ -37,6 +37,7 @@ import Chat from "./components/chat/Chat";
 import FindedID from "./pages/userpage/FindedID.js";
 import TeamToDoList from "./pages/TeamToDo/TeamToDoList";
 import TeamSchedule from "./pages/TeamSchedule/TeamSchedule";
+import FindPW from "./pages/userpage/FindPW";
 
 function App() {
     return (
@@ -67,6 +68,10 @@ function App() {
                     <Route
                         path="/login/findedID"
                         element={<FindedID/>}
+                    />
+                    <Route
+                        path="/login/findePW"
+                        element={<FindPW/>}
                     />
                     <Route
                         path="/mypage"

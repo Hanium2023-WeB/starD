@@ -112,13 +112,19 @@ const Login = () => {
                               }}>
                             <span id={"id"}>아이디 찾기 / </span>
                         </Link>
-                        <span id={"pw"}>비밀번호 찾기 / </span>
+                        <Link to={"/login/findePW"}
+                              style={{
+                                  textDecoration: "none",
+                                  color: "blue",
+                              }}>
+                            <span id={"pw"}>&nbsp;비밀번호 찾기 / </span>
+                        </Link>
                         <Link to={"/subinfo/signup"}
                               style={{
                                   textDecoration: "none",
                                   color: "blue",
                               }}>
-                            <span id={"signup"}>회원가입</span></Link>
+                            <span id={"signup"}>&nbsp;회원가입</span></Link>
                     </div>
                 </div>
             </div>
