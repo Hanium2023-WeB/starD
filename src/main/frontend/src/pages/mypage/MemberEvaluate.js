@@ -73,7 +73,8 @@ const MemberEvaluate = () => {
                     <Backarrow subname={"팀원 평가"} />
                     <div className="evaluate">
                         {showEvaluateInsert ? ( // Render MemberEvaluateInsert when showEvaluateInsert is true
-                            <MemberEvaluateInsert studyId={studyId} members={Member} />
+                            <MemberEvaluateInsert studyId={studyId} members={Member}
+                                completeEvaluation={evaluation} />
                         ) : evaluation.length === 0 ? (
                             <>
                                 <p>평가 내역이 없습니다.<br/> 팀원 평가를 진행해주세요.</p>

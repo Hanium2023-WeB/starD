@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 
-const MemberEvaluateInsert = ({studyId, members}) => {
+const MemberEvaluateInsert = ({studyId, members, completeEvaluation}) => {
     const navigate = useNavigate();
 
     const accessToken = localStorage.getItem('accessToken');
@@ -12,11 +12,6 @@ const MemberEvaluateInsert = ({studyId, members}) => {
 
     console.log("studyId : " + studyId);
 
-    const [formData, setFormData] = useState({
-        name:"",
-        rating:0,
-        reason:""
-    })
     const [evaluation, setEvaluation] = useState([]);
     const ARRAY = [0, 1, 2, 3, 4];
     let score = null;
@@ -53,26 +48,7 @@ const MemberEvaluateInsert = ({studyId, members}) => {
         };
 
         setEvaluation(updatedEvaluations);
-//        setFormData({
-//            ...formData,
-//            [name]: value,
-//        });
     };
-
-    const onInsertEvaluate = useCallback((eva) => {
-        const {
-            name,
-            rating,
-            reason,
-        } = eva;
-
-        setEvaluation(prevFormData => ({
-            ...prevFormData,
-            name,
-            rating,
-            reason,
-        }));
-    }, [evaluation]);
 
     const registerEvaluation = (index) => {
         const memberId = members[index].member.id;
@@ -82,14 +58,7 @@ const MemberEvaluateInsert = ({studyId, members}) => {
 
         console.log(memberId + ", " + score + ", " + reason);
 
-
-
-//        formData.rating = score;
-//        onInsertEvaluate(evaluation);
-
-
-        const response = axios.post("http://localhost:8080/rate", null,
-        {
+        const response = axios.post("http://localhost:8080/rate", null, {
             params: {
                 studyId: studyId,
                 targetId: memberId,
@@ -100,13 +69,13 @@ const MemberEvaluateInsert = ({studyId, members}) => {
             headers: {
                 'Authorization': `Bearer ${accessToken}`
             }
-        })
-        .then((res) => {
+        }).then((res) => {
             console.log(res.data);
         }).catch((error) => {
             console.log('전송 실패', error);
         });
-        // navigate("/");
+
+        navigate("/");
     };
 
     return (
@@ -119,36 +88,40 @@ const MemberEvaluateInsert = ({studyId, members}) => {
                 </tr>
                 </thead>
                 <tbody>
-                {members.map((member, index) => (
-                    member.member.id !== isLoggedInUserId && (
-                        <tr className="evaluate_list">
-                            <td className="member_name">{member.member.nickname}</td>
-                            <td className="member_rating">
-                                <Wrap>
-                                    <Stars>
-                                        {ARRAY.map((el, idx) => (
-                                            <FaStar
-                                                style={{alignItems:"center"}}
-                                                key={idx}
-                                                size="20"
-                                                onClick={() => handleStarClick(index, el)}
-                                                className={clicked[index].stars[el] && 'yellowStar'}
-                                            />
-                                        ))}
-                                    </Stars>
-                                </Wrap>
-                            </td>
-                            <td className="member_evaluate_reason">
-                                <textarea name="reason"
-                                    value={evaluation[index]?.reason || ''}
-                                    onChange={(e) => handleInputChange(e, index)}/>
-                            </td>
-                            <td>
-                                <button onClick={() => registerEvaluation(index)} className="register_btn">평가하기</button>
-                            </td>
-                        </tr>
-                    )
-                ))}
+                {members.map((member, index) => {
+                    const isEvaluated = completeEvaluation.some(evaluation => evaluation.target.id === member.member.id);
+
+                    if (!isEvaluated && member.member.id !== isLoggedInUserId) {
+                        return (
+                            <tr className="evaluate_list">
+                                <td className="member_name">{member.member.nickname}</td>
+                                <td className="member_rating">
+                                    <Wrap>
+                                        <Stars>
+                                            {ARRAY.map((el, idx) => (
+                                                <FaStar
+                                                    style={{alignItems:"center"}}
+                                                    key={idx}
+                                                    size="20"
+                                                    onClick={() => handleStarClick(index, el)}
+                                                    className={clicked[index].stars[el] && 'yellowStar'}
+                                                />
+                                            ))}
+                                        </Stars>
+                                    </Wrap>
+                                </td>
+                                <td className="member_evaluate_reason">
+                                    <textarea name="reason"
+                                        value={evaluation[index]?.reason || ''}
+                                        onChange={(e) => handleInputChange(e, index)}/>
+                                </td>
+                                <td>
+                                    <button onClick={() => registerEvaluation(index)} className="register_btn">평가하기</button>
+                                </td>
+                            </tr>
+                        );
+                    }
+                })}
 
                 {/*{members.map((member) => (*/}
                 {/*    <tr className="evaluate_list">*/}
