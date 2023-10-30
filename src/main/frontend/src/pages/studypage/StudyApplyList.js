@@ -218,7 +218,7 @@ const StudyApplyList = () => {
                         <tr>
                             <th>신청자 이름</th>
                             <th>지원동기 및 각오</th>
-                            <th>상태({count}/{capacity})</th>
+                            <th>신청자 / 모집인원 ({count}/{capacity})</th>
                         </tr>
                         </thead>
                         <tbody>
