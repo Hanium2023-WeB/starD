@@ -31,6 +31,7 @@ import SearchResult from "./pages/studypage/SearchResult";
 import StudyApplyList from "./pages/studypage/StudyApplyList";
 import TeamBlog from "./pages/studypage/TeamBlog";
 import Community from "./pages/community/Community";
+import Notice from "./pages/notice/Notice";
 import PostDetail from "./pages/community/PostDetail";
 import CommSearchBar from "./components/community/CommSearchBar";
 import CommSearchResult from "./pages/community/CommSearchResult";
@@ -39,6 +40,8 @@ import FindedID from "./pages/userpage/FindedID.js";
 import TeamToDoList from "./pages/TeamToDo/TeamToDoList";
 import TeamSchedule from "./pages/TeamSchedule/TeamSchedule";
 import FindPW from "./pages/userpage/FindPW";
+import NoticeDetail from "./pages/notice/NoticeDetail";
+import NoticeSearchResult from "./pages/notice/NoticeSearchResult";
 
 function App() {
     return (
@@ -174,12 +177,12 @@ function App() {
                             <Community/>
                         }
                     />
-{/*                    <Route
+                    <Route
                         path="/notice"
                         element={
-                            <Community/>
+                            <Notice/>
                         }
-                    />*/}
+                    />
                     <Route
                         path="/postdetail/:id"
                         element={
@@ -187,9 +190,21 @@ function App() {
                         }
                     />
                     <Route
+                        path="/noticedetail/:id"
+                        element={
+                            <NoticeDetail/>
+                        }
+                    />
+                    <Route
                         path="/comm/search"
                         element={
                             <CommSearchResult/>
+                        }
+                    />
+                    <Route
+                        path="/notice/search"
+                        element={
+                            <NoticeSearchResult/>
                         }
                     />
                     <Route path="/comm/search" component={CommSearchResult} />

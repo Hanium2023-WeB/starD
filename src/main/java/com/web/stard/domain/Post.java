@@ -21,7 +21,7 @@ public class Post extends BaseEntity {
     @NotNull @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member; // 작성자
-    @NotNull
+    @NotNull @Lob
     private String content; // 내용
     @NotNull
     private String category; // 카테고리 (취미 / 공부 / 잡담)
