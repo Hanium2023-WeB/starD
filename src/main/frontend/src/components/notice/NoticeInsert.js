@@ -97,8 +97,8 @@ const NoticeInsert = () => {
 
     return (
         <form className="new_post_form" onSubmit={handleSubmit}>
-            <div>
-                <span>제목</span>
+            <div style={{display:"flex"}}>
+                <span style={{paddingLeft: "10px",marginTop:"25px"}}>제목</span>
                 <input type="text" name="title" value={formData.title} onChange={handleInputChange}/>
             </div>
             <div>
