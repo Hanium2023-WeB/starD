@@ -21,7 +21,7 @@ input{
     justify-content: center;
 }
 .community_header .new_post_btn{
-    background: #0038FF;
+    background: #99A98F;
     color:#fff;
     border: none;
     border-radius: 10px;
@@ -102,7 +102,7 @@ input{
     width:inherit;
     height: inherit;
     box-shadow: inherit;
-    background-color: #0038FF;
+    background-color: #99A98F;
     border: none;
     font-size: 20px;
     color: #fff;
@@ -135,7 +135,7 @@ input{
     margin-bottom: 20px;
 }
 .community_detail .post_header .button button {
-    background-color: #0038FF;
+    background-color: #99A98F;
     border-radius: 50px;
     font-family: 'Pretendard-Regular';
     cursor: pointer;
@@ -176,7 +176,7 @@ input{
     width: inherit;
     height: inherit;
     box-shadow: inherit;
-    background-color: #0038FF;
+    background-color: #99A98F;
     border: none;
     font-size: 20px;
     color: #fff;

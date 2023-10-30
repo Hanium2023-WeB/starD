@@ -46,6 +46,7 @@ const AddSchedule = ({studies,studyTitles, selectedDate, onInsert, onClose }) =>
         if (title != "") {
           console.log("addschedule:", endDate.toDateString());
           onInsert(startDate, title, color, studyIdAsNumber);
+          onClose();
         } else {
           alert("모두 입력해주세요.");
           // return;

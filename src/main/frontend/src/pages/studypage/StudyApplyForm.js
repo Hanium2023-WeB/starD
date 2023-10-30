@@ -88,7 +88,7 @@ const StudyApplyForm = ({sideheader}) => {
                         <button
                             className="apply_btn"
                             onClick={handleSubmit}>
-                            탑승하기
+                           제출하기
                         </button>
                     </div>
                 </div>

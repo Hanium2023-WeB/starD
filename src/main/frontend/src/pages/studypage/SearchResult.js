@@ -9,6 +9,7 @@ import SearchBar from "../../SearchBar";
 import axios from "axios";
 import StudyListItem from "../../components/study/StudyListItem";
 import Paging from "../../components/repeat_etc/Paging";
+import Loading from "../../components/repeat_etc/Loading";
 
 const SearchResult = () => {
 
@@ -24,6 +25,7 @@ const SearchResult = () => {
     const [likeStates, setLikeStates] = useState([]);
     const [showStudyInsert, setShowStudyInsert] = useState(false);
     const [studiesChanged, setStudiesChanged] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     let accessToken = localStorage.getItem('accessToken');
     let isLoggedInUserId = localStorage.getItem('isLoggedInUserId');
@@ -210,14 +212,6 @@ const SearchResult = () => {
         });
     };
 
-    const searchItems = [
-        "back-end",
-        "front-end",
-        "cloud",
-        "aws",
-        "framework"
-    ]
-
     const handlePageChange = (selectedPage) => {
         setPage(selectedPage);
     };
@@ -234,6 +228,7 @@ const SearchResult = () => {
             base_url = "http://localhost:8080/api/v2/studies/search-by-recruiter";
 
         const fetchStudies = (pageNumber) => {
+            setLoading(true);
             console.log("페이지 번호 : ", pageNumber);
             axios.get(base_url, {
                 params: {
@@ -256,13 +251,14 @@ const SearchResult = () => {
                         });
                         setStudies(updateStudies);
                     }
+                    setLoading(false);
                 })
                 .catch((error) => {
                     console.error("데이터 가져오기 실패:", error);
                 });
         };
         fetchStudies(page);
-    }, [page, likeStates, scrapStates]);
+    }, [page]);
 
 
     return (
@@ -289,26 +285,27 @@ const SearchResult = () => {
                     )}
                     {!showStudyInsert && (
                         <div>
-                            <div><SearchBar searchItems={searchItems}/>
+                            <div><SearchBar/>
                             </div>
 
                             <div className="study_count">
                                 총 {count} 건
                             </div>
-
-                            <div className="content_container">
-
-                                <div className="study_list">
-                                    {studies.map((d, index) => (
-                                        <StudyListItem studies={d} toggleLike={toggleLike} toggleScrap={toggleScrap}
-                                                       d={d}
-                                                       index={index} key={d.id}/>
-                                    ))}
+                            {loading ?(<Loading/>):(
+                                <div className="content_container">
+                                    <div className="study_list">
+                                        {studies.map((d, index) => (
+                                            <StudyListItem studies={d} toggleLike={toggleLike} toggleScrap={toggleScrap}
+                                                           d={d}
+                                                           index={index} key={d.id}/>
+                                        ))}
+                                    </div>
                                 </div>
-                            </div>
+                            )}
+
                         </div>
                     )}
-                    {!showStudyInsert && studies.length === 0 && <h3>스터디 리스트가 비었습니다.</h3>}
+                    {!showStudyInsert && studies.length === 0 && !loading  && <h3>스터디 리스트가 비었습니다.</h3>}
                 </div>
             </div>
             <div className={"paging"}>

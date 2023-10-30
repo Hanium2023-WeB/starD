@@ -97,7 +97,7 @@ const Comment = () => {
     }
 
     let url;
-    if (type === "QNA" || type === 'COMM') {
+    if (type === "QNA" || type === 'COMM' ) {
       url = `http://localhost:8080/replies/post/${targetId}`;
     } else if (type === "STUDY") {
       url = `http://localhost:8080/replies/study/${targetId}`;

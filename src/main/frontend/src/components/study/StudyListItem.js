@@ -40,7 +40,7 @@ const StudyListItem = ({studies, toggleLike, toggleScrap, d, index}) => {
             <div className="list_header">
                 <div className="list_sub_header">
                     <div className="list_day">
-                        {daysDifference}일간의 우주여행
+                        {daysDifference}일간의 스터디
                     </div>
                     <div className="list_status">{recruitStatus}</div>
                 </div>

@@ -1,15 +1,15 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import axios from "axios";
 
-const MapNaverDefault = ({studyId,Member}) => {
+const MapNaverDefault = ({studyId, Member}) => {
 
     const accessToken = localStorage.getItem('accessToken');
 
-	const [mapLat, setMapLat] = useState(null); // 위도
-	const [mapLng, setMapLng] = useState(null); // 위도
+    const [mapLat, setMapLat] = useState(null); // 위도
+    const [mapLng, setMapLng] = useState(null); // 위도
     const [currentLocation, setCurrentLocation] = useState({});
     const mapElement = useRef(null);
-    const { naver } = window;
+    const {naver} = window;
 
     const [inputs, setInputs] = useState(["", ""]);
 
@@ -44,10 +44,10 @@ const MapNaverDefault = ({studyId,Member}) => {
             };
 
             const map = new naver.maps.Map(mapElement.current, mapOptions);
-                new naver.maps.Marker({
-                    position: location,
-                    map,
-                });
+            new naver.maps.Marker({
+                position: location,
+                map,
+            });
         }
     }, [mapLat, mapLng, naver]);
 
@@ -102,7 +102,7 @@ const MapNaverDefault = ({studyId,Member}) => {
             {inputs.map((input, index) => (
                 <div key={index} id={"input-location"}>
                     <input placeholder={" 장소를 입력하세요."}
-                        onChange={(e) => handleInputChange(index, e.target.value)} />
+                           onChange={(e) => handleInputChange(index, e.target.value)}/>
                     {inputs.length - 1 === index && (
                         <button onClick={addInput}>+</button>
                     )}
@@ -112,7 +112,7 @@ const MapNaverDefault = ({studyId,Member}) => {
                 </div>
             ))}
             <button onClick={findMidpoint}>찾기</button>
-            <div ref={mapElement} style={{ height: '250px', width: '580px' }} id={"naver-map"}/>
+            <div ref={mapElement} style={{height: '250px', width: '580px'}} id={"naver-map"}/>
         </div>
     );
 };

@@ -1,6 +1,8 @@
 import Header from "../../components/repeat_etc/Header";
 import Backarrow from "../../components/repeat_etc/Backarrow";
-import {Link, useParams, useNavigate} from "react-router-dom";
+import StudyEdit from "../../pages/studypage/StudyEdit";
+import StudyInfo from "../../components/study/StudyInfo";
+import {Link, useParams, useNavigate, useLocation} from "react-router-dom";
 import Comment from "../../components/comment/Comment";
 import React, {useState, useEffect} from "react";
 import LikeButton from "../../components/repeat_etc/LikeButton";
@@ -76,7 +78,6 @@ const PostDetail = () => {
         }
     }, [id]);
 
-
     useEffect(() => {
         if (type === "COMM") {
             setUrl(`http://localhost:8080/com/${id}`);
@@ -91,7 +92,7 @@ const PostDetail = () => {
             config.headers['Authorization'] = `Bearer ${accessToken}`;
         }
 
-        if (initiallyLikeStates && initiallyScrapStates) {
+        if (initiallyLikeStates && initiallyScrapStates && id !== null) {
             axios.get(url, config)
                 .then((res) => {
                     setPostItem(res.data);
