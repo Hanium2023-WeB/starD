@@ -336,10 +336,9 @@ const PostDetail = () => {
                             </div>
                         )}
                         {postItem && (
-                            <div className="post_content">
-                                {postItem.content}
-                            </div>
+                            <div className="post_content" dangerouslySetInnerHTML={{ __html: postItem.content.replace(/\n/g, '<br>') }} />
                         )}
+
                         <div className="btn">
                             <Link to={"/community"}
                                   style={{

@@ -13,6 +13,7 @@ const NoticeSearchBar = () => {
 
 
 	const tagoptions = [
+		{ value: "전체", name: "전체" },
 		{ value: "공지", name: "공지" },
 		{ value: "FAQ", name: "FAQ" },
 	];
