@@ -262,19 +262,22 @@ const StudyInsert = () => {
             })
             .then((res) => {
                 console.log("전송 성공");
-                console.log(res.data);
+                alert("게시글이 등록되었습니다.");
 
+                console.log(res.data);
+                const id = res.data.id;
+                navigate(`/studydetail/${id}`);
             }).catch((error) => {
                 console.log('전송 실패', error);
             })
 
         console.log("response : ", response);
         e.preventDefault();
-        navigate(`/study/${1}`,{
+        /*navigate(`/study/${1}`,{
             state:{
                 page:1,
             }
-        });
+        });*/
     }, [formData, navigate, tags, onInsertStudy]);
 
     const studyinsertform = () => {
