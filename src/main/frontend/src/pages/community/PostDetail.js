@@ -3,6 +3,7 @@ import Backarrow from "../../components/repeat_etc/Backarrow";
 import StudyEdit from "../../pages/studypage/StudyEdit";
 import StudyInfo from "../../components/study/StudyInfo";
 import {Link, useParams, useNavigate, useLocation} from "react-router-dom";
+import {Link, useParams, useNavigate} from "react-router-dom";
 import Comment from "../../components/comment/Comment";
 import React, {useState, useEffect} from "react";
 import LikeButton from "../../components/repeat_etc/LikeButton";
@@ -29,8 +30,8 @@ const PostDetail = () => {
     const [editing, setEditing] = useState(false);
     const [postDetail, setPostDetail] = useState([]);
 
-    let accessToken = localStorage.getItem('accessToken');
-    let isLoggedInUserId = localStorage.getItem('isLoggedInUserId');
+    const accessToken = localStorage.getItem('accessToken');
+    const isLoggedInUserId = localStorage.getItem('isLoggedInUserId');
 
     const [isWriter, setIsWriter] = useState(false);
 
@@ -110,6 +111,7 @@ const PostDetail = () => {
         if (!(accessToken && isLoggedInUserId)) {
             alert("로그인 해주세요");
             navigate("/login");
+            return;
         }
 
         if (likeStates) { // true -> 활성화되어 있는 상태 -> 취소해야 함
@@ -144,15 +146,15 @@ const PostDetail = () => {
                     console.error("Error:", error);
                     console.log("공감 실패");
                 });
-
-            setLikeStates(true);
         }
+        setLikeStates(!likeStates);
     };
 
     const toggleScrap = () => {
         if (!(accessToken && isLoggedInUserId)) {
             alert("로그인 해주세요");
             navigate("/login");
+            return;
         }
 
         if (scrapStates) { // true -> 활성화되어 있는 상태 -> 취소해야 함
@@ -187,9 +189,8 @@ const PostDetail = () => {
                     console.error("Error:", error);
                     console.log("스크랩 실패");
                 });
-
-            setScrapStates(true);
         }
+        setScrapStates(!scrapStates);
     };
 
     const handleEditClick = () => {
@@ -258,6 +259,7 @@ const PostDetail = () => {
                     else if (type === "NOTICE") {
                         window.location.href = "/notice";
                     }
+                    navigate("/community");
                 })
                 .catch(error => {
                     console.error("Error:", error);

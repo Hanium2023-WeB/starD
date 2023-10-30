@@ -279,6 +279,14 @@ const MyParticipateStudy = ({sideheader}) => {
         });
     }
 
+    const goEvaluationPage = (item) => {
+        navigate(`/${item.study.id}/evaluate`, {
+            state: {
+                studyId: item.study.id
+            }
+        })
+    }
+
     const mypartistudylist = () => {
         return (
             <div className="study_list">
@@ -289,9 +297,9 @@ const MyParticipateStudy = ({sideheader}) => {
                                 <div className="list_day">
                                     {calculateDateDifference(d.study.activityStart, d.study.activityDeadline)}일간의 우주여행
                                 </div>
-                                {d.study.recruitStatus === "RECRUITING" ? (
-                                    <div className="list_status">모집중</div>
-                                ) : (<div className="list_status">진행중</div>)}
+                                {d.study.progressStatus === "IN_PROGRESS" ? (
+                                    <div className="list_status">진행중</div>
+                                ) : (<div className="list_status">진행 완료</div>)}
 
                             </div>
                             <div className="list_btn">
@@ -314,7 +322,12 @@ const MyParticipateStudy = ({sideheader}) => {
                             <div className="list_onoff">{d.study.onOff}</div>
                             <div className="stroke"></div>
                             <div className="list_founder">{d.study.recruiter.nickname}</div>
-                            <button id="go-teamblog"onClick={() => goNextTeamBlog(d)} >팀블로그 가기</button>
+                            <div className="buttons">
+                                <button id="go-teamblog"onClick={() => goNextTeamBlog(d)} >팀블로그 가기</button>
+                                {d.study.progressStatus === "WRAP_UP" ? (
+                                    <button className="evaluation_btn" study={d} onClick={()=>goEvaluationPage(d)}>팀원 평가</button>
+                                ) : null}
+                            </div>
                         </div>
 
                     </div>

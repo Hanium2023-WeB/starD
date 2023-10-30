@@ -105,7 +105,7 @@ html {
 }
 .study_list .list {
 	width: 25%;
-	height: 220px;
+	/*height: 220px;*/
 	margin-right: 12px;
 	margin-bottom: 20px;
 	padding: 30px;
@@ -182,24 +182,27 @@ html {
 .study_list .stroke {
 	border-bottom: 1px solid #c6c6c6;
 }
-#go-teamblog{
+
+.buttons{
+	margin-bottom: 10px;
+	text-align: right;
+}
+#go-teamblog, .evaluation_btn{
 	border-radius: 5px;
 	border-style: none;
 	background-color: #BBDF9F;
 	color: white;
-	padding: 2px;
-	position: relative;
-	left: 140px;
+	padding: 5px;
+	margin-top: 10px;
+	cursor: pointer;
 }
-#go-teamblog:hover{
-	border-radius: 5px;
-	border-style: none;
+#go-teamblog:hover, .evaluation_btn:hover{
 	background-color: #7A8E6D;
 	color: white;
-	padding: 2px;
-	position: relative;
-	left: 140px;
 	font-weight: bolder;
+}
+.evaluation_btn{
+	margin-left:10px;
 }
 
 .paging{
