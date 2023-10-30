@@ -11,7 +11,7 @@ import LikeButton from "../../components/repeat_etc/LikeButton";
 import ScrapButton from "../../components/repeat_etc/ScrapButton";
 import Paging from "../../components/repeat_etc/Paging";
 import Backarrow from "../../components/repeat_etc/Backarrow";
-
+import Loading from "../../components/repeat_etc/Loading";
 const MyParticipateStudy = ({sideheader}) => {
     const accessToken = localStorage.getItem('accessToken');
     const [ApplyMemberList, setApplyMemberList] = useState([]);
@@ -30,6 +30,8 @@ const MyParticipateStudy = ({sideheader}) => {
     const [itemsPerPage, setItemsPerPage] = useState(9);
     const navigate = useNavigate();
     const [ParticipateState, setParticipatedState] = useState({});
+
+    const [loading, setLoading] = useState(true);
     useEffect(() => {
         if (location.state && location.state.acceptedMembers != null) {
             const Accepted_Members = location.state.acceptedMembers;
@@ -176,6 +178,7 @@ const MyParticipateStudy = ({sideheader}) => {
     }, []);
 
     const handlePageChange = ({page, itemsPerPage, totalItemsCount}) => {
+
         setPage(page);
         const result = axios.get("http://localhost:8080/user/mypage/studying", {
             params: {
@@ -185,10 +188,8 @@ const MyParticipateStudy = ({sideheader}) => {
                 'Authorization': `Bearer ${accessToken}`
             }
         });
-
         result.then((response) => {
             setStudies(response.data.content);
-
             setItemsPerPage(response.data.pageable.pageSize);
             setCount(response.data.totalElements);
 
@@ -226,8 +227,8 @@ const MyParticipateStudy = ({sideheader}) => {
                 study.scrap = scrapTwoStates[index];
                 return study;
             });
-
             setStudies(updateStudies);
+
         }).catch((error) => {
             console.error("데이터 가져오기 실패:", error);
         });
@@ -238,7 +239,7 @@ const MyParticipateStudy = ({sideheader}) => {
     };
 
     useEffect(() => {
-
+        setLoading(true);
         axios.get("http://localhost:8080/user/mypage/studying", {
             withCredentials: true,
             headers: {
@@ -247,7 +248,7 @@ const MyParticipateStudy = ({sideheader}) => {
         })
             .then((res) => {
                 console.log("모집완료된 스터디, 참여멤버 전송 성공 : ", res.data);
-
+                setLoading(false);
                 const studyList = res.data.content;
 
                 const updateStudies = res.data.content.map((study, index) => {
@@ -268,7 +269,7 @@ const MyParticipateStudy = ({sideheader}) => {
                 console.error("모집완료된 스터디 가져오기 실패:", error);
             });
 
-    }, [accessToken, likeStates, scrapStates]);
+    }, [accessToken]);
 
     const goNextTeamBlog = (item) => {
         navigate(`/${item.study.id}/teamblog`, {
@@ -329,9 +330,13 @@ const MyParticipateStudy = ({sideheader}) => {
                 <div className="main_container">
                     <p id={"entry-path"}> 홈 > 스터디 참여 내역 </p>
                     <Backarrow subname={"스터디 참여 내역"}/>
-                    <div className="content_container">
-                        {mypartistudylist()}
-                    </div>
+                    {loading ? <Loading/>:(
+                        <div className="content_container">
+                            {mypartistudylist()}
+                        </div>
+                    )
+                    }
+
                 </div>
             </div>
             <div className={"paging"}>

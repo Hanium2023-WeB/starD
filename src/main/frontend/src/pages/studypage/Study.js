@@ -2,17 +2,15 @@ import React, {useEffect, useState} from "react";
 import {Link, useNavigate, useParams, useLocation} from "react-router-dom";
 
 import Backarrow from "../../components/repeat_etc/Backarrow";
-import StudyInsert from "../../components/study/StudyInsert";
+import StudyInsert from "../../pages/studypage/StudyInsert";
 import Header from "../../components/repeat_etc/Header";
-import ScrapButton from "../../components/repeat_etc/ScrapButton";
-import LikeButton from "../../components/repeat_etc/LikeButton";
-
 import "../../css/study_css/MyOpenStudy.css";
 import "../../css/study_css/StudyDetail.css";
 import SearchBar from "../../SearchBar";
 import axios from "axios";
 import StudyListItem from "../../components/study/StudyListItem";
 import Paging from "../../components/repeat_etc/Paging";
+import Loading from "../../components/repeat_etc/Loading";
 
 const Study = () => {
     const navigate = useNavigate();
@@ -31,18 +29,12 @@ const Study = () => {
     const [page, setPage] = useState(pageparams);
     const [count, setCount] = useState(0);
     const [itemsPerPage, setItemsPerPage] = useState(9);
+    const [loading, setLoading] = useState(true);
 
-
-    useEffect(() => {
-        const storedStudies = JSON.parse(localStorage.getItem("studies"));
-        if (storedStudies) {
-            setStudies(storedStudies);
-        }
-    }, []);
-
-    const updateStudies = (updatedStudies) => {
-        setStudies(updatedStudies);
-    };
+    // const updateStudies = (updatedStudies) => {
+    //     setStudies(updatedStudies);
+    // };
+    const insertPage = location.state && location.state.page;
 
     const handleMoveToStudyInsert = (e) => {
         if (accessToken && isLoggedInUserId) {
@@ -58,11 +50,6 @@ const Study = () => {
     const handleStudyInsertClose = () => {
         setShowStudyInsert(false);
     };
-
-    const handleSideHeaderButtonClick = () => {
-        setShowStudyInsert(!showStudyInsert);
-    };
-
 
     const toggleScrap = (index) => {
         if (!(accessToken && isLoggedInUserId)) {
@@ -174,10 +161,9 @@ const Study = () => {
             }).then((response) => {
                 setLikeStates(response.data);
                 setIsLikeStates(true);
-            })
-                .catch((error) => {
-                    console.error("공감 가져오기 실패:", error);
-                });
+            }).catch((error) => {
+                console.error("공감 가져오기 실패:", error);
+            });
 
             const res_scrap = axios.get("http://localhost:8080/study/scraps", {
                 params: {
@@ -191,14 +177,14 @@ const Study = () => {
                 setScrapStates(response.data);
                 setIsScrapStates(true);
                 console.log("스크랩 가져오기 성공");
-            })
-                .catch((error) => {
-                    console.error("스크랩 가져오기 실패:", error);
-                });
+            }).catch((error) => {
+                console.error("스크랩 가져오기 실패:", error);
+            });
         }
     };
 
     const fetchStudies = (pageNumber) => {
+        setLoading(true);
         axios.get("http://localhost:8080/api/v2/studies/all", {
             params: {
                 page: pageNumber,
@@ -211,8 +197,8 @@ const Study = () => {
                 if (response.data.content != null) {
                     setStudiesInitialized(true);
                 }
-            })
-            .catch((error) => {
+                setLoading(false);
+            }).catch((error) => {
                 console.error("데이터 가져오기 실패:", error);
             });
     };
@@ -221,23 +207,38 @@ const Study = () => {
         setStudiesInitialized(false);
         setIsLikeStates(false);
         setIsScrapStates(false);
-
         fetchStudies(page);
         fetchLikeScrap(page);
     }, [page]);
 
     useEffect(() => {
+        axios.get("http://localhost:8080/api/v2/studies/all", {
+            params: {
+                page: 1,
+            },
+        }).then((response) => {
+            setStudies(response.data.content);
+            setItemsPerPage(response.data.pageable.pageSize);
+            setCount(response.data.totalElements);
+            if (response.data.content != null) {
+                setStudiesInitialized(true);
+            }
+            setLoading(false);
+        })
+            .catch((error) => {
+                console.error("데이터 가져오기 실패:", error);
+            });
+    }, [insertPage])
+
+    useEffect(() => {
         if (isStudiesInitialized) {
             if (isLikeStates && isScrapStates) {
                 const studyList = studies;
-
                 const updateStudies = studyList.map((study, index) => {
                     study.like = likeStates[index];
                     study.scrap = scrapStates[index];
-
                     return study;
                 });
-
                 setStudies(updateStudies);
             }
         }
@@ -257,38 +258,30 @@ const Study = () => {
                         </button>
                     )}
                 </div>
-
                 <div className="study">
                     {showStudyInsert && (
-                        <StudyInsert
-                            updateStudies={updateStudies}
-                            onClose={handleStudyInsertClose}
-                            study={studies}
-                        />
+                        navigate('/study/studyInsert')
                     )}
-                    {!showStudyInsert && (
-                        <div>
-                            <div><SearchBar/>
-                            </div>
-
-                            {/*TODO css 수정 필요*/}
-                            <div className="study_count">
-                                총 {count} 건
-                            </div>
-
+                    <div>
+                        <div><SearchBar/>
+                        </div>
+                        <div className="study_count">
+                            총 {count} 건
+                        </div>
+                        {!showStudyInsert && loading ? (
+                            <Loading/>) : (
                             <div className="content_container">
-
                                 <div className="study_list">
                                     {studies.map((d, index) => (
                                         <StudyListItem studies={d} toggleLike={toggleLike} toggleScrap={toggleScrap}
                                                        d={d}
-                                                       index={index} key={d.id}/>
+                                                       index={index} key={d.id} studiesList={studies}/>
                                     ))}
                                 </div>
                             </div>
-                        </div>
-                    )}
-                    {!showStudyInsert && studies.length === 0 && <h3>스터디 리스트가 비었습니다.</h3>}
+                        )}
+                    </div>
+                    {!showStudyInsert && studies.length === 0 && !loading && <h3>스터디 리스트가 비었습니다.</h3>}
                 </div>
             </div>
             <div className={"paging"}>

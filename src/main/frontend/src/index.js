@@ -13,9 +13,7 @@ script.async = true;
 
 script.onload = () => {
     root.render(
-        <React.StrictMode>
             <App />
-        </React.StrictMode>
     );
 };
 document.head.appendChild(script);

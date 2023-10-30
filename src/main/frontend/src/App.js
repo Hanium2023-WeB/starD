@@ -20,7 +20,8 @@ import ToDoList from "./pages/mypage/ToDoList";
 import Schedule from "./pages/mypage/Schedule.js";
 import StudyApplyForm from "./pages/studypage/StudyApplyForm";
 import Study from "./pages/studypage/Study";
-import StudyInsert from "./components/study/StudyInsert";
+import StudyInsert from "./pages/studypage/StudyInsert";
+import StudyEdit from "./pages/studypage/StudyEdit";
 import MyApplyStudy from "./pages/mypage/MyApplyStudy";
 import Header from "./components/repeat_etc/Header";
 import InputSubSign from "./pages/userpage/InputSubSign";
@@ -43,7 +44,6 @@ function App() {
     return (
         <BrowserRouter>
             <div className="App">
-
                 <Routes>
                     <Route
                         path="/"
@@ -123,9 +123,15 @@ function App() {
                         }
                     />
                     <Route
-                        path="/studyopen"
+                        path="/study/studyInsert"
                         element={
                             <StudyInsert/>
+                        }
+                    />
+                    <Route
+                        path="/:id/StudyDetail/StudyEdit"
+                        element={
+                            <StudyEdit/>
                         }
                     />
                     <Route

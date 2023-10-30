@@ -1,6 +1,6 @@
 import LikeButton from "../repeat_etc/LikeButton";
 import ScrapButton from "../repeat_etc/ScrapButton";
-import {Link,useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import React, {useEffect} from "react";
 
 import axios from "axios";
@@ -34,6 +34,7 @@ const StudyListItem = ({studies, toggleLike, toggleScrap, d, index}) => {
         navigate(`/studydetail/${d.id}`, {state: studies.id})
     }
 
+
     return (
         <div className="list" key={studies.id}>
             <div className="list_header">
@@ -61,8 +62,8 @@ const StudyListItem = ({studies, toggleLike, toggleScrap, d, index}) => {
             <div className="list_title" onClick={GoNextDetailPage}>{studies.title}</div>
             <div className="list_tag" onClick={GoNextDetailPage}>{studies.tags}</div>
             <div className="list_onoff" onClick={GoNextDetailPage}>{studies.onOff}</div>
-            <div className="stroke" ></div>
-            <div className="list_founder" >{studies.recruiter?.nickname}</div>
+            <div className="stroke"></div>
+            <div className="list_founder">{studies.recruiter?.nickname}</div>
         </div>
     )
 }
