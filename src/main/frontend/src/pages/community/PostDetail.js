@@ -2,7 +2,7 @@ import Header from "../../components/repeat_etc/Header";
 import Backarrow from "../../components/repeat_etc/Backarrow";
 import StudyEdit from "../../pages/studypage/StudyEdit";
 import StudyInfo from "../../components/study/StudyInfo";
-import {Link, useParams, useNavigate} from "react-router-dom";
+import {Link, useParams, useNavigate, useLocation} from "react-router-dom";
 import Comment from "../../components/comment/Comment";
 import React, {useState, useEffect} from "react";
 import LikeButton from "../../components/repeat_etc/LikeButton";
@@ -33,6 +33,13 @@ const PostDetail = () => {
     let isLoggedInUserId = localStorage.getItem('isLoggedInUserId');
 
     const [isWriter, setIsWriter] = useState(false);
+
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
+    const type = searchParams.get("type");
+    const [url, setUrl] = useState([]);
+
+    console.log("**Type: ", type);
 
     useEffect(() => {
         if (accessToken && isLoggedInUserId) {
@@ -71,8 +78,12 @@ const PostDetail = () => {
         }
     }, [id]);
 
-
     useEffect(() => {
+        if (type === "COMM") {
+            setUrl(`http://localhost:8080/com/${id}`);
+        } else if (type === "NOTICE") {
+            setUrl(`http://localhost:8080/notice/${id}`);
+        }
         const config = {
             headers: {}
         };
@@ -81,8 +92,8 @@ const PostDetail = () => {
             config.headers['Authorization'] = `Bearer ${accessToken}`;
         }
 
-        if (initiallyLikeStates && initiallyScrapStates) {
-            axios.get(`http://localhost:8080/com/${id}`, config)
+        if (initiallyLikeStates && initiallyScrapStates && id !== null) {
+            axios.get(url, config)
                 .then((res) => {
                     setPostItem(res.data);
                     if (res.data.member.id === isLoggedInUserId) { // 자신의 글인지
@@ -195,7 +206,7 @@ const PostDetail = () => {
         console.log("수정 예정 : " + updatedPost.id + ", " + updatedPost.title + ", " + updatedPost.content
                     + ", " + updatedPost.category);
 
-        axios.post(`http://localhost:8080/com/${id}`, {
+        axios.post(url, {
             title: updatedPost.title,
             content: updatedPost.content,
             category: updatedPost.category
@@ -207,7 +218,8 @@ const PostDetail = () => {
             }
         })
             .then(response => {
-                console.log("커뮤니티 게시글 수정 성공");
+                console.log("post 게시글 수정 성공");
+                alert("게시글이 수정되었습니다.");
 
                 setPostDetail(response.data);
                 const updatedPosts = posts.map(post =>
@@ -217,7 +229,8 @@ const PostDetail = () => {
             })
             .catch(error => {
                 console.error("Error:", error);
-                console.log("커뮤니티 게시글 수정 실패");
+                console.log("post 게시글 수정 실패");
+                alert("수정에 실패했습니다.");
             });
     }
 
@@ -225,7 +238,7 @@ const PostDetail = () => {
         const confirmDelete = window.confirm("정말로 게시글을 삭제하시겠습니까?");
         if (confirmDelete) {
 
-            axios.delete(`http://localhost:8080/com/${id}`, {
+            axios.delete(url, {
                 params: { id: id },
                 withCredentials: true,
                 headers: {
@@ -233,19 +246,26 @@ const PostDetail = () => {
                 }
             })
                 .then(response => {
-                    console.log("커뮤니티 게시글 삭제 성공 ");
+                    console.log("post 게시글 삭제 성공 ");
+                    alert("게시글이 삭제되었습니다.");
 
                     const updatedPosts = posts.filter(post => post.id !== postDetail[0].id);
                     setPosts(updatedPosts);
-                    window.location.href = "/community";
+
+                    if (type === "COMM") {
+                        window.location.href = "/community";
+                    }
+                    else if (type === "NOTICE") {
+                        window.location.href = "/notice";
+                    }
                 })
                 .catch(error => {
                     console.error("Error:", error);
-                    console.log("커뮤니티 게시글 삭제 실패");
+                    console.log("post 게시글 삭제 실패");
 
                     alert("삭제에 실패했습니다.");
                 });
-            navigate("/community");
+            //navigate("/community");
         }
     }
 
@@ -281,7 +301,11 @@ const PostDetail = () => {
         <div>
             <Header showSideCenter={true}/>
             <div className="community_container">
-                <Backarrow subname={"COMMUNITY LIST"}/>
+                {type === "COMM" ? (
+                    <Backarrow subname="Community List" />
+                ) : type === "NOTICE" ? (
+                    <Backarrow subname="Notice List" />
+                ) : null}
                 {editing ? (
                         <PostEdit
                             post={postItem}
@@ -311,7 +335,7 @@ const PostDetail = () => {
                                 <div className="left">
                                     <span className="post_nickname">{postItem.member.nickname}</span>
                                     <span className="post_created_date">{formatDatetime(postItem.createdAt)}</span>
-                                    {isLoggedInUserId !== postItem.member.id && (
+                                    {isLoggedInUserId !== postItem.member.id && type === "COMM" && (
                                         <>
                                         <span>&nbsp;&nbsp; | &nbsp;&nbsp;</span>
                                         <span className="report_btn" onClick={() => handleOpenReportModal(postItem.id)}>신고</span>
@@ -340,7 +364,7 @@ const PostDetail = () => {
                         </div>
                     )}
                     <div className="btn">
-                        <Link to={"/community"}
+                        <Link to={type === "COMM" ? "/community" : type === "NOTICE" ? "/notice" : "/"}
                               style={{
                                   textDecoration: "none",
                                   color: "inherit",
@@ -353,7 +377,7 @@ const PostDetail = () => {
                     )}
             </div>
             <div className="comment_container">
-                <Comment/>
+                {type === "COMM" && <Comment />}
             </div>
         </div>
     )
