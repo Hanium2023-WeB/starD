@@ -176,9 +176,12 @@ const TeamBlog = () => {
                     </div>
                     <div className="gnb_bg">
                         <ul className="gnb">
+
                             <li>팀블로그 홈</li>
-                            <li>TODO</li>
-                            <li>일정</li>
+
+
+                            <li onClick={ShowAllToDo}>TODO</li>
+                            <li onClick={ShowAllSchedule}>일정</li>
                             <li>팀 커뮤니티</li>
                         </ul>
                     </div>
