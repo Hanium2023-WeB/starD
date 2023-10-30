@@ -27,9 +27,9 @@ public class LocationService {
     @Autowired StudyService studyService;
     @Autowired MemberService memberService;
 
-    @Value("${naver.client.id}")
+//    @Value("${naver.client.id}")
     private String clientId;
-    @Value("${naver.client.secret}")
+//    @Value("${naver.client.secret}")
     private String clientSecret;
 
     public Location getRecommendedPlaceAll(Long studyId) throws Exception {

@@ -39,6 +39,7 @@ import FindedID from "./pages/userpage/FindedID.js";
 import TeamToDoList from "./pages/TeamToDo/TeamToDoList";
 import TeamSchedule from "./pages/TeamSchedule/TeamSchedule";
 import FindPW from "./pages/userpage/FindPW";
+import MemberEvaluate from "./pages/mypage/MemberEvaluate";
 
 function App() {
     return (
@@ -197,6 +198,12 @@ function App() {
                         path="/chat"
                         element={
                             <Chat/>
+                        }
+                    />
+                    <Route
+                        path="/:id/evaluate"
+                        element={
+                            <MemberEvaluate/>
                         }
                     />
                 </Routes>

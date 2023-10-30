@@ -32,7 +32,7 @@ public class EvaluationController {
     }
 
     /* 자신이 한 평가 상세 조회 */
-    @GetMapping("/member/{evaluationId}")
+    @GetMapping("/member/detail/{evaluationId}")
     public Evaluation getEvaluation(@PathVariable Long evaluationId, Authentication authentication) {
         return evaluationService.getEvaluation(evaluationId, authentication);
     }
@@ -44,18 +44,5 @@ public class EvaluationController {
                                          @RequestParam double starRating, @RequestParam String reason,
                                          Authentication authentication) {
         return evaluationService.registerEvaluation(studyId, targetId, starRating, reason, authentication);
-    }
-
-    /* 평가 수정 */
-    @PostMapping("/{evaluationId}")
-    public Evaluation updateEvaluation(@PathVariable Long evaluationId, @RequestParam double starRating,
-                                       @RequestParam String reason, Authentication authentication) {
-        return evaluationService.updateEvaluation(evaluationId, starRating, reason, authentication);
-    }
-
-    /* 평가 삭제 */
-    @DeleteMapping("/{evaluationId}")
-    public boolean deleteEvaluation(@PathVariable Long evaluationId, Authentication authentication) {
-        return evaluationService.deleteEvaluation(evaluationId, authentication);
     }
 }

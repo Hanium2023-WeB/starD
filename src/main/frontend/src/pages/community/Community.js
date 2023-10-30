@@ -85,18 +85,25 @@ const Community = () => {
                         </div>
                         <div className="community">
                             <div>
-                                <table className="post_table" key={posts.id}>
-                                    <th>카테고리</th>
-                                    <th>제목</th>
-                                    <th>닉네임</th>
-                                    <th>날짜</th>
-                                    <th>조회수</th>
-                                    <th>공감수</th>
-                                    <th>스크랩수</th>
-                                    {posts.map((d, index) => (
-                                        <PostListItem setPosts={setPosts} posts={d} d={d}
-                                                      index={index} key={d.id}/>
-                                    ))}
+                                <table className="post_table">
+                                    <thead>
+                                        <tr>
+                                            <th>카테고리</th>
+                                            <th>제목</th>
+                                            <th>닉네임</th>
+                                            <th>날짜</th>
+                                            <th>조회수</th>
+                                            <th>공감수</th>
+                                            <th>스크랩수</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {posts.map((post) => (
+                                            <PostListItem key={post.id}
+                                                          setPosts={setPosts}
+                                                          posts={post}/>
+                                        ))}
+                                    </tbody>
                                 </table>
                             </div>
                         </div>
