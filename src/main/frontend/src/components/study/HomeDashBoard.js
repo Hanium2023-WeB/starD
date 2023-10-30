@@ -260,7 +260,7 @@ const HomeDashBoard = () => {
 
                                 <div className="list_title">{d.study.title}</div>
                                 <div className="dashboard_day">
-                                    {calculateDateDifference(d.study.activityStart, d.study.activityDeadline)}일간의 우주여행
+                                    {calculateDateDifference(d.study.activityStart, d.study.activityDeadline)}일간의 스터디
                                 </div>
                                 {d.study.recruitStatus === "RECRUITING" ? (
                                     <div className="list_status">모집중</div>

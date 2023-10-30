@@ -22,7 +22,7 @@ html {
 	position: relative;
 }
 .arrow_left .openStudy{
-	background-color: #0038FF;
+	background-color: #99A98F;
 	border: none;
 	font-size: 13px;
 	color: #fff;
@@ -83,7 +83,7 @@ html {
 }
 .study_header .study_edit,
 .study_header .study_remove{
-	background-color: #0038FF;
+	background-color: #99A98F;
 	border-radius: 50px;
 	font-family: 'Pretendard-Regular';
 	cursor: pointer;
@@ -141,7 +141,7 @@ html {
 	justify-content: center;
 }
 .btn .apply_btn {
-	background-color: #0038FF;
+	background-color: #99A98F;
 	border: none;
 	font-size: 20px;
 	color: #fff;
