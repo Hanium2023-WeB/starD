@@ -13,6 +13,7 @@ const CommSearchBar = () => {
 
 
 	const tagoptions = [
+	    { value: "전체", name: "전체" },
 		{ value: "취미", name: "취미" },
 		{ value: "공부", name: "공부" },
 		{ value: "잡담", name: "잡담" },

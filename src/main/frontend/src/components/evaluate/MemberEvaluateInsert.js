@@ -71,11 +71,12 @@ const MemberEvaluateInsert = ({studyId, members, completeEvaluation}) => {
             }
         }).then((res) => {
             console.log(res.data);
+            alert('등록되었습니다.');
+            navigate("/myparticipatestudy");
         }).catch((error) => {
             console.log('전송 실패', error);
         });
 
-        navigate("/");
     };
 
     return (

@@ -107,7 +107,7 @@ const MemberEvaluate = () => {
                             </table>
                         )}
 
-                        {evaluation.length < Member.length - 1 && (
+                        {evaluation.length < Member.length - 1 && !showEvaluateInsert && (
                             <button className="evaluate_button" onClick={handleMoveToEvaluateInsert}>팀원 평가하기</button>
                         )}
                     </div>
