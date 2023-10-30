@@ -1,15 +1,13 @@
 import Header from "../../components/repeat_etc/Header";
 import Backarrow from "../../components/repeat_etc/Backarrow";
 import {Link, useParams, useNavigate} from "react-router-dom";
-import Comment from "../../components/comment/Comment";
 import React, {useState, useEffect} from "react";
 import LikeButton from "../../components/repeat_etc/LikeButton";
 import ScrapButton from "../../components/repeat_etc/ScrapButton";
 import axios from "axios";
-import PostEdit from "../../components/community/PostEdit";
-import Report from "../../components/report/Report";
+import NoticeEdit from "../../components/notice/NoticeEdit";
 
-const PostDetail = () => {
+const NoticeDetail = () => {
     const navigate = useNavigate();
 
     const {id} = useParams();
@@ -27,8 +25,8 @@ const PostDetail = () => {
     const [editing, setEditing] = useState(false);
     const [postDetail, setPostDetail] = useState([]);
 
-    const accessToken = localStorage.getItem('accessToken');
-    const isLoggedInUserId = localStorage.getItem('isLoggedInUserId');
+    let accessToken = localStorage.getItem('accessToken');
+    let isLoggedInUserId = localStorage.getItem('isLoggedInUserId');
 
     const [isWriter, setIsWriter] = useState(false);
 
@@ -69,6 +67,7 @@ const PostDetail = () => {
         }
     }, [id]);
 
+
     useEffect(() => {
         const config = {
             headers: {}
@@ -79,7 +78,7 @@ const PostDetail = () => {
         }
 
         if (initiallyLikeStates && initiallyScrapStates) {
-            axios.get(`http://localhost:8080/com/${id}`, config)
+            axios.get(`http://localhost:8080/notice/${id}`, config)
                 .then((res) => {
                     setPostItem(res.data);
                     if (res.data.member.id === isLoggedInUserId) { // 자신의 글인지
@@ -96,7 +95,6 @@ const PostDetail = () => {
         if (!(accessToken && isLoggedInUserId)) {
             alert("로그인 해주세요");
             navigate("/login");
-            return;
         }
 
         if (likeStates) { // true -> 활성화되어 있는 상태 -> 취소해야 함
@@ -140,7 +138,6 @@ const PostDetail = () => {
         if (!(accessToken && isLoggedInUserId)) {
             alert("로그인 해주세요");
             navigate("/login");
-            return;
         }
 
         if (scrapStates) { // true -> 활성화되어 있는 상태 -> 취소해야 함
@@ -194,7 +191,7 @@ const PostDetail = () => {
         console.log("수정 예정 : " + updatedPost.id + ", " + updatedPost.title + ", " + updatedPost.content
             + ", " + updatedPost.category);
 
-        axios.post(`http://localhost:8080/com/${id}`, {
+        axios.post(`http://localhost:8080/notice/${id}`, {
             title: updatedPost.title,
             content: updatedPost.content,
             category: updatedPost.category
@@ -206,7 +203,7 @@ const PostDetail = () => {
             }
         })
             .then(response => {
-                console.log("커뮤니티 게시글 수정 성공");
+                console.log("공지글 수정 성공");
                 alert("게시글이 수정되었습니다.");
 
                 setPostDetail(response.data);
@@ -217,7 +214,7 @@ const PostDetail = () => {
             })
             .catch(error => {
                 console.error("Error:", error);
-                console.log("커뮤니티 게시글 수정 실패");
+                console.log("공지글 수정 실패");
                 alert("수정에 실패했습니다.");
             });
     }
@@ -226,7 +223,7 @@ const PostDetail = () => {
         const confirmDelete = window.confirm("정말로 게시글을 삭제하시겠습니까?");
         if (confirmDelete) {
 
-            axios.delete(`http://localhost:8080/com/${id}`, {
+            axios.delete(`http://localhost:8080/notice/${id}`, {
                 params: { id: id },
                 withCredentials: true,
                 headers: {
@@ -234,38 +231,20 @@ const PostDetail = () => {
                 }
             })
                 .then(response => {
-                    console.log("커뮤니티 게시글 삭제 성공 ");
+                    console.log("공지글 삭제 성공 ");
                     alert("게시글이 삭제되었습니다.");
-
                     const updatedPosts = posts.filter(post => post.id !== postDetail[0].id);
                     setPosts(updatedPosts);
-                    navigate("/community");
+                    navigate("/notice");
                 })
                 .catch(error => {
                     console.error("Error:", error);
-                    console.log("커뮤니티 게시글 삭제 실패");
+                    console.log("공지글 삭제 실패");
 
                     alert("삭제에 실패했습니다.");
                 });
         }
     }
-
-    const [showReportModal, setShowReportModal] = useState(false);
-    const [reportPostId, setReportPostId] = useState(null);
-
-    const handleOpenReportModal = (postId) => {
-        setReportPostId(postId);
-        setShowReportModal(true);
-    };
-
-    const handleCloseReportModal = () => {
-        setReportPostId(null);
-        setShowReportModal(false);
-    };
-
-    const handleReportSubmit = (reportReason) => {
-        console.log("신고 사유:", reportReason);
-    };
 
     const formatDatetime = (datetime) => {
         const date = new Date(datetime);
@@ -282,9 +261,9 @@ const PostDetail = () => {
         <div>
             <Header showSideCenter={true}/>
             <div className="community_container">
-                <Backarrow subname={"COMMUNITY LIST"}/>
+                <Backarrow subname={"NOTICE LIST"}/>
                 {editing ? (
-                    <PostEdit
+                    <NoticeEdit
                         post={postItem}
                         onUpdatePost={handlePostUpdate}
                         onCancel={handleCancelEdit}
@@ -310,20 +289,8 @@ const PostDetail = () => {
                                 </div>
                                 <div className="post_info">
                                     <div className="left">
-                                        <span className="post_nickname">{postItem.member.nickname}</span>
+                                        <span className="post_nickname">관리자</span>
                                         <span className="post_created_date">{formatDatetime(postItem.createdAt)}</span>
-                                        {isLoggedInUserId !== postItem.member.id && (
-                                            <>
-                                                <span>&nbsp;&nbsp; | &nbsp;&nbsp;</span>
-                                                <span className="report_btn" onClick={() => handleOpenReportModal(postItem.id)}>신고</span>
-                                            </>
-                                        )}
-                                        <Report
-                                            show={showReportModal}
-                                            handleClose={handleCloseReportModal}
-                                            onReportSubmit={handleReportSubmit}
-                                            targetId={reportPostId}
-                                        />
                                     </div>
                                     <div className="right">
                                     <span className="like_btn"><LikeButton like={likeStates}
@@ -341,7 +308,7 @@ const PostDetail = () => {
                             </div>
                         )}
                         <div className="btn">
-                            <Link to={"/community"}
+                            <Link to={"/notice"}
                                   style={{
                                       textDecoration: "none",
                                       color: "inherit",
@@ -353,10 +320,7 @@ const PostDetail = () => {
                     </div>
                 )}
             </div>
-            <div className="comment_container">
-                <Comment/>
-            </div>
         </div>
     )
 }
-export default PostDetail;
+export default NoticeDetail;
