@@ -131,7 +131,7 @@ const StudyDetail = ({sideheader}) => {
                                             color: "inherit",
                                         }}
                                     >
-                                        <button className="apply_btn">탑승하기</button>
+                                        <button className="apply_btn">참여하기</button>
                                     </Link>
                                 </div>
                             )}
