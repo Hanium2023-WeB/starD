@@ -1,12 +1,8 @@
 import React, {useEffect, useState} from "react";
 import {Link, useNavigate, useLocation} from "react-router-dom";
-
 import Backarrow from "../../components/repeat_etc/Backarrow";
-import StudyInsert from "../../components/study/StudyInsert";
+import StudyInsert from "../../pages/studypage/StudyInsert";
 import Header from "../../components/repeat_etc/Header";
-import ScrapButton from "../../components/repeat_etc/ScrapButton";
-import LikeButton from "../../components/repeat_etc/LikeButton";
-
 import "../../css/study_css/MyOpenStudy.css";
 import "../../css/study_css/StudyDetail.css";
 import SearchBar from "../../SearchBar";

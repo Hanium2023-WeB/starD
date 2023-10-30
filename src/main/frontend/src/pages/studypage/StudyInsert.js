@@ -3,15 +3,16 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faArrowLeft} from "@fortawesome/free-solid-svg-icons";
 import {useNavigate, useLocation} from "react-router-dom";
 import "../../css/study_css/StudyOpenForm.css";
-import StudyRegion from "./StudyRegion";
-import Tag from "./Tag";
+import StudyRegion from "../../components/study/StudyRegion";
+import Tag from "../../components/study/Tag";
 import axios from "axios";
+import Header from "../../components/repeat_etc/Header";
+import Backarrow from "../../components/repeat_etc/Backarrow";
 
-const StudyInsert = ({updateStudies, onClose}) => {
-
+const StudyInsert = () => {
+    const location = useLocation();
     const [dataId, setDataId] = useState(0);
     const navigate = useNavigate();
-
     const currentDate = new Date();
     const currentYear = currentDate.getFullYear();
     const currentMonth = currentDate.getMonth() + 1;
@@ -29,7 +30,7 @@ const StudyInsert = ({updateStudies, onClose}) => {
     const [current, setCurrent] = useState("Recruiting");
     const [formData, setFormData] = useState({
         title: "",
-        field: "웹 개발",
+        field: "",
         author: "",
         number: "",
         onoff: "",
@@ -45,29 +46,30 @@ const StudyInsert = ({updateStudies, onClose}) => {
         scrap: false,
         like: false,
     });
-
+    const updateStudies = (updatedStudies) => {
+        setStudies(updatedStudies);
+    };
     const tagoptions = [
-        { value: "취업", name: "취업" },
-        { value: "자소서", name: "자소서" },
-        { value: "면접", name: "면접" },
-        { value: "취미", name: "취미" },
-        { value: "영어 공부", name: "영어 공부" },
-        { value: "프로그래밍", name: "프로그래밍" },
-        { value: "음악", name: "음악" },
-        { value: "미술", name: "미술" },
-        { value: "스포츠", name: "스포츠" },
-        { value: "요리", name: "요리" },
-        { value: "건강", name: "건강" },
-        { value: "여행", name: "여행" },
-        { value: "독서", name: "독서" },
-        { value: "투자", name: "투자" },
-        { value: "사회봉사", name: "사회봉사" },
-        { value: "뉴스", name: "뉴스" },
-        { value: "기술 동향", name: "기술 동향" },
-        { value: "건축", name: "건축" },
-        { value: "환경", name: "환경" },
+        {value: "취업", name: "취업"},
+        {value: "자소서", name: "자소서"},
+        {value: "면접", name: "면접"},
+        {value: "취미", name: "취미"},
+        {value: "영어 공부", name: "영어 공부"},
+        {value: "프로그래밍", name: "프로그래밍"},
+        {value: "음악", name: "음악"},
+        {value: "미술", name: "미술"},
+        {value: "스포츠", name: "스포츠"},
+        {value: "요리", name: "요리"},
+        {value: "건강", name: "건강"},
+        {value: "여행", name: "여행"},
+        {value: "독서", name: "독서"},
+        {value: "투자", name: "투자"},
+        {value: "사회봉사", name: "사회봉사"},
+        {value: "뉴스", name: "뉴스"},
+        {value: "기술 동향", name: "기술 동향"},
+        {value: "건축", name: "건축"},
+        {value: "환경", name: "환경"},
         {value: "블로그 운영", name: "블로그 운영"},
-        // Add more categories as needed
     ];
 
 
@@ -268,7 +270,11 @@ const StudyInsert = ({updateStudies, onClose}) => {
 
         console.log("response : ", response);
         e.preventDefault();
-        navigate("/");
+        navigate(`/study/${1}`,{
+            state:{
+                page:1,
+            }
+        });
     }, [formData, navigate, tags, onInsertStudy]);
 
     const studyinsertform = () => {
@@ -347,8 +353,19 @@ const StudyInsert = ({updateStudies, onClose}) => {
         )
     }
 
-    return (<div>
-        {studyinsertform()}
-    </div>);
+    return (
+        <div className={"main_wrap"} id={"study"}>
+            <Header showSideCenter={true}/>
+            <div className="study_detail_container" style={{width: "70%"}}>
+                <h1>Insert Study</h1>
+                <div className="arrow_left">
+                    <p id={"entry-path"}> 홈 > 스터디 리스트 > 스터디 추가 </p>
+                    <Backarrow subname={"Insert Study"}/>
+                    <div>
+                        {studyinsertform()}
+                    </div>
+                </div>
+            </div>
+        </div>);
 }
 export default StudyInsert;

@@ -1,6 +1,6 @@
 import Header from "../../components/repeat_etc/Header";
 import Backarrow from "../../components/repeat_etc/Backarrow";
-import StudyEdit from "../../components/study/StudyEdit";
+import StudyEdit from "../../pages/studypage/StudyEdit";
 import StudyInfo from "../../components/study/StudyInfo";
 import {Link, useParams, useNavigate} from "react-router-dom";
 import Comment from "../../components/comment/Comment";
