@@ -73,7 +73,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             "/com/**",
             "/notice/**",
 
-            "/gs-guide-websocket"
+            "/gs-guide-websocket",
+
+            // 이메일 인증
+            "/emails/verifications",
+            "/emails/verification-requests"
     };
 
     @Override
