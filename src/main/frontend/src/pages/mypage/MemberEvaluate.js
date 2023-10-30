@@ -46,6 +46,23 @@ const MemberEvaluate = () => {
 
     }, [accessToken]);
 
+    useEffect(() => {
+        axios.get(`http://localhost:8080/rate/member/${studyId}`, {
+            withCredentials: true,
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
+        })
+            .then((res) => {
+                console.log("평가 내역 get 성공 : ", res.data);
+
+                setEvaluation(res.data);
+            })
+            .catch((error) => {
+                console.error("평가 내역 불러오기 실패 : ", error);
+            });
+    }, [accessToken, studyId]);
+
     return (
         <div>
             <Header showSideCenter={true} />
@@ -56,11 +73,10 @@ const MemberEvaluate = () => {
                     <Backarrow subname={"팀원 평가"} />
                     <div className="evaluate">
                         {showEvaluateInsert ? ( // Render MemberEvaluateInsert when showEvaluateInsert is true
-                            <MemberEvaluateInsert studyId={studyId} />
+                            <MemberEvaluateInsert studyId={studyId} members={Member} />
                         ) : evaluation.length === 0 ? (
                             <>
                                 <p>평가 내역이 없습니다.<br/> 팀원 평가를 진행해주세요.</p>
-                                <button className="evaluate_button" onClick={handleMoveToEvaluateInsert}>팀원 평가하기</button>
                             </>
                         ) : (
                             <table className="evaluate_table">
@@ -72,11 +88,14 @@ const MemberEvaluate = () => {
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr className="evaluate_list">
-                                    <td className="member_name">김솜솜</td>
-                                    <td className="member_rating">5</td>
-                                    <td className="member_evaluate_reason">이것이 사유입니다.</td>
-                                </tr>
+                                {evaluation.map((eva, index) => (
+                                    <tr className="evaluate_list">
+                                        <td className="member_name">{eva.target.nickname}</td>
+                                        <td className="member_rating">{eva.starRating}</td>
+                                        <td className="member_evaluate_reason">{eva.reason}</td>
+                                    </tr>
+                                ))}
+
                                 {/*{members.map((member) => (*/}
                                 {/*    <tr className="evaluate_list">*/}
                                 {/*        <td className="community_category">{}</td>*/}
@@ -86,7 +105,12 @@ const MemberEvaluate = () => {
                                 </tbody>
                             </table>
                         )}
+
+                        {evaluation.length < Member.length - 1 && (
+                            <button className="evaluate_button" onClick={handleMoveToEvaluateInsert}>팀원 평가하기</button>
+                        )}
                     </div>
+
                 </div>
             </div>
         </div>

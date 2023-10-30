@@ -177,3 +177,13 @@ html {
 .member_rating > div{
 	align-items: center;
 }
+
+.evaluate_list button{
+	width:75px;
+	height:35px;
+	border-radius: 5px;
+	border-style: none;
+	background-color: #BBDF9F;
+	color: white;
+	cursor: pointer;
+}

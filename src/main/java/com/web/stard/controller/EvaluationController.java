@@ -32,7 +32,7 @@ public class EvaluationController {
     }
 
     /* 자신이 한 평가 상세 조회 */
-    @GetMapping("/member/{evaluationId}")
+    @GetMapping("/member/detail/{evaluationId}")
     public Evaluation getEvaluation(@PathVariable Long evaluationId, Authentication authentication) {
         return evaluationService.getEvaluation(evaluationId, authentication);
     }
