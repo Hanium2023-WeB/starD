@@ -175,12 +175,12 @@ function App() {
                             <Community/>
                         }
                     />
-                    <Route
+{/*                    <Route
                         path="/notice"
                         element={
                             <Community/>
                         }
-                    />
+                    />*/}
                     <Route
                         path="/postdetail/:id"
                         element={

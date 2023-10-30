@@ -1,8 +1,6 @@
 import Header from "../../components/repeat_etc/Header";
 import Backarrow from "../../components/repeat_etc/Backarrow";
-import StudyEdit from "../../pages/studypage/StudyEdit";
-import StudyInfo from "../../components/study/StudyInfo";
-import {Link, useParams, useNavigate, useLocation} from "react-router-dom";
+import {Link, useParams, useNavigate} from "react-router-dom";
 import Comment from "../../components/comment/Comment";
 import React, {useState, useEffect} from "react";
 import LikeButton from "../../components/repeat_etc/LikeButton";
@@ -33,13 +31,6 @@ const PostDetail = () => {
     const isLoggedInUserId = localStorage.getItem('isLoggedInUserId');
 
     const [isWriter, setIsWriter] = useState(false);
-
-    const location = useLocation();
-    const searchParams = new URLSearchParams(location.search);
-    const type = searchParams.get("type");
-    const [url, setUrl] = useState([]);
-
-    console.log("**Type: ", type);
 
     useEffect(() => {
         if (accessToken && isLoggedInUserId) {
@@ -79,11 +70,6 @@ const PostDetail = () => {
     }, [id]);
 
     useEffect(() => {
-        if (type === "COMM") {
-            setUrl(`http://localhost:8080/com/${id}`);
-        } else if (type === "NOTICE") {
-            setUrl(`http://localhost:8080/notice/${id}`);
-        }
         const config = {
             headers: {}
         };
@@ -92,17 +78,17 @@ const PostDetail = () => {
             config.headers['Authorization'] = `Bearer ${accessToken}`;
         }
 
-        if (initiallyLikeStates && initiallyScrapStates && id !== null) {
-            axios.get(url, config)
+        if (initiallyLikeStates && initiallyScrapStates) {
+            axios.get(`http://localhost:8080/com/${id}`, config)
                 .then((res) => {
                     setPostItem(res.data);
                     if (res.data.member.id === isLoggedInUserId) { // 자신의 글인지
                         setIsWriter(true);
                     }
                 })
-                    .catch((error) => {
-                        console.error("커뮤니티 게시글 세부 데이터 가져오기 실패:", error);
-            });
+                .catch((error) => {
+                    console.error("커뮤니티 게시글 세부 데이터 가져오기 실패:", error);
+                });
         }
     }, [id, accessToken, isLoggedInUserId, initiallyLikeStates, initiallyScrapStates]);
 
@@ -206,9 +192,9 @@ const PostDetail = () => {
         setEditing(false);
 
         console.log("수정 예정 : " + updatedPost.id + ", " + updatedPost.title + ", " + updatedPost.content
-                    + ", " + updatedPost.category);
+            + ", " + updatedPost.category);
 
-        axios.post(url, {
+        axios.post(`http://localhost:8080/com/${id}`, {
             title: updatedPost.title,
             content: updatedPost.content,
             category: updatedPost.category
@@ -220,8 +206,7 @@ const PostDetail = () => {
             }
         })
             .then(response => {
-                console.log("post 게시글 수정 성공");
-                alert("게시글이 수정되었습니다.");
+                console.log("커뮤니티 게시글 수정 성공");
 
                 setPostDetail(response.data);
                 const updatedPosts = posts.map(post =>
@@ -231,8 +216,7 @@ const PostDetail = () => {
             })
             .catch(error => {
                 console.error("Error:", error);
-                console.log("post 게시글 수정 실패");
-                alert("수정에 실패했습니다.");
+                console.log("커뮤니티 게시글 수정 실패");
             });
     }
 
@@ -240,7 +224,7 @@ const PostDetail = () => {
         const confirmDelete = window.confirm("정말로 게시글을 삭제하시겠습니까?");
         if (confirmDelete) {
 
-            axios.delete(url, {
+            axios.delete(`http://localhost:8080/com/${id}`, {
                 params: { id: id },
                 withCredentials: true,
                 headers: {
@@ -248,22 +232,15 @@ const PostDetail = () => {
                 }
             })
                 .then(response => {
-                    console.log("post 게시글 삭제 성공 ");
-                    alert("게시글이 삭제되었습니다.");
+                    console.log("커뮤니티 게시글 삭제 성공 ");
 
                     const updatedPosts = posts.filter(post => post.id !== postDetail[0].id);
                     setPosts(updatedPosts);
-
-                    if (type === "COMM") {
-                        navigate("/community");
-                    }
-                    else if (type === "NOTICE") {
-                        navigate("/notice");
-                    }
+                    navigate("/community");
                 })
                 .catch(error => {
                     console.error("Error:", error);
-                    console.log("post 게시글 삭제 실패");
+                    console.log("커뮤니티 게시글 삭제 실패");
 
                     alert("삭제에 실패했습니다.");
                 });
@@ -288,97 +265,93 @@ const PostDetail = () => {
     };
 
     const formatDatetime = (datetime) => {
-      const date = new Date(datetime);
-      const year = date.getFullYear();
-      const month = String(date.getMonth() + 1).padStart(2, "0");
-      const day = String(date.getDate()).padStart(2, "0");
-      const hours = String(date.getHours()).padStart(2, "0");
-      const minutes = String(date.getMinutes()).padStart(2, "0");
-      const formattedDatetime = `${year}-${month}-${day} ${hours}:${minutes}`;
-      return formattedDatetime;
+        const date = new Date(datetime);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const day = String(date.getDate()).padStart(2, "0");
+        const hours = String(date.getHours()).padStart(2, "0");
+        const minutes = String(date.getMinutes()).padStart(2, "0");
+        const formattedDatetime = `${year}-${month}-${day} ${hours}:${minutes}`;
+        return formattedDatetime;
     };
 
     return (
         <div>
             <Header showSideCenter={true}/>
             <div className="community_container">
-                {type === "COMM" ? (
-                    <Backarrow subname="Community List" />
-                ) : type === "NOTICE" ? (
-                    <Backarrow subname="Notice List" />
-                ) : null}
+                <Backarrow subname={"COMMUNITY LIST"}/>
                 {editing ? (
-                        <PostEdit
-                            post={postItem}
-                            onUpdatePost={handlePostUpdate}
-                            onCancel={handleCancelEdit}
-                        />
-                    ) : (
-                <div className="community_detail">
-                    {postItem && (
-                        <div className="post_header">
-                            <div className="post_category">
-                                <span>카테고리 > </span>
-                                <span>{postItem.category}</span>
-                            </div>
-                            <div style={{display:"flex", justifyContent:"space-between"}}>
-                                <div className="post_title">
-                                    {postItem.title}
+                    <PostEdit
+                        post={postItem}
+                        onUpdatePost={handlePostUpdate}
+                        onCancel={handleCancelEdit}
+                    />
+                ) : (
+                    <div className="community_detail">
+                        {postItem && (
+                            <div className="post_header">
+                                <div className="post_category">
+                                    <span>카테고리 > </span>
+                                    <span>{postItem.category}</span>
                                 </div>
-                                {isWriter && (
-                                    <div className="button">
-                                        <button style={{marginRight:"5px"}} onClick={handleEditClick}>수정</button>
-                                        <button onClick={handlePostDelete}>삭제</button>
+                                <div style={{display:"flex", justifyContent:"space-between"}}>
+                                    <div className="post_title">
+                                        {postItem.title}
                                     </div>
-                                )}
-                            </div>
-                            <div className="post_info">
-                                <div className="left">
-                                    <span className="post_nickname">{postItem.member.nickname}</span>
-                                    <span className="post_created_date">{formatDatetime(postItem.createdAt)}</span>
-                                    {isLoggedInUserId !== postItem.member.id && type === "COMM" && (
-                                        <>
-                                        <span>&nbsp;&nbsp; | &nbsp;&nbsp;</span>
-                                        <span className="report_btn" onClick={() => handleOpenReportModal(postItem.id)}>신고</span>
-                                        </>
+                                    {isWriter && (
+                                        <div className="button">
+                                            <button style={{marginRight:"5px"}} onClick={handleEditClick}>수정</button>
+                                            <button onClick={handlePostDelete}>삭제</button>
+                                        </div>
                                     )}
-                                    <Report
-                                        show={showReportModal}
-                                        handleClose={handleCloseReportModal}
-                                        onReportSubmit={handleReportSubmit}
-                                        targetId={reportPostId}
-                                    />
                                 </div>
-                                <div className="right">
+                                <div className="post_info">
+                                    <div className="left">
+                                        <span className="post_nickname">{postItem.member.nickname}</span>
+                                        <span className="post_created_date">{formatDatetime(postItem.createdAt)}</span>
+                                        {isLoggedInUserId !== postItem.member.id && (
+                                            <>
+                                                <span>&nbsp;&nbsp; | &nbsp;&nbsp;</span>
+                                                <span className="report_btn" onClick={() => handleOpenReportModal(postItem.id)}>신고</span>
+                                            </>
+                                        )}
+                                        <Report
+                                            show={showReportModal}
+                                            handleClose={handleCloseReportModal}
+                                            onReportSubmit={handleReportSubmit}
+                                            targetId={reportPostId}
+                                        />
+                                    </div>
+                                    <div className="right">
                                     <span className="like_btn"><LikeButton like={likeStates}
-                                    onClick={() => toggleLike()} /></span>
-                                    <span className="scrap_btn"><ScrapButton scrap={scrapStates}
-                                    onClick={() => toggleScrap()} /></span>
-                                    <span>조회 <span>{postItem.viewCount}</span></span>
+                                                                           onClick={() => toggleLike()} /></span>
+                                        <span className="scrap_btn"><ScrapButton scrap={scrapStates}
+                                                                                 onClick={() => toggleScrap()} /></span>
+                                        <span>조회 <span>{postItem.viewCount}</span></span>
+                                    </div>
                                 </div>
                             </div>
+                        )}
+                        {postItem && (
+                            <div className="post_content">
+                                {postItem.content}
+                            </div>
+                        )}
+                        <div className="btn">
+                            <Link to={"/community"}
+                                  style={{
+                                      textDecoration: "none",
+                                      color: "inherit",
+                                  }}
+                            >
+                                <button className="community_list_btn">글 목록보기</button>
+                            </Link>
                         </div>
-                    )}
-                    {postItem && (
-                        <div className="post_content">
-                            {postItem.content}
-                        </div>
-                    )}
-                    <div className="btn">
-                        <Link to={type === "COMM" ? "/community" : type === "NOTICE" ? "/notice" : "/"}
-                              style={{
-                                  textDecoration: "none",
-                                  color: "inherit",
-                              }}
-                        >
-                            <button className="community_list_btn">글 목록보기</button>
-                        </Link>
                     </div>
-                </div>
-                    )}
+                )}
             </div>
             <div className="comment_container">
-                {type === "COMM" && <Comment />}
+                <Comment/>
             </div>
         </div>
     )

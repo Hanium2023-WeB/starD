@@ -1,32 +1,16 @@
-import React, {useEffect, useState} from "react";
-import {useLocation} from "react-router-dom";
+import React, {useState} from "react";
 
 const PostEdit = ({post, onUpdatePost, onCancel}) => {
     const [updatedPost, setUpdatedPost] = useState(post);
 
     const [selectedCategory, setSelectedCategory] = useState(post.category);
 
-    const location = useLocation();
-    const searchParams = new URLSearchParams(location.search);
-    const type = searchParams.get("type");
-
-    console.log("**Type: ", type);
-
-    let tagoptions = [];
-
-    if (type === "COMM") {
-        tagoptions = [
-            { value: "취미", name: "취미" },
-            { value: "공부", name: "공부" },
-            { value: "잡담", name: "잡담" },
-            { value: "기타", name: "기타" },
-        ];
-    } else if (type === "NOTICE") {
-        tagoptions = [
-            { value: "공지", name: "공지" },
-            { value: "FAQ", name: "FAQ" },
-        ];
-    }
+    const tagoptions = [
+        { value: "취미", name: "취미" },
+        { value: "공부", name: "공부" },
+        { value: "잡담", name: "잡담" },
+        { value: "기타", name: "기타" },
+    ];
 
     const handleInputChange = (e) => {
         const {name, value} = e.target;
