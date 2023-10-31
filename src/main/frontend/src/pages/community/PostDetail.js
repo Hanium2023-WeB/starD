@@ -3,7 +3,6 @@ import Backarrow from "../../components/repeat_etc/Backarrow";
 import StudyEdit from "../../pages/studypage/StudyEdit";
 import StudyInfo from "../../components/study/StudyInfo";
 import {Link, useParams, useNavigate, useLocation} from "react-router-dom";
-import {Link, useParams, useNavigate} from "react-router-dom";
 import Comment from "../../components/comment/Comment";
 import React, {useState, useEffect} from "react";
 import LikeButton from "../../components/repeat_etc/LikeButton";

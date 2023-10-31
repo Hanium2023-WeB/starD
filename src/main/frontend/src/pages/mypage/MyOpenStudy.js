@@ -19,14 +19,12 @@ const MyOpenStudy = ({sideheader}) => {
     const [scrapTwoStates, setScrapTwoStates] = useState([]);
     const [likeTwoStates, setLikeTwoStates] = useState([]);
     const location = useLocation();
-    const studyState = location.state;
     const [studiesChanged, setStudiesChanged] = useState(false);
     const accessToken = localStorage.getItem('accessToken');
     const isLoggedInUserId = localStorage.getItem('isLoggedInUserId');
     const [page, setPage] = useState(1);
     const [count, setCount] = useState(0);
     const [itemsPerPage, setItemsPerPage] = useState(9);
-
     useEffect(() => {
         if (accessToken && isLoggedInUserId) {
             axios.get("http://localhost:8080/mypage/study/star-scrap", { // 공감

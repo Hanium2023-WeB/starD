@@ -43,12 +43,13 @@ html {
 }
 .study_open_form .inputbox{
     width: 300px;
-    height: 40px;
+    height: 30px;
     position: inherit;
     border-radius: 10px;
-    box-shadow: inherit;
+    border: 1px solid #dbdbdb;
     padding-left:10px;
     margin:0;
+    box-shadow: 0px 10px 10px 0px rgba(0, 0, 0, 0.15);
 }
 .study_open_form .inputbox::placeholder{
     padding:0;
@@ -63,6 +64,10 @@ html {
 .study_open_form .left > div,
 .study_open_form .right > div{
     margin-bottom: 25px;
+}
+.study_open_form .right > div{
+    position: relative;
+    bottom: 3px;
 }
 .study_open_form .right .onoff {
     display: inline-block;
@@ -129,7 +134,7 @@ html {
     width:inherit;
     height: inherit;
     box-shadow: inherit;
-    background-color: #0038FF;
+    background-color:#99A98F;
     border: none;
     font-size: 20px;
     color: #fff;
@@ -143,7 +148,7 @@ html {
     height: 40px;
     padding: 5px;
     border-radius: 10px;
-    border: 1.5px solid #a5c9ca;
+    border: 1px solid #dbdbdb;
     background: #fff;
     box-shadow: 0px 10px 10px 0px rgba(0, 0, 0, 0.15);
 }

@@ -72,7 +72,6 @@ const StudyInsert = () => {
         {value: "블로그 운영", name: "블로그 운영"},
     ];
 
-
     const handleInputChange = (e) => {
         const {name, value} = e.target;
         setFormData({
@@ -270,11 +269,8 @@ const StudyInsert = () => {
 
         console.log("response : ", response);
         e.preventDefault();
-        navigate(`/study/${1}`,{
-            state:{
-                page:1,
-            }
-        });
+        //todo 스터디아이디값가져와야함
+        navigate(`/studydetail/${dataId}`);
     }, [formData, navigate, tags, onInsertStudy]);
 
     const studyinsertform = () => {

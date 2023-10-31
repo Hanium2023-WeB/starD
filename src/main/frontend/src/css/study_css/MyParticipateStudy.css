@@ -87,7 +87,7 @@ html {
 	margin-right: 10px;
 }
 .study_list .list_status {
-	background-color: #0038FF;
+	background-color: #BBDF9F;
 	color: #ffffff;
 	padding: 7px 10px;
 	border-radius: 50px;
@@ -146,12 +146,12 @@ html {
 .evaluate button, form input{
 	width:150px;
 	border-radius: 5px;
-	border-style: none;
-	background-color: #BBDF9F;
-	color: white;
+	border: 1.5px solid #a5c9ca;
+	color: #000000;
 	padding: 5px;
 	margin-top: 10px;
 	cursor: pointer;
+	box-shadow: 0px 10px 10px 0px rgba(0, 0, 0, 0.15);
 }
 .evaluate_table{
 	width: 100%;
