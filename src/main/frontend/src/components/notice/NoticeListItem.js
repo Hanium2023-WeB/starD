@@ -1,6 +1,6 @@
 import {Link} from "react-router-dom";
 
-const PostListItem = ({posts, setPosts}) => {
+const NoticeListItem = ({posts, setPosts}) => {
     const formatDatetime = (datetime) => {
         const date = new Date(datetime);
         const year = date.getFullYear();
@@ -15,7 +15,7 @@ const PostListItem = ({posts, setPosts}) => {
     return (
         <tr className="post_list">
             <td className="community_category">{posts.category}</td>
-            <Link to={`/postdetail/${posts.id}`}
+            <Link to={`/noticedetail/${posts.id}`}
                   style={{
                       textDecoration: "none",
                       color: "inherit",
@@ -30,4 +30,4 @@ const PostListItem = ({posts, setPosts}) => {
         </tr>
     )
 }
-export default PostListItem;
+export default NoticeListItem;

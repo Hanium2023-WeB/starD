@@ -4,29 +4,29 @@ import styled from 'styled-components';
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 
-const MemberEvaluateInsert = ({studyId}) => {
+const MemberEvaluateInsert = ({studyId, members, completeEvaluation}) => {
     const navigate = useNavigate();
-    const [members, setMembers] = useState([]); // State to store members
-    const [formData, setFormData] = useState({
-        name:"",
-        rating:0,
-        reason:""
-    })
+
+    const accessToken = localStorage.getItem('accessToken');
+    const isLoggedInUserId = localStorage.getItem('isLoggedInUserId');
+
+    console.log("studyId : " + studyId);
+
     const [evaluation, setEvaluation] = useState([]);
     const ARRAY = [0, 1, 2, 3, 4];
     let score = null;
     // 별점 기본값 설정
-    const [clicked, setClicked] = useState([false, false, false, false, false]);
+    const [clicked, setClicked] = useState(() => {
+        return members.map(() => ({ stars: [false, false, false, false, false] }));
+    });
 
-    useEffect(() => {
-        //study_member 받아오는 axios 코드
-    }, [studyId]);
 
-    const handleStarClick = index => {
+    const handleStarClick = (itemIndex, starIndex) => {
         let clickStates = [...clicked];
-        for (let i = 0; i < 5; i++) {
-            clickStates[i] = i <= index ? true : false;
-        }
+//        for (let i = 0; i < 5; i++) {
+//            clickStates[i] = i <= index ? true : false;
+//        }
+        clickStates[itemIndex].stars = clickStates[itemIndex].stars.map((el, idx) => idx <= starIndex);
         setClicked(clickStates);
     };
 
@@ -39,61 +39,47 @@ const MemberEvaluateInsert = ({studyId}) => {
         console.log("starsssssss : " + score);
     };
 
-    const handleInputChange = (e) => {
+    const handleInputChange = (e, index) => {
         const {name, value} = e.target;
-        setFormData({
-            ...formData,
+        const updatedEvaluations = [...evaluation];
+        updatedEvaluations[index] = {
+            ...updatedEvaluations[index],
             [name]: value,
-        });
+        };
+
+        setEvaluation(updatedEvaluations);
     };
 
-    const onInsertEvaluate = useCallback((eva) => {
-        const {
-            name,
-            rating,
-            reason,
-        } = eva;
+    const registerEvaluation = (index) => {
+        const memberId = members[index].member.id;
+        const starRating = clicked[index].stars;
+        const score = clicked[index].stars.filter(Boolean).length;
+        const reason = evaluation[index]?.reason;
 
-        setEvaluation(prevFormData => ({
-            ...prevFormData,
-            name,
-            rating,
-            reason,
-        }));
-    }, [evaluation]);
+        console.log(memberId + ", " + score + ", " + reason);
 
-    const handleSubmit = useCallback(e => {
-        e.preventDefault();
-
-        formData.rating = score;
-        onInsertEvaluate(evaluation);
-
-        console.log(formData);
-        const accessToken = localStorage.getItem('accessToken');
-
-        const response = axios.post("http://localhost:8080/com",
-            {
-                name:formData.name,
-                rating:score,
-                reason:formData.reason,
+        const response = axios.post("http://localhost:8080/rate", null, {
+            params: {
+                studyId: studyId,
+                targetId: memberId,
+                starRating: score,
+                reason: reason,
             },
-            {
-                withCredentials: true,
-                headers: {
-                    'Authorization': `Bearer ${accessToken}`
-                }
-            })
-            .then((res) => {
-                console.log(res.data);
-            }).catch((error) => {
-                console.log('전송 실패', error);
-            })
-        e.preventDefault();
-        // navigate("/");
-    }, [formData])
+            withCredentials: true,
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
+        }).then((res) => {
+            console.log(res.data);
+            alert('등록되었습니다.');
+            navigate("/myparticipatestudy");
+        }).catch((error) => {
+            console.log('전송 실패', error);
+        });
+
+    };
 
     return (
-        <form onSubmit={handleSubmit} style={{width:"100%"}}>
             <table className="evaluate_table">
                 <thead>
                 <tr>
@@ -103,29 +89,41 @@ const MemberEvaluateInsert = ({studyId}) => {
                 </tr>
                 </thead>
                 <tbody>
-                <tr className="evaluate_list">
-                    <td className="member_name">김솜솜</td>
-                    <td className="member_rating">
-                        <Wrap>
-                            <Stars>
-                                {ARRAY.map((el, idx) => {
-                                    return (
-                                        <FaStar
-                                            style={{alignItems:"center"}}
-                                            key={idx}
-                                            size="20"
-                                            onClick={() => handleStarClick(el)}
-                                            className={clicked[el] && 'yellowStar'}
-                                        />
-                                    );
-                                })}
-                            </Stars>
-                        </Wrap>
-                    </td>
-                    <td className="member_evaluate_reason">
-                        <textarea name="reason" value={formData.reason} onChange={handleInputChange}/>
-                    </td>
-                </tr>
+                {members.map((member, index) => {
+                    const isEvaluated = completeEvaluation.some(evaluation => evaluation.target.id === member.member.id);
+
+                    if (!isEvaluated && member.member.id !== isLoggedInUserId) {
+                        return (
+                            <tr className="evaluate_list">
+                                <td className="member_name">{member.member.nickname}</td>
+                                <td className="member_rating">
+                                    <Wrap>
+                                        <Stars>
+                                            {ARRAY.map((el, idx) => (
+                                                <FaStar
+                                                    style={{alignItems:"center"}}
+                                                    key={idx}
+                                                    size="20"
+                                                    onClick={() => handleStarClick(index, el)}
+                                                    className={clicked[index].stars[el] && 'yellowStar'}
+                                                />
+                                            ))}
+                                        </Stars>
+                                    </Wrap>
+                                </td>
+                                <td className="member_evaluate_reason">
+                                    <textarea name="reason"
+                                        value={evaluation[index]?.reason || ''}
+                                        onChange={(e) => handleInputChange(e, index)}/>
+                                </td>
+                                <td>
+                                    <button onClick={() => registerEvaluation(index)} className="register_btn">평가하기</button>
+                                </td>
+                            </tr>
+                        );
+                    }
+                })}
+
                 {/*{members.map((member) => (*/}
                 {/*    <tr className="evaluate_list">*/}
                 {/*        <td className="community_category">{}</td>*/}
@@ -135,8 +133,6 @@ const MemberEvaluateInsert = ({studyId}) => {
                 {/*))}*/}
                 </tbody>
             </table>
-            <input type="submit" value="등록하기" className="register_btn"/>
-        </form>
     )
 }
 export default MemberEvaluateInsert;

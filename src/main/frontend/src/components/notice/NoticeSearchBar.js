@@ -4,7 +4,7 @@ import searchicon from "../../images/search.png";
 import axios from "axios";
 
 
-const CommSearchBar = () => {
+const NoticeSearchBar = () => {
 
 	const [search, setSearch] = useState("");
 	const [selectOption, setSelectOption] = useState("제목");
@@ -13,11 +13,9 @@ const CommSearchBar = () => {
 
 
 	const tagoptions = [
-	    { value: "전체", name: "전체" },
-		{ value: "취미", name: "취미" },
-		{ value: "공부", name: "공부" },
-		{ value: "잡담", name: "잡담" },
-		{ value: "기타", name: "기타" },
+		{ value: "전체", name: "전체" },
+		{ value: "공지", name: "공지" },
+		{ value: "FAQ", name: "FAQ" },
 	];
 	const handleKeyDown = (e) => {
 		if (e.keyCode === 13) {
@@ -56,7 +54,6 @@ const CommSearchBar = () => {
 				<select id="sub" value={selectOption} onChange={onHandleselect}>
 					<option value="제목">제목</option>
 					<option value="내용">내용</option>
-					<option value="작성자">작성자</option>
 				</select>
 			</div>
 
@@ -76,4 +73,4 @@ const CommSearchBar = () => {
 	);
 };
 
-export default CommSearchBar;
+export default NoticeSearchBar;

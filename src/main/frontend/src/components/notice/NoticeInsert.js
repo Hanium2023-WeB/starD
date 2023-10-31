@@ -2,7 +2,7 @@ import React, {useCallback, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
 
-const PostInsert = () => {
+const NoticeInsert = () => {
     const navigate = useNavigate();
     const [dataId, setDataId] = useState(0);
     const [posts, setPosts] = useState([]);
@@ -14,10 +14,8 @@ const PostInsert = () => {
     })
 
     const tagoptions = [
-        { value: "취미", name: "취미" },
-        { value: "공부", name: "공부" },
-        { value: "잡담", name: "잡담" },
-        { value: "기타", name: "기타" },
+        { value: "공지", name: "공지" },
+        { value: "FAQ", name: "FAQ" },
     ];
 
     const handleInputChange = (e) => {
@@ -73,7 +71,7 @@ const PostInsert = () => {
         setFormData(onInsertPost(formData));
         const accessToken = localStorage.getItem('accessToken');
 
-        const response = axios.post("http://localhost:8080/com",
+        const response = axios.post("http://localhost:8080/notice",
             {
                 title:formData.title,
                 category:formData.category,
@@ -89,9 +87,10 @@ const PostInsert = () => {
                 console.log(res.data);
                 const id = res.data.id;
                 alert("게시글이 등록되었습니다.");
-                window.location.href = `/postdetail/${id}`;
+                window.location.href = `/noticedetail/${id}`;
             }).catch((error) => {
                 console.log('전송 실패', error);
+                alert("게시글 등록 실패");
             })
         e.preventDefault();
     }, [formData])
@@ -122,4 +121,4 @@ const PostInsert = () => {
         </form>
     )
 }
-export default PostInsert;
+export default NoticeInsert;
