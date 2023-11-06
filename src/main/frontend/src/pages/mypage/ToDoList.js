@@ -195,7 +195,7 @@ const ToDoList = ({sideheader}) => {
             });
         }, []);
 
-    const onUpdate = useCallback(async (UpdatedToDo) => {
+    const onUpdate = async (UpdatedToDo) => {
         console.log("selectedTodo..:", UpdatedToDo);
         onInsertToggle();
         const assigneeStr = studyMems.toString();
@@ -204,6 +204,9 @@ const ToDoList = ({sideheader}) => {
 
         //TODO - (2023-11-06T16:45:12.958) 이런 식으로 날짜 넘기면 오류 안 나요
         const currentDate = new Date();
+        const offset = currentDate.getTimezoneOffset();
+        currentDate.setMinutes(currentDate.getMinutes() - offset);
+
         const isoString = currentDate.toISOString(); // 현재 날짜 및 시간을 ISO 8601 형식의 문자열로 변환
         console.log("isoString..:", isoString);
 
@@ -216,31 +219,33 @@ const ToDoList = ({sideheader}) => {
             }, withCredentials: true, headers: {
                 'Authorization': `Bearer ${accessToken}`
             }
-        });
+        })
+            .then((postDataResponse) => {
+                console.log("전송 성공:", postDataResponse.data);
 
-        console.log("전송 성공:", postDataResponse.data);
+                const updatedTodos = {
+                    ...todoswithAssignee,
+                    [dateKey]: todoswithAssignee[dateKey].map((todo) =>
+                        todo.toDo.id === UpdatedToDo.toDo.id
+                            ? {
+                                toDo: {
+                                    ...todo.toDo,
+                                    study: { ...todo.toDo.study, id: UpdatedToDo.toDo.study.id },
+                                    task: UpdatedToDo.toDo.task,
+                                },
+                                toDoStatus: todo.toDoStatus,
+                            }
+                            : todo
+                    ),
+                };
 
-        // TODO - DB에는 수정 반영되는데 리스트 목록에서 아예 없어지는데, 이 부분 때문인 것 같아서 해결해볼게요
-        const updatedTodos = {
-            ...todoswithAssignee,
-            [dateKey]: todoswithAssignee[dateKey].map((todo) =>
-                todo.toDo.id === UpdatedToDo.toDo.id
-                    ? {
-                        toDo: {
-                            ...todo.toDo,
-                            study: {...todo.toDo.study, id: UpdatedToDo.toDo.study.id},
-                            task: UpdatedToDo.toDo.task,
-                        },
-                        toDoStatus: todo.toDoStatus,
-                    }
-                    : todo
-            ),
-        };
-
-        setTodoswithAssignee(updatedTodos);
-        console.log("전송 성공t:", todoswithAssignee);
-
-    }, [studyMems, selectedDate, studies]);
+                setTodoswithAssignee(updatedTodos);
+                console.log("전송 성공t:", updatedTodos);
+            })
+            .catch((error) => {
+                console.error("전송 실패:", error);
+            });
+    };
 
 
     const onToggle = useCallback(async (id, todo_status) => {
