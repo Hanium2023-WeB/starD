@@ -68,16 +68,15 @@ const Schedule = ({sideheader}) => {
         console.log(new Date(day));
         setAddToggle((prev) => !prev);
     };
-    const nextId = useRef(1);
+    // const nextId = useRef(1);
 
 
     const onInsert = useCallback((start_date, title, color, studyIdAsNumber) => {
 
         const startDay = new Date(start_date);
         const formattedDate = `${startDay.getFullYear()}-${String(startDay.getMonth() + 1).padStart(2, '0')}-${String(startDay.getDate()).padStart(2, '0')}T${String(startDay.getHours()).padStart(2, '0')}:${String(startDay.getMinutes()).padStart(2, '0')}:${String(startDay.getSeconds()).padStart(2, '0')}`;
-
         const schedule = {
-            id: nextId.current, title: title, startDate: formattedDate, color: color,
+             title: title, startDate: formattedDate, color: color,
         };
         axios.post("http://localhost:8080/schedule", schedule, {
             params: {
@@ -91,7 +90,6 @@ const Schedule = ({sideheader}) => {
         }).catch((error) => {
             console.error("전송 실패", error.response.data);
         });
-        nextId.current += 1;
     }, [meetings, selectedDate]);
 
 

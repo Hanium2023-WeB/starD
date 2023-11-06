@@ -98,11 +98,11 @@ const TeamSchedule = () => {
     }, [meetings, selectedDate]);
 
     //일정 수정 함수
-    const onUpdate = (id, start_date, newTitle, newColor) => {
+    const onUpdate = useCallback((id, start_date, newTitle, newColor) => {
         console.log("title:", newTitle);
         console.log("COLOR:", newColor);
 
-        axios.put(`http://localhost:8080/schedule/${id}`, {}, {
+        axios.put(`http://localhost:8080/schedule/${id}`,{},{
             params: {
                 title: newTitle, color: newColor,
             }, withCredentials: true, headers: {
@@ -118,7 +118,7 @@ const TeamSchedule = () => {
             console.error("전송 실패", error);
         });
 
-    };
+    },[meetings,selectedDate]);
 
 
     const onRemove = (id) => {

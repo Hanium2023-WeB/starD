@@ -88,49 +88,49 @@ const ToDoInsert = ({onInsert, dueDate, Inserttodostudyid, Inserttodotitle, Inse
 
             e.preventDefault();
 
-            // try {
-            //     // Step 1: 먼저 필요한 데이터를 서버에서 가져옵니다.
-            //     const fetchDataResponse = await axios.get(`http://localhost:8080/todo/all`, {
-            //         params: {
-            //             year: year,
-            //             month: month,
-            //         },
-            //         headers: {
-            //             Authorization: `Bearer ${accessToken}`,
-            //         },
-            //     });
-            //
-            //     console.log('가져오기 성공:', fetchDataResponse.data);
-            //     setResponseData(fetchDataResponse.data);
-            //     console.log("studyIdAsNumber:", studyIdAsNumber);
-            //
-            //
-            //
-            //     const studyId = studyIdAsNumber;
-            //     const assigneeStr = studyMems;
-            //     const task = TaskValue;
-            //     const study = InsertToDoStudy;
-            //
-            //     const todoData = {
-            //         task: task,
-            //         dueDate: formattedDate,
-            //     };
-            //
-            //     const postDataResponse = await axios.post(`http://localhost:8080/todo`, todoData, {
-            //         params: {
-            //             studyId: studyId,
-            //             assigneeStr: assigneeStr,
-            //         },
-            //         withCredentials: true,
-            //         headers: {
-            //             'Authorization': `Bearer ${accessToken}`
-            //         }
-            //     });
-            //     console.log("전송 성공:", postDataResponse.data);
-            //     setTaskValue("");
-            // } catch (error) {
-            //     console.error("에러:", error);
-            // }
+            try {
+                // Step 1: 먼저 필요한 데이터를 서버에서 가져옵니다.
+                const fetchDataResponse = await axios.get(`http://localhost:8080/todo/all`, {
+                    params: {
+                        year: year,
+                        month: month,
+                    },
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                    },
+                });
+
+                console.log('가져오기 성공:', fetchDataResponse.data);
+                setResponseData(fetchDataResponse.data);
+                console.log("studyIdAsNumber:", studyIdAsNumber);
+
+
+
+                const studyId = studyIdAsNumber;
+                const assigneeStr = studyMems;
+                const task = TaskValue;
+                const study = InsertToDoStudy;
+
+                const todoData = {
+                    task: task,
+                    dueDate: formattedDate,
+                };
+
+                const postDataResponse = await axios.post(`http://localhost:8080/todo`, todoData, {
+                    params: {
+                        studyId: studyId,
+                        assigneeStr: assigneeStr,
+                    },
+                    withCredentials: true,
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`
+                    }
+                });
+                console.log("전송 성공:", postDataResponse.data);
+                setTaskValue("");
+            } catch (error) {
+                console.error("에러:", error);
+            }
 
         },
         [Inserttodotitle, TaskValue, Inserttodostudyid, dueDate, accessToken, onInsert]
