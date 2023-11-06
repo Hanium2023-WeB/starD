@@ -32,7 +32,8 @@ const ToDoList = ({sideheader}) => {
     const [InsertToDoStudyId, setInsertToDoStudyId] = useState("0")
     const [InsertToDoStudy, setInsertToDoStudy] = useState([]);
     const studyIdAsNumber = parseFloat(InsertToDoStudyId);
-
+    const [todoswithAssignee, setTodoswithAssignee] = useState({});
+    let lastTodoId = useRef("1");
     useEffect(() => {
         axios.get("http://localhost:8080/user/mypage/studying", {
             withCredentials: true, headers: {
@@ -43,7 +44,6 @@ const ToDoList = ({sideheader}) => {
                 console.log("모집완료된 스터디, 참여멤버 전송 성공 : ", res.data);
                 const studyList = res.data.content;
                 setStudy(studyList);
-                //console.log("모집완료 ? :", studies);
                 const studiesTitle = studyList.map(item => item.study.title);
                 setStudyTitles(studiesTitle);
                 const studiesIds = studyList.map(item => item.study.id);
@@ -55,7 +55,72 @@ const ToDoList = ({sideheader}) => {
                 console.error("모집완료된 스터디, 참여멤버  가져오기 실패:", error);
             });
     }, [accessToken]);
+    useEffect(() => {
+        if (InsertToDoStudyId === "0") {
+            axios.get(`http://localhost:8080/todo/all`, {
+                params: {
+                    year: Year, month: Month,
+                }, headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            }).then((response) => {
+                console.log('전체 스터디 투두리스트 가져오기 성공:', response.data);
+                if (response.data.length > 0) {
+                    lastTodoId = response.data[response.data.length - 1].toDo.id;
+                    console.log('마지막 데이터의 toDo.id:', lastTodoId);
+                } else {
+                    console.log('투두 데이터가 없습니다.');
+                }
+                const groupedTodos = {};
+                response.data.forEach((todoItem) => {
+                    const dueDate = new Date(todoItem.toDo.dueDate).toDateString();
+                    if (!groupedTodos[dueDate]) {
+                        groupedTodos[dueDate] = [];
+                    }
+                    groupedTodos[dueDate].push(todoItem);
+                });
 
+                setTodoswithAssignee((prevTodos) => ({
+                    ...prevTodos, ...groupedTodos,
+                }));
+            }).catch((error) => {
+                console.log('전체 스터디 투두리스트 가져오기 실패:', error);
+            })
+        } else {
+            axios.get(`http://localhost:8080/todo/user/${studyIdAsNumber}`, {
+                params: {
+                    year: selectedDate.getFullYear(), month: selectedDate.getMonth() + 1,
+                }, headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            }).then((response) => {
+                console.log('스터디별 투두리스트 가져오기 성공:', response.data);
+                const maxId = Math.max(...response.data.map(schedule => schedule.id));
+                if (response.data.length > 0) {
+                    lastTodoId = response.data[response.data.length - 1].toDo.id;
+                    console.log('마지막 데이터의 toDo.id:', lastTodoId);
+
+                } else {
+                    console.log('투두 데이터가 없습니다.');
+                }
+                // nextId.current = maxId + 1;
+                const groupedTodos = {};
+                response.data.forEach((todoItem) => {
+                    const dueDate = new Date(todoItem.toDo.dueDate).toDateString();
+                    if (!groupedTodos[dueDate]) {
+                        groupedTodos[dueDate] = [];
+                    }
+                    groupedTodos[dueDate].push(todoItem);
+                });
+
+                setTodoswithAssignee((prevTodos) => ({
+                    ...prevTodos, ...groupedTodos,
+                }));
+            }).catch((error) => {
+                console.log('스터디별 투두리스트 가져오기 실패:', error);
+            })
+        }
+    }, [InsertToDoStudyId]);
 
     const onInsertToggle = () => {
         if (selectedTodo) {
@@ -68,12 +133,12 @@ const ToDoList = ({sideheader}) => {
         setSelectedTodo(todo);
     };
 
-    const [todoswithAssignee, setTodoswithAssignee] = useState({});
-    const nextId = useRef(1);
+    // const nextId = useRef(1);
     const dateKey = selectedDate.toDateString();
 
-
     const onInsert = useCallback((title, task, studyId) => {
+        console.error("studyId:", studyId);
+        // console.error("nextId.current:", nextId.current);
         const filteredObjects = studies.find((item) => item.study.id === studyId);
         if (!filteredObjects) {
             console.error("Study not found for studyId:", studyId);
@@ -83,7 +148,7 @@ const ToDoList = ({sideheader}) => {
             console.log("title", title);
             const dateKey = selectedDate.toDateString();
             const todo = {
-                id: nextId.current,
+                id: lastTodoId.current+1,
                 study: filteredObjects.study,
                 task: task,
                 date: dateKey,
@@ -96,13 +161,12 @@ const ToDoList = ({sideheader}) => {
             setTodoswithAssignee((prevTodos) => ({
                 ...prevTodos, [dateKey]: [...(prevTodos[dateKey] || []), TodoWithAssign],
             }));
-
-            nextId.current++;
+            // nextId.current++;
         }
     }, [selectedDate, studies]);
 
-
     const filteredTodos = todoswithAssignee[dateKey] || [];
+
 
     const onRemove = useCallback(
         async (id) => {
@@ -164,6 +228,7 @@ const ToDoList = ({sideheader}) => {
 
 
     const onToggle = useCallback(async (id, todo_status) => {
+        console.log("체크 스터디 아이디", id);
         console.log("체크 전 상태", todo_status);
         console.log("체크 후 상태", !todo_status);
         const postDataResponse = await axios.post(`http://localhost:8080/todo/${id}/status`, null, {
@@ -186,7 +251,7 @@ const ToDoList = ({sideheader}) => {
             });
             return updatedTodos;
         });
-    }, []);
+    }, [studyIdAsNumber]);
 
     const handleDateClick = (day) => {
         setSelectedDate(new Date(day));
@@ -205,61 +270,6 @@ const ToDoList = ({sideheader}) => {
     useEffect(() => {
         Month = format(currentMonth, "M")
     }, [currentMonth]);
-
-    useEffect(() => {
-        if (InsertToDoStudyId === "0") {
-            axios.get(`http://localhost:8080/todo/all`, {
-                params: {
-                    year: Year, month: Month,
-                }, headers: {
-                    Authorization: `Bearer ${accessToken}`,
-                },
-            }).then((response) => {
-                console.log('전체 스터디 투두리스트 가져오기 성공:', response.data);
-
-                const groupedTodos = {};
-                response.data.forEach((todoItem) => {
-                    const dueDate = new Date(todoItem.toDo.dueDate).toDateString();
-                    if (!groupedTodos[dueDate]) {
-                        groupedTodos[dueDate] = [];
-                    }
-                    groupedTodos[dueDate].push(todoItem);
-                });
-
-                setTodoswithAssignee((prevTodos) => ({
-                    ...prevTodos, ...groupedTodos,
-                }));
-            }).catch((error) => {
-                console.log('전체 스터디 투두리스트 가져오기 실패:', error);
-            })
-        } else {
-            axios.get(`http://localhost:8080/todo/user/${studyIdAsNumber}`, {
-                params: {
-                    year: selectedDate.getFullYear(), month: selectedDate.getMonth() + 1,
-                }, headers: {
-                    Authorization: `Bearer ${accessToken}`,
-                },
-            }).then((response) => {
-                console.log('스터디별 투두리스트 가져오기 성공:', response.data);
-                const maxId = Math.max(...response.data.map(schedule => schedule.id));
-                nextId.current = maxId + 1;
-                const groupedTodos = {};
-                response.data.forEach((todoItem) => {
-                    const dueDate = new Date(todoItem.toDo.dueDate).toDateString();
-                    if (!groupedTodos[dueDate]) {
-                        groupedTodos[dueDate] = [];
-                    }
-                    groupedTodos[dueDate].push(todoItem);
-                });
-
-                setTodoswithAssignee((prevTodos) => ({
-                    ...prevTodos, ...groupedTodos,
-                }));
-            }).catch((error) => {
-                console.log('스터디별 투두리스트 가져오기 실패:', error);
-            })
-        }
-    }, [InsertToDoStudyId, studyIdAsNumber, currentMonth]);
 
 
     const selectStudy = (e) => {
@@ -280,6 +290,7 @@ const ToDoList = ({sideheader}) => {
     useEffect(() => {
         console.log("InsertToDoStudyId_투두리스트:::", InsertToDoStudyId);
         console.log("studyIdAsNumber_투두리스트:::", studyIdAsNumber);
+        console.log("filteredTodos", filteredTodos);
 
     }, [InsertToDoStudyId, studyIdAsNumber]);
 
