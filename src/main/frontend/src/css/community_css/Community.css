@@ -20,6 +20,9 @@ input{
     display: flex;
     justify-content: center;
 }
+/*.community-content{*/
+/*    max-height: 1000px;*/
+/*}*/
 .community_header .new_post_btn{
     background: #99A98F;
     color:#fff;

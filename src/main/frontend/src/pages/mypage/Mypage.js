@@ -191,7 +191,7 @@ const Mypage = ({sideheader}) => {
                                 <p>개인 신뢰도</p>
                                 <button id="more">전체보기</button>
                             </div>
-                            <div id="detail">디테일입니다.</div>
+                            <div id="detail">당신의 신뢰도는 36℃입니다.</div>
                         </div>
 
                         <div className="schedule">

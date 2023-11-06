@@ -18,7 +18,6 @@ const SearchBar = () => {
 		}
 	};
 	const onChange=(e)=>{
-		console.log("Search", e.target.value);
 		setSearch(e.target.value)
 	}
 

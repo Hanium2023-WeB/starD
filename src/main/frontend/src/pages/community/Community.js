@@ -54,7 +54,7 @@ const Community = () => {
                             </button>
                         </div>
                         <div className="community">
-                            <div>
+                            <div className={"community-content"}>
                                 <table className="post_table">
                                     <thead>
                                         <tr>
