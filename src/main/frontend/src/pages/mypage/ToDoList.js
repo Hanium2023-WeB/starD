@@ -136,7 +136,7 @@ const ToDoList = ({sideheader}) => {
     // const nextId = useRef(1);
     const dateKey = selectedDate.toDateString();
 
-    const onInsert = useCallback((title, task, studyId) => {
+    const onInsert = useCallback((title, task, studyId, id) => {
         console.error("studyId:", studyId);
         // console.error("nextId.current:", nextId.current);
         const filteredObjects = studies.find((item) => item.study.id === studyId);
@@ -148,7 +148,7 @@ const ToDoList = ({sideheader}) => {
             console.log("title", title);
             const dateKey = selectedDate.toDateString();
             const todo = {
-                id: lastTodoId.current+1,
+                id: id,
                 study: filteredObjects.study,
                 task: task,
                 date: dateKey,
