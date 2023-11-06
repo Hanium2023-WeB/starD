@@ -170,24 +170,28 @@ public class StudyService {
     }
 
     @Transactional
-    public void deleteStudy(long id, Authentication authentication) {
+    public boolean deleteStudy(long id, Authentication authentication) {
 
         Study study = findById(id);
 
         // TODO 삭제할 스터디 게시글이 개설 전, 후 상태 확인하기
         // 삭제할 스터디 게시글이 개설 후라면 삭제 불가
-        if (!study.getProgressStatus().toString().equals(null))
-            return;
+        if (study.getProgressStatus() != null)
+            return false;
 
         // TODO 삭제할 스터디 게시글의 작성자가 로그인된 사용자의 아이디와 같은지 체크
-        // String userId = authentication.getName();
+         String userId = authentication.getName();
 
         // 로그인된 사용자가 아니거나, 로그인된 사용자와 게시글 작성자가 다르거나
         // 해당 id를 가진 게시글이 없을 경우 null 반환
-//        if(userId == null || study == null || !study.getRecruiter().equals(memberRepository.findNicknameById(userId)))     // TODO 추후에 주석 제거 필요
-//            return;
+        if(userId == null || study == null || !study.getRecruiter().getId().equals(userId))     // TODO 추후에 주석 제거 필요
+            return false;
 
         studyRepository.delete(study);
+
+        if (findById(id) == null) {
+            return true;
+        } return false;
     }
 
     @Transactional
