@@ -117,8 +117,8 @@ public class StudyController {
 
 
     @DeleteMapping("/{id}")      // [D] 스터디 게시글 삭제
-    public void deleteStudy(@PathVariable long id, Authentication authentication){
-        studyService.deleteStudy(id, authentication);
+    public boolean deleteStudy(@PathVariable long id, Authentication authentication){
+        return studyService.deleteStudy(id, authentication);
     }
 
     @PutMapping("/{id}")     // [U] 스터디 게시글 수정

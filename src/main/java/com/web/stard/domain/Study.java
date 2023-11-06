@@ -1,5 +1,6 @@
 package com.web.stard.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -84,4 +85,17 @@ public class Study extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private PostType type; // post 타입 [COMM, QNA, NOTICE, FAQ, STUDY, REPLY]
 
+
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "study", cascade = CascadeType.ALL)
+    private List<Reply> replies;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "study", cascade = CascadeType.ALL)
+    private List<Applicant> applicants;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "study", cascade = CascadeType.ALL)
+    private List<StarScrap> starScraps;
 }
