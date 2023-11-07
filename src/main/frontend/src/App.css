@@ -6,6 +6,11 @@
 	font-weight: 400;
 	font-style: normal;
 }
+.App {
+	/*width: 640px;*/
+	min-height: 100vh;
+	min-width: 700px;
+}
 body{
 	overflow-x: hidden;
 	overflow-y: auto;
@@ -784,11 +789,11 @@ footer p {
 	margin-bottom: 10px;
 }
 @media (min-width: 650px) {
-	.App {
-		/*width: 640px;*/
-		min-height: 100vh;
-		min-width: 100vw;
-	}
+	/*.App {*/
+	/*	!*width: 640px;*!*/
+	/*	min-height: 100vh;*/
+	/*	min-width: 700px;*/
+	/*}*/
 	input {
 		width: 400px;
 		margin-left: 20px;

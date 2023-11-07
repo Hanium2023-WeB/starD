@@ -110,7 +110,6 @@ const ToDoList = ({sideheader}) => {
                 } else {
                     console.log('투두 데이터가 없습니다.');
                 }
-                // nextId.current = maxId + 1;
                 const groupedTodos = {};
                 response.data.forEach((todoItem) => {
                     const dueDate = new Date(todoItem.toDo.dueDate).toDateString();
@@ -140,12 +139,11 @@ const ToDoList = ({sideheader}) => {
         setSelectedTodo(todo);
     };
 
-    // const nextId = useRef(1);
+
     const dateKey = selectedDate.toDateString();
 
     const onInsert = useCallback((title, task, studyId, id) => {
         console.error("studyId:", studyId);
-        // console.error("nextId.current:", nextId.current);
         const filteredObjects = studies.find((item) => item.study.id === studyId);
         if (!filteredObjects) {
             console.error("Study not found for studyId:", studyId);
@@ -168,7 +166,6 @@ const ToDoList = ({sideheader}) => {
             setTodoswithAssignee((prevTodos) => ({
                 ...prevTodos, [dateKey]: [...(prevTodos[dateKey] || []), TodoWithAssign],
             }));
-            // nextId.current++;
         }
     }, [selectedDate, studies]);
 
