@@ -43,6 +43,7 @@ const Signout = () => {
                 window.location.href = "/logout";
             }
         }).catch((error) => {
+            alert(error.response.data);
             console.log("Deletion error:", error);
         });
     }
