@@ -45,4 +45,9 @@ public interface StudyRepository extends JpaRepository<Study, Long> {
     List<Study> findByActivityStartGreaterThanEqualAndProgressStatus(LocalDate localDate, ProgressStatus progressStatus);
 
 
+    /* 개설자로 progressStatus가 null인 스터디 검색 */
+    @Query("SELECT s FROM Study s WHERE s.recruiter = :recruiter AND s.progressStatus IS NULL")
+    List<Study> findStudiesByRecruiterAndNullProgressStatus(Member recruiter);
+    /* 진행 완료된 스터디 (개설자로 검색) */
+    List<Study> findByRecruiterAndProgressStatus(Member member, ProgressStatus progressStatus);
 }

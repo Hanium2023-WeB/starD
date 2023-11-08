@@ -192,9 +192,7 @@ public class TodoService {
     @Transactional
     public boolean deleteTodo(Long toDoId) {
         ToDo toDo = getToDo(toDoId);
-        List<Assignee> assignee = getAssignee(toDoId);
 
-        assigneeRepository.deleteAll(assignee); // 담당자 삭제
         todoRepository.delete(toDo); // TO DO 삭제
 
         if (getToDo(toDoId) == null) { // 삭제됨
