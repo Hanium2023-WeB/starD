@@ -224,6 +224,10 @@ const StudyInsert = () => {
             alert("온라인, 오프라인 여부를 선택해주세요.");
             return;
         }
+        if (!formData.field) {
+            alert("분야를 선택해주세요.");
+            return;
+        }
 
         const tagElement = document.querySelector(".HashWrapInner");
         if (!tagElement) {
@@ -273,11 +277,6 @@ const StudyInsert = () => {
 
         console.log("response : ", response);
         e.preventDefault();
-        /*navigate(`/study/${1}`,{
-            state:{
-                page:1,
-            }
-        });*/
     }, [formData, navigate, tags, onInsertStudy]);
 
     const studyinsertform = () => {

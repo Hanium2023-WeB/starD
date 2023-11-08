@@ -298,6 +298,7 @@ input {
 }
 .user_wrap{
 	width: 17.5%;
+	height: 105%;
 	border: 1px solid #0d0d2a;
 	margin-left: 10px;
 	margin-top: 20px;
@@ -368,6 +369,7 @@ input {
 
 .dashboard_todo{
 	width: 30%;
+	height: 100%;
 	font-size: 20px;
 	border: 1px solid #0d0d2a;
 	padding: 10px;
@@ -393,6 +395,7 @@ button#todo_more{
 }
 .dashboard_detail{
 	width: 45%;
+	height: 105%;
 	border: 1px solid #0d0d2a;
 	margin-left: 10px;
 	margin-top: 20px;
