@@ -207,16 +207,8 @@ public class MyPageController {
 
     /* 회원 탈퇴 (아직 기능 X) */
     @PostMapping("/delete")
-    public boolean delete(@RequestParam("password") String password) {
-        // 현재 로그인한 사용자 정보 가져오기
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.isAuthenticated()) {
-            String id = authentication.getName(); // 사용자 아이디
-            if (!id.equals("anonymousUser")) {
-                return memberService.deleteMember(id, password);
-            }
-        }
-        return false;
+    public ResponseEntity<String> delete(@RequestParam("password") String password, Authentication authentication) {
+        return memberService.deleteMember(authentication.getName(), password);
     }
 
     // [U] 프로필 수정
