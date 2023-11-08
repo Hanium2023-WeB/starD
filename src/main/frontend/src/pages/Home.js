@@ -30,12 +30,8 @@ const CenteredDiv = styled.div`
 
 const Home = () => {
 
-    const dataId = useRef(0);
-    const [state, setState] = useState([]);
-    const [todos, setTodos] = useState({});
     const [today, setToday] = useState(new Date());
     const [parsedTodos, setParsedTodos] = useState({});
-    const [todayKey, setTodayKey] = useState("");
     const [isLogin, setIsLogin] = useState(""); // Login 여부 상태관리
     const [user, setUser] = useState(""); // 로그인 유저이름 상태관리
     const [tag, setTag] = useState([{id: 1, tagname: "취업"},
@@ -51,7 +47,7 @@ const Home = () => {
 
     const [firstRow, setFirstRow] = useState([]);
     const [secondRow, setSecondRow] = useState([]);
-
+    const accessToken = localStorage.getItem('accessToken');
 
     useEffect(() => {
         // Load todos from localStorage when the component mounts
@@ -88,6 +84,36 @@ const Home = () => {
     useEffect(() => {
         AOS.init();
     }, []);
+
+    useEffect(() => {
+        axios.get(`http://localhost:8080/todo/all`, {
+            params: {
+                year: Year, month: Month,
+            }, headers: {
+                Authorization: `Bearer ${accessToken}`,
+            },
+        }).then((response) => {
+            console.log('전체 투두리스트 가져오기 성공:', response.data);
+
+            setParsedTodos((prevTodos) => (response.data))
+        }).catch((error) => {
+            console.log('전체 투두리스트 가져오기 실패:', error);
+        })
+    }, []);
+    const [filteredToDo, setFilteredToDo] = useState([]);
+    useEffect(() => {
+        if (Array.isArray(parsedTodos)) {
+            const filteredToDo = parsedTodos.filter((todo) => {
+                const todoDueDate = new Date(todo.toDo.dueDate).toDateString();
+                const todayDate = today.toDateString();
+                return todoDueDate === todayDate;
+            });
+            console.log("filteredToDo: ", filteredToDo);
+            setFilteredToDo(filteredToDo);
+        } else {
+            console.error("parsedTodos is not an array.");
+        }
+    }, [parsedTodos]);
 
     return (
         <div className="main_wrap">
@@ -156,26 +182,30 @@ const Home = () => {
                           }}> <button
                         id="todo_more">{`ToDoList Page >>`}</button></Link></span>
                                 <hr/>
-                                {parsedTodos.hasOwnProperty(todayKey) ? (
+                                {filteredToDo.length === 0 ? (
+                                    <div className="empty_today_todo">
+                                          <span>
+                                            할 일이 없습니다.<br/> 할 일을 입력해주세요.
+                                          </span>
+                                    </div>
+
+                                ) : (
                                     <ul id="todocontent">
-                                        {parsedTodos[todayKey].map((todo) => (
-                                            <li key={todo.id}
-                                                className={getTodoItemClassName(todo.checked)}>
-                                                {todo.checked ? (
+                                        {filteredToDo.map((todo) => (
+                                            <li
+                                                key={todo.toDo.id}
+                                                className={getTodoItemClassName(todo.toDoStatus)}
+                                            >
+                                                {todo.toDoStatus ? (
                                                     <img src={checkbox} alt="checked" width="20px"/>
                                                 ) : (
                                                     <img src={uncheckbox} alt="unchecked" width="20px"/>
                                                 )}
-                                                <div id="todotext">
-                                                    {todo.text}
-                                                </div>
+                                                <div id="mypage-todotext">{todo.toDo.study.title} |</div>
+                                                <div id="mypage-todotext">{todo.toDo.task}</div>
                                             </li>
                                         ))}
                                     </ul>
-                                ) : (
-                                    <div className="empty_today_todo">
-                                        <span>할 일이 없습니다.<br/>  할 일을 입력해주세요.</span>
-                                    </div>
                                 )}
                             </div>
 
@@ -192,7 +222,7 @@ const Home = () => {
                                     {firstRow.map((item, index) => {
                                         return (
 
-                                            <div className={"tagname_wrap"} data-aos="flip-left">
+                                            <div className={"tagname_wrap"}  data-aos="flip-left">
                                                 <span id={"tag-grade"}>TOP {index + 1}</span>
                                                 <button id={"tagbtn"} value={item.field}
                                                         onClick={handleontag}>{item.field}</button>
@@ -304,12 +334,12 @@ const Home = () => {
                                     <div className="CommunityScreenShot">
                                         <img id="community_main" src={community} width="400px" data-aos="flip-left"/>
                                         <div className={"community-field_scrap"}>
-                                        <img id="c-field" src={communityfield} width="200px" data-aos="flip-left"/>
-                                        <img id="c-scrap" src={communityscrap} width="200px" height={"80px"} data-aos="flip-left"/>
+                                            <img id="c-field" src={communityfield} width="200px" data-aos="flip-left"/>
+                                            <img id="c-scrap" src={communityscrap} width="200px" height={"80px"} data-aos="flip-left"/>
                                         </div>
                                         <span id={"c-info"}>다양한 관심사를 가진 사람들과 <br/>
                                             풍부한 소통의 장을 열수 있어요<br/></span>
-                                        </div>
+                                    </div>
 
                                 </div>
                             </div>

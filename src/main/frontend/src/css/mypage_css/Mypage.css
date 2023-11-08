@@ -118,6 +118,20 @@ p {
 	white-space: nowrap;
 	text-overflow: ellipsis;
 }
+/*마이페이지 안에 있는 투두*/
+.mypage-todotext{
+	position: relative;
+	top: 3.1px;
+	margin-left: 2px;
+	font-size: 15px;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+.meeting-id{
+	font-size: 10px;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
 .empty_today_todo{
 	margin-top: 20px;
 }
