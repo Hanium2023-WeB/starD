@@ -28,13 +28,42 @@ const NoticeDetail = () => {
     let accessToken = localStorage.getItem('accessToken');
     let isLoggedInUserId = localStorage.getItem('isLoggedInUserId');
     const [url, setUrl] = useState([]);
+    const [type, setType] = useState([]);
 
     const [isWriter, setIsWriter] = useState(false);
 
     useEffect(() => {
         if (accessToken && isLoggedInUserId) {
-            axios.get(`http://localhost:8080/star/post/${id}`, {
+            // 타입 조회
+            axios.get(`http://localhost:8080/notice/find-type/${id}`, {
                 params: { id: id },
+                withCredentials: true,
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`
+                }
+            })
+                .then((res) => {
+                    setType(res.data.type);
+
+                    if (res.data.type === "NOTICE") {
+                        setUrl(`http://localhost:8080/notice/${id}`);
+                    }
+                    else if (res.data.type === "FAQ") {
+                        setUrl(`http://localhost:8080/faq/${id}`);
+                    }
+                })
+                .catch((error) => {
+                    console.error("id로 타입 조회 실패:", error);
+                });
+
+        }
+    }, [id]);
+
+    useEffect(() => {
+        if (accessToken && isLoggedInUserId) {
+            console.log("TYPE: ", type);
+            axios.get(`http://localhost:8080/star/notice/${id}`, {
+                params: { type : type },
                 withCredentials: true,
                 headers: {
                     'Authorization': `Bearer ${accessToken}`
@@ -63,31 +92,11 @@ const NoticeDetail = () => {
                     console.log("스크랩 불러오기 실패", error);
                 });
 
-            // 타입 조회
-            axios.get(`http://localhost:8080/notice/find-type/${id}`, {
-                params: { id: id },
-                withCredentials: true,
-                headers: {
-                    'Authorization': `Bearer ${accessToken}`
-                }
-            })
-                .then((res) => {
-                    if (res.data.type === "NOTICE") {
-                        setUrl(`http://localhost:8080/notice/${id}`);
-                    }
-                    else if (res.data.type === "FAQ") {
-                        setUrl(`http://localhost:8080/faq/${id}`);
-                    }
-                })
-                .catch((error) => {
-                    console.error("id로 타입 조회 실패:", error);
-                });
         } else {
             setInitiallyLikeStates(true);
             setInitiallyScrapStates(true);
         }
-    }, [id]);
-
+    }, [id ,type]);
 
     useEffect(() => {
         const config = {
@@ -98,7 +107,6 @@ const NoticeDetail = () => {
             config.headers['Authorization'] = `Bearer ${accessToken}`;
         }
 
-        console.log("******** ", url);
         if (initiallyLikeStates && initiallyScrapStates) {
             axios.get(url, config)
                 .then((res) => {
@@ -120,8 +128,8 @@ const NoticeDetail = () => {
         }
 
         if (likeStates) { // true -> 활성화되어 있는 상태 -> 취소해야 함
-            axios.delete(`http://localhost:8080/star/post/${id}`, {
-                params: { id: id },
+            axios.delete(`http://localhost:8080/star/notice/${id}`, {
+                params: { type : type },
                 withCredentials: true,
                 headers: {
                     'Authorization': `Bearer ${accessToken}`
@@ -137,8 +145,8 @@ const NoticeDetail = () => {
 
             setLikeStates(false);
         } else {
-            axios.post(`http://localhost:8080/star/post/${id}`, null, {
-                params: { id: id },
+            axios.post(`http://localhost:8080/star/notice/${id}`, null, {
+                params: { type : type },
                 withCredentials: true,
                 headers: {
                     'Authorization': `Bearer ${accessToken}`
@@ -163,8 +171,8 @@ const NoticeDetail = () => {
         }
 
         if (scrapStates) { // true -> 활성화되어 있는 상태 -> 취소해야 함
-            axios.delete(`http://localhost:8080/scrap/post/${id}`, {
-                params: { id: id },
+            axios.delete(`http://localhost:8080/scrap/notice/${id}`, {
+                params: { type : type },
                 withCredentials: true,
                 headers: {
                     'Authorization': `Bearer ${accessToken}`
