@@ -78,16 +78,33 @@ const NoticeDetail = () => {
         }
 
         if (initiallyLikeStates && initiallyScrapStates) {
-            axios.get(`http://localhost:8080/notice/${id}`, config)
+            let url;
+            console.log("** ", id);
+            axios.get(`http://localhost:8080/notice/find-type/${id}`, config)
                 .then((res) => {
-                    setPostItem(res.data);
-                    if (res.data.member.id === isLoggedInUserId) { // 자신의 글인지
-                        setIsWriter(true);
+                    if (res.data.type === "NOTICE") {
+                        url = `http://localhost:8080/notice/${id}`;
                     }
+                    else if (res.data.type === "FAQ") {
+                        url = `http://localhost:8080/faq/${id}`;
+                    }
+
+                    axios.get(url, config)
+                        .then((res) => {
+                            setPostItem(res.data);
+                            if (res.data.member.id === isLoggedInUserId) { // 자신의 글인지
+                                setIsWriter(true);
+                            }
+                        })
+                        .catch((error) => {
+                            console.error("게시글 세부 데이터 가져오기 실패:", error);
+                        });
+
                 })
                 .catch((error) => {
-                    console.error("커뮤니티 게시글 세부 데이터 가져오기 실패:", error);
+                    console.error("id로 타입 조회 실패:", error);
                 });
+
         }
     }, [id, accessToken, isLoggedInUserId, initiallyLikeStates, initiallyScrapStates]);
 
@@ -191,32 +208,57 @@ const NoticeDetail = () => {
         console.log("수정 예정 : " + updatedPost.id + ", " + updatedPost.title + ", " + updatedPost.content
             + ", " + updatedPost.category);
 
-        axios.post(`http://localhost:8080/notice/${id}`, {
-            title: updatedPost.title,
-            content: updatedPost.content,
-            category: updatedPost.category
-        }, {
-            params: { id: updatedPost.id },
-            withCredentials: true,
-            headers: {
-                'Authorization': `Bearer ${accessToken}`
-            }
-        })
-            .then(response => {
-                console.log("공지글 수정 성공");
-                alert("게시글이 수정되었습니다.");
+        const config = {
+            headers: {}
+        };
 
-                setPostDetail(response.data);
-                const updatedPosts = posts.map(post =>
-                    post.id === updatedPost.id ? updatedPost : post
-                );
-                setPosts(updatedPosts);
+        if (accessToken && isLoggedInUserId) {
+            config.headers['Authorization'] = `Bearer ${accessToken}`;
+        }
+
+        let url;
+        console.log("** ", id);
+        axios.get(`http://localhost:8080/notice/find-type/${id}`, config)
+            .then((res) => {
+                if (res.data.type === "NOTICE") {
+                    url = `http://localhost:8080/notice/${id}`;
+                }
+                else if (res.data.type === "FAQ") {
+                    url = `http://localhost:8080/faq/${id}`;
+                }
+
+                axios.post(url, {
+                    title: updatedPost.title,
+                    content: updatedPost.content,
+                    category: updatedPost.category
+                }, {
+                    params: { id: updatedPost.id },
+                    withCredentials: true,
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`
+                    }
+                })
+                    .then(response => {
+                        console.log("공지글 수정 성공");
+                        alert("게시글이 수정되었습니다.");
+
+                        setPostDetail(response.data);
+                        const updatedPosts = posts.map(post =>
+                            post.id === updatedPost.id ? updatedPost : post
+                        );
+                        setPosts(updatedPosts);
+                    })
+                    .catch(error => {
+                        console.error("Error:", error);
+                        console.log("공지글 수정 실패");
+                        alert("수정에 실패했습니다.");
+                    });
+
             })
-            .catch(error => {
-                console.error("Error:", error);
-                console.log("공지글 수정 실패");
-                alert("수정에 실패했습니다.");
+            .catch((error) => {
+                console.error("id로 타입 조회 실패:", error);
             });
+
     }
 
     const handlePostDelete = () => {

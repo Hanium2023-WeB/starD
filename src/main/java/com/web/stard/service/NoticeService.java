@@ -6,17 +6,19 @@ import com.web.stard.repository.StarScrapRepository;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Transactional
 @Getter @Setter
@@ -111,5 +113,15 @@ public class NoticeService {
         });
     }
 
+    // id로 타입 찾기
+    public Optional<Post> findTypeById(Long id, Authentication authentication) {
+        return postRepository.findById(id);
+    }
+
+    // Notice, FAQ 최신 순 전체 보기
+    public List<Post> getAllNoticesAndFaqs() {
+        List<PostType> types = Arrays.asList(PostType.NOTICE, PostType.FAQ);
+        return postRepository.findByTypeInOrderByCreatedAtDesc(types);
+    }
 
 }
