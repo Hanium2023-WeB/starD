@@ -27,6 +27,7 @@ const NoticeDetail = () => {
 
     let accessToken = localStorage.getItem('accessToken');
     let isLoggedInUserId = localStorage.getItem('isLoggedInUserId');
+    const [url, setUrl] = useState([]);
 
     const [isWriter, setIsWriter] = useState(false);
 
@@ -61,6 +62,26 @@ const NoticeDetail = () => {
                 .catch(error => {
                     console.log("스크랩 불러오기 실패", error);
                 });
+
+            // 타입 조회
+            axios.get(`http://localhost:8080/notice/find-type/${id}`, {
+                params: { id: id },
+                withCredentials: true,
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`
+                }
+            })
+                .then((res) => {
+                    if (res.data.type === "NOTICE") {
+                        setUrl(`http://localhost:8080/notice/${id}`);
+                    }
+                    else if (res.data.type === "FAQ") {
+                        setUrl(`http://localhost:8080/faq/${id}`);
+                    }
+                })
+                .catch((error) => {
+                    console.error("id로 타입 조회 실패:", error);
+                });
         } else {
             setInitiallyLikeStates(true);
             setInitiallyScrapStates(true);
@@ -77,34 +98,18 @@ const NoticeDetail = () => {
             config.headers['Authorization'] = `Bearer ${accessToken}`;
         }
 
+        console.log("******** ", url);
         if (initiallyLikeStates && initiallyScrapStates) {
-            let url;
-            console.log("** ", id);
-            axios.get(`http://localhost:8080/notice/find-type/${id}`, config)
+            axios.get(url, config)
                 .then((res) => {
-                    if (res.data.type === "NOTICE") {
-                        url = `http://localhost:8080/notice/${id}`;
+                    setPostItem(res.data);
+                    if (res.data.member.id === isLoggedInUserId) { // 자신의 글인지
+                        setIsWriter(true);
                     }
-                    else if (res.data.type === "FAQ") {
-                        url = `http://localhost:8080/faq/${id}`;
-                    }
-
-                    axios.get(url, config)
-                        .then((res) => {
-                            setPostItem(res.data);
-                            if (res.data.member.id === isLoggedInUserId) { // 자신의 글인지
-                                setIsWriter(true);
-                            }
-                        })
-                        .catch((error) => {
-                            console.error("게시글 세부 데이터 가져오기 실패:", error);
-                        });
-
                 })
                 .catch((error) => {
-                    console.error("id로 타입 조회 실패:", error);
+                    console.error("게시글 세부 데이터 가져오기 실패:", error);
                 });
-
         }
     }, [id, accessToken, isLoggedInUserId, initiallyLikeStates, initiallyScrapStates]);
 
@@ -216,47 +221,31 @@ const NoticeDetail = () => {
             config.headers['Authorization'] = `Bearer ${accessToken}`;
         }
 
-        let url;
-        console.log("** ", id);
-        axios.get(`http://localhost:8080/notice/find-type/${id}`, config)
-            .then((res) => {
-                if (res.data.type === "NOTICE") {
-                    url = `http://localhost:8080/notice/${id}`;
-                }
-                else if (res.data.type === "FAQ") {
-                    url = `http://localhost:8080/faq/${id}`;
-                }
+        axios.post(url, {
+            title: updatedPost.title,
+            content: updatedPost.content,
+            category: updatedPost.category
+        }, {
+            params: { id: updatedPost.id },
+            withCredentials: true,
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
+        })
+            .then(response => {
+                console.log("공지글 수정 성공");
+                alert("게시글이 수정되었습니다.");
 
-                axios.post(url, {
-                    title: updatedPost.title,
-                    content: updatedPost.content,
-                    category: updatedPost.category
-                }, {
-                    params: { id: updatedPost.id },
-                    withCredentials: true,
-                    headers: {
-                        'Authorization': `Bearer ${accessToken}`
-                    }
-                })
-                    .then(response => {
-                        console.log("공지글 수정 성공");
-                        alert("게시글이 수정되었습니다.");
-
-                        setPostDetail(response.data);
-                        const updatedPosts = posts.map(post =>
-                            post.id === updatedPost.id ? updatedPost : post
-                        );
-                        setPosts(updatedPosts);
-                    })
-                    .catch(error => {
-                        console.error("Error:", error);
-                        console.log("공지글 수정 실패");
-                        alert("수정에 실패했습니다.");
-                    });
-
+                setPostDetail(response.data);
+                const updatedPosts = posts.map(post =>
+                    post.id === updatedPost.id ? updatedPost : post
+                );
+                setPosts(updatedPosts);
             })
-            .catch((error) => {
-                console.error("id로 타입 조회 실패:", error);
+            .catch(error => {
+                console.error("Error:", error);
+                console.log("공지글 수정 실패");
+                alert("수정에 실패했습니다.");
             });
 
     }
@@ -265,7 +254,7 @@ const NoticeDetail = () => {
         const confirmDelete = window.confirm("정말로 게시글을 삭제하시겠습니까?");
         if (confirmDelete) {
 
-            axios.delete(`http://localhost:8080/notice/${id}`, {
+            axios.delete(url, {
                 params: { id: id },
                 withCredentials: true,
                 headers: {
