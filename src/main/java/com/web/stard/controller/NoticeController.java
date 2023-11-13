@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Transactional
 @Getter
@@ -62,4 +63,17 @@ public class NoticeController {
     public void deleteNotice(@PathVariable Long id, Authentication authentication) {
         noticeService.deleteNotice(id, authentication);
     }
+
+    // id로 타입 조회
+    @GetMapping("/find-type/{id}")
+    public Optional<Post> findTypeById(@PathVariable Long id, Authentication authentication) {
+        return noticeService.findTypeById(id, authentication);
+    }
+
+    // notice, faq 최신 순 전체 보기
+    @GetMapping("/all")
+    public List<Post> findAllNoticeAndFaq() {
+        return noticeService.getAllNoticesAndFaqs();
+    }
+
 }

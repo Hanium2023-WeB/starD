@@ -227,7 +227,7 @@ const ToDoList = ({sideheader}) => {
                             ? {
                                 toDo: {
                                     ...todo.toDo,
-                                    study: { ...todo.toDo.study, id: UpdatedToDo.toDo.study.id },
+                                    study: {...todo.toDo.study, id: UpdatedToDo.toDo.study.id},
                                     task: UpdatedToDo.toDo.task,
                                 },
                                 toDoStatus: todo.toDoStatus,
@@ -335,7 +335,9 @@ const ToDoList = ({sideheader}) => {
                         </div>
                         <ToDoInsert onInsert={onInsert} dueDate={selectedDate} Inserttodostudyid={InsertToDoStudyId}
                                     Inserttodotitle={InsertToDoTitle} Inserttodostudy={InsertToDoStudy}
-                                    studyidasnumber={studyIdAsNumber}/>
+                                    studyidasnumber={studyIdAsNumber} onClose={() => {
+                            setInsertToggle((prev) => !prev);
+                        }}/>
                         <ul className="TodoList">
                             {filteredTodos.length === 0 && (<div className="alert_empty_todo">
                                 <span>할 일이 없습니다.<br/>  할 일을 입력해주세요.</span>
@@ -350,12 +352,15 @@ const ToDoList = ({sideheader}) => {
                                         onChangeSelectedTodo={onChangeSelectedTodo}
                                         onInsertToggle={onInsertToggle}
                                         selectedDate={selectedDate}
+
                                     />)
                                 }
                             }))}
                         </ul>
                         {insertToggle && (<ToDoEdit selectedTodo={selectedTodo} onUpdate={onUpdate}
-                                                    participatedstudies={studies}/>)}
+                                                    participatedstudies={studies} onClose={() => {
+                            setInsertToggle((prev) => !prev);
+                        }}/>)}
                     </div>
                     <Calender todo={todoswithAssignee} onDateClick={handleDateClick} prevMonth={prevMonth}
                               nextMonth={nextMonth} currentMonth={currentMonth}/>

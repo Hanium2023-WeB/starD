@@ -7,7 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
@@ -18,13 +17,13 @@ import java.util.List;
 @Setter
 @RequestMapping("/faq")
 @AllArgsConstructor
-@Controller
+@RestController
 public class FaqController {
     private final MemberService memberService;
     private  final FaqService faqService;
 
     // faq 등록
-    @PostMapping("/admin")
+    @PostMapping("")
     public Post createFaq(@RequestBody Post post, Authentication authentication) {
         faqService.createFaq(post, authentication);
         return post;
@@ -44,15 +43,15 @@ public class FaqController {
     }
 
     // faq 수정
-    @PostMapping("admin/{id}")
+    @PostMapping("/{id}")
     public Post updateFaq(@PathVariable Long id, @RequestBody Post requestPost, Authentication authentication) {
         Post post = faqService.updateFaq(id, requestPost, authentication);
         return post;
     }
 
     // faq 삭제
-    @DeleteMapping("admin/{postId}")
-    public void deleteFaq(@PathVariable Long postId, Authentication authentication) {
-        faqService.deleteFaq(postId, authentication);
+    @DeleteMapping("/{id}")
+    public void deleteFaq(@PathVariable Long id, Authentication authentication) {
+        faqService.deleteFaq(id, authentication);
     }
 }

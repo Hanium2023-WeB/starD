@@ -6,7 +6,7 @@ import LOGO from "../images/Logo.png";
 import Header from "../components/repeat_etc/Header";
 import SearchBar from "../SearchBar";
 import HomeDashBoard from "../components/study/HomeDashBoard";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import checkbox from "../images/check.png";
 import uncheckbox from "../images/unchecked.png";
 import scheduleimg from "../images/schedule.png";
@@ -48,7 +48,8 @@ const Home = () => {
     const [firstRow, setFirstRow] = useState([]);
     const [secondRow, setSecondRow] = useState([]);
     const accessToken = localStorage.getItem('accessToken');
-
+    let isLoggedInUserId = localStorage.getItem('isLoggedInUserId');
+    const navigate = useNavigate();
     useEffect(() => {
         // Load todos from localStorage when the component mounts
         const isLogin = localStorage.getItem("accessToken");
@@ -114,6 +115,16 @@ const Home = () => {
             console.error("parsedTodos is not an array.");
         }
     }, [parsedTodos]);
+
+    const handleMoveToStudyInsert = (e) => {
+        if (accessToken && isLoggedInUserId) {
+            e.preventDefault();
+        } else {
+            alert("로그인 해주세요");
+            navigate("/login");
+        }
+
+    };
 
     return (
         <div className="main_wrap">
@@ -269,9 +280,16 @@ const Home = () => {
                                                     당신의 이상적인 스터디를 찾아보세요.</p>
                                             </div>
                                             <div id={"detail-img-btn"}>
-                                                <button>
+                                                <button onClick={handleMoveToStudyInsert}>
+                                                <Link to={"/study/studyInsert"}
+                                                      style={{
+                                                          textDecoration: "none",
+                                                          color:"inherit",
+                                                      }}>
                                                     스터디 모집하기
+                                                </Link>
                                                 </button>
+
                                             </div>
 
                                         </div>
@@ -315,8 +333,14 @@ const Home = () => {
                                                     안정적인 스터디 환경을 구축하세요.</p>
                                             </div>
                                             <div id={"detail-img-btn"}>
-                                                <button>
-                                                    스터디 모집하기
+                                                <button onClick={handleMoveToStudyInsert}>
+                                                    <Link to={"/study/studyInsert"}
+                                                          style={{
+                                                              textDecoration: "none",
+                                                              color:"inherit",
+                                                          }}>
+                                                        스터디 모집하기
+                                                    </Link>
                                                 </button>
                                             </div>
                                         </div>
