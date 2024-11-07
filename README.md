@@ -17,13 +17,13 @@
 | ------- | ------- | ------- |
 | <img src="https://github.com/user-attachments/assets/9dbebdd7-7eb3-4994-b02a-a5759bacd8ae" width="300px" height="200px"/> | <img src="https://github.com/user-attachments/assets/4953ecbf-9ae3-4f0c-8a2f-b6a5035f9447" width="300px" height="200px"/>| <img src="https://github.com/user-attachments/assets/28104b45-cfca-466e-a2ff-0c44511895bc" width="300px" height="200px"/> |
 
-| 팀블로그 | 프로필 수정 | 모임일정 달력 |
+| 팀블로그 | 팀원 평가 | 프로필 수정 |
 | ------- | ------- | ------- |
-| <img src="https://github.com/user-attachments/assets/7dd5de4f-9de4-43a4-8388-a253c10bd242" width="300px" height="200px"/>  | <img src="https://github.com/user-attachments/assets/661f523f-b936-4c03-89bf-6655572dbb40" width="300px" height="200px"/> | <img src="https://github.com/user-attachments/assets/99a37823-4a06-4256-ae0c-2d80b75ac4f7" width="300px" height="200px"/> |
+| <img src="https://github.com/user-attachments/assets/7dd5de4f-9de4-43a4-8388-a253c10bd242" width="300px" height="200px"/>  |<img src="https://github.com/user-attachments/assets/aab9f6d6-4ad9-4e72-89cf-a8a70e0185b0" width="300px" height="200px"/> | <img src="https://github.com/user-attachments/assets/661f523f-b936-4c03-89bf-6655572dbb40" width="300px" height="200px"/> |
 
-| 투두리스트 |
-| ------- |
-| <img src="https://github.com/user-attachments/assets/f786acf9-45b9-4519-875d-26422d2268b3" width="300px" height="200px"/> |
+| 투두리스트 |모임일정 달력 |
+| ------- | ------- |
+| <img src="https://github.com/user-attachments/assets/f786acf9-45b9-4519-875d-26422d2268b3" width="300px" height="200px"/> |<img src="https://github.com/user-attachments/assets/99a37823-4a06-4256-ae0c-2d80b75ac4f7" width="300px" height="200px"/> |
 
 - **기술 스택**
 
