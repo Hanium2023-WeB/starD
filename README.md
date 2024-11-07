@@ -32,3 +32,38 @@
   <span>백엔드: </span> <img src="https://img.shields.io/badge/Spring%20Boot-6DB33F?style=for-the-badge&logo=Spring%20Boot&logoColor=white"> <img src="https://img.shields.io/badge/JPA-007396?style=for-the-badge&logo=Hibernate&logoColor=white"> <img src="https://img.shields.io/badge/MariaDB-003545?style=for-the-badge&logo=MariaDB&logoColor=white">
 
   <span>기획·디자인: </span> <img src="https://img.shields.io/badge/figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white">
+
+
+
+- **팀원 소개**
+  <table border="" cellspacing="0" cellpadding="0" width="100%">
+  <tr width="100%">
+  <td align="center">강지륜</a></td>
+  <td align="center">이승연</a></td>
+  <td  align="center">차은수</a></td>
+  <td  align="center">김현수</a></td>
+  <td  align="center">허민영</a></td>
+  </tr>
+
+  <tr width="100%">
+   <td  align="center"><a href="https://imgbb.com/"><img src="https://github.com/user-attachments/assets/f9fca964-e4bf-44d5-bdf8-8ce925c82bb5" alt="befbedf87e51f5b02aac8b882ada60fd-sticker" border="0" width="90px"></a></td>
+   <td  align="center"><a href="https://imgbb.com/"><img src="https://github.com/user-attachments/assets/f9fca964-e4bf-44d5-bdf8-8ce925c82bb5" alt="befbedf87e51f5b02aac8b882ada60fd-sticker" border="0" width="90px"></a></td>
+   <td  align="center"><a href="https://imgbb.com/"><img src="https://github.com/user-attachments/assets/f9fca964-e4bf-44d5-bdf8-8ce925c82bb5" alt="befbedf87e51f5b02aac8b882ada60fd-sticker" border="0" width="90px"></a></td>
+   <td  align="center"><a href="https://imgbb.com/"><img src="https://github.com/user-attachments/assets/f9fca964-e4bf-44d5-bdf8-8ce925c82bb5" alt="befbedf87e51f5b02aac8b882ada60fd-sticker" border="0" width="90px"></a></td>
+   <td  align="center"><a href="https://imgbb.com/"><img src="https://github.com/user-attachments/assets/f9fca964-e4bf-44d5-bdf8-8ce925c82bb5" alt="befbedf87e51f5b02aac8b882ada60fd-sticker" border="0" width="90px"></a></td>
+  </tr>
+  <tr width="100%">
+  <td  align="center">백엔드</td>
+  <td  align="center">백엔드</td>
+  <td  align="center">백엔드</td>
+  <td  align="center">프론트엔드</td>
+  <td  align="center">프론트엔드</td>     
+<!--   </tr>
+      <tr width="100%">
+          <td  align="center"><p>전체 서비스 기획</p><p>전체 UI 디자인</p></td>
+          <td  align="center"><p>- 로그인 및 회원가입 화면구현</p><p>- 헌화 추모관, 헌화하기, 헌화한마디 화면구현</p><p>- 연동</p></td>
+          <td  align="center"><p>- 기억나무 질문, 편지, 앨범, 결제 화면구현</p><p>- 마이페이지 화면구현</p><p>- 연동</p></td>
+          <td  align="center"><p>- 헌화 추모관, 헌화한마디 구현</p><p>- 마이페이지 내가 작성한 헌화한마디, 결제내역 조회 구현</p><p>- 연동 및 배포</p></td>
+          <td  align="center"><p>- JWT 로그인 및 회원가입 구현</p><p>- 기억나무 질문, 편지, 앨범 구현</p> <p>- 마이페이지 회원 정보 수정 및 조회 구현</p><p>- 연동 및 배포</p></td>
+     </tr>  -->
+  </table>
